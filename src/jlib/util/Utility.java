@@ -1,15 +1,24 @@
 /**
- * $Id: Utility.java 840 2010-03-23 14:10:25Z dyki $
+ * $Id$
  *
  * Copyright (c) 2009-2010 Areen Design Services Ltd
- * 282 King Street; London, W6 0SJ; United Kingdom
+ * 23 Eyot Gardens; London; W6 9TR
+ * http://www.areen.com
  * All rights reserved.
- *
+ * 
  * This software is the confidential and proprietary information of
  * Areen Design Services Ltd ("Confidential Information").  You shall not
  * disclose such Confidential Information and shall use it only in
  * accordance with the terms of the license agreement you entered into
  * with Areen Design Services Ltd.
+ * 
+ * This file is best viewed with 128 columns.
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
+ * 
+ * Author(s) in chronological order:
+ *   Dejan Lekic , http://dejan.lekic.org
+ * Contributor(s):
+ *   -
  */
 
 package jlib.util;
@@ -29,7 +38,7 @@ public class Utility {
 	public static String getLineInfo() {
         StackTraceElement ste = new Throwable().getStackTrace()[1];
         return ste.getFileName() + ": Line " + ste.getLineNumber();
-    }
+    } // getLineInfo() method
 	
 	/**
 	 * Function to export csv file
@@ -86,5 +95,6 @@ public class Utility {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-}
+	} // exportToCSV() method
+	
+} // Utility class
