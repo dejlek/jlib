@@ -12,8 +12,8 @@
  * accordance with the terms of the license agreement you entered into
  * with Areen Design Services Ltd.
  * 
- * This file is best viewed with 128 columns.
-12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
+ * This file is best viewed with 110 columns.
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
  * 
  * Author(s) in chronological order:
  *   Dejan Lekic , http://dejan.lekic.org
@@ -98,3 +98,5 @@ public class Utility {
 	} // exportToCSV() method
 	
 } // Utility class
+
+// $Id$
