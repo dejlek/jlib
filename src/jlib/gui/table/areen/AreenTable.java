@@ -2,6 +2,7 @@
 package jlib.gui.table.areen;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,6 +17,9 @@ public class AreenTable extends JTable {
         getTableHeader().setDefaultRenderer(new AreenTableCellHeaderRenderer());
     } // AreenTable constructor
 
+    public void setTableModel(DefaultTableModel dtm){
+        setModel(dtm);
+    }
 } // AreenTable class
 
 // $Id$
