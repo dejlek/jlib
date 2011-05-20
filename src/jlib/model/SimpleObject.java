@@ -12,4 +12,5 @@ package jlib.model;
 public interface SimpleObject {
     public String[] getTitles();
     public void setTitles(String[] argTitles);
+    public byte getNumberOfFields();
 } // SimpleObject interface
