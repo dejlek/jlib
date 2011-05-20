@@ -14,4 +14,4 @@ public interface SimpleObject {
     public void setTitles(String[] argTitles);
 } // SimpleObject interface
 
-// $id$
+// $Id$
