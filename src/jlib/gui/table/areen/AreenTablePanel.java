@@ -12,10 +12,12 @@
 package jlib.gui.table.areen;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -59,6 +61,11 @@ public class AreenTablePanel extends javax.swing.JPanel {
        }*/
     }
     
+    public void populateFilterPanel(JComponent[] filters){
+       for(int i=0; i<filters.length; i++){
+          ((FilterPanel)filterPanel).addFilter(filters[i]);
+       }
+    }
     public static String ordinalNo(int value) {
       int hunRem = value % 100;
       int tenRem = value % 10;
@@ -79,6 +86,9 @@ public class AreenTablePanel extends javax.swing.JPanel {
     
    public void setActionListener(ActionListener al) {
       commandComboBox.addActionListener(al);
+   } 
+   public void setMouseListener(MouseListener ml) {
+      defaultTable.addMouseListener(ml);
    } 
 
    public JTable getTable(){
@@ -163,8 +173,6 @@ public class AreenTablePanel extends javax.swing.JPanel {
       bottomPanel.add(tableStatusPanel, java.awt.BorderLayout.SOUTH);
 
       add(bottomPanel, java.awt.BorderLayout.PAGE_END);
-
-      areenTableScrollPane.setBorder(null);
 
       defaultTable.setFont(defaultTable.getFont());
       defaultTable.setModel(new javax.swing.table.DefaultTableModel(
