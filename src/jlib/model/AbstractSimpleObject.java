@@ -8,9 +8,11 @@ package jlib.model;
  * @author dejan
  */
 public abstract class AbstractSimpleObject {
+    /// Abstract constructor - subclasses should override it
+    public AbstractSimpleObject() { }
     
-    /// Returns a number of fields inside underlying ValueObject
-    public static byte getNumberOfFields() { return 0; }
+    public Object get(int argIndex) { return null; }
+    public Object set(int argIndex, Object argValue) { return null; }
     
 } // AbstractSimpleObject class
 

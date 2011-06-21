@@ -1,5 +1,7 @@
 package jlib.model;
 
+import jlib.pattern.ValueObject;
+
 /**
  * Every class which has an underlying VO (transfer object) should implement this
  * interface. SimpleObject makes sure some VO-related methods are provided.
@@ -9,9 +11,15 @@ package jlib.model;
  *
  * @author dejan
  */
-public interface SimpleObject {
+public interface SimpleObject<T extends ValueObject> {
+    public Object   get(int argIndex);
+    public Class<?> getFieldClass(int argIndex);
+    public byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
     public String[] getTitles();
-    public void setTitles(String[] argTitles);
+    public T        getValue();
+    public Object   set(int argIndex, Object argValue);
+    public void     setTitles(String[] argTitles);
+    public void     setValue(T argVO);
 } // SimpleObject interface
 
 // $Id$
