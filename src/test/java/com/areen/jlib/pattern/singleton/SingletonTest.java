@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package jlib.pattern.singleton;
+package com.areen.jlib.pattern.singleton;
 
 import org.junit.After;
 import org.junit.AfterClass;
