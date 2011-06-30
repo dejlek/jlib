@@ -14,14 +14,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
     <description>A library of reusable Java classes. 
 The idea is to open-source this library.</description>
     <build>
@@ -37,4 +29,16 @@ The idea is to open-source this library.</description>
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+    	<dependency>
+    		<groupId>junit</groupId>
+    		<artifactId>junit</artifactId>
+    		<version>4.8.2</version>
+    		<scope>test</scope>
+    	</dependency>
+    </dependencies>
+    <organization>
+    	<name>AreenDesignServices Ltd</name>
+    	<url>http://www.areen.com</url>
+    </organization>
 </project>
