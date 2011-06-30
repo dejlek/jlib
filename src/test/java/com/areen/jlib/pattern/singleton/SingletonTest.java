@@ -19,15 +19,16 @@ import static org.junit.Assert.*;
 public class SingletonTest {
 
     public SingletonTest() {
+        
     }
 
-   @BeforeClass
-   public static void setUpClass() throws Exception {
-   }
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
 
-   @AfterClass
-   public static void tearDownClass() throws Exception {
-   }
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
 
     @Before
     public void setUp() {
@@ -37,29 +38,25 @@ public class SingletonTest {
     public void tearDown() {
     }
 
-   /**
-    * Test of init method, of class Singleton.
-    */
-   @Test
-   public void testInit() {
-      System.out.println("init");
-      String[] params = null;
-      Singleton.init(params);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
-   }
+    /**
+     * Test of init method, of class Singleton.
+     */
+    @Test
+    public void testInit() {
+        System.out.println("testInit()");
+        String[] params = null;
+        InheritedSingletonTest.init(params);
+        assertTrue(InheritedSingletonTest.getInstance().getVal() == 5);
+    }
 
-   /**
-    * Test of getInstance method, of class Singleton.
-    */
-   @Test
-   public void testGetInstance() {
-      System.out.println("getInstance");
-      Singleton expResult = null;
-      Singleton result = Singleton.getInstance();
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
-   }
-
+    /**
+     * Test of getInstance method, of class Singleton.
+     */
+    @Test
+    public void testGetInstance() {
+        System.out.println("getInstance()");
+        String[] params = null;
+        InheritedSingletonTest.init(params);
+        assertTrue(InheritedSingletonTest.getInstance().getVal() == 5);
+    }
 }
