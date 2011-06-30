@@ -1,6 +1,6 @@
-package jlib.model;
+package com.areen.jlib.model;
 
-import jlib.pattern.ValueObject;
+import com.areen.jlib.pattern.ValueObject;
 
 /**
  * Every class which has an underlying VO (transfer object) should implement this

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package jlib.pattern;
+package com.areen.jlib.pattern;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package jlib.tuple;
+package com.areen.jlib.tuple;
 
 import java.util.Map;
 

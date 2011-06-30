@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package jlib.gui.weber;
+package com.areen.jlib.gui.weber;
 
 import javax.swing.event.*;
 import javax.swing.*;

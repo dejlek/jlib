@@ -1,5 +1,5 @@
 
-package jlib.pattern.singleton;
+package com.areen.jlib.pattern.singleton;
 
 /**
  * This is just an example how to inherit Singleton, and use the inherited class.

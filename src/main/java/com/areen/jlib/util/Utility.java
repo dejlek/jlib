@@ -21,7 +21,7 @@
  *   -
  */
 
-package jlib.util;
+package com.areen.jlib.util;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

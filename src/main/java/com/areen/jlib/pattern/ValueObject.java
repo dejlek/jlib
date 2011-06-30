@@ -1,5 +1,5 @@
 
-package jlib.pattern;
+package com.areen.jlib.pattern;
 
 /**
  * An empty interface which is going to be used to specify that a certain object

@@ -4,7 +4,7 @@
  * License: Public Domain
  */
 
-package jlib.gui;
+package com.areen.jlib.gui;
 
 import java.awt.Color;
 import java.awt.FlowLayout;

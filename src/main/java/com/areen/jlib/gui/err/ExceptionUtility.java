@@ -21,7 +21,7 @@
  *   -
  */
 
-package jlib.gui.err;
+package com.areen.jlib.gui.err;
 
 import java.awt.Frame;
 

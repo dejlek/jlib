@@ -1,5 +1,5 @@
 
-package jlib.pattern.singleton;
+package com.areen.jlib.pattern.singleton;
 
 /**
  * Singleton pattern - the simplest implementation.

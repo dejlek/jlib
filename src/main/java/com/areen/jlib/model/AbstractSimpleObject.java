@@ -1,5 +1,5 @@
 
-package jlib.model;
+package com.areen.jlib.model;
 
 /**
  * The reason we have this class is the fact that (stupid) Java can't have static method declarations in
