@@ -19,7 +19,7 @@ public interface SimpleObject<T extends ValueObject> {
     public T        getValue();
     public Object   set(int argIndex, Object argValue);
     public void     setTitles(String[] argTitles);
-    public void     setValue(T argVO);
+    public void     setValue(T argVo);
 } // SimpleObject interface
 
 // $Id$
