@@ -12,7 +12,7 @@
 
 <!--
 	Not sure if I will use this to tune what method is used to distribute jar to repository
--->
+
 	<profiles>
 		<profile>
 			<activation>
@@ -29,6 +29,7 @@
 			</activation>
 		</profile>
 	</profiles>
+-->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -70,7 +71,7 @@ The idea is to open-source this library.</description>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 -->
-		</distributionManagement>
+	</distributionManagement>
 
 	<build>
 		<extensions>
