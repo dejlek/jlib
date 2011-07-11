@@ -2,43 +2,107 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.areen</groupId>
-  <artifactId>jlib</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>com.areen</groupId>
+	<artifactId>jlib</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>jlib</name>
-  <url>http://maven.apache.org</url>
+	<name>jlib</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+<!--
+	Not sure if I will use this to tune what method is used to distribute jar to repository
+-->
+	<profiles>
+		<profile>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+		</profile>
+		<profile>
+			<activation>
+				<os>
+					<family>!Windows</family>
+				</os>
+			</activation>
+		</profile>
+	</profiles>
 
-    <description>A library of reusable Java classes. 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<description>A library of reusable Java classes. 
 The idea is to open-source this library.</description>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <dependencies>
-    	<dependency>
-    		<groupId>junit</groupId>
-    		<artifactId>junit</artifactId>
-    		<version>4.8.2</version>
-    		<scope>test</scope>
-    	</dependency>
-    </dependencies>
-    <organization>
-    	<name>AreenDesignServices Ltd</name>
-    	<url>http://www.areen.com</url>
-    </organization>
+
+	<repositories>
+		<repository>
+			<id>areen-maven-repository</id>
+			<url>http://srl009.adg.internal:80/areen-maven-repository</url>
+		</repository>
+		<repository>
+			<id>areen-snapshot-repository</id>
+			<url>http://srl009.adg.internal:80/maven-snapshots</url>
+		</repository>
+		<repository>
+			<id>Sonatype</id>
+			<name>Sonatype Repository</name>
+			<url>https://repository.sonatype.org</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>areen-maven-repository</id>
+			<name>Areen Maven Repository</name>
+			<url>scp://srl009.adg.internal:22/srv/areen-maven-repository</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+<!--
+	Not sure if there is any benefit for us to have a separate snapshot repository, given size of Areen
+	
+		<snapshotRepository>
+			<id>areen-snapshot-repository</id>
+			<name>Areen Snapshot Repository</name>
+			<url>scp://srl009.adg.internal:22/srv/maven-snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+-->
+		</distributionManagement>
+
+	<build>
+		<extensions>
+			<!-- Enabling the use of FTP -->
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId> 
+				<artifactId>wagon-ssh</artifactId> 
+				<version>1.0-beta-7</version> 
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<organization>
+		<name>AreenDesignServices Ltd</name>
+		<url>http://www.areen.com</url>
+	</organization>
 </project>
