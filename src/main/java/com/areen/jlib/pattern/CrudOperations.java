@@ -10,6 +10,7 @@ package com.areen.jlib.pattern;
  */
 public interface CrudOperations<T extends ValueObject> {
     public void setOldValue(Object argOldValue);
+    public void setArgs(String argInput); /// Use this method to specify parameters to the CRUD object.
     // CREATE -------------------------------------------
     public T       create();
     public T       create(T argVo);
