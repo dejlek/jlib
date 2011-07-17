@@ -33,19 +33,36 @@ package com.areen.jlib.pattern;
  * @author dejan
  */
 public interface CrudOperations<T extends ValueObject> {
+    // CONSTANTS ----------------------------------------
+    int CREATE = 1;
+    int CREATE_VO = 2;
+    int CREATE_ARRAY = 3;
+    int READ_ALL = 4;
+    int UPDATE_VO = 5;
+    int UPDATE_ARRAY = 6;
+    int DELETE_VO = 7;
+    int DELETE_ARRAY = 8;
+    
+    // EXTRA METHODS ------------------------------------
     public void    setOldValue(Object argOldValue);
     public void    setArgs(String argInput); /// Use this method to specify parameters to the CRUD object.
     public void    set(String argName, Object argValue);
     public Object  get(String argName);
+    public boolean check(int argOperation, T[] argVos); /// Checks whether operation argOperation can be executed.
+    public String  getMessage(); /// In the case check() fails, use this method to get the reason why.
+    
     // CREATE -------------------------------------------
     public T       create();
     public T       create(T argVo);
     public T[]     create(T[] argVos); /// Used for duplicating rows
+    
     // READ ---------------------------------------------
     public T[]     readAll();
+    
     // UPDATE -------------------------------------------
     public T       update(T argOld);
     public T       update(T argOld, int argFieldNumber); /// byte would be better here, but Java is stupid, we would have to cast argument to byte all the time...
+    
     // DELETE -------------------------------------------
     public boolean delete(T argVo);
     public boolean delete(T[] argVos); /// Used to delete a group of rows
