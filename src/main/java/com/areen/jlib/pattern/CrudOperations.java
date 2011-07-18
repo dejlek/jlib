@@ -50,6 +50,7 @@ public interface CrudOperations<T extends ValueObject> {
     public Object  get(String argName);
     public boolean check(int argOperation, T[] argVos); /// Checks whether operation argOperation can be executed.
     public String  getMessage(); /// In the case check() fails, use this method to get the reason why.
+    public void    setOldValues(T[] argVos);
     
     // CREATE -------------------------------------------
     public T       create();
