@@ -40,10 +40,9 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
                     && (this.second == otherPair.second
                     || (this.second != null && otherPair.second != null
                     && this.second.equals(otherPair.second))));
-        }
-
+        } // if
         return false;
-    }
+    } // equals() method
 
     @Override
     public String toString() {
@@ -66,16 +65,19 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
         this.second = second;
     }
 
+    @Override
     public ValueT setValue(ValueT argNewValue) {
         ValueT oldValue = second;
         second = argNewValue;
         return oldValue;
     }
 
+    @Override
     public ValueT getValue() {
         return second;
     }
 
+    @Override
     public KeyT getKey() {
         return first;
     }
