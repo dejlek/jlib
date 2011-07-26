@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
 
-    private KeyT first;
-    private ValueT second;
+    protected KeyT first;
+    protected ValueT second;
 
     public Pair(KeyT first, ValueT second) {
         super();
