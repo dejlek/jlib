@@ -20,7 +20,6 @@
  * Contributor(s):
  *   -
  */
-
 package com.areen.jlib.util;
 
 import com.areen.jlib.model.SimpleObject;
@@ -101,11 +100,26 @@ public class Utility {
     } // exportToCSV() method
 
     public static void set(SimpleObject argSo, String argValue, int argIndex) {
-        if (argSo.getFieldClass(argIndex) == Double.class) {
-            argSo.set(argIndex, Double.parseDouble(argValue));
-        } // if
+        try {
+            if (argSo.getFieldClass(argIndex) == Double.class) {
+                argSo.set(argIndex, Double.parseDouble(argValue));
+            } // if
+            else if (argSo.getFieldClass(argIndex) == String.class) {
+                argSo.set(argIndex, argValue.toString());
+            } else if (argSo.getFieldClass(argIndex) == Integer.class) {
+                argSo.set(argIndex, Integer.parseInt(argValue));
+            } else if (argSo.getFieldClass(argIndex) == Float.class) {
+                argSo.set(argIndex, Float.parseFloat(argValue));
+            }//end of try
+        } catch (NumberFormatException numberFormat) {    
+            System.out.println("DEBUG: NumberFormat Error");
+             if (argSo.getFieldClass(argIndex) == Double.class || argSo.getFieldClass(argIndex) == Float.class) {
+                argSo.set(argIndex, 0.0);
+            } else if (argSo.getFieldClass(argIndex) == Integer.class) {
+                argSo.set(argIndex, 0);
+            }
+        } // end catch
     } // set() method
-    
 } // Utility class
 
 // $Id$
