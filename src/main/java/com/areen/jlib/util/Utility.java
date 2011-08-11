@@ -105,6 +105,7 @@ public class Utility {
             argSo.set(argIndex, Double.parseDouble(argValue));
         } // if
     } // set() method
+    
 } // Utility class
 
 // $Id$
