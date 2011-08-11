@@ -23,6 +23,7 @@
 
 package com.areen.jlib.util;
 
+import com.areen.jlib.model.SimpleObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -96,6 +97,12 @@ public class Utility {
 			e.printStackTrace();
 		}
 	} // exportToCSV() method
+        
+        public static void set(SimpleObject argSo, String argValue, int argIndex) {
+            if (argSo.getFieldClass(argIndex) == Double.class) {
+                argSo.set(argIndex, Double.parseDouble(argValue));
+            } // if
+        } // set() method
 	
 } // Utility class
 
