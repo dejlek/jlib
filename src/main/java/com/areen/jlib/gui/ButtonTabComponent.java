@@ -54,6 +54,19 @@ public class ButtonTabComponent extends JPanel {
         this.pane = pane;
         setOpaque(false);
 
+        JLabel iconLabel = new JLabel(){
+            @Override
+            public Icon getIcon() {
+                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                if (i != -1) {
+                    return pane.getIconAt(i);
+                }
+                return null;
+            }
+        };
+        add(iconLabel);
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        
         //make JLabel read titles from JTabbedPane
         JLabel label = new JLabel() {
 
@@ -75,7 +88,7 @@ public class ButtonTabComponent extends JPanel {
         //add more space to the top of the component
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
-
+    
     private class TabButton extends JButton implements ActionListener {
 
         public TabButton() {
@@ -131,6 +144,7 @@ public class ButtonTabComponent extends JPanel {
             g2.dispose();
         }
     }
+    
     private final static MouseListener buttonMouseListener = new MouseAdapter() {
 
         @Override
