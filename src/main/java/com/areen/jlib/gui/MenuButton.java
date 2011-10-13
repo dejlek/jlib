@@ -276,6 +276,6 @@ public class MenuButton extends JButton
         test();
     }    
     
-}
+} // MenuButton class
 
 // $Id$
