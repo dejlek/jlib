@@ -19,14 +19,18 @@ public class Weber {
 
     JPanel panel;
     String title;
+    String currentUrl;
+    JEditorPane jep;
+    LinkFollower linkFollower;
 
     /** Set the page.
     @param jep the pane on which to display the url
     @param url the url to display */
-    protected static void setPage(JEditorPane jep, String url) {
+    protected static void setPage(JEditorPane jep, String argUrl) {
         try {
-            jep.setPage(url);
+            jep.setPage(argUrl);
         } catch (IOException e) {
+            System.err.println(argUrl);
             System.err.println(e);
             System.exit(-1);
         }
@@ -76,6 +80,7 @@ public class Weber {
         protected JLabel label;
         protected JButton backButton;
         protected Vector history;
+        private String currentUrl;
 
         public LinkFollower(JEditorPane jep, JButton backButton, Vector history, JLabel label) {
             this.jep = jep;
@@ -83,28 +88,32 @@ public class Weber {
             this.history = history;
             this.label = label;
         }
+        
+        public String getCurrentUrl() {
+            return currentUrl;
+        }
 
         /** The action is to show the page of the URL the user clicked on.
         @param evt the event. We only care when its type is ACTIVATED. */
         public void hyperlinkUpdate(HyperlinkEvent evt) {
             if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 try {
-                    String currentURL = evt.getURL().toString();
-                    history.add(currentURL);
+                    currentUrl = evt.getURL().toString();
+                    history.add(currentUrl);
                     backButton.setEnabled(true);
-                    System.out.println("Going to " + currentURL);
-                    setPage(jep, currentURL);
+                    System.out.println("Going to " + currentUrl);
+                    setPage(jep, currentUrl);
                     Object ojb = jep.getDocument().getProperty("title");
                     if (ojb != null) {
                         title = (String) ojb;
                     }
-                    label.setText("<html><b>URL:</b> " + currentURL + " <b>TITLE:</b>" + title);
+                    label.setText("<html><b>URL:</b> " + currentUrl + " <b>TITLE:</b>" + title);
                 } catch (Exception e) {
                     System.out.println("ERROR: Trouble fetching url");
-                }
-            }
-        }
-    }
+                } // catch
+            } // if
+        } // hyperlinkUpdate() method
+    } // LinkFollower class (nested)
 
     /** The contructor runs the browser. It displays the main frame with the
     fetched initialPage
@@ -113,11 +122,11 @@ public class Weber {
         title = "N/A";
 
         /** A vector of String containing the past urls */
-        Vector history = new Vector();
+        final Vector history = new Vector();
         history.add(initialPage);
 
         // set up the editor pane
-        JEditorPane jep = new JEditorPane();
+        jep = new JEditorPane();
         jep.setEditable(false);
         setPage(jep, initialPage);
         Object ojb = jep.getDocument().getProperty("title");
@@ -138,27 +147,25 @@ public class Weber {
         backButton.setEnabled(false);
         backButton.addActionListener(new BackButtonListener(jep, backButton, history, label));
 
-        /*
-        JButton exitButton = new JButton("Exit");
-        exitButton.setActionCommand("exit");
-        exitButton.setToolTipText("Quit this application");
-        exitButton.addActionListener(new ActionListener() {
         
-        public void actionPerformed(ActionEvent e) {
-        System.exit(0);
-        }
+        JButton refreshButton = new JButton("Reload");
+        refreshButton.setActionCommand("reload");
+        refreshButton.setToolTipText("Reload the page");
+        refreshButton.addActionListener(new ActionListener() {
+        
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setPage(jep, history.lastElement().toString());
+            }
         });
-         * 
-         */
 
-        //A toolbar to hold all our buttons
+        // A toolbar to hold all our buttons
         JToolBar toolBar = new JToolBar();
         toolBar.add(backButton);
-
-        //toolBar.add(exitButton);
-
-
-        jep.addHyperlinkListener(new LinkFollower(jep, backButton, history, label));
+        toolBar.add(refreshButton);
+        
+        linkFollower = new LinkFollower(jep, backButton, history, label);
+        jep.addHyperlinkListener(linkFollower);
 
         //Set up the toolbar and scrollbar in the contentpane of the frame
         panel = (JPanel) argContainer;
@@ -202,4 +209,7 @@ public class Weber {
         f.setSize(640, 360);
         f.setVisible(true);
     }
+    
 } // Weber class
+
+// $Id$
