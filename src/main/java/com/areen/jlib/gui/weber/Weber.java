@@ -22,6 +22,8 @@ public class Weber {
     String currentUrl;
     JEditorPane jep;
     LinkFollower linkFollower;
+    
+    private boolean addressBarEnabled = false;
 
     /** Set the page.
     @param jep the pane on which to display the url
@@ -174,7 +176,11 @@ public class Weber {
         panel.add(toolBar, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(label, BorderLayout.SOUTH);
-    }
+        if (!addressBarEnabled) {
+            label.setVisible(false);
+        } // if
+        
+    } // Weber constructor
 
     public JPanel getPanel() {
         return panel;

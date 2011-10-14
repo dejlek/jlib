@@ -62,8 +62,8 @@ public interface CrudOperations<T extends ValueObject> {
     
     // UPDATE -------------------------------------------
     public T       update(T argOld);
-    public T       update(T argOld, int argFieldNumber); /// byte would be better here, but Java is stupid, we would have to cast argument to byte all the time...
-    
+    public T       update(T argOld, int argFieldNumber); /** byte would be better here, but Java is stupid, 
+                                                             we would have to cast argument to byte all the time... */
     // DELETE -------------------------------------------
     public boolean delete(T argVo);
     public boolean delete(T[] argVos); /// Used to delete a group of rows
