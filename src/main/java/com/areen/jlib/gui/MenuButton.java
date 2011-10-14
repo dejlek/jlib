@@ -129,13 +129,20 @@ public class MenuButton extends JButton
         this.mainButton.setIcon(defaultIcon);
     }
 
-
     /**
      * Sets the popup menu to show when the arrow is clicked.
      * @param menu JPopupMenu
      */
     public void setMenu(JPopupMenu menu) {
         this.dropDownMenu = menu;
+    }
+
+    /**
+     * gets the drop down menu
+     * @return JPopupMenu
+     */
+    public JPopupMenu getMenu() {
+        return dropDownMenu;
     }
 
     /**
@@ -154,13 +161,6 @@ public class MenuButton extends JButton
         return dropDownButton;
     }
 
-    /**
-     * gets the drop down menu
-     * @return JPopupMenu
-     */
-    public JPopupMenu getMenu() {
-        return dropDownMenu;
-    }
 
     public void propertyChange(PropertyChangeEvent evt) {
         dropDownButton.setEnabled(mainButton.isEnabled());
