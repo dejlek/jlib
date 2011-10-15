@@ -10,6 +10,7 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.text.Document;
 
 /**
 A simple Web Weber with minimal functionality.
@@ -157,6 +158,8 @@ public class Weber {
         
             @Override
             public void actionPerformed(ActionEvent e) {
+                Document doc = jep.getDocument();
+                doc.putProperty(Document.StreamDescriptionProperty, null);
                 setPage(jep, history.lastElement().toString());
             }
         });
