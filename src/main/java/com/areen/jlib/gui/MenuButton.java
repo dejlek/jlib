@@ -128,7 +128,7 @@ public class MenuButton extends JButton
         super.setIcon(defaultIcon);
         this.mainButton.setIcon(defaultIcon);
     }
-
+    
     /**
      * Sets the popup menu to show when the arrow is clicked.
      * @param menu JPopupMenu
