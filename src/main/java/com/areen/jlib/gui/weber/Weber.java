@@ -35,7 +35,7 @@ public class Weber {
         } catch (IOException e) {
             System.err.println(argUrl);
             System.err.println(e);
-            System.exit(-1);
+            //System.exit(-1);
         }
 
     }
