@@ -13,8 +13,11 @@ import java.util.*;
 import javax.swing.text.Document;
 
 /**
-A simple Web Weber with minimal functionality.
-@author Jose M. Vidal
+ * The Weber class is based on the original work by Jose M. Vidal with lots of modifications by other author(s)
+ * listed below. Jose's work is licensed as public domain.
+ * 
+ * @author Jose M. Vidal
+ * @author Dejan Lekic
  */
 public class Weber {
 
