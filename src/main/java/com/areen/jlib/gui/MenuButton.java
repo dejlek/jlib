@@ -129,6 +129,12 @@ public class MenuButton extends JButton
         this.mainButton.setIcon(defaultIcon);
     }
     
+    @Override
+    public void setToolTipText(String text) {
+        this.mainButton.setToolTipText(text);
+        this.dropDownButton.setToolTipText(text);
+    }
+
     /**
      * Sets the popup menu to show when the arrow is clicked.
      * @param menu JPopupMenu
