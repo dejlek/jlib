@@ -30,4 +30,3 @@ public class SmallArrayException extends Exception {
 } // SmallArrayException class
 
 // $Id$
-
