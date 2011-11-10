@@ -231,7 +231,7 @@ public class MenuButton extends JButton
      */
     public void addActionListener(ActionListener al) {
         this.mainButton.addActionListener(al);
-        this.addActionListener(al);
+        //this.addActionListener(al);
     }
 
     public static void test() {
