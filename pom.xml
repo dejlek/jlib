@@ -47,9 +47,14 @@ The idea is to open-source this library.</description>
 			<id>areen-snapshot-repository</id>
 			<url>http://srl009.adg.internal:80/maven-snapshots</url>
 		</repository>
+      <repository>
+         <id>Sonatype-1</id>
+         <name>Sonatype Repository(1)</name>
+         <url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+      </repository>
 		<repository>
-			<id>Sonatype</id>
-			<name>Sonatype Repository</name>
+			<id>Sonatype-2</id>
+			<name>Sonatype Repository(2)</name>
 			<url>https://repository.sonatype.org</url>
 		</repository>
 	</repositories>
@@ -82,6 +87,15 @@ The idea is to open-source this library.</description>
 				<version>1.0-beta-7</version> 
 			</extension>
 		</extensions>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>2.3.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -91,6 +105,37 @@ The idea is to open-source this library.</description>
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<!-- Optional directory to put findbugs xdoc xml report -->
+					<xmlOutputDirectory>target/site</xmlOutputDirectory>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<!-- Optional directory to put findbugs xml report -->
+					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>findbugs</id>
+						<phase>site</phase>
+						<goals>
+							<goal>findbugs</goal>
+						</goals>
+					</execution>
+<!--
+					<execution>
+						<id>gui</id>
+						<phase>site</phase>
+						<goals>
+							<goal>gui</goal>
+						</goals>
+					</execution>
+-->
+				</executions>                              
 			</plugin>
 		</plugins>
 	</build>
