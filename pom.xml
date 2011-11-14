@@ -115,6 +115,7 @@ The idea is to open-source this library.</description>
 					<!-- Optional directory to put findbugs xdoc xml report -->
 					<xmlOutputDirectory>target/site</xmlOutputDirectory>
 					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
 					<!-- Optional directory to put findbugs xml report -->
 					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
 				</configuration>
