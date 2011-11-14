@@ -117,7 +117,9 @@ The idea is to open-source this library.</description>
 					<findbugsXmlOutput>true</findbugsXmlOutput>
 					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
 					<!-- Optional directory to put findbugs xml report -->
+<!--
 					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+-->
 				</configuration>
 				<executions>
 					<execution>
