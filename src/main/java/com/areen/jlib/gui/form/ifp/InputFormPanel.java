@@ -27,6 +27,7 @@
 
 package com.areen.jlib.gui.form.ifp;
 
+import com.areen.jlib.model.SimpleObject;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -44,6 +45,8 @@ public class InputFormPanel extends javax.swing.JPanel {
     Font defaultFont = new Font("Helvetica", Font.PLAIN, 12);
     LinkedHashMap<String, Object> labels = new LinkedHashMap();
     int formColumns = 2;
+    InputFormModel formModel;
+    InputFormContent formContent;
     
     /** Creates new form RequisitionCreationDialog */
     public InputFormPanel() {
@@ -61,15 +64,16 @@ public class InputFormPanel extends javax.swing.JPanel {
     
     public InputFormPanel(InputFormModel argModel) {
         initComponents();
+        formModel = argModel;
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
-        titleLabel.setText(argModel.title);
-        for(int i=0; i<argModel.model.getNumberOfFields() ; i++){
-            addFormField(argModel.model.getTitles()[i], null);
-        }
-        for(int j=0; j<argModel.actions.size(); j++){
-            addButton(new JButton((Action)argModel.actions.get(j)));
-        }
+        titleLabel.setText(formModel.title);
+        for(int i=0; i<formModel.model.getNumberOfFields() ; i++){
+            addFormField(formModel.model.getTitles()[i], null);
+        }// for
+        for(int j=0; j<formModel.actions.size(); j++){
+            addButton(new JButton((Action)formModel.actions.get(j)));
+        }// for
         configureResizing();
     }// InputFormPanel() method
     
@@ -83,7 +87,7 @@ public class InputFormPanel extends javax.swing.JPanel {
         formContentPanel.add(argFormContentPanel, BorderLayout.CENTER);
         for(int j=0; j<argModel.actions.size(); j++){
             addButton(new JButton((Action)argModel.actions.get(j)));
-        }
+        }// for
     }// InputFormPanel() method
     
     public void setTitle(String argTitle){
@@ -117,8 +121,7 @@ public class InputFormPanel extends javax.swing.JPanel {
                 JComponent[] components = (JComponent[])pairs.getValue();
                 for (int i=0; i<components.length; i++){
                     componentsPanel.add(components[i]);
-                }
-                //makeCompactGrid(componentsPanel, 1, components.length, 6, 6, 6, 6);
+                }// for
                 formContentPanel.add(componentsPanel);
             }// if
             else{
@@ -131,6 +134,22 @@ public class InputFormPanel extends javax.swing.JPanel {
         this.validate();
         this.repaint();
     }// configureResizing() method
+
+    public SimpleObject getModel() {
+        if(formModel!=null){
+            return formModel.model;
+        }// if
+        return null;
+    }// getModel() method
+
+    public void setModel(SimpleObject argModel) {
+        if(formModel!=null){
+            formModel.model = argModel;
+        }// if
+        if(formContent!=null){
+            formContent.setModel(argModel);
+        }// if
+    }// setModel() method
     
     @Override
     public void setFont(Font argFont){
@@ -205,28 +224,28 @@ public class InputFormPanel extends javax.swing.JPanel {
                 //DEBUG: System.out.println(" " + counter + " " + fieldLabel);
                 if(modelIndexPair.getValue() instanceof JComponent){
                     fieldComponent = (JComponent)modelIndexPair.getValue();
-                }
+                }// if
                 else if(modelIndexPair.getValue() instanceof JComponent[]){
                     fieldComponent = (JComponent[])modelIndexPair.getValue();
-                }
+                }// else if
             }// if
             else{
                 rearrangedMap.put(pairs.getKey(), pairs.getValue());
-            }
+            }// else
             if(counter == argFormIndex){
                 if(fieldLabel.equals("")){
                     fieldLabel = labels.keySet().toArray()[argModelIndex].toString();
                     if(labels.values().toArray()[argModelIndex] instanceof JComponent){
                         fieldComponent = (JComponent)labels.values().toArray()[argModelIndex];
-                    }
+                    }// if
                     else if(labels.values().toArray()[argModelIndex] instanceof JComponent[]){
                         fieldComponent = (JComponent[])labels.values().toArray()[argModelIndex];
-                    }
-                }
+                    }// else if
+                }// if
                 //DEBUG: System.out.println("Form " + counter + " " + fieldLabel);
                 rearrangedMap.put(fieldLabel, fieldComponent);
                 //rearrangedMap.put(pairs.getKey(), pairs.getValue());
-            }
+            }// if
             counter++;
         }// while
         
@@ -237,15 +256,15 @@ public class InputFormPanel extends javax.swing.JPanel {
     public static void makeCompactGrid(Container parent, int rows, int cols, 
                                        int initialX, int initialY, 
                                        int xPad, int yPad) {
-
         SpringLayout layout;
 
         try {
             layout = (SpringLayout)parent.getLayout();
-        } catch (ClassCastException exc) {
+        }// try 
+        catch (ClassCastException exc) {
             System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
             return;
-        }
+        }// catch
 
         //Align all cells in each column and make them the same width.
         Spring x = Spring.constant(initialX);
@@ -255,14 +274,14 @@ public class InputFormPanel extends javax.swing.JPanel {
                 width = Spring.max(width,
                                    getConstraintsForCell(r, c, parent, cols).
                                    getWidth());
-            }
+            }// for
             for (int r = 0; r < rows; r++) {
                 SpringLayout.Constraints constraints =getConstraintsForCell(r, c, parent, cols);
                 constraints.setX(x);
                 constraints.setWidth(width);
-            }
+            }// for
             x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
-        }
+        }// for
 
         //Align all cells in each row and make them the same height.
         Spring y = Spring.constant(initialY);
@@ -272,15 +291,15 @@ public class InputFormPanel extends javax.swing.JPanel {
                 height = Spring.max(height,
                                     getConstraintsForCell(r, c, parent, cols).
                                     getHeight());
-            }
+            }// for
 
             for (int c = 0; c < cols; c++) {
                 SpringLayout.Constraints constraints =getConstraintsForCell(r, c, parent, cols);
                 constraints.setY(y);
                 constraints.setHeight(height);
-            }
+            }// for
             y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
-        }
+        }// for
 
         //Set the parent's size.
         SpringLayout.Constraints pCons = layout.getConstraints(parent);
