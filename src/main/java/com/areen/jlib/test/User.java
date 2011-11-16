@@ -21,7 +21,7 @@ public class User implements SimpleObject<ValueObject> {
     public static class VO implements ValueObject, Serializable {
         long user_id = 0; /// reserved for future use
 	String userId = "UNK01";     /// "user_id" column
-	Department dept;             /// reference VO an adequate row in the dir_val_depts table
+	String dept;             /// reference VO an adequate row in the dir_val_depts table
 	String userName = "unknown"; /// "vms_username" column
 	String password = "unknown"; /// "extension" column
         /**       
@@ -51,7 +51,7 @@ public class User implements SimpleObject<ValueObject> {
         value = argValue;
     } // User constructor
 
-    public User(String  argUserId, Department argdepartment, String arguserName, String argpassword) {
+    public User(String  argUserId, String argdepartment, String arguserName, String argpassword) {
         value = new User.VO();
         value.userId = argUserId;
         value.dept = argdepartment;
@@ -114,7 +114,7 @@ public class User implements SimpleObject<ValueObject> {
         Object result = null;
         switch (argIndex) {
             case 0: value.userId = (String) argValue; break;
-            case 1: value.dept = (Department) argValue; break;
+            case 1: value.dept = (String) argValue; break;
             case 2: value.userName = (String) argValue; break;
             case 3: value.password = (String) argValue; break;
         } // switch
