@@ -54,15 +54,18 @@ public class UserForm extends JFrame{
             }
         });
         
-        
         userFormPanel.setFieldWithInputComponentAndLabel(3, nameCombo, sportLabel);
         //userFormPanel.setHiddenFields(2); // making a field hidden after any custom components are set for particular fields
         userFormPanel.setFieldAtFormIndex(0,2);
+        
+        
         //Option 2://-----------------------------------------------------------
         /*
-        UserContentPanel ucp= new UserContentPanel();        
+        InputFormContent<User> ucp= new InputFormContent(new User());  
+        ucp.add(new TestContentPanel());
         InputFormPanel userFormPanel = new InputFormPanel(userFormModel,ucp);
-         */
+        */
+        
         getContentPane().add(userFormPanel);
     }
     
