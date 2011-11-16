@@ -4,7 +4,6 @@
  */
 package com.areen.jlib.test;
 
-import com.areen.apc.lib.model.User;
 import com.areen.jlib.gui.form.ifp.InputFormModel;
 import com.areen.jlib.gui.form.ifp.InputFormPanel;
 import java.awt.event.ActionEvent;
