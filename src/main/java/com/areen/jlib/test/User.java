@@ -4,7 +4,6 @@
  */
 package com.areen.jlib.test;
 
-import com.areen.apc.lib.vo.Department;
 import com.areen.jlib.model.SimpleObject;
 import com.areen.jlib.pattern.ValueObject;
 import java.io.Serializable;
@@ -77,7 +76,7 @@ public class User implements SimpleObject<ValueObject> {
         Class<?> ret = Object.class;
         switch (argIndex) {
             case 0: ret = String.class; break;
-            case 1: ret = Department.class; break;
+            case 1: ret = String.class; break;
             case 2: ret = String.class; break;
             case 3: ret = String.class; break;
         } // switch
