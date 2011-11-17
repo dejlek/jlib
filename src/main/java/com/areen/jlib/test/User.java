@@ -133,4 +133,14 @@ public class User implements SimpleObject<ValueObject> {
         value = (User.VO) argVo;
     }
     
+    @Override
+    public String toString() {
+        return "(Project "
+		+ value.userId + " "
+		+ value.dept + " "
+		+ "`" + value.userName + "` "
+		+ "`" + value.password + "` "
+                + ")";
+    }
+    
 }

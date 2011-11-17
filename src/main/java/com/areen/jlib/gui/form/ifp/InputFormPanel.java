@@ -29,6 +29,13 @@ package com.areen.jlib.gui.form.ifp;
 
 import com.areen.jlib.model.SimpleObject;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,22 +54,42 @@ public class InputFormPanel extends javax.swing.JPanel {
     int formColumns = 2;
     InputFormModel formModel;
     InputFormContent formContent;
+    PropertyChangeSupport changes;
+    private String VALUE_CHANGE = "";
     
     /** Creates new form RequisitionCreationDialog */
     public InputFormPanel() {
         initComponents();
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
-    }// InputFormPanel() method
+        if(changes == null){
+            changes = new PropertyChangeSupport(new PropertyChangeListener() {
+
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    reportChange(evt);
+                } // propertyChange() method
+            });
+        } // if
+
+        changes.addPropertyChangeListener("VALUE_CHANGE", new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                reportChange(evt);
+            } // propertyChange() method
+        });
+    } // InputFormPanel() method
     
     /** Creates new form RequisitionCreationDialog */
     public InputFormPanel(int argRequisitionId) {
         this();
         currentRequisition = argRequisitionId;
-    }// InputFormPanel() method
+    } // InputFormPanel() method
     
     
     public InputFormPanel(InputFormModel argModel) {
+        this();
         initComponents();
         formModel = argModel;
         Font titleFont = defaultFont.deriveFont(titleFontSize);
@@ -70,14 +97,15 @@ public class InputFormPanel extends javax.swing.JPanel {
         titleLabel.setText(formModel.title);
         for(int i=0; i<formModel.model.getNumberOfFields() ; i++){
             addFormField(formModel.model.getTitles()[i], null);
-        }// for
+        } // for
         for(int j=0; j<formModel.actions.size(); j++){
             addButton(new JButton((Action)formModel.actions.get(j)));
-        }// for
+        } // for
         configureResizing();
-    }// InputFormPanel() method
+    } // InputFormPanel() method
     
      public InputFormPanel(InputFormModel argModel, InputFormContent argFormContentPanel) {
+        this();
         initComponents();
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
@@ -87,20 +115,20 @@ public class InputFormPanel extends javax.swing.JPanel {
         formContentPanel.add(argFormContentPanel, BorderLayout.CENTER);
         for(int j=0; j<argModel.actions.size(); j++){
             addButton(new JButton((Action)argModel.actions.get(j)));
-        }// for
-    }// InputFormPanel() method
+        } // for
+    } // InputFormPanel() method
     
     public void setTitle(String argTitle){
         titleLabel.setText(argTitle);
-    }// setTitle() method
+    } // setTitle() method
 
     public void addButton(JButton argButton){
         buttonContainerPanel.add(argButton);
-    }// addButton() method
+    } // addButton() method
     
     public void addFormField(String argFieldName, JComponent argFieldComponent){
         labels.put(argFieldName, argFieldComponent);
-    }// addFormField() method
+    } // addFormField() method
     
     public void configureResizing(){
         formContentPanel.removeAll();
@@ -108,48 +136,91 @@ public class InputFormPanel extends javax.swing.JPanel {
         Iterator it = labels.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pairs = (Map.Entry)it.next();
-            JLabel fieldLabel = new JLabel(pairs.getKey().toString(), JLabel.TRAILING);
+            final JLabel fieldLabel = new JLabel(pairs.getKey().toString(), JLabel.TRAILING);
             formContentPanel.add(fieldLabel);
             if(pairs.getValue()==null){
-                JTextField fieldComponent = new JTextField();
+                final JTextField fieldComponent = new JTextField();
+                fieldComponent.addKeyListener(new KeyListener(){
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                    } // keyTyped() method
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                    } // keyPressed() method
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ", fieldLabel.getText() + " : " + fieldComponent.getText());
+                    } // keyReleased() method
+                });
                 fieldLabel.setLabelFor(fieldComponent);
                 formContentPanel.add(fieldComponent);
-            }// if
+            } // if
             else if(pairs.getValue() instanceof JComponent[]){
                 JPanel componentsPanel = new JPanel();
                 componentsPanel.setLayout(new BoxLayout(componentsPanel, BoxLayout.X_AXIS));
-                JComponent[] components = (JComponent[])pairs.getValue();
+                final JComponent[] components = (JComponent[])pairs.getValue();
                 for (int i=0; i<components.length; i++){
                     componentsPanel.add(components[i]);
-                }// for
+                    if (i==0){
+                        final int n =i;
+                        if(components[i] instanceof JTextField){
+                            ((JTextField)components[i]).addKeyListener(new KeyListener(){
+                                @Override
+                                public void keyTyped(KeyEvent e) {
+                                } // keyTyped() method
+
+                                @Override
+                                public void keyPressed(KeyEvent e) {
+                                } // keyPressed() method
+
+                                @Override
+                                public void keyReleased(KeyEvent e) {
+                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ", fieldLabel.getText() + " : " + ((JTextField)components[n]).getText());
+                                } // keyReleased() method
+                            });
+                        } // if
+                        else if(components[i] instanceof JComboBox){
+                            ((JComboBox)components[i]).addActionListener(new ActionListener(){
+
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    //DEBUG: System.out.println(fieldLabel.getText() + " " + ((JComboBox)components[n]).getSelectedItem());
+                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ", fieldLabel.getText() + " : " + ((JComboBox)components[n]).getSelectedItem());
+                                } // actionPerformed() method
+                            });
+                        } //else
+                    } // if
+                } // for
                 formContentPanel.add(componentsPanel);
-            }// if
+            } // if
             else{
                 formContentPanel.add((JComponent)pairs.getValue());
-            }// else
-        }// while 
+            } // else
+        } // while 
         makeCompactGrid(formContentPanel, labels.size(), formColumns, 6, 6, 6, 6);
         formContentPanel.validate();
         formContentPanel.repaint();
         this.validate();
         this.repaint();
-    }// configureResizing() method
+    } // configureResizing() method
 
     public SimpleObject getModel() {
         if(formModel!=null){
             return formModel.model;
-        }// if
+        } // if
         return null;
-    }// getModel() method
+    } // getModel() method
 
     public void setModel(SimpleObject argModel) {
         if(formModel!=null){
             formModel.model = argModel;
-        }// if
+        } // if
         if(formContent!=null){
             formContent.setModel(argModel);
-        }// if
-    }// setModel() method
+        } // if
+    } // setModel() method
     
     @Override
     public void setFont(Font argFont){
@@ -159,11 +230,11 @@ public class InputFormPanel extends javax.swing.JPanel {
                 ((JLabel)getComponent(i)).setFont(defaultFont);
                 ((JLabel)getComponent(i)).validate();
                 ((JLabel)getComponent(i)).repaint();
-            }// if
-        }// for
+            } // if
+        } // for
         this.validate();
         this.repaint();
-    }// setFont() method
+    } // setFont() method
     
     public void setTitleSize(float argSize){
         titleFontSize = argSize;
@@ -171,16 +242,16 @@ public class InputFormPanel extends javax.swing.JPanel {
         titleLabel.setFont(titleFont);
         titleLabel.validate();
         titleLabel.repaint();
-    }// setTitleSize() method 
+    } // setTitleSize() method 
     
     public void setHiddenFields(int ... argModelIndices){
         for(int i=argModelIndices.length-1; i>=0; i--){
             //DEBUG: System.out.println(argModelIndices[i] + " " + labels.keySet().toArray()[(argModelIndices[i])]);
             //DEBUG: System.out.println(labels.keySet().toArray().length + " " + labels.values().toArray().length);
             labels.keySet().remove(labels.keySet().toArray()[argModelIndices[i]].toString());
-        }// for
+        } // for
         configureResizing();
-    }// setHiddenFields() method
+    } // setHiddenFields() method
     
     public void setFieldWithInputComponent(int argModelIndex, JComponent argComponent){
         int counter=0;
@@ -190,11 +261,11 @@ public class InputFormPanel extends javax.swing.JPanel {
             if (counter == argModelIndex){
                 pairs.setValue(argComponent);
                 break done;  
-            }// if
+            } // if
             counter++;
-        }// while
+        } // while
         configureResizing();
-    }// setFieldWithInputComponent() method
+    } // setFieldWithInputComponent() method
     
     public void setFieldWithInputComponentAndLabel(int argModelIndex, JComponent argComponent, JLabel argLabel){
         int counter=0;
@@ -204,11 +275,11 @@ public class InputFormPanel extends javax.swing.JPanel {
             if (counter == argModelIndex){
                 pairs.setValue(new JComponent[]{argComponent, argLabel});
                 break done;  
-            }// if
+            } // if
             counter++;
-        }// while
+        } // while
         configureResizing();
-    }// setFieldWithInputComponent() method
+    } // setFieldWithInputComponent() method
     
     public void setFieldAtFormIndex(int argModelIndex, int argFormIndex){
         int counter=0;
@@ -224,34 +295,51 @@ public class InputFormPanel extends javax.swing.JPanel {
                 //DEBUG: System.out.println(" " + counter + " " + fieldLabel);
                 if(modelIndexPair.getValue() instanceof JComponent){
                     fieldComponent = (JComponent)modelIndexPair.getValue();
-                }// if
+                } // if
                 else if(modelIndexPair.getValue() instanceof JComponent[]){
                     fieldComponent = (JComponent[])modelIndexPair.getValue();
-                }// else if
-            }// if
+                } // else if
+            } // if
             else{
                 rearrangedMap.put(pairs.getKey(), pairs.getValue());
-            }// else
+            } // else
             if(counter == argFormIndex){
                 if(fieldLabel.equals("")){
                     fieldLabel = labels.keySet().toArray()[argModelIndex].toString();
                     if(labels.values().toArray()[argModelIndex] instanceof JComponent){
                         fieldComponent = (JComponent)labels.values().toArray()[argModelIndex];
-                    }// if
+                    } // if
                     else if(labels.values().toArray()[argModelIndex] instanceof JComponent[]){
                         fieldComponent = (JComponent[])labels.values().toArray()[argModelIndex];
-                    }// else if
-                }// if
+                    } // else if
+                } // if
                 //DEBUG: System.out.println("Form " + counter + " " + fieldLabel);
                 rearrangedMap.put(fieldLabel, fieldComponent);
                 //rearrangedMap.put(pairs.getKey(), pairs.getValue());
-            }// if
+            } // if
             counter++;
-        }// while
+        } // while
         
         labels = rearrangedMap;
         configureResizing();
-    }// setFieldWithInputComponent() method
+    } // setFieldWithInputComponent() method
+    
+    public void reportChange(PropertyChangeEvent evt) {
+        String propertyName = evt.getPropertyName();
+        System.out.println("CHANGE: " +propertyName + " " + evt.getNewValue());
+        if("VALUE_CHANGE".equals(propertyName)){
+            String[] value = evt.getNewValue().toString().split(":");
+            String[] modelTitles = formModel.model.getTitles();
+            for(int i=0; i<modelTitles.length; i++){
+                System.out.println("FIELD: "+value[0] + " " + modelTitles[i]);
+                if(value[0].trim().equalsIgnoreCase(modelTitles[i])){
+                   formModel.model.set(i, value[1].trim());
+                   System.out.println(formModel.model.toString());
+                   break;
+                } // if
+            } // for
+        } // if
+    } // reportChange() method
     
     public static void makeCompactGrid(Container parent, int rows, int cols, 
                                        int initialX, int initialY, 
