@@ -67,6 +67,43 @@ The idea is to open-source this library.</description>
 			</extension>
 		</extensions>
 
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<xmlOutput>true</xmlOutput>
+						<!-- Optional directory to put findbugs xdoc xml report -->
+<!--
+						<xmlOutputDirectory>target/site</xmlOutputDirectory>
+-->
+						<findbugsXmlOutput>true</findbugsXmlOutput>
+						<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+						<!-- Optional directory to put findbugs xml report -->
+<!--
+						<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+-->
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.8</version>
+					<configuration>
+						<configLocation>${basedir}/codechecks/checkstyle/checkstyle.xml</configLocation>
+						<headerLocation>${basedir}/codechecks/checkstyle/license.txt</headerLocation>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -81,19 +118,6 @@ The idea is to open-source this library.</description>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
 				<version>2.3.2</version>
-				<configuration>
-					<xmlOutput>true</xmlOutput>
-					<!-- Optional directory to put findbugs xdoc xml report -->
-<!--
-					<xmlOutputDirectory>target/site</xmlOutputDirectory>
--->
-					<findbugsXmlOutput>true</findbugsXmlOutput>
-					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-					<!-- Optional directory to put findbugs xml report -->
-<!--
-					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
--->
-				</configuration>
 				<executions>
 					<execution>
 						<id>findbugs</id>
@@ -122,10 +146,6 @@ The idea is to open-source this library.</description>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.8</version>
-				<configuration>
-					<configLocation>${basedir}/codechecks/checkstyle/checkstyle.xml</configLocation>
-					<headerLocation>${basedir}/codechecks/checkstyle/license.txt</headerLocation>
-				</configuration>
 				<executions>
 					<execution>
 						<id>checkstyle</id>
