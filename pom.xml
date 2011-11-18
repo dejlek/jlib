@@ -10,27 +10,6 @@
 	<name>jlib</name>
 	<url>http://maven.apache.org</url>
 
-<!--
-	Not sure if I will use this to tune what method is used to distribute jar to repository
-
-	<profiles>
-		<profile>
-			<activation>
-				<os>
-					<family>Windows</family>
-				</os>
-			</activation>
-		</profile>
-		<profile>
-			<activation>
-				<os>
-					<family>!Windows</family>
-				</os>
-			</activation>
-		</profile>
-	</profiles>
--->
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -87,15 +66,7 @@ The idea is to open-source this library.</description>
 				<version>1.0-beta-7</version> 
 			</extension>
 		</extensions>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>findbugs-maven-plugin</artifactId>
-					<version>2.3.2</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -131,15 +102,6 @@ The idea is to open-source this library.</description>
 							<goal>findbugs</goal>
 						</goals>
 					</execution>
-<!--
-					<execution>
-						<id>gui</id>
-						<phase>site</phase>
-						<goals>
-							<goal>gui</goal>
-						</goals>
-					</execution>
--->
 				</executions>                              
 			</plugin>
 			<plugin>
@@ -161,8 +123,9 @@ The idea is to open-source this library.</description>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.8</version>
 				<configuration>
+					<configLocation>${basedir}/codechecks/checkstyle/checkstyle.xml</configLocation>
+					<headerLocation>${basedir}/codechecks/checkstyle/license.txt</headerLocation>
 				</configuration>
-<!-- disabled for now
 				<executions>
 					<execution>
 						<id>checkstyle</id>
@@ -172,10 +135,10 @@ The idea is to open-source this library.</description>
 						</goals>
 					</execution>
 				</executions>                              
--->
-				</plugin>
+			</plugin>
 		</plugins>
 	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
