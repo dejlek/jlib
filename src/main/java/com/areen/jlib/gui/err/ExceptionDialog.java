@@ -5,16 +5,16 @@
  * 23 Eyot Gardens; London; W6 9TR
  * http://www.areen.com
  * All rights reserved.
- * 
+ *
  * This software is the confidential and proprietary information of
  * Areen Design Services Ltd ("Confidential Information").  You shall not
  * disclose such Confidential Information and shall use it only in
  * accordance with the terms of the license agreement you entered into
  * with Areen Design Services Ltd.
- * 
+ *
  * This file is best viewed with 128 columns.
-12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
- * 
+123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ *
  * Author(s):
  *   Dejan Lekic , http://dejan.lekic.org
  * Contributor(s):
@@ -35,7 +35,7 @@ public class ExceptionDialog extends java.awt.Dialog {
     public ExceptionDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-		this.setTitle("Java exception information");
+        this.setTitle("Java exception information");
     }
 
     /** This method is called from within the constructor to
@@ -60,7 +60,10 @@ public class ExceptionDialog extends java.awt.Dialog {
             }
         });
 
-        fileAndLineInformationLabel.setFont(fileAndLineInformationLabel.getFont().deriveFont(fileAndLineInformationLabel.getFont().getStyle() | java.awt.Font.BOLD));
+        fileAndLineInformationLabel.setFont(fileAndLineInformationLabel.getFont().deriveFont(
+                fileAndLineInformationLabel.getFont().getStyle() | java.awt.Font.BOLD
+            )
+        );
         fileAndLineInformationLabel.setText("Test10.java: Line 15");
         add(fileAndLineInformationLabel, java.awt.BorderLayout.PAGE_START);
 
@@ -85,17 +88,17 @@ public class ExceptionDialog extends java.awt.Dialog {
         add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    } // </editor-fold>//GEN-END:initComponents
 
     /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) { //GEN-FIRST:event_closeDialog
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_closeDialog
+    } //GEN-LAST:event_closeDialog
 
-	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-		setVisible(false);
-}//GEN-LAST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonActionPerformed
+        setVisible(false);
+} //GEN-LAST:event_okButtonActionPerformed
 
     /**
     * @param args the command line arguments
@@ -109,19 +112,19 @@ public class ExceptionDialog extends java.awt.Dialog {
                         System.exit(0);
                     }
                 });
-				dialog.setModal(true);
+                dialog.setModal(true);
                 dialog.setVisible(true);
             }
         });
     }
 
-	public void setInfo(String argInfo) {
-		fileAndLineInformationLabel.setText(argInfo);
-	}
+    public void setInfo(String argInfo) {
+        fileAndLineInformationLabel.setText(argInfo);
+    }
 
-	public void setExceptionText(String argExc) {
-		exceptionTextArea.setText(argExc);
-	}
+    public void setExceptionText(String argExc) {
+        exceptionTextArea.setText(argExc);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;

@@ -9,5 +9,5 @@ package com.areen.jlib.fmt;
  * @author dejan
  */
 public abstract class SF {
-    
+
 }

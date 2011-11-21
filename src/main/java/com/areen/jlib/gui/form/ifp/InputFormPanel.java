@@ -5,20 +5,20 @@
  * 23 Eyot Gardens; London; W6 9TR
  * http://www.areen.com
  * All rights reserved.
- * 
+ *
  * This software is the confidential and proprietary information of
  * Areen Design Services Ltd ("Confidential Information").  You shall not
  * disclose such Confidential Information and shall use it only in
  * accordance with the terms of the license agreement you entered into
  * with Areen Design Services Ltd.
- * 
+ *
  * This file is best viewed with 110 columns.
 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
- * 
- * This is the main class for the "apc-client" application. 
+ *
+ * This is the main class for the "apc-client" application.
  * Execute apc-client like this: java -jar apc-client.jar -Dareen.developer=dejan
  * You can ommit the parameter if you do not want to debug the application.
- * 
+ *
  * Author(s) in chronological order:
  *   Mehjabeen Nujurally
  * Contributor(s):
@@ -56,13 +56,13 @@ public class InputFormPanel extends javax.swing.JPanel {
     InputFormContent formContent;
     PropertyChangeSupport changes;
     private String VALUE_CHANGE = "";
-    
+
     /** Creates new form RequisitionCreationDialog */
     public InputFormPanel() {
         initComponents();
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
-        if(changes == null){
+        if (changes == null) {
             changes = new PropertyChangeSupport(new PropertyChangeListener() {
 
                 @Override
@@ -80,14 +80,14 @@ public class InputFormPanel extends javax.swing.JPanel {
             } // propertyChange() method
         });
     } // InputFormPanel() method
-    
+
     /** Creates new form RequisitionCreationDialog */
     public InputFormPanel(int argRequisitionId) {
         this();
         currentRequisition = argRequisitionId;
     } // InputFormPanel() method
-    
-    
+
+
     public InputFormPanel(InputFormModel argModel) {
         this();
         initComponents();
@@ -95,15 +95,15 @@ public class InputFormPanel extends javax.swing.JPanel {
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
         titleLabel.setText(formModel.title);
-        for(int i=0; i<formModel.model.getNumberOfFields() ; i++){
+        for (int i = 0; i < formModel.model.getNumberOfFields(); i++) {
             addFormField(formModel.model.getTitles()[i], null);
         } // for
-        for(int j=0; j<formModel.actions.size(); j++){
-            addButton(new JButton((Action)formModel.actions.get(j)));
+        for (int j = 0; j < formModel.actions.size(); j++) {
+            addButton(new JButton((Action) formModel.actions.get(j)));
         } // for
         configureResizing();
     } // InputFormPanel() method
-    
+
      public InputFormPanel(InputFormModel argModel, InputFormContent argFormContentPanel) {
         this();
         initComponents();
@@ -113,34 +113,34 @@ public class InputFormPanel extends javax.swing.JPanel {
         formContentPanel.removeAll();
         formContentPanel.setLayout(new BorderLayout());
         formContentPanel.add(argFormContentPanel, BorderLayout.CENTER);
-        for(int j=0; j<argModel.actions.size(); j++){
-            addButton(new JButton((Action)argModel.actions.get(j)));
+        for (int j = 0; j < argModel.actions.size(); j++) {
+            addButton(new JButton((Action) argModel.actions.get(j)));
         } // for
     } // InputFormPanel() method
-    
-    public void setTitle(String argTitle){
+
+    public void setTitle(String argTitle) {
         titleLabel.setText(argTitle);
     } // setTitle() method
 
-    public void addButton(JButton argButton){
+    public void addButton(JButton argButton) {
         buttonContainerPanel.add(argButton);
     } // addButton() method
-    
-    public void addFormField(String argFieldName, JComponent argFieldComponent){
+
+    public void addFormField(String argFieldName, JComponent argFieldComponent) {
         labels.put(argFieldName, argFieldComponent);
     } // addFormField() method
-    
-    public void configureResizing(){
+
+    public void configureResizing() {
         formContentPanel.removeAll();
         formContentPanel.setLayout(new SpringLayout());
         Iterator it = labels.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry pairs = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
             final JLabel fieldLabel = new JLabel(pairs.getKey().toString(), JLabel.TRAILING);
             formContentPanel.add(fieldLabel);
-            if(pairs.getValue()==null){
+            if (pairs.getValue() == null) {
                 final JTextField fieldComponent = new JTextField();
-                fieldComponent.addKeyListener(new KeyListener(){
+                fieldComponent.addKeyListener(new KeyListener() {
                     @Override
                     public void keyTyped(KeyEvent e) {
                     } // keyTyped() method
@@ -151,22 +151,22 @@ public class InputFormPanel extends javax.swing.JPanel {
 
                     @Override
                     public void keyReleased(KeyEvent e) {
-                        changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ", fieldLabel.getText() + " : " + fieldComponent.getText());
+                        changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ",
+                                fieldLabel.getText() + " : " + fieldComponent.getText());
                     } // keyReleased() method
                 });
                 fieldLabel.setLabelFor(fieldComponent);
                 formContentPanel.add(fieldComponent);
-            } // if
-            else if(pairs.getValue() instanceof JComponent[]){
+            } else if (pairs.getValue() instanceof JComponent[]) {
                 JPanel componentsPanel = new JPanel();
                 componentsPanel.setLayout(new BoxLayout(componentsPanel, BoxLayout.X_AXIS));
-                final JComponent[] components = (JComponent[])pairs.getValue();
-                for (int i=0; i<components.length; i++){
+                final JComponent[] components = (JComponent[]) pairs.getValue();
+                for (int i = 0; i < components.length; i++) {
                     componentsPanel.add(components[i]);
-                    if (i==0){
-                        final int n =i;
-                        if(components[i] instanceof JTextField){
-                            ((JTextField)components[i]).addKeyListener(new KeyListener(){
+                    if (i == 0) {
+                        final int n = i;
+                        if (components[i] instanceof JTextField) {
+                            ((JTextField) components[i]).addKeyListener(new KeyListener() {
                                 @Override
                                 public void keyTyped(KeyEvent e) {
                                 } // keyTyped() method
@@ -177,28 +177,28 @@ public class InputFormPanel extends javax.swing.JPanel {
 
                                 @Override
                                 public void keyReleased(KeyEvent e) {
-                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ", fieldLabel.getText() + " : " + ((JTextField)components[n]).getText());
+                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ",
+                                            fieldLabel.getText() + " : " + ((JTextField) components[n]).getText());
                                 } // keyReleased() method
                             });
-                        } // if
-                        else if(components[i] instanceof JComboBox){
-                            ((JComboBox)components[i]).addActionListener(new ActionListener(){
+                        } else if (components[i] instanceof JComboBox) {
+                            ((JComboBox) components[i]).addActionListener(new ActionListener() {
 
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     //DEBUG: System.out.println(fieldLabel.getText() + " " + ((JComboBox)components[n]).getSelectedItem());
-                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ", fieldLabel.getText() + " : " + ((JComboBox)components[n]).getSelectedItem());
+                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ",
+                                            fieldLabel.getText() + " : " + ((JComboBox) components[n]).getSelectedItem());
                                 } // actionPerformed() method
                             });
                         } //else
                     } // if
                 } // for
                 formContentPanel.add(componentsPanel);
-            } // if
-            else{
-                formContentPanel.add((JComponent)pairs.getValue());
+            } else  {
+                formContentPanel.add((JComponent) pairs.getValue());
             } // else
-        } // while 
+        } // while
         makeCompactGrid(formContentPanel, labels.size(), formColumns, 6, 6, 6, 6);
         formContentPanel.validate();
         formContentPanel.repaint();
@@ -207,110 +207,107 @@ public class InputFormPanel extends javax.swing.JPanel {
     } // configureResizing() method
 
     public SimpleObject getModel() {
-        if(formModel!=null){
+        if (formModel != null) {
             return formModel.model;
         } // if
         return null;
     } // getModel() method
 
     public void setModel(SimpleObject argModel) {
-        if(formModel!=null){
+        if (formModel != null) {
             formModel.model = argModel;
         } // if
-        if(formContent!=null){
+        if (formContent != null) {
             formContent.setModel(argModel);
         } // if
     } // setModel() method
-    
+
     @Override
-    public void setFont(Font argFont){
+    public void setFont(Font argFont) {
         defaultFont = argFont;
-        for(int i=0; i<getComponentCount(); i++){
-            if(getComponent(i) instanceof JLabel){
-                ((JLabel)getComponent(i)).setFont(defaultFont);
-                ((JLabel)getComponent(i)).validate();
-                ((JLabel)getComponent(i)).repaint();
+        for (int i = 0; i < getComponentCount(); i++) {
+            if (getComponent(i) instanceof JLabel) {
+                ((JLabel) getComponent(i)).setFont(defaultFont);
+                ((JLabel) getComponent(i)).validate();
+                ((JLabel) getComponent(i)).repaint();
             } // if
         } // for
         this.validate();
         this.repaint();
     } // setFont() method
-    
-    public void setTitleSize(float argSize){
+
+    public void setTitleSize(float argSize) {
         titleFontSize = argSize;
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
         titleLabel.validate();
         titleLabel.repaint();
-    } // setTitleSize() method 
-    
-    public void setHiddenFields(int ... argModelIndices){
-        for(int i=argModelIndices.length-1; i>=0; i--){
+    } // setTitleSize()
+
+    public void setHiddenFields(int ... argModelIndices) {
+        for (int i = argModelIndices.length - 1; i >= 0; i--) {
             //DEBUG: System.out.println(argModelIndices[i] + " " + labels.keySet().toArray()[(argModelIndices[i])]);
             //DEBUG: System.out.println(labels.keySet().toArray().length + " " + labels.values().toArray().length);
             labels.keySet().remove(labels.keySet().toArray()[argModelIndices[i]].toString());
         } // for
         configureResizing();
     } // setHiddenFields() method
-    
-    public void setFieldWithInputComponent(int argModelIndex, JComponent argComponent){
-        int counter=0;
+
+    public void setFieldWithInputComponent(int argModelIndex, JComponent argComponent) {
+        int counter = 0;
         Iterator it = labels.entrySet().iterator();
-        done: while(it.hasNext()){
-            Map.Entry pairs = (Map.Entry)it.next();
-            if (counter == argModelIndex){
+        done: while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            if (counter == argModelIndex) {
                 pairs.setValue(argComponent);
-                break done;  
+                break done;
             } // if
             counter++;
         } // while
         configureResizing();
     } // setFieldWithInputComponent() method
-    
-    public void setFieldWithInputComponentAndLabel(int argModelIndex, JComponent argComponent, JLabel argLabel){
-        int counter=0;
+
+    public void setFieldWithInputComponentAndLabel(int argModelIdx, JComponent argComponent, JLabel argLbl) {
+        int counter = 0;
         Iterator it = labels.entrySet().iterator();
-        done: while(it.hasNext()){
-            Map.Entry pairs = (Map.Entry)it.next();
-            if (counter == argModelIndex){
-                pairs.setValue(new JComponent[]{argComponent, argLabel});
-                break done;  
+        done: while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            if (counter == argModelIdx) {
+                pairs.setValue(new JComponent[]{argComponent, argLbl});
+                break done;
             } // if
             counter++;
         } // while
         configureResizing();
     } // setFieldWithInputComponent() method
-    
-    public void setFieldAtFormIndex(int argModelIndex, int argFormIndex){
-        int counter=0;
+
+    public void setFieldAtFormIndex(int argModelIndex, int argFormIndex) {
+        int counter = 0;
         Iterator it = labels.entrySet().iterator();
         LinkedHashMap rearrangedMap = new LinkedHashMap();
         String fieldLabel = "";
         Object fieldComponent = null;
-        done: while(it.hasNext()){
-            Map.Entry pairs = (Map.Entry)it.next();
-            if (counter == argModelIndex){
+        done: while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            if (counter == argModelIndex) {
                 Map.Entry modelIndexPair = pairs;
                 fieldLabel = modelIndexPair.getKey().toString();
                 //DEBUG: System.out.println(" " + counter + " " + fieldLabel);
-                if(modelIndexPair.getValue() instanceof JComponent){
-                    fieldComponent = (JComponent)modelIndexPair.getValue();
-                } // if
-                else if(modelIndexPair.getValue() instanceof JComponent[]){
-                    fieldComponent = (JComponent[])modelIndexPair.getValue();
+                if (modelIndexPair.getValue() instanceof JComponent) {
+                    fieldComponent = (JComponent) modelIndexPair.getValue();
+                } else if (modelIndexPair.getValue() instanceof JComponent[]) {
+                    fieldComponent = (JComponent[]) modelIndexPair.getValue();
                 } // else if
-            } // if
-            else{
+            } else {
                 rearrangedMap.put(pairs.getKey(), pairs.getValue());
             } // else
-            if(counter == argFormIndex){
-                if(fieldLabel.equals("")){
+            if (counter == argFormIndex) {
+                if (fieldLabel.equals("")) {
                     fieldLabel = labels.keySet().toArray()[argModelIndex].toString();
-                    if(labels.values().toArray()[argModelIndex] instanceof JComponent){
-                        fieldComponent = (JComponent)labels.values().toArray()[argModelIndex];
-                    } // if
-                    else if(labels.values().toArray()[argModelIndex] instanceof JComponent[]){
-                        fieldComponent = (JComponent[])labels.values().toArray()[argModelIndex];
+                    if (labels.values().toArray()[argModelIndex] instanceof JComponent) {
+                        fieldComponent = (JComponent) labels.values().toArray()[argModelIndex];
+                    } else if (labels.values().toArray()[argModelIndex] instanceof JComponent[]) {
+                        fieldComponent = (JComponent[]) labels.values().toArray()[argModelIndex];
                     } // else if
                 } // if
                 //DEBUG: System.out.println("Form " + counter + " " + fieldLabel);
@@ -319,20 +316,20 @@ public class InputFormPanel extends javax.swing.JPanel {
             } // if
             counter++;
         } // while
-        
+
         labels = rearrangedMap;
         configureResizing();
     } // setFieldWithInputComponent() method
-    
+
     public void reportChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        System.out.println("CHANGE: " +propertyName + " " + evt.getNewValue());
-        if("VALUE_CHANGE".equals(propertyName)){
+        System.out.println("CHANGE: " + propertyName + " " + evt.getNewValue());
+        if ("VALUE_CHANGE".equals(propertyName)) {
             String[] value = evt.getNewValue().toString().split(":");
             String[] modelTitles = formModel.model.getTitles();
-            for(int i=0; i<modelTitles.length; i++){
-                System.out.println("FIELD: "+value[0] + " " + modelTitles[i]);
-                if(value[0].trim().equalsIgnoreCase(modelTitles[i])){
+            for (int i = 0; i < modelTitles.length; i++) {
+                System.out.println("FIELD: " + value[0] + " " + modelTitles[i]);
+                if (value[0].trim().equalsIgnoreCase(modelTitles[i])) {
                    formModel.model.set(i, value[1].trim());
                    System.out.println(formModel.model.toString());
                    break;
@@ -340,19 +337,18 @@ public class InputFormPanel extends javax.swing.JPanel {
             } // for
         } // if
     } // reportChange() method
-    
-    public static void makeCompactGrid(Container parent, int rows, int cols, 
-                                       int initialX, int initialY, 
+
+    public static void makeCompactGrid(Container parent, int rows, int cols,
+                                       int initialX, int initialY,
                                        int xPad, int yPad) {
         SpringLayout layout;
 
         try {
-            layout = (SpringLayout)parent.getLayout();
-        }// try 
-        catch (ClassCastException exc) {
+            layout = (SpringLayout) parent.getLayout();
+        } catch (ClassCastException exc) {
             System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
             return;
-        }// catch
+        } // catch
 
         //Align all cells in each column and make them the same width.
         Spring x = Spring.constant(initialX);
@@ -362,14 +358,14 @@ public class InputFormPanel extends javax.swing.JPanel {
                 width = Spring.max(width,
                                    getConstraintsForCell(r, c, parent, cols).
                                    getWidth());
-            }// for
+            } // for
             for (int r = 0; r < rows; r++) {
-                SpringLayout.Constraints constraints =getConstraintsForCell(r, c, parent, cols);
+                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
                 constraints.setX(x);
                 constraints.setWidth(width);
-            }// for
+            } // for
             x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
-        }// for
+        } // for
 
         //Align all cells in each row and make them the same height.
         Spring y = Spring.constant(initialY);
@@ -379,22 +375,22 @@ public class InputFormPanel extends javax.swing.JPanel {
                 height = Spring.max(height,
                                     getConstraintsForCell(r, c, parent, cols).
                                     getHeight());
-            }// for
+            } // for
 
             for (int c = 0; c < cols; c++) {
-                SpringLayout.Constraints constraints =getConstraintsForCell(r, c, parent, cols);
+                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
                 constraints.setY(y);
                 constraints.setHeight(height);
-            }// for
+            } // for
             y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
-        }// for
+        } // for
 
         //Set the parent's size.
         SpringLayout.Constraints pCons = layout.getConstraints(parent);
         pCons.setConstraint(SpringLayout.SOUTH, y);
         pCons.setConstraint(SpringLayout.EAST, x);
-    }// makeCompactGrid() method
-    
+    } // makeCompactGrid() method
+
     /* Used by makeCompactGrid. */
     private static SpringLayout.Constraints getConstraintsForCell(
                                                 int row, int col,
@@ -403,8 +399,8 @@ public class InputFormPanel extends javax.swing.JPanel {
         SpringLayout layout = (SpringLayout) parent.getLayout();
         Component c = parent.getComponent(row * cols + col);
         return layout.getConstraints(c);
-    }// getConstraintsForCell() method
-    
+    } // getConstraintsForCell() method
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -459,7 +455,7 @@ public class InputFormPanel extends javax.swing.JPanel {
         formContentPanel.add(formFieldsPanel, gridBagConstraints);
 
         add(formContentPanel, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>//GEN-END:initComponents
+    } // </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonContainerPanel;
@@ -471,5 +467,5 @@ public class InputFormPanel extends javax.swing.JPanel {
     private javax.swing.JPanel titlePanel;
     private javax.swing.JSeparator titleSeparator;
     // End of variables declaration//GEN-END:variables
-}// InputFormPanel class
+} // InputFormPanel class
 // $Id: InputFormPanel.java 1104 2011-11-07 11:03:42Z mehjabeen $

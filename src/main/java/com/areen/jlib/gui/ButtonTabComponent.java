@@ -27,7 +27,7 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 package com.areen.jlib.gui;
 
@@ -38,23 +38,23 @@ import java.awt.event.*;
 
 /**
  * Component to be used as tabComponent;
- * Contains a JLabel to show the text and 
- * a JButton to close the tab it belongs to 
- */ 
+ * Contains a JLabel to show the text and
+ * a JButton to close the tab it belongs to
+ */
 public class ButtonTabComponent extends JPanel {
 
     private final JTabbedPane pane;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    public ButtonTabComponent(final JTabbedPane argPane) {
         //unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if (pane == null) {
+        if (argPane == null) {
             throw new NullPointerException("TabbedPane is null");
         }
-        this.pane = pane;
+        this.pane = argPane;
         setOpaque(false);
 
-        JLabel iconLabel = new JLabel(){
+        JLabel iconLabel = new JLabel() {
             @Override
             public Icon getIcon() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
@@ -66,7 +66,7 @@ public class ButtonTabComponent extends JPanel {
         };
         add(iconLabel);
         iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-        
+
         //make JLabel read titles from JTabbedPane
         JLabel label = new JLabel() {
 
@@ -88,7 +88,7 @@ public class ButtonTabComponent extends JPanel {
         //add more space to the top of the component
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
-    
+
     private class TabButton extends JButton implements ActionListener {
 
         public TabButton() {
@@ -144,7 +144,7 @@ public class ButtonTabComponent extends JPanel {
             g2.dispose();
         }
     }
-    
+
     private final static MouseListener buttonMouseListener = new MouseAdapter() {
 
         @Override
@@ -165,7 +165,7 @@ public class ButtonTabComponent extends JPanel {
             }
         }
     };
-    
+
 } // ButtonTabComponent class
 
 // $Id$

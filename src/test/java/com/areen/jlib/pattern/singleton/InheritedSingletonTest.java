@@ -25,10 +25,10 @@ public class InheritedSingletonTest extends Singleton {
         return value;
     }
 
-    protected InheritedSingletonTest(final String[] params, final int value) {
+    protected InheritedSingletonTest(final String[] params, final int argValue) {
         super(params);
-        this.value = value;
+        this.value = argValue;
     }
-} 
+}
 
 // $Id$

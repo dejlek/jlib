@@ -5,16 +5,16 @@
  * 23 Eyot Gardens; London; W6 9TR
  * http://www.areen.com
  * All rights reserved.
- * 
+ *
  * This software is the confidential and proprietary information of
  * Areen Design Services Ltd ("Confidential Information").  You shall not
  * disclose such Confidential Information and shall use it only in
  * accordance with the terms of the license agreement you entered into
  * with Areen Design Services Ltd.
- * 
+ *
  * This file is best viewed with 110 columns.
 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
- * 
+ *
  * Author(s) in chronological order:
  *   Dejan Lekic , http://dejan.lekic.org
  * Contributor(s):
@@ -48,7 +48,8 @@ public class Utility {
      * @param headings
      * @param data
      */
-    public static void exportToCSV(String file, String h1, String h2, Vector<String> headings, Vector<Vector<String>> data) {
+    public static void exportToCSV(String file, String h1, String h2,
+                                   Vector<String> headings, Vector<Vector<String>> data) {
         try {
             FileOutputStream out = new FileOutputStream(file);
             PrintStream ps = new PrintStream(out);
@@ -103,17 +104,17 @@ public class Utility {
         try {
             if (argSo.getFieldClass(argIndex) == Double.class) {
                 argSo.set(argIndex, Double.parseDouble(argValue));
-            } // if
-            else if (argSo.getFieldClass(argIndex) == String.class) {
+            } else if (argSo.getFieldClass(argIndex) == String.class) {
                 argSo.set(argIndex, argValue.toString());
             } else if (argSo.getFieldClass(argIndex) == Integer.class) {
                 argSo.set(argIndex, Integer.parseInt(argValue));
             } else if (argSo.getFieldClass(argIndex) == Float.class) {
                 argSo.set(argIndex, Float.parseFloat(argValue));
-            }//end of try
-        } catch (NumberFormatException numberFormat) {    
+            } //end of try
+        } catch (NumberFormatException numberFormat) {
             System.out.println("DEBUG: NumberFormat Error");
-             if (argSo.getFieldClass(argIndex) == Double.class || argSo.getFieldClass(argIndex) == Float.class) {
+             if (argSo.getFieldClass(argIndex) == Double.class
+                || argSo.getFieldClass(argIndex) == Float.class) {
                 argSo.set(argIndex, 0.0);
             } else if (argSo.getFieldClass(argIndex) == Integer.class) {
                 argSo.set(argIndex, 0);

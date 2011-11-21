@@ -13,9 +13,9 @@ import java.util.*;
 import javax.swing.text.Document;
 
 /**
- * The Weber class is based on the original work by Jose M. Vidal with lots of modifications by other author(s)
- * listed below. Jose's work is licensed as public domain.
- * 
+ * The Weber class is based on the original work by Jose M. Vidal with lots of
+ * modifications by other author(s) listed below. Jose's work is licensed as public domain.
+ *
  * @author Jose M. Vidal
  * @author Dejan Lekic
  */
@@ -26,7 +26,7 @@ public class Weber {
     String currentUrl;
     JEditorPane jep;
     LinkFollower linkFollower;
-    
+
     private boolean addressBarEnabled = false;
 
     /** Set the page.
@@ -51,11 +51,11 @@ public class Weber {
         protected JButton backButton;
         protected Vector history;
 
-        public BackButtonListener(JEditorPane jep, JButton backButton, Vector history, JLabel label) {
-            this.jep = jep;
-            this.backButton = backButton;
-            this.history = history;
-            this.label = label;
+        public BackButtonListener(JEditorPane argJep, JButton argBackBtn, Vector argHist, JLabel argLbl) {
+            this.jep = argJep;
+            this.backButton = argBackBtn;
+            this.history = argHist;
+            this.label = argLbl;
         }
 
         /** The action is to show the last url in the history.
@@ -88,13 +88,13 @@ public class Weber {
         protected Vector history;
         private String currentUrl;
 
-        public LinkFollower(JEditorPane jep, JButton backButton, Vector history, JLabel label) {
-            this.jep = jep;
-            this.backButton = backButton;
-            this.history = history;
-            this.label = label;
+        public LinkFollower(JEditorPane argJep, JButton argBackBtn, Vector argHist, JLabel argLbl) {
+            this.jep = argJep;
+            this.backButton = argBackBtn;
+            this.history = argHist;
+            this.label = argLbl;
         }
-        
+
         public String getCurrentUrl() {
             return currentUrl;
         }
@@ -153,12 +153,12 @@ public class Weber {
         backButton.setEnabled(false);
         backButton.addActionListener(new BackButtonListener(jep, backButton, history, label));
 
-        
+
         JButton refreshButton = new JButton("Reload");
         refreshButton.setActionCommand("reload");
         refreshButton.setToolTipText("Reload the page");
         refreshButton.addActionListener(new ActionListener() {
-        
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 Document doc = jep.getDocument();
@@ -171,7 +171,7 @@ public class Weber {
         JToolBar toolBar = new JToolBar();
         toolBar.add(backButton);
         toolBar.add(refreshButton);
-        
+
         linkFollower = new LinkFollower(jep, backButton, history, label);
         jep.addHyperlinkListener(linkFollower);
 
@@ -185,7 +185,7 @@ public class Weber {
         if (!addressBarEnabled) {
             label.setVisible(false);
         } // if
-        
+
     } // Weber constructor
 
     public JPanel getPanel() {
@@ -221,7 +221,7 @@ public class Weber {
         f.setSize(640, 360);
         f.setVisible(true);
     }
-    
+
 } // Weber class
 
 // $Id$

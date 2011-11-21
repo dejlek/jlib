@@ -14,27 +14,48 @@ import com.areen.jlib.exceptions.SmallArrayException;
 public abstract class SmallArray {
 
     protected byte numberOfBits;
-    protected byte length; /// The number of elements in the array - it is a fixed number, calculated in the constructor.
-    
+    protected byte length;  // The number of elements in the array - it is a fixed
+                            // number, calculated in the constructor.
+
+    /**
+     * Class Constructor.
+     * @author dejan
+     * @param argNob specifies the number of bits being used for representation
+     */
     public SmallArray(int argNob) throws SmallArrayException {
-        if (argNob > 64)
+        if (argNob > 64) {
             throw new SmallArrayException("Number of bits is too large.");
-        
+        }
+
         numberOfBits = (byte) argNob;
         length = 0;
     } // SmallArray constructor
 
+    /**
+     * Accessor method to return the number of bits being used for representation.
+     * @author dejan
+     */
     public byte getNumberOfBits() {
         return numberOfBits;
     }
 
+    /**
+     * Registers/changes the number of bits used for representation.
+     * @author dejan
+     * @param argNob specifies the number of bits being used for representation
+     */
     public void setNumberOfBits(byte argNob) throws SmallArrayException {
-        if (argNob > 64)
+        if (argNob > 64) {
             throw new SmallArrayException("Number of bits is too large.");
-        
+        }
+
         this.numberOfBits = argNob;
     } // setNumberOfBits() method
 
+    /**
+     * Accessor methor to return the length of the array.
+     * @author dejan
+     */
     public byte size() {
         return length;
     }

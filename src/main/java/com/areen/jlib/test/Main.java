@@ -9,5 +9,5 @@ package com.areen.jlib.test;
  * @author dejan
  */
 public class Main {
-    
+
 }

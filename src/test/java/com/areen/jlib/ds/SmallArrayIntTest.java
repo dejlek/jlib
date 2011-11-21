@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class SmallArrayIntTest {
     SmallArrayInt testArray;
-    
+
     public SmallArrayIntTest() {
     }
 
@@ -31,11 +31,11 @@ public class SmallArrayIntTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -51,7 +51,7 @@ public class SmallArrayIntTest {
         }
         assertTrue("Incorrect number of elements. Got " + testArray.size() + ", expected 10.", (testArray.size() == 10));
     } // testConstructor() method
-    
+
 } // SmallArrayIntTest class
 
 // $Id$

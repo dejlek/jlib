@@ -5,16 +5,16 @@
  * 23 Eyot Gardens; London; W6 9TR
  * http://www.areen.com
  * All rights reserved.
- * 
+ *
  * This software is the confidential and proprietary information of
  * Areen Design Services Ltd ("Confidential Information").  You shall not
  * disclose such Confidential Information and shall use it only in
  * accordance with the terms of the license agreement you entered into
  * with Areen Design Services Ltd.
- * 
+ *
  * This file is best viewed with 110 columns.
 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
- * 
+ *
  * Author(s) in chronological order:
  *   Dejan Lekic , http://dejan.lekic.org
  *   Mehjabeen Nujurally
@@ -54,27 +54,27 @@ import javax.swing.plaf.basic.BasicArrowButton;
  * @author dejan
  */
 public class MenuButton extends JButton
-            implements ChangeListener, ActionListener, PopupMenuListener, PropertyChangeListener 
+            implements ChangeListener, ActionListener, PopupMenuListener, PropertyChangeListener
 {
 
     private JButton mainButton, dropDownButton;
     private JPopupMenu dropDownMenu;
-   
+
     /**
      * Default Constructor that creates a blank button with a down facing arrow.
      */
     public MenuButton() {
         this("");
     }
-    
+
     /**
      * Default Constructor that creates a blank button with the specified action and a down facing arrow.
      */
     public MenuButton(javax.swing.Action argAction) {
         this(new JButton(argAction), SwingConstants.SOUTH);
     }
-    
-    
+
+
     /**
      * Creates a button with the specified label and a down facing arrow.
      * @param argLabel String
@@ -82,9 +82,9 @@ public class MenuButton extends JButton
     public MenuButton(String argLabel) {
         this(new JButton(argLabel), SwingConstants.SOUTH);
     }
-  
+
     /**
-     * Creates a button with the specified text 
+     * Creates a button with the specified text
      * and a arrow in the specified direction.
      * @param text String
      * @param orientation int
@@ -94,14 +94,14 @@ public class MenuButton extends JButton
     }
 
     /**
-     * Passes in the button to use in the left hand side, with the specified 
+     * Passes in the button to use in the left hand side, with the specified
      * orientation for the arrow on the right hand side.
      * @param mainButton JButton
      * @param orientation int
      */
-    public MenuButton(JButton mainButton, int orientation) {
+    public MenuButton(JButton argMainButton, int orientation) {
         super();
-        this.mainButton = mainButton;
+        this.mainButton = argMainButton;
         this.mainButton.setIcon(mainButton.getIcon());
 
         this.dropDownButton = new BasicArrowButton(orientation);
@@ -128,7 +128,7 @@ public class MenuButton extends JButton
         super.setIcon(defaultIcon);
         this.mainButton.setIcon(defaultIcon);
     }
-    
+
     @Override
     public void setToolTipText(String text) {
         this.mainButton.setToolTipText(text);
@@ -224,7 +224,7 @@ public class MenuButton extends JButton
     }
 
     /**
-     * adds a action listener to this button (actually to the left hand side 
+     * adds a action listener to this button (actually to the left hand side
      * button, and any left over surrounding space.  the arrow button will not
      * be affected.
      * @param al ActionListener
@@ -280,8 +280,8 @@ public class MenuButton extends JButton
 
     public static void main(String[] args) {
         test();
-    }    
-    
+    }
+
 } // MenuButton class
 
 // $Id$

@@ -10,11 +10,11 @@ package com.areen.jlib.exceptions;
  */
 public class SmallArrayException extends Exception {
     private String reason;
-    
+
     public SmallArrayException() {
         reason = "Reason: unknown";
     }
-    
+
     public SmallArrayException(String argReason) {
         reason = argReason;
     }
@@ -23,10 +23,10 @@ public class SmallArrayException extends Exception {
         return reason;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setReason(String argReason) {
+        this.reason = argReason;
     }
-    
+
 } // SmallArrayException class
 
 // $Id$

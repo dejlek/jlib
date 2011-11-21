@@ -8,7 +8,7 @@ import java.util.Map;
  * As suggested in the thread above, I have made first & second to be final members.
  * I have made it into an Map.Entry<K,V> type, so it is suitable to be an element
  * of any Java Hash map...
- * 
+ *
  * @author Dejan Lekic - http://dejan.lekic.org
  */
 public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
@@ -16,10 +16,10 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
     protected KeyT first;
     protected ValueT second;
 
-    public Pair(KeyT first, ValueT second) {
+    public Pair(KeyT argFirst, ValueT argSecond) {
         super();
-        this.first = first;
-        this.second = second;
+        this.first = argFirst;
+        this.second = argSecond;
     }
 
     @Override
@@ -53,16 +53,16 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
         return first;
     }
 
-    public void setFirst(KeyT first) {
-        this.first = first;
+    public void setFirst(KeyT argFirst) {
+        this.first = argFirst;
     }
 
     public ValueT getSecond() {
         return second;
     }
 
-    public void setSecond(ValueT second) {
-        this.second = second;
+    public void setSecond(ValueT argSecond) {
+        this.second = argSecond;
     }
 
     @Override

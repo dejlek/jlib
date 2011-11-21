@@ -11,7 +11,7 @@ import java.util.LinkedList;
 /**
  * NOTE: Here we talk about "TAG" but we actually mean "ELEMENT". I decided to use the term TAG because it is
  * shorter....
- * 
+ *
  * @author dejan
  */
 public class SFT {
@@ -23,7 +23,7 @@ public class SFT {
         END_ELEMENT,   /// we encountered a ")"
         ERROR
     } // State enum
-    
+
     private ArrayDeque<Object> stack; /// Stack used for parsing
     private LinkedList<Object> queue; /// Here we store all values
     private String text;
@@ -31,21 +31,21 @@ public class SFT {
     private State state = State.START;
     int start = 0;
     int end = 0;
-    
+
     // in order to use it as a stack, use: addFirst(e), removeFirst(e), peekFirst(e)
-    
+
     public SFT() {
         stack = new ArrayDeque<Object>();
         queue = new LinkedList<Object>();
         text = "";
         position = 0;
     }
-    
+
     public SFT(String argText) {
         this();
         text = argText;
     }
-    
+
     public void parse() {
         int pos = lookAhead('(');
         if (pos == -1) {
@@ -60,7 +60,7 @@ public class SFT {
         end = lookAhead(' ');
         String val = text.substring(start, end);
         queue.add(val);
-        
+
         while (end != -1) {
             ++position;
             state = State.VALUE;
@@ -70,7 +70,7 @@ public class SFT {
                 queue.add(text.substring(start, end));
             } // if
         }
-        
+
         if (end == -1) {
             end = lookAhead(')');
             if (end == -1) {
@@ -87,7 +87,7 @@ public class SFT {
     /**
      * Scan until argWhat is found.
      * @param argWhat
-     * @return 
+     * @return
      */
     private int lookAhead(char argWhat) {
         for (int i = position; i < text.length(); i++) {
@@ -98,27 +98,27 @@ public class SFT {
         } // for
         return -1;
     } // lookAhead() method
-    
+
     /**
      * Useful when developer needs to check the first element in the deque (typically to determine a type).
-     * @return 
+     * @return
      */
     public Object peek() {
         return queue.peek();
     }
 
     public void dump() {
-        for (Object obj: queue) {
+        for (Object obj : queue) {
             System.out.println("[" + obj + "]");
         }
     }
-    
+
     public static void main(String[] args) {
         SFT sft = new SFT("(User LED01 Dejan Lekic 2000.22)");
         sft.parse();
         sft.dump();
     }
-    
+
 } // SFT class
 
 // $Id$

@@ -17,67 +17,67 @@ import javax.swing.JLabel;
  *
  * @author mehjabeen
  */
-public class UserForm extends JFrame{
-    
-    public UserForm(){
+public class UserForm extends JFrame {
+
+    public UserForm() {
         InputFormModel<User> userFormModel = new InputFormModel();
         userFormModel.model = new User();
         userFormModel.title = "USER DETAILS";
-        userFormModel.actions.add(new AbstractAction("OK"){
+        userFormModel.actions.add(new AbstractAction("OK") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
-        
+
         });
-        userFormModel.actions.add(new AbstractAction("Cancel"){
+        userFormModel.actions.add(new AbstractAction("Cancel") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
-        
+
         });
-        
+
         //Option 1://-----------------------------------------------------------
-        
+
         InputFormPanel userFormPanel = new InputFormPanel(userFormModel);
         JComboBox nameCombo = new JComboBox(new String[]{"Dejan", "Vipul", "Mehjabeen"});
         final JLabel sportLabel = new JLabel("Hello");
-        nameCombo.addActionListener(new ActionListener(){
+        nameCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();
-                String chosenName = (String)cb.getSelectedItem();
+                String chosenName = (String) cb.getSelectedItem();
                 sportLabel.setText(chosenName);
             }
         });
-        
+
         userFormPanel.setFieldWithInputComponentAndLabel(3, nameCombo, sportLabel);
         //userFormPanel.setHiddenFields(2); // making a field hidden after any custom components are set for particular fields
-        userFormPanel.setFieldAtFormIndex(0,2);
-        
-        
+        userFormPanel.setFieldAtFormIndex(0, 2);
+
+
         //Option 2://-----------------------------------------------------------
         /*
-        InputFormContent<User> ucp= new InputFormContent(new User());  
+        InputFormContent<User> ucp= new InputFormContent(new User());
         ucp.add(new TestContentPanel());
         InputFormPanel userFormPanel = new InputFormPanel(userFormModel,ucp);
         */
-        
+
         getContentPane().add(userFormPanel);
         setLocationRelativeTo(null);
         pack();
     }
-    
+
     public static void main(String args[]) {
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                new UserForm().setVisible(true);                
+                new UserForm().setVisible(true);
             }
         });
     }

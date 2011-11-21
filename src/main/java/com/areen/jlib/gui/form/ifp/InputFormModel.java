@@ -12,7 +12,7 @@ import javax.swing.Action;
  *
  * @author mehjabeen
  */
-public class InputFormModel <T extends SimpleObject>{
+public class InputFormModel<T extends SimpleObject> {
     public T model = null;
     public String title = null;
     public ArrayList<Action> actions = new ArrayList();

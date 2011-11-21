@@ -9,8 +9,8 @@ package com.areen.jlib.model;
  * @author dejan
  */
 public interface SimpleObjectFactory<T extends SimpleObject> {
-    
+
     public T create();
-    
+
 } // SimpleObjectFactory interface
 
