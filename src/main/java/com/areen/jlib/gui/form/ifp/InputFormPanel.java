@@ -28,7 +28,6 @@
 package com.areen.jlib.gui.form.ifp;
 
 import com.areen.jlib.model.SimpleObject;
-import com.areen.table.util.CodePair;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
