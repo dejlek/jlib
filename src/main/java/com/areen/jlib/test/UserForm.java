@@ -67,6 +67,8 @@ public class UserForm extends JFrame{
         */
         
         getContentPane().add(userFormPanel);
+        setLocationRelativeTo(null);
+        pack();
     }
     
     public static void main(String args[]) {
