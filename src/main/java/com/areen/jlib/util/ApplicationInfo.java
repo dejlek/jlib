@@ -16,11 +16,11 @@ public class ApplicationInfo {
     public ApplicationInfo() {
     }
 
-    public ApplicationInfo(String argVendor) {
+    public ApplicationInfo(final String argVendor) {
         vendor = argVendor;
     }
 
-    public ApplicationInfo(String argVendor, String argName) {
+    public ApplicationInfo(final String argVendor, final String argName) {
         this(argVendor);
         name = argName;
     }
@@ -29,7 +29,7 @@ public class ApplicationInfo {
         return name;
     }
 
-    public void setName(String argName) {
+    public void setName(final String argName) {
         this.name = argName;
     }
 
@@ -37,7 +37,7 @@ public class ApplicationInfo {
         return vendor;
     }
 
-    public void setVendor(String argVendor) {
+    public void setVendor(final String argVendor) {
         this.vendor = argVendor;
     }
 

@@ -32,7 +32,7 @@ public class Weber {
     /** Set the page.
     @param jep the pane on which to display the url
     @param url the url to display */
-    protected static void setPage(JEditorPane jep, String argUrl) {
+    protected static void setPage(final JEditorPane jep, final String argUrl) {
         try {
             jep.setPage(argUrl);
         } catch (IOException e) {
@@ -51,7 +51,8 @@ public class Weber {
         protected JButton backButton;
         protected Vector history;
 
-        public BackButtonListener(JEditorPane argJep, JButton argBackBtn, Vector argHist, JLabel argLbl) {
+        public BackButtonListener(final JEditorPane argJep, final JButton argBackBtn,
+                                  final Vector argHist, final JLabel argLbl) {
             this.jep = argJep;
             this.backButton = argBackBtn;
             this.history = argHist;
@@ -60,7 +61,7 @@ public class Weber {
 
         /** The action is to show the last url in the history.
         @param e the event*/
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             try {
                 //the current page is the last, remove it
                 String curl = (String) history.lastElement();
@@ -88,7 +89,8 @@ public class Weber {
         protected Vector history;
         private String currentUrl;
 
-        public LinkFollower(JEditorPane argJep, JButton argBackBtn, Vector argHist, JLabel argLbl) {
+        public LinkFollower(final JEditorPane argJep, final JButton argBackBtn,
+                            final Vector argHist, final JLabel argLbl) {
             this.jep = argJep;
             this.backButton = argBackBtn;
             this.history = argHist;
@@ -101,7 +103,7 @@ public class Weber {
 
         /** The action is to show the page of the URL the user clicked on.
         @param evt the event. We only care when its type is ACTIVATED. */
-        public void hyperlinkUpdate(HyperlinkEvent evt) {
+        public void hyperlinkUpdate(final HyperlinkEvent evt) {
             if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 try {
                     currentUrl = evt.getURL().toString();
@@ -124,7 +126,7 @@ public class Weber {
     /** The contructor runs the browser. It displays the main frame with the
     fetched initialPage
     @param initialPage the first page to show */
-    public Weber(Container argContainer, String initialPage) {
+    public Weber(final Container argContainer, final String initialPage) {
         title = "N/A";
 
         /** A vector of String containing the past urls */
@@ -160,7 +162,7 @@ public class Weber {
         refreshButton.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 Document doc = jep.getDocument();
                 doc.putProperty(Document.StreamDescriptionProperty, null);
                 setPage(jep, history.lastElement().toString());
@@ -197,7 +199,7 @@ public class Weber {
     }
 
     /** Create a Weber object. Use the command-line url if given */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         String initialPage = new String("http://www.google.com");
 
         if (args.length > 0) {
@@ -211,7 +213,7 @@ public class Weber {
         f.addWindowListener(new WindowAdapter() {
 
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(final WindowEvent e) {
                 System.exit(0);
             }
         }); // WindowListener

@@ -39,7 +39,8 @@ public class ExceptionUtility {
      * @param argException
      * @param argLineInfo
      */
-    public static void exceptionDialog(Frame argFrame, Exception argException, String argLineInfo) {
+    public static void exceptionDialog(final Frame argFrame, final Exception argException,
+                                       final String argLineInfo) {
         ExceptionDialog ed = new ExceptionDialog(argFrame, true);
         String exceptionString = argException + "\n:::::::::::::::::::::::::::::::::\n";
         StackTraceElement[] elements = argException.getStackTrace();

@@ -22,7 +22,7 @@ public abstract class SmallArray {
      * @author dejan
      * @param argNob specifies the number of bits being used for representation
      */
-    public SmallArray(int argNob) throws SmallArrayException {
+    public SmallArray(final int argNob) throws SmallArrayException {
         if (argNob > 64) {
             throw new SmallArrayException("Number of bits is too large.");
         }
@@ -44,7 +44,7 @@ public abstract class SmallArray {
      * @author dejan
      * @param argNob specifies the number of bits being used for representation
      */
-    public void setNumberOfBits(byte argNob) throws SmallArrayException {
+    public void setNumberOfBits(final byte argNob) throws SmallArrayException {
         if (argNob > 64) {
             throw new SmallArrayException("Number of bits is too large.");
         }

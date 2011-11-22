@@ -41,7 +41,7 @@ public class SFT {
         position = 0;
     }
 
-    public SFT(String argText) {
+    public SFT(final String argText) {
         this();
         text = argText;
     }
@@ -89,7 +89,7 @@ public class SFT {
      * @param argWhat
      * @return
      */
-    private int lookAhead(char argWhat) {
+    private int lookAhead(final char argWhat) {
         for (int i = position; i < text.length(); i++) {
             position = i;
             if (text.charAt(position) == argWhat) {
@@ -113,7 +113,7 @@ public class SFT {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SFT sft = new SFT("(User LED01 Dejan Lekic 2000.22)");
         sft.parse();
         sft.dump();

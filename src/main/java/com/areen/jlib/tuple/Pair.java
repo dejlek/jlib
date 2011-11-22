@@ -16,7 +16,7 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
     protected KeyT first;
     protected ValueT second;
 
-    public Pair(KeyT argFirst, ValueT argSecond) {
+    public Pair(final KeyT argFirst, final ValueT argSecond) {
         super();
         this.first = argFirst;
         this.second = argSecond;
@@ -24,14 +24,14 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
 
     @Override
     public int hashCode() {
-        int hashFirst = first != null ? first.hashCode() : 0;
-        int hashSecond = second != null ? second.hashCode() : 0;
+        int hashFirst = (first != null) ? first.hashCode() : 0;
+        int hashSecond = (second != null) ? second.hashCode() : 0;
 
         return (hashFirst + hashSecond) * hashSecond + hashFirst;
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other instanceof Pair) {
             Pair otherPair = (Pair) other;
             return ((this.first == otherPair.first
@@ -53,7 +53,7 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
         return first;
     }
 
-    public void setFirst(KeyT argFirst) {
+    public void setFirst(final KeyT argFirst) {
         this.first = argFirst;
     }
 
@@ -61,12 +61,12 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
         return second;
     }
 
-    public void setSecond(ValueT argSecond) {
+    public void setSecond(final ValueT argSecond) {
         this.second = argSecond;
     }
 
     @Override
-    public ValueT setValue(ValueT argNewValue) {
+    public ValueT setValue(final ValueT argNewValue) {
         ValueT oldValue = second;
         second = argNewValue;
         return oldValue;

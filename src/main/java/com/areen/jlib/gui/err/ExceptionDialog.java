@@ -32,7 +32,7 @@ import java.awt.event.KeyEvent;
 public class ExceptionDialog extends java.awt.Dialog {
 
     /** Creates new form ExceptionDialog */
-    public ExceptionDialog(java.awt.Frame parent, boolean modal) {
+    public ExceptionDialog(final java.awt.Frame parent, final boolean modal) {
         super(parent, modal);
         initComponents();
         this.setTitle("Java exception information");
@@ -55,7 +55,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         setMinimumSize(new java.awt.Dimension(500, 300));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            public void windowClosing(final java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
@@ -79,7 +79,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         okButton.setMnemonic(KeyEvent.VK_ESCAPE);
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
@@ -91,24 +91,24 @@ public class ExceptionDialog extends java.awt.Dialog {
     } // </editor-fold>//GEN-END:initComponents
 
     /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) { //GEN-FIRST:event_closeDialog
+    private void closeDialog(final java.awt.event.WindowEvent evt) { //GEN-FIRST:event_closeDialog
         setVisible(false);
         dispose();
     } //GEN-LAST:event_closeDialog
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonActionPerformed
         setVisible(false);
 } //GEN-LAST:event_okButtonActionPerformed
 
     /**
     * @param args the command line arguments
     */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ExceptionDialog dialog = new ExceptionDialog(new java.awt.Frame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
+                    public void windowClosing(final java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
@@ -118,11 +118,11 @@ public class ExceptionDialog extends java.awt.Dialog {
         });
     }
 
-    public void setInfo(String argInfo) {
+    public void setInfo(final String argInfo) {
         fileAndLineInformationLabel.setText(argInfo);
     }
 
-    public void setExceptionText(String argExc) {
+    public void setExceptionText(final String argExc) {
         exceptionTextArea.setText(argExc);
     }
 

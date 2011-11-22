@@ -6,7 +6,7 @@ package com.areen.jlib.pattern.singleton;
  */
 public class InheritedSingletonTest extends Singleton {
 
-    private final static int DEFAULT_VALUE = 5;
+    private static final int DEFAULT_VALUE = 5;
     private final int value;
 
     public static void init(final String[] params) {

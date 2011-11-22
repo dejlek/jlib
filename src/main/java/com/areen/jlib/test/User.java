@@ -46,11 +46,12 @@ public class User implements SimpleObject<ValueObject> {
         value = new User.VO();
     } // User (default) constructor
 
-    public User(User.VO argValue) {
+    public User(final User.VO argValue) {
         value = argValue;
     } // User constructor
 
-    public User(String  argUserId, String argdepartment, String arguserName, String argpassword) {
+    public User(final String  argUserId, final String argdepartment, final String arguserName,
+                final String argpassword) {
         value = new User.VO();
         value.userId = argUserId;
         value.dept = argdepartment;
@@ -60,7 +61,7 @@ public class User implements SimpleObject<ValueObject> {
 
 
     @Override
-    public Object get(int argIndex) {
+    public Object get(final int argIndex) {
         Object ret = null;
         switch (argIndex) {
             case 0: ret = value.userId; break;
@@ -73,7 +74,7 @@ public class User implements SimpleObject<ValueObject> {
     }
 
     @Override
-    public Class<?> getFieldClass(int argIndex) {
+    public Class<?> getFieldClass(final int argIndex) {
         Class<?> ret = Object.class;
         switch (argIndex) {
             case 0: ret = String.class; break;
@@ -101,7 +102,7 @@ public class User implements SimpleObject<ValueObject> {
     }
 
     @Override
-    public ValueObject[] newArray(int argNumberOfElements) {
+    public ValueObject[] newArray(final int argNumberOfElements) {
         return new User.VO[argNumberOfElements];
     }
 
@@ -111,7 +112,7 @@ public class User implements SimpleObject<ValueObject> {
     }
 
     @Override
-    public Object set(int argIndex, Object argValue) {
+    public Object set(final int argIndex, final Object argValue) {
         Object result = null;
         switch (argIndex) {
             case 0: value.userId = (String) argValue; break;
@@ -127,12 +128,12 @@ public class User implements SimpleObject<ValueObject> {
     }
 
     @Override
-    public void setTitles(String[] argTitles) {
+    public void setTitles(final String[] argTitles) {
         titles = argTitles;
     }
 
     @Override
-    public void setValue(ValueObject argVo) {
+    public void setValue(final ValueObject argVo) {
         value = (User.VO) argVo;
     }
 

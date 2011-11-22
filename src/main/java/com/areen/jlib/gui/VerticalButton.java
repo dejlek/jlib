@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
  */
 public class VerticalButton extends JButton {
 
-    public VerticalButton(String caption, boolean clockwise) {
+    public VerticalButton(final String caption, final boolean clockwise) {
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
         int captionHeight = fm.getHeight();
@@ -63,11 +63,11 @@ public class VerticalButton extends JButton {
         setActionCommand(caption);
     } // VerticalButton constructor
 
-    public VerticalButton(String caption) {
+    public VerticalButton(final String caption) {
         this(caption, false);
     } // VerticalButton constructor
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {

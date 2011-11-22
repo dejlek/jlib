@@ -70,7 +70,7 @@ public class MenuButton extends JButton
     /**
      * Default Constructor that creates a blank button with the specified action and a down facing arrow.
      */
-    public MenuButton(javax.swing.Action argAction) {
+    public MenuButton(final javax.swing.Action argAction) {
         this(new JButton(argAction), SwingConstants.SOUTH);
     }
 
@@ -79,7 +79,7 @@ public class MenuButton extends JButton
      * Creates a button with the specified label and a down facing arrow.
      * @param argLabel String
      */
-    public MenuButton(String argLabel) {
+    public MenuButton(final String argLabel) {
         this(new JButton(argLabel), SwingConstants.SOUTH);
     }
 
@@ -89,7 +89,7 @@ public class MenuButton extends JButton
      * @param text String
      * @param orientation int
      */
-    public MenuButton(String text, int orientation) {
+    public MenuButton(final String text, final int orientation) {
         this(new JButton(text), orientation);
     }
 
@@ -99,7 +99,7 @@ public class MenuButton extends JButton
      * @param mainButton JButton
      * @param orientation int
      */
-    public MenuButton(JButton argMainButton, int orientation) {
+    public MenuButton(final JButton argMainButton, final int orientation) {
         super();
         this.mainButton = argMainButton;
         this.mainButton.setIcon(mainButton.getIcon());
@@ -124,13 +124,13 @@ public class MenuButton extends JButton
     }
 
     @Override
-    public void setIcon(Icon defaultIcon) {
+    public void setIcon(final Icon defaultIcon) {
         super.setIcon(defaultIcon);
         this.mainButton.setIcon(defaultIcon);
     }
 
     @Override
-    public void setToolTipText(String text) {
+    public void setToolTipText(final String text) {
         this.mainButton.setToolTipText(text);
         this.dropDownButton.setToolTipText(text);
     }
@@ -139,7 +139,7 @@ public class MenuButton extends JButton
      * Sets the popup menu to show when the arrow is clicked.
      * @param menu JPopupMenu
      */
-    public void setMenu(JPopupMenu menu) {
+    public void setMenu(final JPopupMenu menu) {
         this.dropDownMenu = menu;
     }
 
@@ -168,11 +168,11 @@ public class MenuButton extends JButton
     }
 
 
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(final PropertyChangeEvent evt) {
         dropDownButton.setEnabled(mainButton.isEnabled());
     }
 
-    public void stateChanged(ChangeEvent e) {
+    public void stateChanged(final ChangeEvent e) {
         if (e.getSource() == mainButton.getModel()) {
             if (dropDownMenu.isVisible() && !mainButton.getModel().isRollover()) {
                 mainButton.getModel().setRollover(true);
@@ -193,7 +193,7 @@ public class MenuButton extends JButton
      * action listener for the arrow button- shows / hides the popup menu.
      * @param e ActionEvent
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         if (this.dropDownMenu == null) {
             return;
         }
@@ -205,17 +205,17 @@ public class MenuButton extends JButton
 
     }
 
-    public void popupMenuCanceled(PopupMenuEvent e) {
+    public void popupMenuCanceled(final PopupMenuEvent e) {
         dropDownMenu.setVisible(false);
     }
 
-    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 
         mainButton.getModel().setRollover(true);
         dropDownButton.getModel().setSelected(true);
     }
 
-    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
         //popupVisible = false;
 
         mainButton.getModel().setRollover(false);
@@ -229,7 +229,7 @@ public class MenuButton extends JButton
      * be affected.
      * @param al ActionListener
      */
-    public void addActionListener(ActionListener al) {
+    public void addActionListener(final ActionListener al) {
         this.mainButton.addActionListener(al);
         //this.addActionListener(al);
     }
@@ -266,11 +266,11 @@ public class MenuButton extends JButton
 
     }
 
-    private static JMenuItem addMI(String text) {
+    private static JMenuItem addMI(final String text) {
         JMenuItem mi = new JMenuItem(text);
         mi.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 System.out.println(e.getActionCommand());
             }
         });
@@ -278,7 +278,7 @@ public class MenuButton extends JButton
         return mi;
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         test();
     }
 

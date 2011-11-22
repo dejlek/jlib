@@ -17,11 +17,11 @@ import javax.swing.JPanel;
  * @author dejan
  */
 public class InputFormContent<T extends SimpleObject> extends JPanel {
-    public InputFormContent(T argSo) { }
+    public InputFormContent(final T argSo) { }
     public T getModel() {
         return null;
     }
-    public void setModel(T argSo) { }
+    public void setModel(final T argSo) { }
 } // SimpleObject interface
 
 // $Id: SimpleObject.java 65 2011-07-12 09:47:52Z dejan $

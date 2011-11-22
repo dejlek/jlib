@@ -26,7 +26,7 @@ public class UserForm extends JFrame {
         userFormModel.actions.add(new AbstractAction("OK") {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -34,7 +34,7 @@ public class UserForm extends JFrame {
         userFormModel.actions.add(new AbstractAction("Cancel") {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -47,7 +47,7 @@ public class UserForm extends JFrame {
         final JLabel sportLabel = new JLabel("Hello");
         nameCombo.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();
                 String chosenName = (String) cb.getSelectedItem();
                 sportLabel.setText(chosenName);
@@ -71,7 +71,7 @@ public class UserForm extends JFrame {
         pack();
     }
 
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
 

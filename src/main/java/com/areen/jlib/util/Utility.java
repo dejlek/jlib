@@ -48,8 +48,8 @@ public class Utility {
      * @param headings
      * @param data
      */
-    public static void exportToCSV(String file, String h1, String h2,
-                                   Vector<String> headings, Vector<Vector<String>> data) {
+    public static void exportToCSV(final String file, final String h1, final String h2,
+                                   final Vector<String> headings, final Vector<Vector<String>> data) {
         try {
             FileOutputStream out = new FileOutputStream(file);
             PrintStream ps = new PrintStream(out);
@@ -100,7 +100,7 @@ public class Utility {
         }
     } // exportToCSV() method
 
-    public static void set(SimpleObject argSo, String argValue, int argIndex) {
+    public static void set(final SimpleObject argSo, final String argValue, final int argIndex) {
         try {
             if (argSo.getFieldClass(argIndex) == Double.class) {
                 argSo.set(argIndex, Double.parseDouble(argValue));

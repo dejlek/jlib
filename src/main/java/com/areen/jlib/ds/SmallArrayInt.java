@@ -13,12 +13,13 @@ import com.areen.jlib.exceptions.SmallArrayException;
 public class SmallArrayInt extends SmallArray {
     int data;
 
-    public SmallArrayInt(int argNob) throws SmallArrayException {
+    public SmallArrayInt(final int argNob) throws SmallArrayException {
         super(argNob);
         length = (byte) (32 / argNob);
     }
 
-    public void set(int argIdx, int argValue) throws SmallArrayException, ArrayIndexOutOfBoundsException {
+    public void set(final int argIdx, final int argValue)
+            throws SmallArrayException, ArrayIndexOutOfBoundsException {
         int maxVal = (int) Math.pow(2.0, numberOfBits);
         if (length < argIdx) {
             throw new ArrayIndexOutOfBoundsException(argIdx);
@@ -43,12 +44,12 @@ public class SmallArrayInt extends SmallArray {
         System.out.println(wlz(data | ((int) Math.pow(2.0, argIdx * numberOfBits)) - 1));
     } // set() method
 
-    public static void main(String[] args) throws SmallArrayException {
+    public static void main(final String[] args) throws SmallArrayException {
         SmallArrayInt sai = new SmallArrayInt(3);
         sai.set(3, 5);
     }
 
-    public String wlz(int argValue) {
+    public String wlz(final int argValue) {
         String binString = Integer.toBinaryString(argValue);
         return "00000000000000000000000000000000".substring(binString.length())
                 + binString + " : " + argValue;

@@ -15,7 +15,7 @@ public class SmallArrayException extends Exception {
         reason = "Reason: unknown";
     }
 
-    public SmallArrayException(String argReason) {
+    public SmallArrayException(final String argReason) {
         reason = argReason;
     }
 
@@ -23,7 +23,7 @@ public class SmallArrayException extends Exception {
         return reason;
     }
 
-    public void setReason(String argReason) {
+    public void setReason(final String argReason) {
         this.reason = argReason;
     }
 
