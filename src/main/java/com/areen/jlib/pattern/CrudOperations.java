@@ -49,7 +49,14 @@ public interface CrudOperations<T extends ValueObject> {
     public void    set(String argName, Object argValue);
     public Object  get(String argName);
     public boolean check(int argOperation, T[] argVos); // Checks whether operation can be executed.
-    public String  getMessage(); // In the case check() fails, use this method to get the reason why.
+    
+    /**
+     * In the case check() fails, use this method to get the reason why.
+     * @return String value with the message to the user. If return value is NULL, and operation is UPDATE,
+     *         that means that the update operation failed!
+     */
+    public String  getMessage();
+    
     public void    setOldValues(T[] argVos);
 
     // CREATE -------------------------------------------
