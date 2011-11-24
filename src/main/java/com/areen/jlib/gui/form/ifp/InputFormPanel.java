@@ -97,22 +97,23 @@ public class InputFormPanel extends javax.swing.JPanel {
         titleLabel.setText(formModel.title);
         for (int i = 0; i < formModel.model.getNumberOfFields(); i++) {
             System.out.println("TYPE: " + formModel.model.getFieldClass(i));
-            if(formModel.model.getFieldClass(i).toString().indexOf("String")>=0
-               || formModel.model.getFieldClass(i).toString().indexOf("Integer")>=0
-               || formModel.model.getFieldClass(i).toString().indexOf("Float")>=0
-               || formModel.model.getFieldClass(i).toString().indexOf("Boolean")>=0){
+            if (formModel.model.getFieldClass(i).toString().indexOf("String") >= 0
+                    || formModel.model.getFieldClass(i).toString().indexOf("Integer") >= 0
+                    || formModel.model.getFieldClass(i).toString().indexOf("Float") >= 0
+                    || formModel.model.getFieldClass(i).toString().indexOf("Boolean") >= 0) {
                 addFormField(formModel.model.getTitles()[i], null);
             } // if
-            else if(formModel.model.getFieldClass(i).toString().indexOf("Date")>=0){
+            else if (formModel.model.getFieldClass(i).toString().indexOf("Date") >= 0) {
                 final JXDatePicker datePicker = new JXDatePicker();
-                final int n= i;
-                datePicker.addActionListener(new ActionListener(){
+                final int n = i;
+                datePicker.addActionListener(new ActionListener() {
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         changes.firePropertyChange("VALUE_CHANGE", formModel.model.getTitles()[n] + " : ", formModel.model.getTitles()[n] + " : " + datePicker.getDate());
                     }
                 });
-                
+
                 class DatePicker<datePicker> extends InputFormFieldEditor {
 
                     @Override
@@ -125,7 +126,7 @@ public class InputFormPanel extends javax.swing.JPanel {
                         return datePicker;
                     }
                 };
-                
+
                 addFormField(formModel.model.getTitles()[i], new DatePicker());
             } // else if
         } // for
@@ -527,14 +528,14 @@ public class InputFormPanel extends javax.swing.JPanel {
 
     public void triggerAllFieldUpdates() {
         Iterator it = labels.entrySet().iterator();
-        done: while(it.hasNext()){
-            Map.Entry pairs = (Map.Entry)it.next();
-            if(pairs.getValue() instanceof InputFormFieldEditor){
-                changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor)pairs.getValue()).getValue());
-            }
-            else if (pairs.getValue() instanceof JComponent[]){
-                if(((Object[])pairs.getValue())[0] instanceof InputFormFieldEditor){
-                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor)((Object[])pairs.getValue())[0]).getValue());
+        done:
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            if (pairs.getValue() instanceof InputFormFieldEditor) {
+                changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor) pairs.getValue()).getValue());
+            } else if (pairs.getValue() instanceof JComponent[]) {
+                if (((Object[]) pairs.getValue())[0] instanceof InputFormFieldEditor) {
+                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor) ((Object[]) pairs.getValue())[0]).getValue());
                 }
             } // else if
         } // while
