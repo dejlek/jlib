@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.*;
+import org.jdesktop.swingx.JXDatePicker;
 
 /**
  *
@@ -56,7 +57,7 @@ public class InputFormPanel extends javax.swing.JPanel {
     PropertyChangeSupport changes;
     private String VALUE_CHANGE = "";
 
-    /** Creates new form RequisitionCreationDialog. */
+    /** Creates new form InputFormPanel. */
     public InputFormPanel() {
         initComponents();
         Font titleFont = defaultFont.deriveFont(titleFontSize);
@@ -80,12 +81,13 @@ public class InputFormPanel extends javax.swing.JPanel {
         });
     } // InputFormPanel() method
 
-    /** Creates new form RequisitionCreationDialog. */
+    /** Creates new form InputFormPanel. */
     public InputFormPanel(final int argRequisitionId) {
         this();
         currentRequisition = argRequisitionId;
     } // InputFormPanel() method
 
+    /** Creates new form InputFormPanel. */
     public InputFormPanel(final InputFormModel argModel) {
         this();
         initComponents();
@@ -94,7 +96,38 @@ public class InputFormPanel extends javax.swing.JPanel {
         titleLabel.setFont(titleFont);
         titleLabel.setText(formModel.title);
         for (int i = 0; i < formModel.model.getNumberOfFields(); i++) {
-            addFormField(formModel.model.getTitles()[i], null);
+            System.out.println("TYPE: " + formModel.model.getFieldClass(i));
+            if(formModel.model.getFieldClass(i).toString().indexOf("String")>=0
+               || formModel.model.getFieldClass(i).toString().indexOf("Integer")>=0
+               || formModel.model.getFieldClass(i).toString().indexOf("Float")>=0
+               || formModel.model.getFieldClass(i).toString().indexOf("Boolean")>=0){
+                addFormField(formModel.model.getTitles()[i], null);
+            } // if
+            else if(formModel.model.getFieldClass(i).toString().indexOf("Date")>=0){
+                final JXDatePicker datePicker = new JXDatePicker();
+                final int n= i;
+                datePicker.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        changes.firePropertyChange("VALUE_CHANGE", formModel.model.getTitles()[n] + " : ", formModel.model.getTitles()[n] + " : " + datePicker.getDate());
+                    }
+                });
+                
+                class DatePicker<datePicker> extends InputFormFieldEditor {
+
+                    @Override
+                    public Object getValue() {
+                        return datePicker.getDate();
+                    }
+
+                    @Override
+                    public JComponent getComponent() {
+                        return datePicker;
+                    }
+                };
+                
+                addFormField(formModel.model.getTitles()[i], new DatePicker());
+            } // else if
         } // for
         for (int j = 0; j < formModel.actions.size(); j++) {
             addButton(new JButton((Action) formModel.actions.get(j)));
@@ -102,6 +135,7 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // InputFormPanel() method
 
+    /** Creates new form InputFormPanel. */
     public InputFormPanel(final InputFormModel argModel, final InputFormContent argFormContentPanel) {
         this();
         initComponents();
@@ -124,7 +158,7 @@ public class InputFormPanel extends javax.swing.JPanel {
         buttonContainerPanel.add(argButton);
     } // addButton() method
 
-    public void addFormField(final String argFieldName, final JComponent argFieldComponent) {
+    public void addFormField(String argFieldName, Object argFieldComponent) {
         labels.put(argFieldName, argFieldComponent);
     } // addFormField() method
 
@@ -155,92 +189,37 @@ public class InputFormPanel extends javax.swing.JPanel {
                     } // keyReleased() method
                 });
                 fieldLabel.setLabelFor(fieldComponent);
-                pairs.setValue(fieldComponent);
+                
+                class FormTextField<fieldComponent> extends InputFormFieldEditor {
+
+                    @Override
+                    public Object getValue() {
+                        return fieldComponent.getText();
+                    }
+
+                    @Override
+                    public JComponent getComponent() {
+                        return fieldComponent;
+                    }
+                };
+                
+                pairs.setValue(new FormTextField());
                 formContentPanel.add(fieldComponent);
-            } else if (pairs.getValue() instanceof JComponent[]) {
+            } else if (pairs.getValue() instanceof Object[]) {
                 JPanel componentsPanel = new JPanel();
                 componentsPanel.setLayout(new BoxLayout(componentsPanel, BoxLayout.X_AXIS));
-                final JComponent[] components = (JComponent[]) pairs.getValue();
+                final Object[] components = (Object[]) pairs.getValue();
                 for (int i = 0; i < components.length; i++) {
-                    componentsPanel.add(components[i]);
-                    if (i == 0) {
-                        final int n = i;
-                        System.out.println("COMP: " + components[i]);
-                        if (components[i] instanceof JTextField) {
-                            ((JTextField) components[i]).addKeyListener(new KeyListener() {
-
-                                @Override
-                                public void keyTyped(final KeyEvent e) {
-                                } // keyTyped() method
-
-                                @Override
-                                public void keyPressed(final KeyEvent e) {
-                                } // keyPressed() method
-
-                                @Override
-                                public void keyReleased(final KeyEvent e) {
-                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText()
-                                            + " : ", fieldLabel.getText() + " : "
-                                            + ((JTextField) components[n]).getText());
-                                } // keyReleased() method
-                            });
-                        } else if (components[i] instanceof JComboBox) {
-                            ((JComboBox) components[i]).addActionListener(new ActionListener() {
-
-                                @Override
-                                public void actionPerformed(final ActionEvent e) {
-                                    //DEBUG: System.out.println(fieldLabel.getText() + " "
-                                    //       + ((JComboBox)components[n]).getSelectedItem());
-                                    changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText()
-                                            + " : ", fieldLabel.getText() + " : "
-                                            + ((JComboBox) components[n]).getSelectedItem());
-                                } // actionPerformed() method
-                            });
-                        } //else if
-                    } // if
+                    componentsPanel.add((JComponent)components[i]);
                 } // for
                 formContentPanel.add(componentsPanel);
-            } else if (pairs.getValue() instanceof JComboBox) {
+            } // if
+            else if(pairs.getValue()  instanceof InputFormFieldEditor){
                 final Map.Entry fieldPair = pairs;
-                ((JComboBox) pairs.getValue()).addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        //DEBUG: System.out.println(fieldLabel.getText() + " "
-                        //       + ((JComboBox)components[n]).getSelectedItem());
-                        if (((JComboBox) fieldPair.getValue()).getSelectedItem() instanceof CodePair) {
-                            changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ",
-                            fieldLabel.getText() + " : "
-                            + ((JComboBox) fieldPair.getValue()).getSelectedItem().toString().split(" -")[0]);
-                        } else {
-                            changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ",
-                            fieldLabel.getText() + " : "
-                            + ((JComboBox) fieldPair.getValue()).getSelectedItem());
-                        }
-                    } // actionPerformed() method
-                });
-                formContentPanel.add((JComponent) pairs.getValue());
-            } else if (pairs.getValue() instanceof JTextField) {
-                final Map.Entry fieldPair = pairs;
-                ((JTextField) pairs.getValue()).addKeyListener(new KeyListener() {
-
-                    @Override
-                    public void keyTyped(final KeyEvent e) {
-                    } // keyTyped() method
-
-                    @Override
-                    public void keyPressed(final KeyEvent e) {
-                    } // keyPressed() method
-
-                    @Override
-                    public void keyReleased(final KeyEvent e) {
-                        changes.firePropertyChange("VALUE_CHANGE", fieldLabel.getText() + " : ",
-                        fieldLabel.getText() + " : " + ((JTextField) fieldPair.getValue()).getText());
-                    } // keyReleased() method
-                });
-                formContentPanel.add((JComponent) pairs.getValue());
-            } else {
-                formContentPanel.add((JComponent) pairs.getValue());
+                formContentPanel.add(((InputFormFieldEditor)pairs.getValue()).getComponent());
+            } //else if
+            else{
+                formContentPanel.add((JComponent)pairs.getValue());
             } // else
         } // while
         makeCompactGrid(formContentPanel, labels.size(), formColumns, 6, 6, 6, 6);
@@ -299,7 +278,7 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setHiddenFields() method
 
-    public void setFieldWithInputComponent(final int argModelIndex, final JComponent argComponent) {
+    public void setFieldWithInputComponent(int argModelIndex, InputFormFieldEditor argComponent) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
         done:
@@ -314,15 +293,14 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setFieldWithInputComponent() method
 
-    public void setFieldWithInputComponentAndLabel(final int argModelIdx, final JComponent argComponent,
-                                                   final JLabel argLbl) {
+    public void setFieldWithInputComponentAndLabel(int argModelIdx, InputFormFieldEditor argComponent, JLabel argLbl) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
         done:
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             if (counter == argModelIdx) {
-                pairs.setValue(new JComponent[]{argComponent, argLbl});
+                pairs.setValue(new Object[]{argComponent, argLbl});
                 break done;
             } // if
             counter++;
@@ -338,19 +316,28 @@ public class InputFormPanel extends javax.swing.JPanel {
             Map.Entry pairs = (Map.Entry) it.next();
             if (counter == argModelIndex) {
                 //DEBUG: System.out.println("VALUE: " + pairs.getValue() + " " + counter);
-                if (pairs.getValue() == null) {
-                    ((JTextField) pairs.getValue()).setText(argValue);
-                    ((JTextField) pairs.getValue()).validate();
-                    ((JTextField) pairs.getValue()).repaint();
-                } else if (pairs.getValue() instanceof JTextField) {
-                    ((JTextField) pairs.getValue()).setText(argValue);
-                    ((JTextField) pairs.getValue()).validate();
-                    ((JTextField) pairs.getValue()).repaint();
-                } else if (pairs.getValue() instanceof JComboBox) {
-                    ((JComboBox) pairs.getValue()).setSelectedItem(argValue);
-                    ((JComboBox) pairs.getValue()).validate();
-                    ((JComboBox) pairs.getValue()).repaint();
-                }
+                if(pairs.getValue() == null){
+                    ((JTextField)pairs.getValue()).setText(argValue);
+                    ((JTextField)pairs.getValue()).validate();
+                    ((JTextField)pairs.getValue()).repaint();
+                } // if
+                else if(pairs.getValue() instanceof InputFormFieldEditor){
+                    if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JTextField){        
+                        ((JTextField)((InputFormFieldEditor)pairs.getValue()).getComponent()).setText(argValue);
+                        ((JTextField)((InputFormFieldEditor)pairs.getValue()).getComponent()).validate();
+                        ((JTextField)((InputFormFieldEditor)pairs.getValue()).getComponent()).repaint();
+                    } // if
+                    else if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JComboBox){
+                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).setSelectedItem(argValue);
+                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).validate();
+                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).repaint();
+                    } // else if
+                    else if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JComboBox){
+                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).setSelectedItem(argValue);
+                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).validate();
+                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).repaint();
+                    } // else if
+                } // else if
                 this.validate();
                 this.repaint();
                 break done;
@@ -372,8 +359,8 @@ public class InputFormPanel extends javax.swing.JPanel {
                 Map.Entry modelIndexPair = pairs;
                 fieldLabel = modelIndexPair.getKey().toString();
                 //DEBUG: System.out.println(" " + counter + " " + fieldLabel);
-                if (modelIndexPair.getValue() instanceof JComponent) {
-                    fieldComponent = (JComponent) modelIndexPair.getValue();
+                if (modelIndexPair.getValue() instanceof InputFormFieldEditor) {
+                    fieldComponent = (InputFormFieldEditor) modelIndexPair.getValue();
                 } else if (modelIndexPair.getValue() instanceof JComponent[]) {
                     fieldComponent = (JComponent[]) modelIndexPair.getValue();
                 } // else if
@@ -383,8 +370,8 @@ public class InputFormPanel extends javax.swing.JPanel {
             if (counter == argFormIndex) {
                 if (fieldLabel.equals("")) {
                     fieldLabel = labels.keySet().toArray()[argModelIndex].toString();
-                    if (labels.values().toArray()[argModelIndex] instanceof JComponent) {
-                        fieldComponent = (JComponent) labels.values().toArray()[argModelIndex];
+                    if (labels.values().toArray()[argModelIndex] instanceof InputFormFieldEditor) {
+                        fieldComponent = (InputFormFieldEditor) labels.values().toArray()[argModelIndex];
                     } else if (labels.values().toArray()[argModelIndex] instanceof JComponent[]) {
                         fieldComponent = (JComponent[]) labels.values().toArray()[argModelIndex];
                     } // else if
@@ -520,38 +507,16 @@ public class InputFormPanel extends javax.swing.JPanel {
     public void triggerFieldUpdate(final int argModelIndex) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
-        done:
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            if (counter == argModelIndex) {
-                if (pairs.getValue() instanceof JTextField) {
-                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ",
-                    pairs.getKey().toString() + " : " + ((JTextField) pairs.getValue()).getText());
-                } else if (pairs.getValue() instanceof JComboBox) {
-                    if (((JComboBox) pairs.getValue()).getSelectedItem() instanceof CodePair) {
-                        changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                        + " : ", pairs.getKey().toString() + " : "
-                        + ((JComboBox) pairs.getValue()).getSelectedItem().toString().split(" -")[0]);
-                    } else {
-                        changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                        + " : ", pairs.getKey().toString() + " : "
-                        + ((JComboBox) pairs.getValue()).getSelectedItem());
-                    }
-                } else if (pairs.getValue() instanceof JComponent[]) {
-                    if (((JComponent[]) pairs.getValue())[0] instanceof JTextField) {
-                        changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                        + " : ", pairs.getKey().toString() + " : "
-                        + ((JTextField) ((JComponent[]) pairs.getValue())[0]).getText());
-                    } else if (((JComponent[]) pairs.getValue())[0] instanceof JComboBox) {
-                        if (((JComboBox) pairs.getValue()).getSelectedItem() instanceof CodePair) {
-                            changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                            + " : ", pairs.getKey().toString() + " : "
-                            + ((JComboBox) ((JComponent[]) pairs.getValue())[0]).getSelectedItem().toString().split(" -")[0]);
-                        } else {
-                            changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                            + " : ", pairs.getKey().toString() + " : "
-                            + ((JComboBox) ((JComponent[]) pairs.getValue())[0]).getSelectedItem());
-                        }
+        done: while(it.hasNext()){
+            Map.Entry pairs = (Map.Entry)it.next();
+            if (counter == argModelIndex){
+
+                if(pairs.getValue() instanceof InputFormFieldEditor){
+                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor)pairs.getValue()).getValue());
+                }
+                else if (pairs.getValue() instanceof Object[]){
+                    if(((Object[])pairs.getValue())[0] instanceof InputFormFieldEditor){
+                        changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor)((Object[])pairs.getValue())[0]).getValue());
                     }
                 }
                 break done;
@@ -562,39 +527,15 @@ public class InputFormPanel extends javax.swing.JPanel {
 
     public void triggerAllFieldUpdates() {
         Iterator it = labels.entrySet().iterator();
-        done:
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            if (pairs.getValue() instanceof JTextField) {
-                changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                + " : ", pairs.getKey().toString() + " : "
-                + ((JTextField) pairs.getValue()).getText());
-            } else if (pairs.getValue() instanceof JComboBox) {
-                if (((JComboBox) pairs.getValue()).getSelectedItem() instanceof CodePair) {
-                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                    + " : ", pairs.getKey().toString() + " : "
-                    + ((JComboBox) pairs.getValue()).getSelectedItem().toString().split(" -")[0]);
-                } else {
-                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                    + " : ", pairs.getKey().toString() + " : "
-                    + ((JComboBox) pairs.getValue()).getSelectedItem());
-                } // else
-            } else if (pairs.getValue() instanceof JComponent[]) {
-                if (((JComponent[]) pairs.getValue())[0] instanceof JTextField) {
-                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                    + " : ", pairs.getKey().toString() + " : "
-                    + ((JTextField) ((JComponent[]) pairs.getValue())[0]).getText());
-                } else if (((JComponent[]) pairs.getValue())[0] instanceof JComboBox) {
-                    if (((JComboBox) pairs.getValue()).getSelectedItem() instanceof CodePair) {
-                        changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                        + " : ", pairs.getKey().toString() + " : "
-                        + ((JComboBox) ((JComponent[]) pairs.getValue())[0]).getSelectedItem().toString().split(" -")[0]);
-                    } else {
-                        changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString()
-                        + " : ", pairs.getKey().toString() + " : "
-                        + ((JComboBox) ((JComponent[]) pairs.getValue())[0]).getSelectedItem());
-                    } // else
-                } // else if
+        done: while(it.hasNext()){
+            Map.Entry pairs = (Map.Entry)it.next();
+            if(pairs.getValue() instanceof InputFormFieldEditor){
+                changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor)pairs.getValue()).getValue());
+            }
+            else if (pairs.getValue() instanceof JComponent[]){
+                if(((Object[])pairs.getValue())[0] instanceof InputFormFieldEditor){
+                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor)((Object[])pairs.getValue())[0]).getValue());
+                }
             } // else if
         } // while
     } // triggerAllFieldUpdates() method

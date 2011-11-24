@@ -4,12 +4,14 @@
  */
 package com.areen.jlib.test;
 
+import com.areen.jlib.gui.form.ifp.InputFormFieldEditor;
 import com.areen.jlib.gui.form.ifp.InputFormModel;
 import com.areen.jlib.gui.form.ifp.InputFormPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -43,9 +45,12 @@ public class UserForm extends JFrame {
         //Option 1://-----------------------------------------------------------
 
         InputFormPanel userFormPanel = new InputFormPanel(userFormModel);
-        JComboBox nameCombo = new JComboBox(new String[]{"Dejan", "Vipul", "Mehjabeen"});
+       
+        final JComboBox nameCombo = new JComboBox(new String[]{"Dejan", "Vipul", "Mehjabeen"});
         final JLabel sportLabel = new JLabel("Hello");
+
         nameCombo.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();
@@ -53,8 +58,20 @@ public class UserForm extends JFrame {
                 sportLabel.setText(chosenName);
             }
         });
+        class myNameCombo<nameCombo> extends InputFormFieldEditor {
 
-        userFormPanel.setFieldWithInputComponentAndLabel(3, nameCombo, sportLabel);
+            @Override
+            public Object getValue() {
+                return nameCombo.getSelectedItem();
+            }
+
+            @Override
+            public JComponent getComponent() {
+                return nameCombo;
+            }
+        };
+        
+        userFormPanel.setFieldWithInputComponentAndLabel(3, new myNameCombo(), sportLabel);
         //userFormPanel.setHiddenFields(2); // making a field hidden after any custom components are set for particular fields
         userFormPanel.setFieldAtFormIndex(0, 2);
 
