@@ -166,6 +166,11 @@ The idea is to open-source this library.</description>
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+	 <dependency>
+	  <groupId>org.swinglabs</groupId>
+	  <artifactId>swingx-core</artifactId>
+	  <version>1.6.2-2</version>
+	 </dependency>
 	</dependencies>
 	<organization>
 		<name>AreenDesignServices Ltd</name>
