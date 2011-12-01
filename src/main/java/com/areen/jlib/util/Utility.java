@@ -26,6 +26,7 @@ import com.areen.jlib.model.SimpleObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -147,6 +148,54 @@ public class Utility {
             }
         } // end catch
     } // set() method
+    
+    /**
+     * A utility method to compare two objects, both of type argClass and see if they have equal content or not.
+     * @param argFirst First Object.
+     * @param argSecond Second Object.
+     * @param argClass The type.
+     * @return 0 if they are equal, some other value otherwise.
+     */
+    public static int compare(Object argFirst, Object argSecond, Class argClass) {
+        // if argFirst and argSecond references refer to the same object, return 0
+        if (argFirst == argSecond)
+            return 0;
+        
+        // else, make comparison for each type...
+        if (argClass == Byte.class) {
+            Byte a = (Byte)argFirst;
+            Byte b = (Byte)argSecond;
+            return a.compareTo(b);
+        }
+        if (argClass == Short.class) {
+            Short a = (Short)argFirst;
+            Short b = (Short)argSecond;
+            return a.compareTo(b);
+        }
+        if (argClass == Integer.class) {
+            Integer a = (Integer)argFirst;
+            Integer b = (Integer)argSecond;
+            return a.compareTo(b);
+        }
+        if (argClass == Float.class) {
+            Float a = (Float)argFirst;
+            Float b = (Float)argSecond;
+            return a.compareTo(b);
+        }
+        if (argClass == Double.class) {
+            Double a = (Double)argFirst;
+            Double b = (Double)argSecond;
+            return a.compareTo(b);
+        }
+        if (argClass == Date.class) {
+            Date a = (Date)argFirst;
+            Date b = (Date)argSecond;
+            return a.compareTo(b);
+        }
+        
+        // fall back to using Strings...
+        return argFirst.toString().compareTo(argSecond.toString());
+    } // compare() method
     
 } // Utility class
 
