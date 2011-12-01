@@ -30,23 +30,40 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /**
- *
+ * Various utility functions.
+ * 
  * @author dejan
  */
 public class Utility {
-
+    
+    /**
+     * A helper constructor to prevents calls from asubclass.
+     */
+    protected Utility() { 
+        throw new UnsupportedOperationException(); 
+    } // Utility constructor
+    
+    /**
+     * A convenience function which should be used when we need a line number where the exception has been
+     * thrown.
+     * 
+     * @return String File name, plus the line number where the exception has been thrown.
+     */
     public static String getLineInfo() {
         StackTraceElement ste = new Throwable().getStackTrace()[1];
         return ste.getFileName() + ": Line " + ste.getLineNumber();
     } // getLineInfo() method
 
     /**
-     * Function to export csv file
-     * @param file
-     * @param h1
-     * @param h2
-     * @param headings
-     * @param data
+     * Function to export csv file.
+     * 
+     * TODO: (Dejan) we should remove Iterator(s), and use foreach loops instead.
+     * 
+     * @param file A String containing the file-name information (with path).
+     * @param h1 A String object with the first header line.
+     * @param h2 A String object with the second header line.
+     * @param headings A Vector with column headings as String objects.
+     * @param data A Vector of vectors to be exported to the CSV file.
      */
     public static void exportToCSV(final String file, final String h1, final String h2,
                                    final Vector<String> headings, final Vector<Vector<String>> data) {
@@ -69,16 +86,16 @@ public class Utility {
                     ps.print(",");
                 } else {
                     ps.println();
-                }
+                } // else
                 i++;
-            }
+            } // while
 
-            //print the data
+            // print the data
             Iterator<Vector<String>> di = data.iterator();
             Iterator<String> si = null;
 
             while (di.hasNext()) {
-                //get iterator
+                // get iterator
                 si = di.next().iterator();
                 i = 0;
                 while (si.hasNext()) {
@@ -88,18 +105,27 @@ public class Utility {
                         ps.print(",");
                     } else {
                         ps.println();
-                    }
+                    } // else
 
                     i++;
-                }
-            }
+                } // while
+            } // while
 
             ps.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } // catch
     } // exportToCSV() method
 
+    /**
+     * Utility function which should be used when developer has a value as a String, and has to assign
+     * the value to a field of a SimpleObject argSo. As you know all SimpleObject members are statically
+     * typed, so argValue has to be converted to appropriate type.
+     * 
+     * @param argSo SimpleObject which field we have to set.
+     * @param argValue The value as a String.
+     * @param argIndex Index of the SO field to which we assign the value argValue.
+     */
     public static void set(final SimpleObject argSo, final String argValue, final int argIndex) {
         try {
             if (argSo.getFieldClass(argIndex) == Double.class) {
@@ -121,6 +147,7 @@ public class Utility {
             }
         } // end catch
     } // set() method
+    
 } // Utility class
 
 // $Id$
