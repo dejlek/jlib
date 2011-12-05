@@ -177,6 +177,11 @@ public class Utility {
             Integer b = (Integer)argSecond;
             return a.compareTo(b);
         }
+        if (argClass == Long.class) {
+            Long a = (Long)argFirst;
+            Long b = (Long)argSecond;
+            return a.compareTo(b);
+        }
         if (argClass == Float.class) {
             Float a = (Float)argFirst;
             Float b = (Float)argSecond;
