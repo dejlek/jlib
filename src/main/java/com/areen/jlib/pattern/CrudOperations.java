@@ -58,6 +58,7 @@ public interface CrudOperations<T extends ValueObject> {
     public String  getMessage();
     
     public void    setOldValues(T[] argVos);
+    public boolean isLocked(int argRowIndex);
 
     // CREATE -------------------------------------------
     public T       create();
