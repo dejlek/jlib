@@ -149,6 +149,10 @@ public class InputFormPanel extends javax.swing.JPanel {
         for (int j = 0; j < argModel.actions.size(); j++) {
             addButton(new JButton((Action) argModel.actions.get(j)));
         } // for
+        formContentPanel.validate();
+        formContentPanel.repaint();
+        this.validate();
+        this.repaint();
     } // InputFormPanel() method
 
     public void setTitle(final String argTitle) {
@@ -246,6 +250,27 @@ public class InputFormPanel extends javax.swing.JPanel {
         } // if
     } // setModel() method
 
+    public void setFormModel(InputFormModel argFormModel){
+        formModel = argFormModel;
+        Font titleFont = defaultFont.deriveFont(titleFontSize);
+        titleLabel.setFont(titleFont);
+        titleLabel.setText(formModel.title);
+    }
+    
+    public void setFormContent(InputFormContent argFormContent){
+        formContent = argFormContent;
+        formContentPanel.removeAll();
+        formContentPanel.setLayout(new BorderLayout());
+        formContentPanel.add(argFormContent, BorderLayout.CENTER);
+        for (int j = 0; j < formModel.actions.size(); j++) {
+            addButton(new JButton((Action) formModel.actions.get(j)));
+        } // for
+        formContentPanel.validate();
+        formContentPanel.repaint();
+        this.validate();
+        this.repaint();
+    }
+    
     @Override
     public void setFont(final Font argFont) {
         defaultFont = argFont;

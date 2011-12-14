@@ -14,6 +14,8 @@ public class InputFormFieldEditor<T extends JComponent> {
     public Object getValue(){
         return null;
     }
+    public void setValue(Object argValue){
+    }
     public T getComponent(){
         return null;
     }
