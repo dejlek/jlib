@@ -37,16 +37,16 @@ import org.apache.log4j.PatternLayout;
  * @author Exterminator13
  * @author Dejan Lekic , http://dejan.lekic.org
  */
-public class AutoCompleteCombo extends JComboBox {
+public class FilteredComboBox extends JComboBox {
 
-    private static final Logger logger = Logger.getLogger(AutoCompleteCombo.class);
-    private Model model;
+    private static final Logger logger = Logger.getLogger(FilteredComboBox.class);
+    private FilteredComboBoxTestModel model;
     private final JTextComponent textComponent = (JTextComponent) getEditor().getEditorComponent();
     private boolean modelFilling = false;
     private boolean updatePopup;
 
-    public AutoCompleteCombo() {
-        model = new Model();
+    public FilteredComboBox() {
+        model = new FilteredComboBoxTestModel();
         setEditable(true);
 
         logger.debug("setPattern() called from constructor");
@@ -72,8 +72,8 @@ public class AutoCompleteCombo extends JComboBox {
         }).start();
     }
     
-    public AutoCompleteCombo(String[] argComboItems) {
-        model = new Model(argComboItems);
+    public FilteredComboBox(String[] argComboItems) {
+        model = new FilteredComboBoxTestModel(argComboItems);
         
         setEditable(true);
 
@@ -252,7 +252,7 @@ public class AutoCompleteCombo extends JComboBox {
         model.addToTop(aString);
     }
 
-    private class Model extends AbstractListModel implements ComboBoxModel {
+    private class FilteredComboBoxTestModel extends AbstractListModel implements ComboBoxModel {
 
 //        String pattern;
         String selected;
@@ -298,7 +298,7 @@ public class AutoCompleteCombo extends JComboBox {
             void setPattern(String pattern) {
                 if (pattern == null || pattern.isEmpty()) {
                     filtered = list;
-                    AutoCompleteCombo.this.setSelectedItem(model.getElementAt(0));
+                    FilteredComboBox.this.setSelectedItem(model.getElementAt(0));
                     logger.debug(String.format("[setPattern] combo.setSelectedItem(null)"));
                 } else {
                     filtered = new ArrayList<String>(limit);
@@ -309,7 +309,7 @@ public class AutoCompleteCombo extends JComboBox {
                             filtered.add(list.get(i));
                         }
                     }
-                    AutoCompleteCombo.this.setSelectedItem(pattern);
+                    FilteredComboBox.this.setSelectedItem(pattern);
                     logger.debug(String.format("[setPattern] combo.setSelectedItem(%s)", pattern));
                 }
                 logger.debug(String.format("pattern:'%s', filtered: %s", pattern, filtered));
@@ -330,11 +330,11 @@ public class AutoCompleteCombo extends JComboBox {
         }
         Data data = new Data();
         
-        public Model() {
+        public FilteredComboBoxTestModel() {
             readData();
         }
         
-        public Model(String[] argValues) {
+        public FilteredComboBoxTestModel(String[] argValues) {
             for (String el: argValues) {
                 data.add(el);
             }
@@ -440,9 +440,9 @@ public class AutoCompleteCombo extends JComboBox {
                     } catch (InterruptedException ex) {
                     }
                     //we need this synchronization to
-                    //synchronize with AutoCompleteCombo.addElement method
+                    //synchronize with FilteredComboBox.addElement method
                     //(race condition may occur)
-                    synchronized (AutoCompleteCombo.this) {
+                    synchronized (FilteredComboBox.this) {
 
                         //HERE MUST BE SAVING OPERATION
                         //(SAVING INTO FILE OR SOMETHING)
@@ -541,7 +541,7 @@ public class AutoCompleteCombo extends JComboBox {
                 frame.setLayout(new GridLayout(3, 1));
                 final JLabel label = new JLabel("label ");
                 frame.add(label);
-                final AutoCompleteCombo combo = new AutoCompleteCombo();
+                final FilteredComboBox combo = new FilteredComboBox();
 //                combo.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 //
 //                    @Override
