@@ -250,14 +250,14 @@ public class InputFormPanel extends javax.swing.JPanel {
         } // if
     } // setModel() method
 
-    public void setFormModel(InputFormModel argFormModel){
+    public void setFormModel(InputFormModel argFormModel) {
         formModel = argFormModel;
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
         titleLabel.setText(formModel.title);
     }
     
-    public void setFormContent(InputFormContent argFormContent){
+    public void setFormContent(InputFormContent argFormContent) {
         formContent = argFormContent;
         formContentPanel.removeAll();
         formContentPanel.setLayout(new BorderLayout());
@@ -343,9 +343,9 @@ public class InputFormPanel extends javax.swing.JPanel {
             if (counter == argModelIndex) {
                 //DEBUG: System.out.println("VALUE: " + pairs.getValue() + " " + counter);
                 if(pairs.getValue() == null){
-                    ((JTextField)pairs.getValue()).setText(argValue);
-                    ((JTextField)pairs.getValue()).validate();
-                    ((JTextField)pairs.getValue()).repaint();
+                    ((JTextField) pairs.getValue()).setText(argValue);
+                    ((JTextField) pairs.getValue()).validate();
+                    ((JTextField) pairs.getValue()).repaint();
                 } // if
                 else if(pairs.getValue() instanceof InputFormFieldEditor){
                     if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JTextField){        

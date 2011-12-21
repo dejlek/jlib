@@ -58,7 +58,8 @@ public class UserForm extends JFrame {
                 sportLabel.setText(chosenName);
             }
         });
-        class myNameCombo<nameCombo> extends InputFormFieldEditor {
+        
+        class MyNameCombo<nameCombo> extends InputFormFieldEditor {
 
             @Override
             public Object getValue() {
@@ -71,8 +72,9 @@ public class UserForm extends JFrame {
             }
         };
         
-        userFormPanel.setFieldWithInputComponentAndLabel(3, new myNameCombo(), sportLabel);
-        //userFormPanel.setHiddenFields(2); // making a field hidden after any custom components are set for particular fields
+        userFormPanel.setFieldWithInputComponentAndLabel(3, new MyNameCombo(), sportLabel);
+        // making a field hidden after any custom components are set for particular fields
+        // userFormPanel.setHiddenFields(2); 
         userFormPanel.setFieldAtFormIndex(0, 2);
 
 
@@ -88,7 +90,7 @@ public class UserForm extends JFrame {
         pack();
     }
 
-    public static void main(final String args[]) {
+    public static void main(final String[] args) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
 

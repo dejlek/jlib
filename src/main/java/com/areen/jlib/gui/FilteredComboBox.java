@@ -402,6 +402,34 @@ public class FilteredComboBox extends JComboBox {
 
         void readData() {
             String[] countries = {
+                "0 #Maufacturing, processing & preparation "
+, "01 #manufacturing & assembly ", "011 makeup ", "0111 curtain makeup ", "0112 sheers makeup "
+, "012 fabrication ", "0123 upholstering ", "013 assembly ", "0131 special column ring assembly "
+, "014 embroidery ", "02 #processing ", "021 construction ", "021A joinery ", "021B woodwork "
+, "021C welding ", "021D builders work ", "021E plumbing ", "021F glass to joinery ", "022 installation "
+, "022C woodwork installation ", "022D carpet installation ", "022E curtain installation "
+, "022F furniture installation ", "022K artwork installation ", "022L installation & cleaning "
+, "023 warehouse handling ", "024 finishing ", "0241 painting ", "02411 specialist painting "
+, "025 labour supply services ", "026 remove from site ", "027 #restoration & refurbishment processes "
+, "027A refurbish ", "027B restoration ", "027D reupholstery ", "027F reframe ", "027G re-covering "
+, "027J refinishing ", "027M stripping ", "027N restore & reframe ", "027P repolishing ", "03 #preparation "
+, "04 #transport services ", "041 carriage ", "041A sea freight ", "041B air frieght ", "041C courier "
+, "041D inland transport ", "042 packing ", "09 #consultancy ", "091 consultancy ", "11 ground "
+, "111 ground relief and inclination ", "1111 ground relief ", "1111A ground prominence "
+, "1111B ground mound "
+, "1111C ground embankments ", "1111D ground depressions ", "1111E ground hollows ", "1111F ground cuttings "
+, "1112 ground inclination ", "1112A flat ground ", "1112B sloped ground ", "1112B1 sheer sloped ground "
+, "1112B2 terraced sloped ground ", "113 ground composition ", "1131 stabilising ground "
+, "114 #Ground water (See 13.6) ", "115 underground ", "115A tunnel ", "115B underground duct "
+, "115C underground culvert ", "115D #Land drainage (See 52.0) ", "118 other types of ground elements "
+, "119 parts & accessories to ground elements ", "1191 ground excavation ", "1192 ground trench "
+, "1193 ground fill ", "12 #Vacant ", "13 floor beds ", "131 ground floors & suspended & pavements "
+, "1311 #External hard surfaces (See Code 90.4) ", "134 planted & unplanted beds (soft surfaces)"
+, "1341 fitted plant containers ", "1342 #Plant container (See 71.2) "
+, "136 #Ground underwater (See 90.42 & 71.2) "
+            };
+        
+/*
                 "Afghanistan",
                 "Albania",
                 "Algeria",
@@ -466,12 +494,15 @@ public class FilteredComboBox extends JComboBox {
                 "Yemen",
                 "Zaire",
                 "Zambia",
-                "Zimbabwe"};
+                "Zimbabwe"
+                * 
+                */
 
             for (String country : countries) {
                 data.add(country);
-            }
-        }
+            } // foreach
+        } // readData() method
+        
         boolean isThreadStarted = false;
 
         void writeData() {
