@@ -1,13 +1,29 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * $Id: AreenTablePanel.java 295 2011-12-20 17:01:01Z mehjabeen $
+ *
+ * Copyright (c) 2009-2010 Areen Design Services Ltd
+ * 23 Eyot Gardens; London; W6 9TR
+ * http://www.areen.com
+ * All rights reserved.
+ * 
+ * This software is the confidential and proprietary information of
+ * Areen Design Services Ltd ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Areen Design Services Ltd.
+ * 
+ * This file is best viewed with 110 columns.
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+ * 
+ * Author(s) in chronological order:
+ *   Dejan Lekic , http://dejan.lekic.org
+ * Contributor(s):
+ *   -
  */
+
 package com.areen.jlib.gui;
 
-/**
- *
- * @author dejan
- */
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -32,28 +48,48 @@ import org.apache.log4j.PatternLayout;
 
 /**
  * An implementation of a filtered combo-box with ability to insert new text.
- * 
+ *
  * Based on Java code by Exterminator13 ( http://snippets.dzone.com/posts/show/7633 )
+ *
  * @author Exterminator13
  * @author Dejan Lekic , http://dejan.lekic.org
  */
 public class FilteredComboBox extends JComboBox {
 
-    private static final Logger logger = Logger.getLogger(FilteredComboBox.class);
+    // ======================================================================================================
+    //  Setting variables
+    // ======================================================================================================
+
+    private boolean addingToTopEnabled = true;
+    
+    // ======================================================================================================
+    //  Variables
+    // ======================================================================================================
+    
+    private static final Logger LOGGER = Logger.getLogger(FilteredComboBox.class);
     private FilteredComboBoxTestModel model;
     private final JTextComponent textComponent = (JTextComponent) getEditor().getEditorComponent();
     private boolean modelFilling = false;
     private boolean updatePopup;
+    private boolean layingOut = false;
+    private AutoCompleteDocument autoCompleteDocument;
+    private String previousPattern = null;
 
+    // ======================================================================================================
+    //  Constructors
+    // ======================================================================================================
+    
     public FilteredComboBox() {
         model = new FilteredComboBoxTestModel();
         setEditable(true);
 
-        logger.debug("setPattern() called from constructor");
+        LOGGER.debug("setPattern() called from constructor");
         setPattern(null);
         updatePopup = false;
-        
-        textComponent.setDocument(new AutoCompleteDocument());
+
+        autoCompleteDocument = new AutoCompleteDocument();
+        autoCompleteDocument.setAddingEnabled(addingToTopEnabled);
+        textComponent.setDocument(autoCompleteDocument);
         setModel(model);
         setSelectedItem(null);
 
@@ -71,17 +107,19 @@ public class FilteredComboBox extends JComboBox {
             }
         }).start();
     }
-    
+
     public FilteredComboBox(String[] argComboItems) {
         model = new FilteredComboBoxTestModel(argComboItems);
-        
+
         setEditable(true);
 
-        logger.debug("setPattern() called from constructor");
+        LOGGER.debug("setPattern() called from constructor");
         setPattern(null);
         updatePopup = false;
-        
-        textComponent.setDocument(new AutoCompleteDocument());
+
+        autoCompleteDocument = new AutoCompleteDocument();
+        autoCompleteDocument.setAddingEnabled(addingToTopEnabled);
+        textComponent.setDocument(autoCompleteDocument);
         setModel(model);
         setSelectedItem(null);
 
@@ -100,9 +138,46 @@ public class FilteredComboBox extends JComboBox {
         }).start();
     }
 
+    // ======================================================================================================
+    //  Superclass/interface methods
+    // ======================================================================================================
+    
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public void doLayout() {
+        try {
+            layingOut = true;
+            super.doLayout();
+        } finally {
+            layingOut = false;
+        } // finally
+    } // doLayout() method
+
+    /**
+     * {@inheritDoc }
+     *
+     * @return Dimension object containing a much better dimension than the one from the JComboBox.
+     */
+    @Override
+    public Dimension getSize() {
+        Dimension dim = super.getSize();
+        if (!layingOut) {
+            dim.width = Math.max(dim.width, getPreferredSize().width);
+        }
+        return dim;
+    } //  getSize() method
+
+
+
+    /**
+     * An internal class that deals with FilteredComboBox entries as a Document.
+     */
     private class AutoCompleteDocument extends PlainDocument {
 
         boolean arrowKeyPressed = false;
+        private boolean addingEnabled = false;
 
         public AutoCompleteDocument() {
             textComponent.addKeyListener(new KeyAdapter() {
@@ -111,17 +186,19 @@ public class FilteredComboBox extends JComboBox {
                 public void keyPressed(KeyEvent e) {
                     int key = e.getKeyCode();
                     if (key == KeyEvent.VK_ENTER) {
-                        logger.debug("[key listener] enter key pressed");
+                        LOGGER.debug("[key listener] enter key pressed");
                         //there is no such element in the model for now
                         String text = textComponent.getText();
                         if (!model.data.contains(text)) {
-                            logger.debug("addToTop() called from keyPressed()");
-                            addToTop(text);
-                        }
+                            LOGGER.debug("addToTop() called from keyPressed()");
+                            if (addingEnabled) {
+                                addToTop(text);
+                            } // if
+                        } // if
                     } else if (key == KeyEvent.VK_UP
                             || key == KeyEvent.VK_DOWN) {
                         arrowKeyPressed = true;
-                        logger.debug("arrow key pressed");
+                        LOGGER.debug("arrow key pressed");
                     }
                 }
             });
@@ -129,7 +206,7 @@ public class FilteredComboBox extends JComboBox {
 
         void updateModel() throws BadLocationException {
             String textToMatch = getText(0, getLength());
-            logger.debug("setPattern() called from updateModel()");
+            LOGGER.debug("setPattern() called from updateModel()");
             setPattern(textToMatch);
         }
 
@@ -137,16 +214,16 @@ public class FilteredComboBox extends JComboBox {
         public void remove(int offs, int len) throws BadLocationException {
 
             if (modelFilling) {
-                logger.debug("[remove] model is being filled now");
+                LOGGER.debug("[remove] model is being filled now");
                 return;
             }
 
             super.remove(offs, len);
             if (arrowKeyPressed) {
                 arrowKeyPressed = false;
-                logger.debug("[remove] arrow key was pressed, updateModel() was NOT called");
+                LOGGER.debug("[remove] arrow key was pressed, updateModel() was NOT called");
             } else {
-                logger.debug("[remove] calling updateModel()");
+                LOGGER.debug("[remove] calling updateModel()");
                 updateModel();
             }
             clearSelection();
@@ -156,7 +233,7 @@ public class FilteredComboBox extends JComboBox {
         public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 
             if (modelFilling) {
-                logger.debug("[insert] model is being filled now");
+                LOGGER.debug("[insert] model is being filled now");
                 return;
             }
 
@@ -171,18 +248,26 @@ public class FilteredComboBox extends JComboBox {
 
             String text = getText(0, getLength());
             if (arrowKeyPressed) {
-                logger.debug("[insert] arrow key was pressed, updateModel() was NOT called");
+                LOGGER.debug("[insert] arrow key was pressed, updateModel() was NOT called");
                 model.setSelectedItem(text);
-                logger.debug(String.format("[insert] model.setSelectedItem(%s)", text));
+                LOGGER.debug(String.format("[insert] model.setSelectedItem(%s)", text));
                 arrowKeyPressed = false;
             } else if (!text.equals(getSelectedItem())) {
-                logger.debug("[insert] calling updateModel()");
+                LOGGER.debug("[insert] calling updateModel()");
                 updateModel();
             }
 
             clearSelection();
         }
-    }
+
+        public boolean isAddingEnabled() {
+            return addingEnabled;
+        }
+
+        public void setAddingEnabled(boolean argAddingEnabled) {
+            addingEnabled = argAddingEnabled;
+        }
+    } // AutoCompleteDocument class (inner)
 
     public void setText(String text) {
         if (model.data.contains(text)) {
@@ -196,7 +281,6 @@ public class FilteredComboBox extends JComboBox {
     public String getText() {
         return getEditor().getItem().toString();
     }
-    private String previousPattern = null;
 
     private void setPattern(String pattern) {
 
@@ -206,7 +290,7 @@ public class FilteredComboBox extends JComboBox {
 
         if (previousPattern == null && pattern == null
                 || pattern != null && pattern.equals(previousPattern)) {
-            logger.debug("[setPatter] pattern is the same as previous: " + previousPattern);
+            LOGGER.debug("[setPatter] pattern is the same as previous: " + previousPattern);
             return;
         }
 
@@ -217,7 +301,7 @@ public class FilteredComboBox extends JComboBox {
 
         model.setPattern(pattern);
 
-        if (logger.isDebugEnabled()) {
+        if (LOGGER.isDebugEnabled()) {
             StringBuilder b = new StringBuilder(100);
             b.append("pattern filter '").append(pattern == null ? "null" : pattern).append("' set:\n");
             for (int i = 0; i < model.getSize(); i++) {
@@ -228,14 +312,14 @@ public class FilteredComboBox extends JComboBox {
                 b.delete(ind, ind + 2);
             }
 //            b.append('\n');
-            logger.debug(b);
+            LOGGER.debug(b);
         }
 //        logger.debug("setPattern(): end");
         modelFilling = false;
         if (pattern != null) {
             updatePopup = true;
         }
-    }
+    } // setPattern() method
 
     private void clearSelection() {
         int i = getText().length();
@@ -252,6 +336,70 @@ public class FilteredComboBox extends JComboBox {
         model.addToTop(aString);
     }
 
+    public boolean isAddingToTopEnabled() {
+        return addingToTopEnabled;
+    }
+
+    /**
+     * Use this method to disable adding of items to the top of the FilteredComboBox.
+     *
+     * @param addingToTopEnabled
+     */
+    public void setAddingToTopEnabled(boolean argAddingToTopEnabled) {
+        addingToTopEnabled = argAddingToTopEnabled;
+        autoCompleteDocument.setAddingEnabled(addingToTopEnabled);
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+
+//                Logger root = Logger.getRootLogger();
+//                root.addAppender(new ConsoleAppender(new PatternLayout("%d{ISO8601} [%5p] %m at %l%n")));
+                Logger root = Logger.getRootLogger();
+                root.addAppender(new ConsoleAppender(new PatternLayout("%d{ISO8601} %m at %L%n")));
+
+//                BasicConfigurator.configure();
+
+                JFrame frame = new JFrame();
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setLayout(new GridLayout(3, 1));
+                final JLabel label = new JLabel("label ");
+                frame.add(label);
+                final FilteredComboBox combo = new FilteredComboBox();
+//                combo.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+//
+//                    @Override
+//                    public void keyReleased(KeyEvent e) {
+//                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//                            String text = combo.getEditor().getItem().toString();
+//                            if(text.isEmpty())
+//                                return;
+//                            combo.addToTop(text);
+//                        }
+//                    }
+//                });
+                frame.add(combo);
+                JComboBox combo2 = new JComboBox(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"});
+                combo2.setEditable(true);
+                frame.add(combo2);
+                frame.pack();
+                frame.setSize(500, frame.getHeight());
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            }
+        });
+    } // main() method
+    
+    // ======================================================================================================
+    //  Nested classes
+    // ======================================================================================================
+
+    /**
+     * A basic model for the FilteredComboBox .
+     */
     private class FilteredComboBoxTestModel extends AbstractListModel implements ComboBoxModel {
 
 //        String pattern;
@@ -259,6 +407,9 @@ public class FilteredComboBox extends JComboBox {
         final String delimiter = ";;;";
         final int limit = 20;
 
+        /**
+         * This nested class holds all strings that are filtered by the FilteredComboBox
+         */
         class Data {
 
             private List<String> list = new ArrayList<String>(limit);
@@ -299,7 +450,7 @@ public class FilteredComboBox extends JComboBox {
                 if (pattern == null || pattern.isEmpty()) {
                     filtered = list;
                     FilteredComboBox.this.setSelectedItem(model.getElementAt(0));
-                    logger.debug(String.format("[setPattern] combo.setSelectedItem(null)"));
+                    LOGGER.debug(String.format("[setPattern] combo.setSelectedItem(null)"));
                 } else {
                     filtered = new ArrayList<String>(limit);
                     pattern = pattern.toLowerCase();
@@ -310,9 +461,9 @@ public class FilteredComboBox extends JComboBox {
                         }
                     }
                     FilteredComboBox.this.setSelectedItem(pattern);
-                    logger.debug(String.format("[setPattern] combo.setSelectedItem(%s)", pattern));
+                    LOGGER.debug(String.format("[setPattern] combo.setSelectedItem(%s)", pattern));
                 }
-                logger.debug(String.format("pattern:'%s', filtered: %s", pattern, filtered));
+                LOGGER.debug(String.format("pattern:'%s', filtered: %s", pattern, filtered));
             }
 
             boolean contains(String s) {
@@ -327,15 +478,16 @@ public class FilteredComboBox extends JComboBox {
                 }
                 return false;
             }
-        }
-        Data data = new Data();
+        } // Data class (nested)
         
+        FilteredComboBoxTestModel.Data data = new FilteredComboBoxTestModel.Data();
+
         public FilteredComboBoxTestModel() {
             readData();
         }
-        
+
         public FilteredComboBoxTestModel(String[] argValues) {
-            for (String el: argValues) {
+            for (String el : argValues) {
                 data.add(el);
             }
         }
@@ -438,6 +590,7 @@ public class FilteredComboBox extends JComboBox {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException ex) {
+                        LOGGER.debug(ex);
                     }
                     //we need this synchronization to
                     //synchronize with FilteredComboBox.addElement method
@@ -490,7 +643,7 @@ public class FilteredComboBox extends JComboBox {
 
             setPattern(null);
             model.setSelectedItem(aString);
-            logger.debug(String.format("[addToTop] model.setSelectedItem(%s)", aString));
+            LOGGER.debug(String.format("[addToTop] model.setSelectedItem(%s)", aString));
 
             //saving into options
             if (data.size() > 0) {
@@ -522,47 +675,7 @@ public class FilteredComboBox extends JComboBox {
             return data.getFiltered().get(index);
         }
     }
+    
+} // FilteredComboBox class
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-
-//                Logger root = Logger.getRootLogger();
-//                root.addAppender(new ConsoleAppender(new PatternLayout("%d{ISO8601} [%5p] %m at %l%n")));
-                Logger root = Logger.getRootLogger();
-                root.addAppender(new ConsoleAppender(new PatternLayout("%d{ISO8601} %m at %L%n")));
-
-//                BasicConfigurator.configure();
-
-                JFrame frame = new JFrame();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setLayout(new GridLayout(3, 1));
-                final JLabel label = new JLabel("label ");
-                frame.add(label);
-                final FilteredComboBox combo = new FilteredComboBox();
-//                combo.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
-//
-//                    @Override
-//                    public void keyReleased(KeyEvent e) {
-//                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                            String text = combo.getEditor().getItem().toString();
-//                            if(text.isEmpty())
-//                                return;
-//                            combo.addToTop(text);
-//                        }
-//                    }
-//                });
-                frame.add(combo);
-                JComboBox combo2 = new JComboBox(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"});
-                combo2.setEditable(true);
-                frame.add(combo2);
-                frame.pack();
-                frame.setSize(500, frame.getHeight());
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
-    }
-}
+// $Id$
