@@ -1,5 +1,5 @@
 /**
- * $Id: AreenTablePanel.java 295 2011-12-20 17:01:01Z mehjabeen $
+ * $Id$
  *
  * Copyright (c) 2009-2010 Areen Design Services Ltd
  * 23 Eyot Gardens; London; W6 9TR
@@ -169,118 +169,9 @@ public class FilteredComboBox extends JComboBox {
         return dim;
     } //  getSize() method
 
-
-
-    /**
-     * An internal class that deals with FilteredComboBox entries as a Document.
-     */
-    private class AutoCompleteDocument extends PlainDocument {
-
-        boolean arrowKeyPressed = false;
-        private boolean addingEnabled = false;
-
-        public AutoCompleteDocument() {
-            textComponent.addKeyListener(new KeyAdapter() {
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    int key = e.getKeyCode();
-                    if (key == KeyEvent.VK_ENTER) {
-                        LOGGER.debug("[key listener] enter key pressed");
-                        //there is no such element in the model for now
-                        String text = textComponent.getText();
-                        if (!model.data.contains(text)) {
-                            LOGGER.debug("addToTop() called from keyPressed()");
-                            if (addingEnabled) {
-                                addToTop(text);
-                            } // if
-                        } // if
-                    } else if (key == KeyEvent.VK_UP
-                            || key == KeyEvent.VK_DOWN) {
-                        arrowKeyPressed = true;
-                        LOGGER.debug("arrow key pressed");
-                    }
-                }
-            });
-        }
-
-        void updateModel() throws BadLocationException {
-            String textToMatch = getText(0, getLength());
-            LOGGER.debug("setPattern() called from updateModel()");
-            setPattern(textToMatch);
-        }
-
-        @Override
-        public void remove(int offs, int len) throws BadLocationException {
-
-            if (modelFilling) {
-                LOGGER.debug("[remove] model is being filled now");
-                return;
-            }
-
-            super.remove(offs, len);
-            if (arrowKeyPressed) {
-                arrowKeyPressed = false;
-                LOGGER.debug("[remove] arrow key was pressed, updateModel() was NOT called");
-            } else {
-                LOGGER.debug("[remove] calling updateModel()");
-                updateModel();
-            }
-            clearSelection();
-        }
-
-        @Override
-        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-
-            if (modelFilling) {
-                LOGGER.debug("[insert] model is being filled now");
-                return;
-            }
-
-            // insert the string into the document
-            super.insertString(offs, str, a);
-
-//            if (enterKeyPressed) {
-//                logger.debug("[insertString] enter key was pressed");
-//                enterKeyPressed = false;
-//                return;
-//            }
-
-            String text = getText(0, getLength());
-            if (arrowKeyPressed) {
-                LOGGER.debug("[insert] arrow key was pressed, updateModel() was NOT called");
-                model.setSelectedItem(text);
-                LOGGER.debug(String.format("[insert] model.setSelectedItem(%s)", text));
-                arrowKeyPressed = false;
-            } else if (!text.equals(getSelectedItem())) {
-                LOGGER.debug("[insert] calling updateModel()");
-                updateModel();
-            }
-
-            clearSelection();
-        }
-
-        public boolean isAddingEnabled() {
-            return addingEnabled;
-        }
-
-        public void setAddingEnabled(boolean argAddingEnabled) {
-            addingEnabled = argAddingEnabled;
-        }
-    } // AutoCompleteDocument class (inner)
-
-    public void setText(String text) {
-        if (model.data.contains(text)) {
-            setSelectedItem(text);
-        } else {
-            addToTop(text);
-            setSelectedIndex(0);
-        }
-    }
-
-    public String getText() {
-        return getEditor().getItem().toString();
-    }
+    // ======================================================================================================
+    //  Private methods
+    // ======================================================================================================
 
     private void setPattern(String pattern) {
 
@@ -326,6 +217,23 @@ public class FilteredComboBox extends JComboBox {
         textComponent.setSelectionStart(i);
         textComponent.setSelectionEnd(i);
     }
+    
+    // ======================================================================================================
+    //  Public methods
+    // ======================================================================================================
+    
+    public void setText(String text) {
+        if (model.data.contains(text)) {
+            setSelectedItem(text);
+        } else {
+            addToTop(text);
+            setSelectedIndex(0);
+        }
+    }
+
+    public String getText() {
+        return getEditor().getItem().toString();
+    }
 
 //    @Override
 //    public void setSelectedItem(Object anObject) {
@@ -349,7 +257,7 @@ public class FilteredComboBox extends JComboBox {
         addingToTopEnabled = argAddingToTopEnabled;
         autoCompleteDocument.setAddingEnabled(addingToTopEnabled);
     }
-
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
 
@@ -674,7 +582,105 @@ public class FilteredComboBox extends JComboBox {
         public Object getElementAt(int index) {
             return data.getFiltered().get(index);
         }
-    }
+    } // FilteredComboBoxTestModel class (inner)
+    
+    /**
+     * An internal class that deals with FilteredComboBox entries as a Document.
+     */
+    private class AutoCompleteDocument extends PlainDocument {
+
+        boolean arrowKeyPressed = false;
+        private boolean addingEnabled = false;
+
+        public AutoCompleteDocument() {
+            textComponent.addKeyListener(new KeyAdapter() {
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    int key = e.getKeyCode();
+                    if (key == KeyEvent.VK_ENTER) {
+                        LOGGER.debug("[key listener] enter key pressed");
+                        //there is no such element in the model for now
+                        String text = textComponent.getText();
+                        if (!model.data.contains(text)) {
+                            LOGGER.debug("addToTop() called from keyPressed()");
+                            if (addingEnabled) {
+                                addToTop(text);
+                            } // if
+                        } // if
+                    } else if (key == KeyEvent.VK_UP
+                            || key == KeyEvent.VK_DOWN) {
+                        arrowKeyPressed = true;
+                        LOGGER.debug("arrow key pressed");
+                    }
+                }
+            });
+        }
+
+        void updateModel() throws BadLocationException {
+            String textToMatch = getText(0, getLength());
+            LOGGER.debug("setPattern() called from updateModel()");
+            setPattern(textToMatch);
+        }
+
+        @Override
+        public void remove(int offs, int len) throws BadLocationException {
+
+            if (modelFilling) {
+                LOGGER.debug("[remove] model is being filled now");
+                return;
+            }
+
+            super.remove(offs, len);
+            if (arrowKeyPressed) {
+                arrowKeyPressed = false;
+                LOGGER.debug("[remove] arrow key was pressed, updateModel() was NOT called");
+            } else {
+                LOGGER.debug("[remove] calling updateModel()");
+                updateModel();
+            }
+            clearSelection();
+        }
+
+        @Override
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+
+            if (modelFilling) {
+                LOGGER.debug("[insert] model is being filled now");
+                return;
+            }
+
+            // insert the string into the document
+            super.insertString(offs, str, a);
+
+//            if (enterKeyPressed) {
+//                logger.debug("[insertString] enter key was pressed");
+//                enterKeyPressed = false;
+//                return;
+//            }
+
+            String text = getText(0, getLength());
+            if (arrowKeyPressed) {
+                LOGGER.debug("[insert] arrow key was pressed, updateModel() was NOT called");
+                model.setSelectedItem(text);
+                LOGGER.debug(String.format("[insert] model.setSelectedItem(%s)", text));
+                arrowKeyPressed = false;
+            } else if (!text.equals(getSelectedItem())) {
+                LOGGER.debug("[insert] calling updateModel()");
+                updateModel();
+            }
+
+            clearSelection();
+        }
+
+        public boolean isAddingEnabled() {
+            return addingEnabled;
+        }
+
+        public void setAddingEnabled(boolean argAddingEnabled) {
+            addingEnabled = argAddingEnabled;
+        }
+    } // AutoCompleteDocument class (inner)
     
 } // FilteredComboBox class
 
