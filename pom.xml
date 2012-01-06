@@ -1,6 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.areen</groupId>
 	<artifactId>jlib</artifactId>
@@ -17,6 +17,72 @@
 	<description>A library of reusable Java classes. 
 The idea is to open-source this library.</description>
 
+	<developers>
+		<developer>
+			<name>David Driscoll</name>
+			<email>david.driscoll@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Product Owner</role>
+				<role>Lead Tester</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+		<developer>
+			<name>Dejan Lekic</name>
+			<email>dejan.lekic@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+		<developer>
+			<name>Andrew Ritchie</name>
+			<email>andrew.ritchie@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Scrum Master</role>
+				<role>Senior Developer</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+		<developer>
+			<name>Vipul Kumar</name>
+			<email>vipul.kumar@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Senior Developer</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+		<developer>
+			<name>Mehjabeen Nujurally</name>
+			<email>mehjabeen.nujurally@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+		<developer>
+			<name>Suganya Nagarajan</name>
+			<email>suganya.nagarajan@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+	</developers>
+
 	<repositories>
 		<repository>
 			<id>areen-maven-repository</id>
@@ -26,11 +92,11 @@ The idea is to open-source this library.</description>
 			<id>areen-snapshot-repository</id>
 			<url>http://srl009.adg.internal:80/maven-snapshots</url>
 		</repository>
-      <repository>
-         <id>Sonatype-1</id>
-         <name>Sonatype Repository(1)</name>
-         <url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
-      </repository>
+		<repository>
+			<id>Sonatype-1</id>
+			<name>Sonatype Repository(1)</name>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+		</repository>
 		<repository>
 			<id>Sonatype-2</id>
 			<name>Sonatype Repository(2)</name>
@@ -70,33 +136,54 @@ The idea is to open-source this library.</description>
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-plugin-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>findbugs-maven-plugin</artifactId>
 					<version>2.3.2</version>
 					<configuration>
 						<xmlOutput>true</xmlOutput>
 						<!-- Optional directory to put findbugs xdoc xml report -->
-<!--
 						<xmlOutputDirectory>target/site</xmlOutputDirectory>
--->
+						<outputDirectory>target/site</outputDirectory>
 						<findbugsXmlOutput>true</findbugsXmlOutput>
 						<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
 						<!-- Optional directory to put findbugs xml report -->
-<!--
 						<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
--->
 					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
 					<version>2.6</version>
+					<configuration>
+						<linkXref>true</linkXref>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
 					<version>2.8</version>
 					<configuration>
+						<consoleOutput>true</consoleOutput>
 						<configLocation>${basedir}/codechecks/checkstyle/areen-checks.xml</configLocation>
 						<headerLocation>${basedir}/codechecks/checkstyle/license.txt</headerLocation>
 					</configuration>
@@ -115,49 +202,151 @@ The idea is to open-source this library.</description>
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.5.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
 				<version>2.3.2</version>
-				<executions>
-					<execution>
-						<id>findbugs</id>
-						<phase>site</phase>
-						<goals>
-							<goal>findbugs</goal>
-						</goals>
-					</execution>
-				</executions>                              
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>2.6</version>
-				<executions>
-					<execution>
-						<id>pmd</id>
-						<phase>site</phase>
-						<goals>
-							<goal>pmd</goal>
-						</goals>
-					</execution>
-				</executions>                              
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.8</version>
+			</plugin>
+<!-- launches a detached firefox instance (disabled)
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>Display Project Info</id>
+						<phase>site</phase>
+						<configuration>
+							<target>
+								<exec executable="firefox" spawn="true">
+									<arg value="-new-tab"/>
+									<arg value="file://${basedir}/target/site/index.html"/>
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+-->
+			<plugin>
+				<artifactId>exec-maven-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<version>1.2.1</version>
 				<executions>
 					<execution>
 						<id>checkstyle</id>
-						<phase>site</phase>
 						<goals>
-							<goal>checkstyle</goal>
+							<goal>exec</goal>
 						</goals>
 					</execution>
-				</executions>                              
+				</executions>
+				<configuration>
+					<executable>firefox</executable>
+					<arguments>
+						<argument>-new-tab</argument>
+						<argument>file://${basedir}/target/site/index.html</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<outputDirectory>target/site</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.5.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<!-- Optional directory to put findbugs xdoc xml report -->
+					<xmlOutputDirectory>target/site</xmlOutputDirectory>
+					<outputDirectory>target/site</outputDirectory>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+					<!-- Optional directory to put findbugs xml report -->
+					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<linkXref>true</linkXref>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<configLocation>${basedir}/codechecks/checkstyle/areen-checks.xml</configLocation>
+					<headerLocation>${basedir}/codechecks/checkstyle/license.txt</headerLocation>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<dependencies>
 		<dependency>
@@ -166,17 +355,18 @@ The idea is to open-source this library.</description>
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
-	 <dependency>
-	  <groupId>org.swinglabs</groupId>
-	  <artifactId>swingx-core</artifactId>
-	  <version>1.6.2-2</version>
-	 </dependency>
-	 <dependency>
-	  <groupId>log4j</groupId>
-	  <artifactId>log4j</artifactId>
-	  <version>1.2.16</version>
-	 </dependency>
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>swingx-core</artifactId>
+			<version>1.6.2-2</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
 	</dependencies>
+
 	<organization>
 		<name>AreenDesignServices Ltd</name>
 		<url>http://www.areen.com</url>
