@@ -10,13 +10,24 @@
 	<name>jlib</name>
 	<url>http://maven.apache.org</url>
 
+	<description>A library of reusable Java classes. 
+The idea is to open-source this library.</description>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compilerSource>1.6</compilerSource>
+		<dependencyReport></dependencyReport> <!-- disabled by default (empty) -->
 	</properties>
 
-	<description>A library of reusable Java classes. 
-The idea is to open-source this library.</description>
+	<profiles>
+		<profile>
+			<!-- -D=depReportEnabled activates the dependency report generation during site build -->
+			<id>depReportEnabled</id>
+			<properties>
+				<dependencyReport>dependencies</dependencyReport> <!-- enabled for builds running on srl009 -->
+			</properties>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>
@@ -263,6 +274,27 @@ The idea is to open-source this library.</description>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>2.4</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>cim</report>
+							<report>${dependencyReport}</report>
+							<report>dependency-convergence</report>
+							<report>dependency-management</report>
+							<report>distribution-management</report>
+							<report>index</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>mailing-list</report>
+							<report>modules</report>
+							<report>plugin-management</report>
+							<report>plugins</report>
+							<report>project-team</report>
+							<report>scm</report>
+							<report>summary</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
