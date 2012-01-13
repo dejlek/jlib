@@ -57,6 +57,10 @@
    <!-- define valid Areen suppression filters-->
    <module name="SuppressionCommentFilter"/>
    <module name="SuppressionCommentFilter">
+      <property name="offCommentFormat" value="&lt;editor-fold.*$"/>
+      <property name="onCommentFormat" value="&lt;/editor-fold.*$"/>
+   </module>
+   <module name="SuppressionCommentFilter">
       <property name="offCommentFormat" value="GEN-BEGIN.*$"/>
       <property name="onCommentFormat" value="GEN-END.*$"/>
    </module>   
