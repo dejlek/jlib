@@ -5,7 +5,10 @@
 package com.areen.jlib.test;
 
 import com.areen.jlib.gui.WideComboBox;
-import com.areen.jlib.gui.fcb.*;
+import com.areen.jlib.gui.fcb.ComboBoxFilter;
+import com.areen.jlib.gui.fcb.FilteredComboBoxCellEditor;
+import com.areen.jlib.gui.fcb.FilteredComboBoxCellRenderer;
+import com.areen.jlib.gui.fcb.FilteredComboBoxModel;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
@@ -236,6 +239,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 new FcbTestFrame(null).setVisible(true);
             }

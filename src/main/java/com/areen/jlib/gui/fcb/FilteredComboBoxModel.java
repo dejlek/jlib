@@ -1,5 +1,5 @@
 /**
- * $Id: FilteredComboBoxModel.java 142 2011-12-21 13:35:02Z dejan $
+ * $Id$
  *
  * Copyright (c) 2009-2010 Areen Design Services Ltd
  * 23 Eyot Gardens; London; W6 9TR
