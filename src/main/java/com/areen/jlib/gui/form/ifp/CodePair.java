@@ -26,7 +26,7 @@ package com.areen.jlib.gui.form.ifp;
 import com.areen.jlib.tuple.Pair;
 
 /**
- * A small subclass of our Pair<K,V> class from tje JLib which is going to be used for JComboBox items.
+ * A small subclass of our Pair<K,V> class from the JLib which is going to be used for JComboBox items.
  */
 public class CodePair extends Pair<String, String> {
 

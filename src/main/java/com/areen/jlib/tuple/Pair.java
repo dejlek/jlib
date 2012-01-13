@@ -46,7 +46,9 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
 
     @Override
     public String toString() {
-        return "(" + first + ", " + second + ")";
+        // previously we used " - " as a separator. Now we will use the 0x1f character, called the UNIT
+        // SEPARATOR to separate two fields in a String object. See the Sise class for more information.
+        return first + "\u001f" + second;
     }
 
     public KeyT getFirst() {
