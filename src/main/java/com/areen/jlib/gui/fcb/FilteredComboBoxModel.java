@@ -51,7 +51,7 @@ public class FilteredComboBoxModel
     ArrayList objects;
     Object selectedObject;
     //private ArrayList<E> fcbObjects; JDK 7
-    private ArrayList fcbObjects;
+    private final ArrayList fcbObjects;
     private String lastPattern = "";
     private int keyFieldIndex = 0; /// The index of the (unique) key part of each item.
     private boolean tableModelInUse = false;
@@ -318,12 +318,23 @@ public class FilteredComboBoxModel
             
             boolean found;
 
-            for (Object obj : fcbObjects) {
+            Object obj = null;
+            for (int i = 0; i < fcbObjects.size(); i++) {
+                obj = fcbObjects.get(i);
                 found = true;
                 for (String str : strings) {
+                    String itemAsString = null;
+                    if (tableModelInUse) {
+                        // if we use the table model, we have to convert an array of Objects to a String
+                        // before we try to find the match.
+                        //itemAsString = Sise.record((Object[]) obj);
+                        itemAsString = ((Object[]) obj)[0].toString();
+                    } else {
+                        itemAsString = obj.toString();
+                    }
                     // we are going to to AND found with true or false because we want objects that 
                     // match all elements in the "strings" array of String objects.
-                    if (obj.toString().toLowerCase().contains(str.toLowerCase())) {
+                    if (itemAsString.toLowerCase().contains(str.toLowerCase())) {
                         found &= true;
                     } else {
                         found &= false;
@@ -332,9 +343,10 @@ public class FilteredComboBoxModel
                 if (found) {
                     // obj contains one of the strings in the pattern. Let's see if we have that object in
                     // filtered list. If not, we must add it.
-                    addElement(obj);
+                    //addElement(obj);
+                    objects.add(obj);
                 } // if
-            } // foreach
+            } // for
         } // else
         
         // get the size after filtering
