@@ -343,7 +343,6 @@ public class FilteredComboBoxModel
                 if (found) {
                     // obj contains one of the strings in the pattern. Let's see if we have that object in
                     // filtered list. If not, we must add it.
-                    //addElement(obj);
                     objects.add(obj);
                 } // if
             } // for
