@@ -202,6 +202,32 @@ public class Utility {
         return argFirst.toString().compareTo(argSecond.toString());
     } // compare() method
     
+
+    /**
+     * Use this method whenever you have to convert an array of Objects to a String.
+     */
+    public static String oa2string(Object[] argObjectArray, String argSeparator) {
+        if (argObjectArray == null) {
+            return "";
+        } // if
+        if (argObjectArray.length == 0) {
+            return "";
+        } // if
+        if (argObjectArray.length == 1) {
+            return argObjectArray[0].toString();
+        } // if
+        String ret = "";
+        if (argObjectArray[0] != null) {
+            ret = argObjectArray[0].toString();
+        }
+        for (int i = 1; i < argObjectArray.length; i++) {
+            if (argObjectArray[i] != null) {
+                ret += argSeparator + argObjectArray[i].toString();
+            } // if
+        } // for 
+        return ret;
+    } // oa2string() method
+    
 } // Utility class
 
 // $Id$
