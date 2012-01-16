@@ -150,7 +150,9 @@ public class Utility {
     } // set() method
     
     /**
-     * A utility method to compare two objects, both of type argClass and see if they have equal content or not.
+     * A utility method to compare two objects, both of type argClass and see if they have equal content 
+     * or not.
+     * 
      * @param argFirst First Object.
      * @param argSecond Second Object.
      * @param argClass The type.
@@ -158,43 +160,44 @@ public class Utility {
      */
     public static int compare(Object argFirst, Object argSecond, Class argClass) {
         // if argFirst and argSecond references refer to the same object, return 0
-        if (argFirst == argSecond)
+        if (argFirst == argSecond) {
             return 0;
+        }
         
         // else, make comparison for each type...
         if (argClass == Byte.class) {
-            Byte a = (Byte)argFirst;
-            Byte b = (Byte)argSecond;
+            Byte a = (Byte) argFirst;
+            Byte b = (Byte) argSecond;
             return a.compareTo(b);
         }
         if (argClass == Short.class) {
-            Short a = (Short)argFirst;
-            Short b = (Short)argSecond;
+            Short a = (Short) argFirst;
+            Short b = (Short) argSecond;
             return a.compareTo(b);
         }
         if (argClass == Integer.class) {
-            Integer a = (Integer)argFirst;
-            Integer b = (Integer)argSecond;
+            Integer a = (Integer) argFirst;
+            Integer b = (Integer) argSecond;
             return a.compareTo(b);
         }
         if (argClass == Long.class) {
-            Long a = (Long)argFirst;
-            Long b = (Long)argSecond;
+            Long a = (Long) argFirst;
+            Long b = (Long) argSecond;
             return a.compareTo(b);
         }
         if (argClass == Float.class) {
-            Float a = (Float)argFirst;
-            Float b = (Float)argSecond;
+            Float a = (Float) argFirst;
+            Float b = (Float) argSecond;
             return a.compareTo(b);
         }
         if (argClass == Double.class) {
-            Double a = (Double)argFirst;
-            Double b = (Double)argSecond;
+            Double a = (Double) argFirst;
+            Double b = (Double) argSecond;
             return a.compareTo(b);
         }
         if (argClass == Date.class) {
-            Date a = (Date)argFirst;
-            Date b = (Date)argSecond;
+            Date a = (Date) argFirst;
+            Date b = (Date) argSecond;
             return a.compareTo(b);
         }
         

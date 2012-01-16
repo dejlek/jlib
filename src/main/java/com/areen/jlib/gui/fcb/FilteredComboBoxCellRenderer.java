@@ -5,9 +5,9 @@
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.tuple.Pair;
+import com.areen.jlib.util.Utility;
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Arrays;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
@@ -121,7 +121,8 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             if (value == null) {
                 setText("");
             } else {
-                setText(Arrays.toString((Object[]) value));
+                //setText(Arrays.toString((Object[]) value));
+                setText(Utility.oa2string((Object[]) value, " - "));
             }
         } else if (value instanceof Pair) {
             setIcon(null);
@@ -130,7 +131,6 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             } else {
                 Pair pair = (Pair) value;
                 setText(pair.getFirst() + " - " + pair.getSecond());
-                //System.out.println("Pair: " + value);
             }
         } else {
             setIcon(null);
