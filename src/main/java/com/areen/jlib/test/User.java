@@ -147,4 +147,4 @@ public class User implements SimpleObject<ValueObject> {
                 + ")";
     }
 
-}
+} // User class
