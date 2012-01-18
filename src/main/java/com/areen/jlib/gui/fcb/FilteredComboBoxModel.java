@@ -425,7 +425,7 @@ public class FilteredComboBoxModel
                 } // foreach
                 
                 if (found) {
-                    System.out.println("M(" + exactIndex + ")" + obj.toString());
+                    //System.out.println("M(" + exactIndex + ")" + obj.toString());
                     objects.add(obj);
                 } // if
             } // for
