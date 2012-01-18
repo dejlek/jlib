@@ -215,16 +215,14 @@ public class InputFormPanel extends javax.swing.JPanel {
                 componentsPanel.setLayout(new BoxLayout(componentsPanel, BoxLayout.X_AXIS));
                 final Object[] components = (Object[]) pairs.getValue();
                 for (int i = 0; i < components.length; i++) {
-                    componentsPanel.add((JComponent)components[i]);
+                    componentsPanel.add((JComponent) components[i]);
                 } // for
                 formContentPanel.add(componentsPanel);
-            } // if
-            else if(pairs.getValue()  instanceof InputFormFieldEditor){
+            } else if (pairs.getValue() instanceof InputFormFieldEditor) {
                 final Map.Entry fieldPair = pairs;
-                formContentPanel.add(((InputFormFieldEditor)pairs.getValue()).getComponent());
-            } //else if
-            else{
-                formContentPanel.add((JComponent)pairs.getValue());
+                formContentPanel.add(((InputFormFieldEditor) pairs.getValue()).getComponent());
+            } else {
+                formContentPanel.add((JComponent) pairs.getValue());
             } // else
         } // while
         makeCompactGrid(formContentPanel, labels.size(), formColumns, 6, 6, 6, 6);
@@ -319,7 +317,9 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setFieldWithInputComponent() method
 
-    public void setFieldWithInputComponentAndLabel(int argModelIdx, InputFormFieldEditor argComponent, JLabel argLbl) {
+    public void setFieldWithInputComponentAndLabel(int argModelIdx, 
+            InputFormFieldEditor argComponent, 
+            JLabel argLbl) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
         done:
@@ -334,6 +334,12 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setFieldWithInputComponent() method
 
+    /**
+     * TODO: What does this method do???
+     * 
+     * @param argModelIndex
+     * @param argValue 
+     */
     public void setFieldWithValue(final int argModelIndex, final String argValue) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
@@ -342,26 +348,26 @@ public class InputFormPanel extends javax.swing.JPanel {
             Map.Entry pairs = (Map.Entry) it.next();
             if (counter == argModelIndex) {
                 //DEBUG: System.out.println("VALUE: " + pairs.getValue() + " " + counter);
-                if(pairs.getValue() == null){
+                if (pairs.getValue() == null) {
                     ((JTextField) pairs.getValue()).setText(argValue);
                     ((JTextField) pairs.getValue()).validate();
                     ((JTextField) pairs.getValue()).repaint();
-                } // if
-                else if(pairs.getValue() instanceof InputFormFieldEditor){
-                    if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JTextField){        
-                        ((JTextField)((InputFormFieldEditor)pairs.getValue()).getComponent()).setText(argValue);
-                        ((JTextField)((InputFormFieldEditor)pairs.getValue()).getComponent()).validate();
-                        ((JTextField)((InputFormFieldEditor)pairs.getValue()).getComponent()).repaint();
-                    } // if
-                    else if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JComboBox){
-                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).setSelectedItem(argValue);
-                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).validate();
-                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).repaint();
-                    } // else if
-                    else if(((InputFormFieldEditor)pairs.getValue()).getComponent() instanceof JComboBox){
-                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).setSelectedItem(argValue);
-                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).validate();
-                        ((JComboBox)((InputFormFieldEditor)pairs.getValue()).getComponent()).repaint();
+                } else if (pairs.getValue() instanceof InputFormFieldEditor) {
+                    // TODO:
+                    // Dejan: use the following reference instead of pasting (InputFormFieldEditor)...
+                    JComponent com = ((InputFormFieldEditor) pairs.getValue()).getComponent(); 
+                    if (((InputFormFieldEditor) pairs.getValue()).getComponent() instanceof JTextField) {
+                        ((JTextField) ((InputFormFieldEditor) pairs.getValue()).getComponent()).setText(argValue);
+                        ((JTextField) ((InputFormFieldEditor) pairs.getValue()).getComponent()).validate();
+                        ((JTextField) ((InputFormFieldEditor) pairs.getValue()).getComponent()).repaint();
+                    } else if (((InputFormFieldEditor) pairs.getValue()).getComponent() instanceof JComboBox) {
+                        ((JComboBox) ((InputFormFieldEditor) pairs.getValue()).getComponent()).setSelectedItem(argValue);
+                        ((JComboBox) ((InputFormFieldEditor) pairs.getValue()).getComponent()).validate();
+                        ((JComboBox) ((InputFormFieldEditor) pairs.getValue()).getComponent()).repaint();
+                    } else if (((InputFormFieldEditor) pairs.getValue()).getComponent() instanceof JComboBox) {
+                        ((JComboBox) ((InputFormFieldEditor) pairs.getValue()).getComponent()).setSelectedItem(argValue);
+                        ((JComboBox) ((InputFormFieldEditor) pairs.getValue()).getComponent()).validate();
+                        ((JComboBox) ((InputFormFieldEditor) pairs.getValue()).getComponent()).repaint();
                     } // else if
                 } // else if
                 this.validate();
@@ -370,7 +376,7 @@ public class InputFormPanel extends javax.swing.JPanel {
             } // if
             counter++;
         } // while
-    }
+    } // setFieldWithValue() method
 
     public void setFieldAtFormIndex(final int argModelIndex, final int argFormIndex) {
         int counter = 0;
