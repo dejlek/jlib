@@ -22,7 +22,7 @@ public class WideComboBox extends JComboBox {
         super();
     }
 
-    public WideComboBox(final Object items[]) {
+    public WideComboBox(final Object[] items) {
         super(items);
     }
 

@@ -18,7 +18,7 @@ public class Main {
         }
     } // CodeAndValue class
 
-    private final static CodeAndValue[] TLDS = new CodeAndValue[] { 
+    public static final CodeAndValue[] TLDS = new CodeAndValue[] { 
         new CodeAndValue("aero" , "Air transport")
         , new CodeAndValue("asia" , "Organisations and individuals in the Asia-Pacific region")
         , new CodeAndValue("biz" , "Business")

@@ -23,6 +23,8 @@
 
 package com.areen.jlib.gui.fcb;
 
+import com.areen.jlib.tuple.Pair;
+import com.areen.jlib.util.Sise;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,15 +58,16 @@ public class FilteredComboBoxModel
     private int keyFieldIndex = 0; /// The index of the (unique) key part of each item.
     private boolean tableModelInUse = false;
     AbstractTableModel tableModel;
-    
+    private Object exactObject = null; /// If there is an exact match, here we hold a reference to the Object.
+    private int exactIndex = -1; /// If there is an exact match, here we hold the index of the Object.
+    private int[] columns;
     /**
      * Constructs an empty ArrayListModel object.
      */
     public FilteredComboBoxModel() {
         objects = new ArrayList();
         fcbObjects = new ArrayList();
-
-    }
+    } // FilteredComboBoxModel constructor (default)
 
     /**
      * Constructs a ArrayListModel object initialized with
@@ -74,7 +77,7 @@ public class FilteredComboBoxModel
      */
     public FilteredComboBoxModel(final Object[] items) {
         //objects = new ArrayList<E>(); JDK 7
-        objects = new ArrayList<Object>();
+        objects = new ArrayList();
         objects.ensureCapacity(items.length);
 
         int i, c;
@@ -91,22 +94,22 @@ public class FilteredComboBoxModel
         // fcbObjects = new ArrayList<E>(); JDK 7
         fcbObjects = new ArrayList();
         fcbObjects.addAll(Arrays.asList(items));
-    }
+    } // FilteredComboBoxModel constructor
     
     /**
      * Be sure the type E is equal to Object[] when using this constructor!
      * 
      * @param argAbstractTableModel
      * @param columns An int[] array holding information what columns from the model we want to show in the
-     *                combo-box.
+     *                combo-box. The first element in the columns array contains the index of the key field.
      * @param argKeyFieldNumber 
      */
     public FilteredComboBoxModel(
             AbstractTableModel argAbstractTableModel
-            , int[] columns
-            , int argKeyFieldNumber) {
+            , int[] argColumns) {
         tableModelInUse = true;
         tableModel = argAbstractTableModel;
+        columns = argColumns;
         objects = new ArrayList();
         objects.ensureCapacity(argAbstractTableModel.getRowCount());
         fcbObjects = new ArrayList();
@@ -176,7 +179,7 @@ public class FilteredComboBoxModel
         for (Object obj : v) {
             fcbObjects.add(obj);
         } // foreach
-    }
+    } //  // FilteredComboBoxModel constructor
 
     // implements javax.swing.ComboBoxModel
     /**
@@ -192,7 +195,7 @@ public class FilteredComboBoxModel
             selectedObject = anObject;
             fireContentsChanged(this, -1, -1);
         }
-    }
+    } // setSelectedItem() method
 
     // implements javax.swing.ComboBoxModel
     @Override
@@ -291,7 +294,11 @@ public class FilteredComboBoxModel
         }
     }
     
+/* backup copy
     public void setPattern(String argPattern) {
+        Object exactObject = null;
+        int exactIndex = -1;
+        
         String copy = argPattern.trim();
         if (lastPattern.equals(copy)) {
             // we have the same pattern, probably with an additional space, no need for filtering.
@@ -321,17 +328,19 @@ public class FilteredComboBoxModel
             Object obj = null;
             for (int i = 0; i < fcbObjects.size(); i++) {
                 obj = fcbObjects.get(i);
+                int tst = check("in", obj);
+                System.out.println(tst);
                 found = true;
                 for (String str : strings) {
                     String itemAsString = null;
                     if (tableModelInUse) {
                         // if we use the table model, we have to convert an array of Objects to a String
                         // before we try to find the match.
-                        //itemAsString = Sise.record((Object[]) obj);
-                        itemAsString = ((Object[]) obj)[0].toString();
+                        itemAsString = Sise.record((Object[]) obj);
+                        //itemAsString = ((Object[]) obj)[0].toString();
                     } else {
                         itemAsString = obj.toString();
-                    }
+                    } // else
                     // we are going to to AND found with true or false because we want objects that 
                     // match all elements in the "strings" array of String objects.
                     if (itemAsString.toLowerCase().contains(str.toLowerCase())) {
@@ -366,8 +375,96 @@ public class FilteredComboBoxModel
         }
         lastPattern = copy;
     } // setPattern() method implementation
+ */
+    public void setPattern(String argPattern) {
+        exactObject = null;
+        exactIndex = -1;
+        
+        String copy = argPattern.trim();
+        if (lastPattern.equals(copy)) {
+            // we have the same pattern, probably with an additional space, no need for filtering.
+            System.out.println("DEBUG: (equal) setPattern(" + argPattern + ");");
+            return;
+        }
+        System.out.println("DEBUG: setPattern(" + argPattern + ");");
+        
+        // record the size before we start modifying the filtered list of objects
+        int size1 = getSize();
+        
+        if (!objects.isEmpty()) {
+            objects.clear();
+        }
+        
+        boolean exactMatchFound = false;
+        if (argPattern.isEmpty()) {
+            // pattern contains no characters - might be erased, so we have to populate objects list.
+            objects.addAll(fcbObjects);
+        } else {
+            // Before we split, lets remove some special characters.
+            copy.replaceAll(" - ", " ");
+            // pattern contains at least one character
+            String[] strings = copy.split(" ");
+            
+            boolean found;
+            Object obj = null;
+            int val = -1;
+            for (int i = 0; i < fcbObjects.size(); i++) {
+                obj = fcbObjects.get(i);
+                
+                if (check(copy, obj) == 2) {
+                    // we have an exact match!
+                    exactObject = obj;
+                    exactIndex = i;
+                    exactMatchFound = true;
+                } // if
+                
+                found = true;
+                for (String str : strings) {
+                    val = check(str, obj);
+                    found &= ((val == 1) || (val == 2));
+                } // foreach
+                
+                if (found) {
+                    System.out.println("M(" + exactIndex + ")" + obj.toString());
+                    objects.add(obj);
+                } // if
+            } // for
+        } // else
+        
+        // get the size after filtering
+        int size2 = getSize();
+        
+        System.out.println(size1 + ", " + size2);
+        if (size1 < size2) {
+            fireIntervalAdded(this, size1, size2 - 1);
+            fireContentsChanged(this, 0, size1 - 1);
+        } else if (size1 > size2) {
+            fireIntervalRemoved(this, size2, size1 - 1);
+            fireContentsChanged(this, 0, size2 - 1);
+        } else {
+            fireContentsChanged(this, 0, size2 - 1);
+        }
+        
+        // Let's select appropriate item.
+        if (this.getSize() > 0) {
+            if (exactMatchFound) {
+                // if we had an exact match, select that item.
+                System.out.println("### Exact match found!");
+                System.out.println("(" + exactIndex + ")" + exactObject.toString());
+                setSelectedItem(exactObject);
+            } else {
+                // if we did not have an exact match, select the first item in the newly created list.
+                setSelectedIndex(0);
+            } // else
+        } // if
+        
+        lastPattern = copy;
+    } // setPattern() method implementation
     
     public Object lookupItem(String argPattern) {
+        if (argPattern.isEmpty()) {
+            return null;
+        } // if
         Object selectedItem = getSelectedItem();
         // only search for a different item if the currently selected does not match
         if (selectedItem != null && startsWithIgnoreCase(selectedItem.toString(), argPattern)) {
@@ -404,6 +501,35 @@ public class FilteredComboBoxModel
             setSelectedItem(objects.get(argIndex));
         }
     }
+    
+    /**
+     * Use this method to objtain a reference to an object containing the key part of the Item. In the case
+     * our combo-box contains a list of Pairs, we will get the first element. In the case it is a list of
+     * Object[] arrays, then we use the columns array to get the index of the key.
+     * @return 
+     */
+    public Object getKeyOfTheSelectedItem() {
+        Object selected = getSelectedItem();
+        if (selected instanceof Pair) {
+            return ((Pair) selected).getFirst();
+        }
+        if (selected instanceof Object[]) {
+            // we assume whenever we deal with Object[] array, it came from a table model.
+            int idx = columns[0];
+            return ((Object[]) selected)[idx];
+        }
+        
+        // in any other case we will convert object to String and check if it is a Sise record or not.
+        String str = selected.toString();
+        if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
+            // we deal with a Sise record
+            String[] units = Sise.units(str);
+            return units[0];
+        } else {
+            // If it is any other String, just simply return it.
+            return str;
+        } // else
+    } // getKeyOfTheSelectedItem() method
 
     /**
      * Use this method when you need to get all fields of a row in an AbstractTableModel as an array of
@@ -419,6 +545,95 @@ public class FilteredComboBoxModel
         }
         return row;
     }
+    
+    /**
+     * This method acts as a "dispatcher" to appropriate check() function.
+     * @param argWhat
+     * @param argObject
+     * @return 0 - if not found, 1 - if found , 2 - if the exact match was found
+     */
+    private int check(String argWhat, Object argObject) {
+        if (argObject instanceof Pair) {
+            return check(argWhat, (Pair) argObject);
+        } // if
+        if (argObject instanceof Object[]) {
+            return check(argWhat, (Object[]) argObject);
+        } // if
+        
+        // fall back to using String
+        return check(argWhat, argObject.toString());
+    } // check() method
+    
+    /**
+     * Checks for partial or exact match of argWhat within the argPair object.
+     * @param argWhat
+     * @param argString
+     * @return 0 - if there is no match, 1 - if argString contains argWhat or 2 if argString is equal 
+     *             to argWhat (case insensitive equality).
+     */
+    private int check(String argWhat, Pair argPair) {
+        //System.out.println("PAIR: " + argWhat + " ? " + argPair.toString());
+        String left = argPair.getFirst().toString();
+        String right = argPair.getSecond().toString();
+        
+        if (left.toLowerCase().equals(argWhat.toLowerCase())
+                || right.toLowerCase().equals(argWhat.toLowerCase())) {
+            // we have an exact match
+            return 2;
+        } // if
+        if (left.toLowerCase().contains(argWhat.toLowerCase())
+                || right.toLowerCase().contains(argWhat.toLowerCase())) {
+            // we found a partial match
+            return 1;
+        } // if
+        return 0;
+    } // check() method
+    
+    /**
+     * Checks for partial or exact match of argWhat within an array of Objects.
+     * 
+     * @param argWhat
+     * @param argObjects
+     * @return 0 - if there is no match, 1 - if argString contains argWhat or 2 if argString is equal 
+     *             to argWhat (case insensitive equality).
+     */
+    private int check(String argWhat, Object[] argObjects) {
+        //System.out.println("OBJECT[]: " + argWhat + " ? " + Sise.record(argObjects));
+        String str = null;
+        for (Object obj : argObjects) {
+            str = obj.toString();
+            if (str.equalsIgnoreCase(argWhat)) {
+                // we found an exact match
+                return 2;
+            } // if
+            if (str.toLowerCase().contains(argWhat.toLowerCase())) {
+                // we found a partial match
+                return 1;
+            } // if
+        } // foreach
+        return 0;
+    } // check() method
+    
+    /**
+     * Checks for partial or exact match of argWhat within argString
+     * @param argWhat
+     * @param argString
+     * @return 0 - if there is no match, 1 - if argString contains argWhat or 2 if argString is equal 
+     *             to argWhat (case insensitive equality).
+     */
+    private int check(String argWhat, String argString) {
+        //System.out.println("String: " + argWhat + " ? " + Sise.record(argObjects));
+        if (argString.equalsIgnoreCase(argWhat)) {
+            // we have an exact match
+            return 2;
+        } // if
+        if (argString.toLowerCase().contains(argWhat.toLowerCase())) {
+            // we found a partial match
+            return 1;
+        } // if
+        return 0;
+    } // check() method
+    
 } // FilteredComboBoxModel class
 
 // $Id$

@@ -46,9 +46,11 @@ public class FcbTestFrame extends javax.swing.JFrame {
         testTable.getColumnModel().getColumn(3).setCellEditor(new FilteredComboBoxCellEditor(fcb));
         
         // FILTERED COMBO BOX (TEST)
-        filteredComboBox.setEditable(true);
+        //filteredComboBox.setEditable(true);
         //filteredComboBox.setModel(cbModel); no need, the constructor will set the model for us
-        new ComboBoxFilter(filteredComboBox, vecModel);
+        new ComboBoxFilter(filteredComboBox, cbModel);
+        filteredComboBox.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
+        System.out.println(filteredComboBox.getModel().getClass().getCanonicalName());
         
         // add it to the table too
         WideComboBox tableCb = new WideComboBox();
@@ -63,8 +65,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         normalComboBox.setEditable(true);
         
         tableComboBox.setEditable(true);
-        FilteredComboBoxModel tableCbModel = new FilteredComboBoxModel(tableModel, 
-                new int[]{0, 1}, 0);
+        FilteredComboBoxModel tableCbModel = new FilteredComboBoxModel(tableModel, new int[]{0, 1});
         tableComboBox.setRenderer(new FilteredComboBoxCellRenderer(tableCbModel));
         new ComboBoxFilter(tableComboBox, tableCbModel);
     }

@@ -103,7 +103,8 @@ public class ComboBoxFilter extends PlainDocument {
                     */
                     case KeyEvent.VK_ENTER:
                         finish = true;
-                        setText(comboBox.getSelectedItem().toString());
+                        //setText(comboBox.getSelectedItem().toString());
+                        setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                         break;
                         
                     case KeyEvent.VK_UP:
@@ -189,7 +190,7 @@ public class ComboBoxFilter extends PlainDocument {
         Object selected = comboBox.getSelectedItem();
         selectedIndex = comboBox.getSelectedIndex();
         if (selected != null) {
-            setText(selected.toString());
+            setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
         }
     } // ComboBoxFilter constructor
 
@@ -249,7 +250,7 @@ public class ComboBoxFilter extends PlainDocument {
     
     @Override
     public void remove(int offs, int len) throws BadLocationException {
-        //System.out.println("remove(" + offs + ", " + len + ")");
+        System.out.println("remove(" + offs + ", " + len + ")");
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be
@@ -300,10 +301,13 @@ public class ComboBoxFilter extends PlainDocument {
         // we have to "guard" the call to comboBoxModel.setPattern() with selecting set to true, then false
         selecting = true;
         comboBoxModel.setPattern(getText(0, getLength()));
+        /*
         if (comboBoxModel.getSize() > 0) {
             comboBox.setSelectedIndex(0);
             selectedIndex = 0;
-        }        
+        } 
+        * 
+        */
         comboBox.validate();
         selecting = false;
         System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());

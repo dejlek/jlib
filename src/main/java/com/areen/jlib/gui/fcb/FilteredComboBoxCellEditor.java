@@ -4,6 +4,7 @@
  */
 package com.areen.jlib.gui.fcb;
 
+import com.areen.jlib.gui.WideComboBox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         implements ActionListener, TableCellEditor, Serializable {
     
     private JComboBox comboBox;
+    private FilteredComboBoxModel comboBoxModel;
     
     public FilteredComboBoxCellEditor(JComboBox argComboBox) {
         comboBox = argComboBox;
@@ -28,13 +30,37 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         comboBox.addActionListener(this);
         // remove the editor's border - the cell itself already has one
         ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
+        
+        // TODO: check if we actually do have this kind of model
+        comboBoxModel = (FilteredComboBoxModel) comboBox.getModel();
     }
+    
+    /**
+     * A convenient constructor that does almost all we have to do. Just give it a model, and it will do
+     * everything for you.
+     * 
+     * @param argModel 
+     */
+    public FilteredComboBoxCellEditor(FilteredComboBoxModel argModel) {
+        comboBox = new WideComboBox();
+        comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+        // hitting enter in the combo box should stop cellediting (see below)
+        comboBox.addActionListener(this);
+        // remove the editor's border - the cell itself already has one
+        ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
+        comboBoxModel = argModel;
+        comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
+        new ComboBoxFilter(comboBox, comboBoxModel);
+    } // FilteredComboBoxCellEditor constructor
     
     private void setValue(Object value) {
         comboBox.setSelectedItem(value);
     }
     
-    // Implementing ActionListener
+    /**
+     * {@inheritDoc}
+     * @param e 
+     */
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         // Selecting an item results in an actioncommand "comboBoxChanged".
@@ -44,15 +70,21 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         if (e.getActionCommand().equals("comboBoxEdited")) {
             stopCellEditing();
         }
-    }
+    } // actionPerformed() method
     
     // Implementing CellEditor
     @Override
     public Object getCellEditorValue() {
         System.out.println("FilteredComboBoxCellEditor.getCellEditorValue()");
         System.out.println(" `--> " + comboBox.getSelectedItem().getClass().getCanonicalName());
-        return comboBox.getSelectedItem();
-    }
+        Object obj = comboBox.getSelectedItem();
+        if (obj.getClass().isPrimitive() || (obj.getClass() == String.class)) {
+            return obj;
+        } else {
+            Object key = comboBoxModel.getKeyOfTheSelectedItem();
+            return key;
+        } // else
+    } // getCellEditorValue() method
     
     @Override
     public boolean stopCellEditing() {

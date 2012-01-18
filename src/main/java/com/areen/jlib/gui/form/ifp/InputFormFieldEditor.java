@@ -11,12 +11,17 @@ import javax.swing.JComponent;
  * @author mehjabeen
  */
 public class InputFormFieldEditor<T extends JComponent> {
-    public Object getValue(){
+    
+    public Object getValue() {
         return null;
     }
-    public void setValue(Object argValue){
+    
+    public void setValue(Object argValue) {
     }
-    public T getComponent(){
+    
+    public T getComponent() {
         return null;
     }
-}
+} // InputFormFieldEditor class
+
+// $Id$

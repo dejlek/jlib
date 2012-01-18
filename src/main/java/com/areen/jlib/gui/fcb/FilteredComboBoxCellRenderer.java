@@ -43,7 +43,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
     public FilteredComboBoxCellRenderer(FilteredComboBoxModel argCBModel) {
         super();
         cbModel = argCBModel;
-    } // FilteredComboBoxCell constructor (default)
+    } // FilteredComboBoxCell constructor
     
     /**
      * This is a straight copy from the DefaultListCellRenderer.
@@ -112,7 +112,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-
+        
         if (value instanceof Icon) {
             setIcon((Icon) value);
             setText("");
@@ -154,7 +154,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
         setBorder(border);
 
         return this;
-    }
+    } // getListCellRendererComponent() method
     
 } // FilteredComboBoxCell
 
