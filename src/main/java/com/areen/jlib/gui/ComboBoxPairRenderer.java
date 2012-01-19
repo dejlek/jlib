@@ -16,7 +16,7 @@ import javax.swing.JList;
 public class ComboBoxPairRenderer extends DefaultListCellRenderer {
 
     @Override
-    public Component getListCellRendererComponent(JList<?> list, 
+    public Component getListCellRendererComponent(JList list, 
             Object value, 
             int index, 
             boolean isSelected, 
