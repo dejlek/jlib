@@ -74,7 +74,6 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println("keyPressed()");
                 boolean isTableCellEditor = false;
                 Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
                 if (tmp != null) {
@@ -87,24 +86,11 @@ public class ComboBoxFilter extends PlainDocument {
                 finish = false;
                 int currentIndex = comboBox.getSelectedIndex();
                 switch (e.getKeyCode()) {
-                    /*
-                    // determine if the pressed key is backspace (needed by the remove method)
-                    case KeyEvent.VK_BACK_SPACE : 
-                        hitBackspace = true;
-                        hitBackspaceOnSelection = (comboBoxEditor.getSelectionStart() 
-                                != comboBoxEditor.getSelectionEnd());
-                        break;
-                    // ignore delete key
-                    case KeyEvent.VK_DELETE: 
-                        e.consume();
-                        comboBox.getToolkit().beep();
-                        break;
-                    * 
-                    */
+                    
                     case KeyEvent.VK_ENTER:
                         finish = true;
                         //setText(comboBox.getSelectedItem().toString());
-                        setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                        //setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                         break;
                         
                     case KeyEvent.VK_UP:
@@ -242,8 +228,8 @@ public class ComboBoxFilter extends PlainDocument {
             System.out.println("SELECTED:" + selectedItem);
             if (lookupItem == selectedItem) {
                 return;
-            }
-        }
+            } // if
+        } // if
         
         filterTheModel();
     } // insertString() method
@@ -273,8 +259,6 @@ public class ComboBoxFilter extends PlainDocument {
             return;
         } // if
         
-        System.out.println("X");
-        
         super.remove(offs, len);
 
         // lookup and select a matching item
@@ -285,8 +269,8 @@ public class ComboBoxFilter extends PlainDocument {
             System.out.println("SELECTED:" + selectedItem);
             if (lookupItem == selectedItem) {
                 return;
-            }
-        }
+            } // if
+        } // if
         
         if (finish) {
             // user pressed ENTER so in the case remove is called we do not filter the model.
@@ -301,17 +285,10 @@ public class ComboBoxFilter extends PlainDocument {
         // we have to "guard" the call to comboBoxModel.setPattern() with selecting set to true, then false
         selecting = true;
         comboBoxModel.setPattern(getText(0, getLength()));
-        /*
-        if (comboBoxModel.getSize() > 0) {
-            comboBox.setSelectedIndex(0);
-            selectedIndex = 0;
-        } 
-        * 
-        */
         comboBox.validate();
         selecting = false;
         System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());
-    }
+    } // filterTheModel()
     
     /**
      * Use this method whenever you need to determine if the comboBox is used as a cell editor or not.

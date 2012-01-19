@@ -509,6 +509,7 @@ public class FilteredComboBoxModel
      * @return 
      */
     public Object getKeyOfTheSelectedItem() {
+        System.out.println("getKeyOfTheSelectedItem()");
         Object selected = getSelectedItem();
         if (selected instanceof Pair) {
             return ((Pair) selected).getFirst();
