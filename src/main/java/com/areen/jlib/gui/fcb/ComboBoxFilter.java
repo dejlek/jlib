@@ -7,10 +7,7 @@ package com.areen.jlib.gui.fcb;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.PlainDocument;
+import javax.swing.text.*;
 
 /**
  * Lots of ideas from http://www.orbital-computer.de/JComboBox/
@@ -148,7 +145,7 @@ public class ComboBoxFilter extends PlainDocument {
                             for (int i = 0; i < 5; i++) {
                                 System.out.println(i + " " + comboBox.getItemAt(i));
                             }
-                            comboBox.revalidate();
+                            //comboBox.revalidate();
                         } // if
                         break;
                     default:
@@ -194,6 +191,10 @@ public class ComboBoxFilter extends PlainDocument {
         }
     }
     
+    /**
+     * This method is a leftover from the previous version of the ComboBoxFilter. Should be removed after
+     * the testing phase.
+     */
     private void highlightCompletedText(int start) {
         comboBoxEditor.setCaretPosition(getLength());
         comboBoxEditor.moveCaretPosition(start);
@@ -201,7 +202,7 @@ public class ComboBoxFilter extends PlainDocument {
     
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        //System.out.println("insertString(" + offs + ", " + str + ", " + a + ")");
+        System.out.println("insertString(" + offs + ", " + str + ")");
         // return immediately when selecting an item
         if (selecting) {
             return;
@@ -210,8 +211,6 @@ public class ComboBoxFilter extends PlainDocument {
         if (arrowKeyPressed) {
             return;
         }
-        
-        System.out.println("O");
         
         // insert the string into the document
         super.insertString(offs, str, a);
@@ -246,19 +245,21 @@ public class ComboBoxFilter extends PlainDocument {
         
         if (arrowKeyPressed) {
             if (isTableCellEditor()) {
-            // if the remove() has been called while user navigates through the combobox list, we do not
-            // filter. when user navigates via arrow keys, remove() is always called first, followed by
-            // the insertString. However, sometimes table steals the event, and causes trouble. As remove()
-            // is called first, here we check if correct value has been selected after user presses UP/DOWN
-            int currentIndex = comboBox.getSelectedIndex();
-            if (selectedIndex != currentIndex) {
-                // they are not equal, fix it
-                comboBox.setSelectedIndex(selectedIndex);
-            } // if
+                // if the remove() has been called while user navigates through the combobox list, we do not
+                // filter. when user navigates via arrow keys, remove() is always called first, followed by
+                // the insertString. However, sometimes table steals the event, and causes trouble. 
+                // As remove() is called first, here we check if correct value has been selected after user 
+                // presses UP/DOWN
+                int currentIndex = comboBox.getSelectedIndex();
+                if (selectedIndex != currentIndex) {
+                    // they are not equal, fix it
+                    comboBox.setSelectedIndex(selectedIndex);
+                } // if
             } // if
             return;
         } // if
         
+        // remove the string from the document
         super.remove(offs, len);
 
         // lookup and select a matching item
@@ -284,7 +285,15 @@ public class ComboBoxFilter extends PlainDocument {
     private void filterTheModel() throws BadLocationException {
         // we have to "guard" the call to comboBoxModel.setPattern() with selecting set to true, then false
         selecting = true;
+        int pos = comboBoxEditor.getCaretPosition();
         comboBoxModel.setPattern(getText(0, getLength()));
+        if (comboBoxEditor.getSelectedText() != null) {
+            // we have a selected text, removing the selection
+            System.out.println("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
+            comboBoxEditor.select(0, 0);
+            // return caret position to the original place
+            comboBoxEditor.setCaretPosition(pos);
+        }
         comboBox.validate();
         selecting = false;
         System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());

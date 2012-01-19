@@ -44,13 +44,13 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     public FilteredComboBoxCellEditor(FilteredComboBoxModel argModel) {
         comboBox = new WideComboBox();
         comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-        // hitting enter in the combo box should stop cellediting (see below)
-        comboBox.addActionListener(this);
         // remove the editor's border - the cell itself already has one
         ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
         comboBoxModel = argModel;
         comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
         new ComboBoxFilter(comboBox, comboBoxModel);
+        // hitting enter in the combo box should stop cellediting (see below)
+        comboBox.addActionListener(this);
     } // FilteredComboBoxCellEditor constructor
     
     private void setValue(Object value) {
