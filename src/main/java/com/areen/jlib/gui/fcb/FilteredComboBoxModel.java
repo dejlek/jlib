@@ -383,10 +383,10 @@ public class FilteredComboBoxModel
         String copy = argPattern.trim();
         if (lastPattern.equals(copy)) {
             // we have the same pattern, probably with an additional space, no need for filtering.
-            System.out.println("DEBUG: (equal) setPattern(" + argPattern + ");");
+            //System.out.println("DEBUG: (equal) setPattern(" + argPattern + ");");
             return;
         }
-        System.out.println("DEBUG: setPattern(" + argPattern + ");");
+        //System.out.println("DEBUG: setPattern(" + argPattern + ");");
         
         // record the size before we start modifying the filtered list of objects
         int size1 = getSize();
@@ -509,7 +509,7 @@ public class FilteredComboBoxModel
      * @return 
      */
     public Object getKeyOfTheSelectedItem() {
-        System.out.println("getKeyOfTheSelectedItem()");
+        //System.out.println("getKeyOfTheSelectedItem()");
         Object selected = getSelectedItem();
         if (selected instanceof Pair) {
             return ((Pair) selected).getFirst();

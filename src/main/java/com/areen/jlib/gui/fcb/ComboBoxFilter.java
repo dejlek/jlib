@@ -7,7 +7,10 @@ package com.areen.jlib.gui.fcb;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
-import javax.swing.text.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.PlainDocument;
 
 /**
  * Lots of ideas from http://www.orbital-computer.de/JComboBox/
@@ -93,21 +96,19 @@ public class ComboBoxFilter extends PlainDocument {
                     case KeyEvent.VK_UP:
                         arrowKeyPressed = true;
                         if (isTableCellEditor) {
-                            System.out.println("----------------------------------------");
+                            //System.out.println("----------------------------------------");
                             /* For some reason, the JTable is stealing keyboard events and preventing us   *
                              * from moving up/down, so we have to select proper values manually.           *
                              *                                                                             *
                              * If selection did not move, we will manually select appropriate item.        */ 
-                            System.out.println("UP1 " + selectedIndex + "/" + currentIndex);
+                            //System.out.println("UP1 " + selectedIndex + "/" + currentIndex);
                             if ((selectedIndex == currentIndex) && (currentIndex != 0)) {
                                 comboBox.setSelectedIndex(currentIndex - 1);
                                 selectedIndex = currentIndex - 1;
                             } else {
                                 selectedIndex = currentIndex;
                             }
-                            
-                            // DEBUG STUFF HERE:
-                            currentIndex = comboBox.getSelectedIndex();
+                            /* DEBUG STUFF HERE:
                             System.out.println("UP1 " + selectedIndex + "/" + currentIndex);
                             System.out.println("SEL: (" + comboBoxModel.getSize() + ") " 
                                     + comboBoxModel.getSelectedItem());
@@ -115,17 +116,19 @@ public class ComboBoxFilter extends PlainDocument {
                             for (int i = 0; i < 5; i++) {
                                 System.out.println(i + " " + comboBox.getItemAt(i));
                             }
+                            * 
+                            */
                         } // if
                         break;
                     case KeyEvent.VK_DOWN:
                         arrowKeyPressed = true;
                         if (isTableCellEditor) {
-                            System.out.println("----------------------------------------");
+                            //System.out.println("----------------------------------------");
                             /* For some reason, the JTable is stealing keyboard events and preventing us   *
                              * from moving up/down, so we have to select proper values manually.           *
                              *                                                                             *
                              * If selection did not move, we will manually select appropriate item.        */ 
-                            System.out.println("DOWN0 " + selectedIndex + "/" + currentIndex);
+                            //System.out.println("DOWN0 " + selectedIndex + "/" + currentIndex);
                             if ((selectedIndex == currentIndex) 
                                     && (currentIndex != comboBox.getItemCount() - 1)) {
                                 comboBox.setSelectedIndex(currentIndex + 1);
@@ -133,8 +136,7 @@ public class ComboBoxFilter extends PlainDocument {
                             } else {
                                 selectedIndex = currentIndex;
                             } // else
-                            // DEBUG STUFF HERE:
-                            currentIndex = comboBox.getSelectedIndex();
+                            /* DEBUG STUFF HERE:
                             System.out.println("DOWN1 " + selectedIndex + "/" + currentIndex);
                             System.out.println("SEL: (" + comboBoxModel.getSize() + ") " 
                                     + comboBoxModel.getSelectedItem());
@@ -146,6 +148,8 @@ public class ComboBoxFilter extends PlainDocument {
                                 System.out.println(i + " " + comboBox.getItemAt(i));
                             }
                             //comboBox.revalidate();
+                            * 
+                            */
                         } // if
                         break;
                     default:
@@ -202,7 +206,7 @@ public class ComboBoxFilter extends PlainDocument {
     
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        System.out.println("insertString(" + offs + ", " + str + ")");
+        //System.out.println("insertString(" + offs + ", " + str + ")");
         // return immediately when selecting an item
         if (selecting) {
             return;
@@ -223,8 +227,8 @@ public class ComboBoxFilter extends PlainDocument {
         Object lookupItem = comboBoxModel.lookupItem(getText(0, getLength()));
         if (lookupItem != null) {
             Object selectedItem = comboBox.getSelectedItem();
-            System.out.println("LOOKUP:" + lookupItem);
-            System.out.println("SELECTED:" + selectedItem);
+            //System.out.println("LOOKUP:" + lookupItem);
+            //System.out.println("SELECTED:" + selectedItem);
             if (lookupItem == selectedItem) {
                 return;
             } // if
@@ -235,7 +239,9 @@ public class ComboBoxFilter extends PlainDocument {
     
     @Override
     public void remove(int offs, int len) throws BadLocationException {
-        System.out.println("remove(" + offs + ", " + len + ")");
+        //System.out.println("remove(" + offs + ", " + len + ")");
+        //System.out.println(comboBox.getActionListeners().length);
+        //System.out.println(comboBox.getAncestorListeners().length);
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be
@@ -266,8 +272,8 @@ public class ComboBoxFilter extends PlainDocument {
         Object lookupItem = comboBoxModel.lookupItem(getText(0, getLength()));
         if (lookupItem != null) {
             Object selectedItem = comboBox.getSelectedItem();
-            System.out.println("LOOKUP:" + lookupItem);
-            System.out.println("SELECTED:" + selectedItem);
+            //System.out.println("LOOKUP:" + lookupItem);
+            //System.out.println("SELECTED:" + selectedItem);
             if (lookupItem == selectedItem) {
                 return;
             } // if
@@ -287,6 +293,7 @@ public class ComboBoxFilter extends PlainDocument {
         selecting = true;
         int pos = comboBoxEditor.getCaretPosition();
         comboBoxModel.setPattern(getText(0, getLength()));
+        
         if (comboBoxEditor.getSelectedText() != null) {
             // we have a selected text, removing the selection
             System.out.println("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
@@ -294,9 +301,10 @@ public class ComboBoxFilter extends PlainDocument {
             // return caret position to the original place
             comboBoxEditor.setCaretPosition(pos);
         }
+        
         comboBox.validate();
         selecting = false;
-        System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());
+        //System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());
     } // filterTheModel()
     
     /**
