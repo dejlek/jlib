@@ -5,6 +5,7 @@
 package com.areen.jlib.test;
 
 import com.areen.jlib.gui.ComboBoxLink;
+import com.areen.jlib.gui.ComboBoxPairRenderer;
 import com.areen.jlib.gui.WideComboBox;
 import com.areen.jlib.gui.fcb.ComboBoxFilter;
 import com.areen.jlib.gui.fcb.FilteredComboBoxCellEditor;
@@ -65,8 +66,10 @@ public class FcbTestFrame extends javax.swing.JFrame {
         // FILTERED COMBO BOX (TEST)
         //normalComboBox.setModel(new DefaultComboBoxModel(argCodeAndValues));
         normalComboBox.setModel(new FilteredComboBoxModel(codeAndValues));
-        normalComboBox.setEditable(true);
+        normalComboBox.setRenderer(new ComboBoxPairRenderer());
+        //normalComboBox.setEditable(true);
         new ComboBoxLink(normalComboBox, jLabel1);
+        
         
         tableComboBox.setEditable(true);
         FilteredComboBoxModel tableCbModel = new FilteredComboBoxModel(tableModel, new int[]{0, 1});
