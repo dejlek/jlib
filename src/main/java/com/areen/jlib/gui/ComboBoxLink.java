@@ -1,6 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * $Id: LocationPanel.java 1461 2012-01-18 18:38:07Z dejan $
+ *
+ * ComboBoxLink
  */
 package com.areen.jlib.gui;
 
@@ -13,7 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 /**
- *
+ * Use this class to update a JComponent, typically a JLabel or JTextArea whenever use selects something
+ * in a JComboBox object.
+ * 
  * @author dejan
  */
 public class ComboBoxLink implements ActionListener {
@@ -26,7 +29,13 @@ public class ComboBoxLink implements ActionListener {
     private JComboBox comboBox;
     private Object selectedItem;
     private String text;
-    
+
+    /**
+     * The constructor when we have a JLable to link to.
+     * 
+     * @param argComboBox
+     * @param argLabel 
+     */
     public ComboBoxLink(JComboBox argComboBox, JLabel argLabel) {
         comboBox = argComboBox;
         valueComponent = argLabel;
@@ -53,6 +62,7 @@ public class ComboBoxLink implements ActionListener {
      * user picks, then we use the object selectedItem refers to.
      */
     private void update() {
+        System.out.println(comboBox.getSelectedIndex());
         // When user presses enter, the index of the selected item is -1...
         if (comboBox.getSelectedIndex() == -1) {
             return;
@@ -68,11 +78,16 @@ public class ComboBoxLink implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
+        System.out.println(ae.getActionCommand());
+        /*
         if (ae.getActionCommand().equals("comboBoxChanged")) {
             update();
         }
-        
+        * 
+        */
+        update();
         if (ae.getActionCommand().equals("comboBoxEdited")) {
+            update();
             switch(type) {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
