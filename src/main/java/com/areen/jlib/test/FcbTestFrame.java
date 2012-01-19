@@ -70,7 +70,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //normalComboBox.setEditable(true);
         new ComboBoxLink(normalComboBox, jLabel1);
         
-        
         tableComboBox.setEditable(true);
         FilteredComboBoxModel tableCbModel = new FilteredComboBoxModel(tableModel, new int[]{0, 1});
         tableComboBox.setRenderer(new FilteredComboBoxCellRenderer(tableCbModel));

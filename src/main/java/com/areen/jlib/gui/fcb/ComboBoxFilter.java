@@ -302,7 +302,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxEditor.setCaretPosition(pos);
         }
         
-        comboBox.validate();
+        //comboBox.validate();
         selecting = false;
         //System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());
     } // filterTheModel()

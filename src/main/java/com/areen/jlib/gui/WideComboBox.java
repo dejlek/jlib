@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 public class WideComboBox extends JComboBox {
 
     private boolean layingOut = false;
+    private Dimension dim = new Dimension(0, 0);
 
     public WideComboBox() {
         super();
@@ -54,9 +55,12 @@ public class WideComboBox extends JComboBox {
      */
     @Override
     public Dimension getSize() {
-        Dimension dim = super.getSize();
+        Dimension curDim = super.getSize();
         if (!layingOut) {
+            dim.width = Math.max(dim.width, curDim.width);
             dim.width = Math.max(dim.width, getPreferredSize().width);
+            dim.height = Math.max(dim.height, curDim.height);
+            dim.height = Math.max(dim.height, getPreferredSize().height);
         }
         return dim;
     } //  getSize() method
