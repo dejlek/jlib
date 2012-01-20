@@ -22,6 +22,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     
     private JComboBox comboBox;
     private FilteredComboBoxModel comboBoxModel;
+    private ComboBoxFilter cbFilter;
     
     public FilteredComboBoxCellEditor(JComboBox argComboBox) {
         comboBox = argComboBox;
@@ -33,6 +34,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         
         // TODO: check if we actually do have this kind of model
         comboBoxModel = (FilteredComboBoxModel) comboBox.getModel();
+        cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
     }
     
     /**
@@ -48,13 +50,14 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
         comboBoxModel = argModel;
         comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
-        new ComboBoxFilter(comboBox, comboBoxModel);
+        cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
         // hitting enter in the combo box should stop cellediting (see below)
         comboBox.addActionListener(this);
     } // FilteredComboBoxCellEditor constructor
     
     private void setValue(Object value) {
-        comboBox.setSelectedItem(value);
+        cbFilter.prepare(value);
+        //comboBox.setSelectedItem(value);
     }
     
     /**
@@ -64,7 +67,12 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         // Selecting an item results in an actioncommand "comboBoxChanged".
-        // We should ignore these ones.
+        // We should ignore these ones, but unfortunately we must allow user to finish the editing by picking
+        // an item with the mouse...
+        //if (comboBoxModel.isReadyToFinish() && "comboBoxChanged".equals(e.getActionCommand())) {
+        //    stopCellEditing();
+        //    return;
+        //}
         
         // Hitting enter results in an actioncommand "comboBoxEdited"
         if (e.getActionCommand().equals("comboBoxEdited")) {

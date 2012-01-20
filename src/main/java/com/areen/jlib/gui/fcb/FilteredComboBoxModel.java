@@ -61,6 +61,12 @@ public class FilteredComboBoxModel
     private Object exactObject = null; /// If there is an exact match, here we hold a reference to the Object.
     private int exactIndex = -1; /// If there is an exact match, here we hold the index of the Object.
     private int[] columns;
+    /** 
+     * Indicator whether cell editors should stop editing. This value is most useful in case when we want to
+     * pick the item with the mouse.
+     */
+    private boolean readyToFinish = false; 
+    
     /**
      * Constructs an empty ArrayListModel object.
      */
@@ -136,19 +142,19 @@ public class FilteredComboBoxModel
                 int last;
                 switch (e.getType()) {
                     case TableModelEvent.INSERT:
-                        System.out.println("FCBM: insert");
+                        System.out.println("FCBM: TableModel insert");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         //fcbObjects.add(first, getRow(first));
                         FilteredComboBoxModel.this.addElement(getRow(first));
                         break;
                     case TableModelEvent.DELETE:
-                        System.out.println("FCBM: delete");
+                        System.out.println("FCBM: TableModel delete");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         break;
                     case TableModelEvent.UPDATE:
-                        System.out.println("FCBM: update");
+                        System.out.println("FCBM: TableModel update");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         objects.set(first, getRow(first));
@@ -532,6 +538,22 @@ public class FilteredComboBoxModel
         } // else
     } // getKeyOfTheSelectedItem() method
 
+    // ======================================================================================================
+    //   Accessors
+    // ======================================================================================================
+
+    public boolean isReadyToFinish() {
+        return readyToFinish;
+    }
+
+    public void setReadyToFinish(boolean argReadyToFinish) {
+        readyToFinish = argReadyToFinish;
+    }
+    
+    // ======================================================================================================
+    //   Private methods
+    // ======================================================================================================
+    
     /**
      * Use this method when you need to get all fields of a row in an AbstractTableModel as an array of
      * Objects.
