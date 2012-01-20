@@ -31,9 +31,9 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         comboBox.addActionListener(this);
         // remove the editor's border - the cell itself already has one
         ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
-        
         // TODO: check if we actually do have this kind of model
         comboBoxModel = (FilteredComboBoxModel) comboBox.getModel();
+        comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
         cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
     }
     

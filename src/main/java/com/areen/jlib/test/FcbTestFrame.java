@@ -57,11 +57,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         new ComboBoxLink(filteredComboBox, jTextArea1);
         
         // add it to the table too
-        WideComboBox tableCb = new WideComboBox();
         FilteredComboBoxModel fcbModel = new FilteredComboBoxModel(codeAndValues);
-        tableCb.setRenderer(new FilteredComboBoxCellRenderer(fcbModel));
-        new ComboBoxFilter(tableCb, fcbModel);
-        testTable.getColumnModel().getColumn(2).setCellEditor(new FilteredComboBoxCellEditor(tableCb));
+        testTable.getColumnModel().getColumn(2).setCellEditor(new FilteredComboBoxCellEditor(fcbModel));
         
         // FILTERED COMBO BOX (TEST)
         //normalComboBox.setModel(new DefaultComboBoxModel(argCodeAndValues));
