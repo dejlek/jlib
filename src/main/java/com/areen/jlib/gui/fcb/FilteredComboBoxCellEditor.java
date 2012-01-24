@@ -57,7 +57,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     
     private void setValue(Object value) {
         cbFilter.prepare(value);
-        //comboBox.setSelectedItem(value);
     }
     
     /**
@@ -69,10 +68,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         // Selecting an item results in an actioncommand "comboBoxChanged".
         // We should ignore these ones, but unfortunately we must allow user to finish the editing by picking
         // an item with the mouse...
-        //if (comboBoxModel.isReadyToFinish() && "comboBoxChanged".equals(e.getActionCommand())) {
-        //    stopCellEditing();
-        //    return;
-        //}
+        if (comboBoxModel.isReadyToFinish() && "comboBoxChanged".equals(e.getActionCommand())) {
+            stopCellEditing();
+            return;
+        }
         
         // Hitting enter results in an actioncommand "comboBoxEdited"
         if (e.getActionCommand().equals("comboBoxEdited")) {

@@ -3,6 +3,7 @@
  */
 package com.areen.jlib.gui.fcb;
 
+import com.areen.jlib.util.Sise;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -96,7 +97,9 @@ public class ComboBoxFilter extends PlainDocument {
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
                         //setText(comboBox.getSelectedItem().toString());
-                        //setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                        if (!isTableCellEditor()) {
+                            setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                        }
                         break;
                         
                     case KeyEvent.VK_UP:
@@ -112,7 +115,11 @@ public class ComboBoxFilter extends PlainDocument {
                             } else {
                                 selectedIndex = currentIndex;
                             }
+                            
+                            // we set this to false ONLY if the combo box is a cell editor!
+                            arrowKeyPressed = false;
                         } // if
+                        //
                         break;
                         
                     case KeyEvent.VK_DOWN:
@@ -129,6 +136,8 @@ public class ComboBoxFilter extends PlainDocument {
                             } else {
                                 selectedIndex = currentIndex;
                             } // else
+                            // we set this to false ONLY if the combo box is a cell editor!
+                            arrowKeyPressed = false;
                         } // if
                         break;
                         
@@ -144,11 +153,11 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                //highlightCompletedText(0);
                 // Workaround for Bug 5100422 - Hide Popup on focus loss
                 if (hidePopupOnFocusLoss) {
                     ComboBoxFilter.this.comboBox.setPopupVisible(false);
                 } // if
+                comboBoxModel.setReadyToFinish(false);
             }
         });
         
@@ -170,6 +179,9 @@ public class ComboBoxFilter extends PlainDocument {
         //System.out.println("prepare(" + argPattern + ")");
         try {
             selecting = true;
+            if (isTableCellEditor()) {
+                comboBoxModel.setReadyToFinish(false);
+            }
             if (argPattern == null) {
                 setText("");
             } else {
@@ -206,7 +218,7 @@ public class ComboBoxFilter extends PlainDocument {
     
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        //System.out.println("insertString(" + offs + ", " + str + ")");
+        System.out.println("insertString(" + offs + ", " + str + ")");
         
         // return immediately when selecting an item
         if (selecting) {
@@ -218,7 +230,19 @@ public class ComboBoxFilter extends PlainDocument {
         }
         
         // insert the string into the document
-        super.insertString(offs, str, a);
+        if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
+            // we got a string in the Sise format, that must be because user picked an item with a mouse
+            // in that case, we will take the key component (SISE unit) and put that instead.
+            String[] strs = Sise.units(str);
+            int idx = comboBoxModel.getKeyIndex();
+            if (isTableCellEditor()) {
+                comboBoxModel.setReadyToFinish(true);
+            }
+            super.insertString(offs, strs[idx], a);
+        } else {
+            // otherwise, insert the whole string
+            super.insertString(offs, str, a);
+        } // else
         
         if (finish) {
             return;
@@ -242,8 +266,7 @@ public class ComboBoxFilter extends PlainDocument {
     
     @Override
     public void remove(int offs, int len) throws BadLocationException {
-        //System.out.println("remove(" + offs + ", " + len + ")");
-        
+        System.out.println("remove(" + offs + ", " + len + ")");
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be
@@ -294,6 +317,7 @@ public class ComboBoxFilter extends PlainDocument {
     private void filterTheModel() throws BadLocationException {
         // we have to "guard" the call to comboBoxModel.setPattern() with selecting set to true, then false
         selecting = true;
+        boolean oldValue = comboBoxModel.isReadyToFinish();
         comboBoxModel.setReadyToFinish(false); // we must set this to false during the filtering
         int pos = comboBoxEditor.getCaretPosition();
         comboBoxModel.setPattern(getText(0, getLength()));
@@ -306,8 +330,8 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxEditor.setCaretPosition(pos);
         } // if
         
-        //comboBox.validate();
-        comboBoxModel.setReadyToFinish(true); // we must set this to false during the filtering
+        comboBox.revalidate();
+        comboBoxModel.setReadyToFinish(oldValue); // restore the value
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
         //System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());

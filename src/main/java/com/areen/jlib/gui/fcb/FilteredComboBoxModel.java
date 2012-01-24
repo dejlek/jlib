@@ -66,6 +66,7 @@ public class FilteredComboBoxModel
      * pick the item with the mouse.
      */
     private boolean readyToFinish = false; 
+    private int keyIndex = 0; /// Index of a key in the SISE record.
     
     /**
      * Constructs an empty ArrayListModel object.
@@ -93,7 +94,6 @@ public class FilteredComboBoxModel
         } // for
 
         if (getSize() > 0) {
-            //selectedObject = getElementAt(0);
             setSelectedItem(getElementAt(0));
         }
         
@@ -130,6 +130,8 @@ public class FilteredComboBoxModel
             fcbObjects.add(row);
         } // for
 
+        keyIndex = columns[0]; // by convention the first element in the columns array is the index of the key
+        
         if (getSize() > 0) {
             setSelectedItem(getElementAt(0));
         }
@@ -537,7 +539,7 @@ public class FilteredComboBoxModel
             return str;
         } // else
     } // getKeyOfTheSelectedItem() method
-
+    
     // ======================================================================================================
     //   Accessors
     // ======================================================================================================
@@ -549,6 +551,15 @@ public class FilteredComboBoxModel
     public void setReadyToFinish(boolean argReadyToFinish) {
         readyToFinish = argReadyToFinish;
     }
+    
+    /**
+     * Use this method to obtain the index of the key in a SISE record.
+     * 
+     * @return 
+     */
+    public int getKeyIndex() {
+        return keyIndex;
+    } // getKeyIndex() method
     
     // ======================================================================================================
     //   Private methods
