@@ -201,6 +201,14 @@ public class Utility {
             return a.compareTo(b);
         }
         
+        // What if one of the objects is null?
+        if (argSecond == null) {
+            return 1;
+        }
+        if (argFirst == null) {
+            return -1;
+        }
+        
         // fall back to using Strings...
         return argFirst.toString().compareTo(argSecond.toString());
     } // compare() method
