@@ -224,6 +224,7 @@ public class ComboBoxFilter extends PlainDocument {
             return;
         }
 
+/*
         // lookup and select a matching item
         Object lookupItem = comboBoxModel.lookupItem(getText(0, getLength()));
         if (lookupItem != null) {
@@ -234,6 +235,7 @@ public class ComboBoxFilter extends PlainDocument {
                 return;
             } // if
         } // if
+*/
         
         filterTheModel();
     } // insertString() method
