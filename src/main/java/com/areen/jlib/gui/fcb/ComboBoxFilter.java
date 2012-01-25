@@ -101,7 +101,7 @@ public class ComboBoxFilter extends PlainDocument {
                             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                         }
                         break;
-                        
+
                     case KeyEvent.VK_UP:
                         arrowKeyPressed = true;
                         if (isTableCellEditor) {
@@ -119,7 +119,6 @@ public class ComboBoxFilter extends PlainDocument {
                             // we set this to false ONLY if the combo box is a cell editor!
                             arrowKeyPressed = false;
                         } // if
-                        //
                         break;
                         
                     case KeyEvent.VK_DOWN:
@@ -140,7 +139,7 @@ public class ComboBoxFilter extends PlainDocument {
                             arrowKeyPressed = false;
                         } // if
                         break;
-                        
+
                     default:
                         selectedIndex = currentIndex;
                 } // switch
@@ -239,6 +238,21 @@ public class ComboBoxFilter extends PlainDocument {
                 comboBoxModel.setReadyToFinish(true);
             }
             super.insertString(offs, strs[idx], a);
+            
+            if (!isTableCellEditor()) {
+                // we have to filter after the user selects an item with the mouse.
+                // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
+                //          exact match - ie the item that user picked with the mouse.
+                Object before = comboBox.getSelectedItem();
+                filterTheModel();
+                Object after = comboBox.getSelectedItem();
+                if (before != after) {
+                    // if different item is selected, we have to fix it!
+                    selecting = false;
+                    comboBox.setSelectedItem(before);
+                    selecting = true;
+                } // uif
+            } // if
         } else {
             // otherwise, insert the whole string
             super.insertString(offs, str, a);
