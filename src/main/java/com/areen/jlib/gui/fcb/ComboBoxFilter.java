@@ -243,15 +243,7 @@ public class ComboBoxFilter extends PlainDocument {
                 // we have to filter after the user selects an item with the mouse.
                 // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
                 //          exact match - ie the item that user picked with the mouse.
-                Object before = comboBox.getSelectedItem();
                 filterTheModel();
-                Object after = comboBox.getSelectedItem();
-                if (before != after) {
-                    // if different item is selected, we have to fix it!
-                    selecting = false;
-                    comboBox.setSelectedItem(before);
-                    selecting = true;
-                } // uif
             } // if
         } else {
             // otherwise, insert the whole string
