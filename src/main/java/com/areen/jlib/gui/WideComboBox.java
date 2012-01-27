@@ -15,10 +15,8 @@ import javax.swing.JComboBox;
  * it further.
  */
 public class WideComboBox extends JComboBox {
-
     private boolean layingOut = false;
     private int ww;
-    private int hh;
 
     public WideComboBox() {
         super();
@@ -56,14 +54,13 @@ public class WideComboBox extends JComboBox {
      */
     @Override
     public Dimension getSize() {
-        Dimension curDim = super.getSize();
+        Dimension dim = super.getSize(); 
         if (!layingOut) {
-            ww = Math.max(ww, curDim.width);
+            ww = Math.max(ww, dim.width); 
             ww = Math.max(ww, getPreferredSize().width);
-            hh = Math.max(hh, curDim.height);
-            hh = Math.max(hh, getPreferredSize().height);
+            dim.width = ww;
         } // if
-        return new Dimension(ww, hh);
+        return dim;
     } //  getSize() method
     
 } // WideComboBox class
