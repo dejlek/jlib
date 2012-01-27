@@ -65,6 +65,7 @@ public class WideComboBox extends JComboBox {
         } // if
         return new Dimension(ww, hh);
     } //  getSize() method
+    
 } // WideComboBox class
 
 // $Id$
