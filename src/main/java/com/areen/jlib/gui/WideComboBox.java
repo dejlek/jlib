@@ -49,8 +49,11 @@ public class WideComboBox extends JComboBox {
 
     /**
      * @{@inheritDoc }
+     * 
+     * NOTE: Apparently, the width of the Dimension returned by getSize() is also the width of the popup! :)
      *
      * @return Dimension object containing a much better dimension than the one from the JComboBox.
+     * 
      */
     @Override
     public Dimension getSize() {
@@ -60,7 +63,7 @@ public class WideComboBox extends JComboBox {
             ww = Math.max(ww, getPreferredSize().width);
             dim.width = ww;
         } // if
-        return dim;
+        return new Dimension(ww, dim.height);
     } //  getSize() method
     
 } // WideComboBox class

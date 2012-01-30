@@ -32,6 +32,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
     private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
     
     private FilteredComboBoxModel cbModel;
+    private int height;
     
     /**
      * Default FilteredComboBoxCell constructor.

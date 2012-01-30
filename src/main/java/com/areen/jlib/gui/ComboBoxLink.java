@@ -79,15 +79,18 @@ public class ComboBoxLink implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         System.out.println(ae.getActionCommand());
-        /*
-        if (ae.getActionCommand().equals("comboBoxChanged")) {
-            update();
-        }
-        * 
-        */
+        System.out.println(comboBox.isPopupVisible());
         update();
+
+        Boolean tmp = (Boolean) comboBox.getClientProperty("item-picked");
+        boolean itemPicked = false;
+        if (tmp == null) {
+            itemPicked = false;
+        } else {
+            itemPicked = tmp.booleanValue();
+        } // else
+
         if (ae.getActionCommand().equals("comboBoxEdited")) {
-            update();
             switch(type) {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
@@ -100,7 +103,25 @@ public class ComboBoxLink implements ActionListener {
                 default:
                     // nothing
             } // switch
-        } // if
+        } else if (ae.getActionCommand().equals("comboBoxChanged") && itemPicked) {
+            // if user picked an item via mouse, we rely on the client property "item-picked"
+            // FIXME: ComboBoxLink should be a reusable component, this makes it depend on JComboBox to
+            //        be filtered! (Yes, ComboBoxLink works properly only with filtered combo box)
+            //        Perhaps better solution would be to use PopupMenuListener and trap the 
+            //        popupMenuWillBecomeInvisible event.
+            switch(type) {
+                case LABEL:
+                    JLabel label = (JLabel) valueComponent;
+                    label.setText(text);
+                    break;
+                case TEXT_AREA:
+                    JTextArea area = (JTextArea) valueComponent;
+                    area.setText(text);
+                    break;
+                default:
+                    // nothing
+            } // switch
+        } // else if
     } // actionPerformed() method
     
 } // ComboBoxLink class

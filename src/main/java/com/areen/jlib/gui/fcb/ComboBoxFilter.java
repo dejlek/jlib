@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -57,6 +59,15 @@ public class ComboBoxFilter extends PlainDocument {
     private boolean arrowKeyPressed = false;
     private boolean finish = false;
     private int selectedIndex;
+
+    private int previousItemCount;
+    
+    /**
+     * We have to store the popup menu's dimension so we can fix incorrect popup size during the filtering
+     * process.
+     */
+    private int popupMenuWidth; 
+    private int popupMenuHeight; 
     
     /**
      * This constructor adds filtering capability to the given JComboBox object argComboBox. It will
@@ -160,6 +171,33 @@ public class ComboBoxFilter extends PlainDocument {
             }
         });
         
+        /*
+         * The following PopupMenuListener is needed to store the inidial Dimension of the combobox popup.
+         */
+        comboBox.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent pme) {
+                /* NOTE: Dimension returned by getSize() method is actually the dimension of the combo-box
+                 *       popup menu! It is not the size of the JTextComponent object! :)
+                 */
+                System.out.println("popupMenuWillBecomeVisible()");
+                JComboBox box = (JComboBox) pme.getSource();
+                popupMenuWidth = box.getSize().width;
+                popupMenuHeight = box.getSize().height;
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
+                // do nothing
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent pme) {
+                // do nothing
+            }
+        });
+        
         Object selected = comboBox.getSelectedItem();
         selectedIndex = comboBox.getSelectedIndex();
         if (selected != null) {
@@ -237,6 +275,7 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
             }
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
             super.insertString(offs, strs[idx], a);
             
             if (!isTableCellEditor()) {
@@ -279,7 +318,7 @@ public class ComboBoxFilter extends PlainDocument {
             // called during the filtering process, so we do not want to remove while in the middle.
             return;
         } // if
-        
+
         if (arrowKeyPressed) {
             if (isTableCellEditor()) {
                 // if the remove() has been called while user navigates through the combobox list, we do not
@@ -320,11 +359,17 @@ public class ComboBoxFilter extends PlainDocument {
         filterTheModel();
     } // remove() method
     
+    /**
+     * This method calls the setPatter() method, and starts the filtering.
+     * 
+     * It also sets the previousItemCount variable to hold the previous number of filtered items.
+     */
     private void filterTheModel() throws BadLocationException {
         // we have to "guard" the call to comboBoxModel.setPattern() with selecting set to true, then false
         selecting = true;
         boolean oldValue = comboBoxModel.isReadyToFinish();
         comboBoxModel.setReadyToFinish(false); // we must set this to false during the filtering
+        previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
         int pos = comboBoxEditor.getCaretPosition();
         comboBoxModel.setPattern(getText(0, getLength()));
         
@@ -336,7 +381,8 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxEditor.setCaretPosition(pos);
         } // if
         
-        comboBox.revalidate();
+        this.fixPopupSize();
+        
         comboBoxModel.setReadyToFinish(oldValue); // restore the value
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
@@ -355,6 +401,79 @@ public class ComboBoxFilter extends PlainDocument {
         } // if
         return isTableCellEditor;
     } // isTableCellEditor method
+
+    /**
+     * This method is used internally to fix the popup-menu size. Apparantly JComboBox has a bug and does
+     * not calculate the proper height of the popup.
+     * 
+     * The first time popup menu is shown, ComboBoxFilter stores the dimension, and re-adjusts the width to
+     * the original value all the time. Reason for this is that we do not want to have different widths
+     * while user types something.
+     */
+    private void fixPopupSize() {
+        int maxRows = comboBox.getMaximumRowCount();
+        if ((previousItemCount < maxRows) || (comboBox.getItemCount() < maxRows)) {
+            // do this only when we have less than maxRows items, to prevent the flickering.
+            // this is a hack and is actually the easiest solution to the JComboBox's popup resizing problem.
+            if (comboBox.isPopupVisible()) {
+                comboBox.setPopupVisible(false);
+                comboBox.setPopupVisible(true);
+            } // if
+        } // if 
+        return;
+        /*
+        JComboBox box = comboBox;
+        int maxRows = box.getMaximumRowCount();
+        
+        if (!box.isPopupVisible()) {
+            // if popup menu is not visible, we should close it, there is no point of fixing the size
+            return;
+        }
+        
+        Object comp = box.getUI().getAccessibleChild(box, 0);
+        JPopupMenu popup;
+        if (comp instanceof JPopupMenu) { 
+            popup = (JPopupMenu) comp;
+        } else {
+            return;
+        }
+        
+        JComponent scrollPane = (JComponent) popup.getComponent(0);
+        Dimension size = new Dimension();
+        
+        /// We want to keep the same width all the time
+        size.width = popupMenuWidth; 
+        //size.width = box.getPreferredSize().width;
+        
+        size.height = scrollPane.getPreferredSize().height;
+        
+        System.out.println(size);
+        int newHeight = maxRows * 24;
+        if (comboBox.getItemCount() < maxRows && comboBox.getItemCount() > 0) {
+            newHeight = comboBox.getItemCount() * 24;
+            popupMenuHeight = Math.max(popupMenuHeight, newHeight);
+            popupMenuHeight = Math.max(popupMenuHeight, size.height);
+            newHeight = popupMenuHeight;
+        }
+        if (comboBox.getItemCount() >= maxRows) {
+            // we will store maximal popup height here
+            popupMenuHeight = Math.max(popupMenuHeight, size.height);
+            newHeight = popupMenuHeight;
+        } // if
+        System.out.println(popupMenuWidth + "," + popupMenuHeight);
+        size.height = newHeight;
+        System.out.println("fixed: " + size);
+        //scrollPane.setSize(size);
+        scrollPane.setPreferredSize(size);
+        popup.setPopupSize(size);
+        //comboBox.validate();
+        
+        //  following line for Tiger (MacOS X):
+        // scrollPane.setMaximumSize(size);
+        * 
+        * 
+        */
+    } // fixPopupSize() method
     
 } // ComboBoxFilter class
 
