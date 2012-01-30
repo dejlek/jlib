@@ -53,8 +53,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         new ComboBoxFilter(filteredComboBox, cbModel);
         filteredComboBox.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
         System.out.println(filteredComboBox.getModel().getClass().getCanonicalName());
-        //new ComboBoxLink(filteredComboBox, jLabel1);
-        new ComboBoxLink(filteredComboBox, jTextArea1);
+        //new ComboBoxLink(filteredComboBox, jTextArea1);
+        new ComboBoxLink(filteredComboBox, jLabel1);
         
         // add it to the table too
         FilteredComboBoxModel fcbModel = new FilteredComboBoxModel(codeAndValues);

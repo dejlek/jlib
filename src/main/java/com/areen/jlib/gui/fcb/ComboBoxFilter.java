@@ -130,6 +130,9 @@ public class ComboBoxFilter extends PlainDocument {
                             // we set this to false ONLY if the combo box is a cell editor!
                             arrowKeyPressed = false;
                         } // if
+                        
+                        // not picked with mouse
+                        comboBox.putClientProperty("item-picked", Boolean.FALSE);
                         break;
                         
                     case KeyEvent.VK_DOWN:
@@ -149,6 +152,9 @@ public class ComboBoxFilter extends PlainDocument {
                             // we set this to false ONLY if the combo box is a cell editor!
                             arrowKeyPressed = false;
                         } // if
+                        
+                        // not picked with mouse
+                        comboBox.putClientProperty("item-picked", Boolean.FALSE);
                         break;
 
                     default:
@@ -286,6 +292,7 @@ public class ComboBoxFilter extends PlainDocument {
             } // if
         } else {
             // otherwise, insert the whole string
+            comboBox.putClientProperty("item-picked", Boolean.FALSE);
             super.insertString(offs, str, a);
         } // else
         
