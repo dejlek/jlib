@@ -275,17 +275,16 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
             }
-            
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
             super.insertString(offs, strs[idx], a);
 
             if (!isTableCellEditor()) {
-                comboBox.putClientProperty("item-picked", Boolean.TRUE);
                 // we have to filter after the user selects an item with the mouse.
                 // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
                 //          exact match - ie the item that user picked with the mouse.
                 filterTheModel();
-                comboBox.putClientProperty("item-picked", Boolean.FALSE);
             } // if
+            comboBox.putClientProperty("item-picked", Boolean.FALSE);
         } else {
             // otherwise, insert the whole string
             super.insertString(offs, str, a);
