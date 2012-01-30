@@ -262,16 +262,16 @@ public class ComboBoxFilter extends PlainDocument {
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         System.out.println("insertString(" + offs + ", " + str + ")");
-        
+
         // return immediately when selecting an item
         if (selecting) {
             return;
         } // if
-        
+
         if (arrowKeyPressed) {
             return;
         }
-        
+
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
             // we got a string in the Sise format, that must be because user picked an item with a mouse
@@ -283,7 +283,7 @@ public class ComboBoxFilter extends PlainDocument {
             }
             comboBox.putClientProperty("item-picked", Boolean.TRUE);
             super.insertString(offs, strs[idx], a);
-            
+
             if (!isTableCellEditor()) {
                 // we have to filter after the user selects an item with the mouse.
                 // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
@@ -295,7 +295,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
             super.insertString(offs, str, a);
         } // else
-        
+
         if (finish) {
             return;
         }
@@ -312,7 +312,7 @@ public class ComboBoxFilter extends PlainDocument {
             } // if
         } // if
 */
-        
+
         filterTheModel();
     } // insertString() method
     
