@@ -57,6 +57,7 @@ public class ComboBoxFilter extends PlainDocument {
     private boolean hitBackspace;
 
     private boolean arrowKeyPressed = false;
+    private boolean keyPressed = false;
     private boolean finish = false;
     private int selectedIndex;
 
@@ -82,15 +83,16 @@ public class ComboBoxFilter extends PlainDocument {
         comboBox.setEditable(true);
         comboBoxModel = argComboBoxModel;
         comboBox.setModel(comboBoxModel);
-        
+        comboBox.putClientProperty("item-picked", Boolean.FALSE);
         comboBoxEditor = (JTextComponent) comboBox.getEditor().getEditorComponent();
         comboBoxEditor.setDocument(this);
-
-        // let's add a key listener to the editor
+                // let's add a key listener to the editor
         comboBoxEditor.addKeyListener(new KeyAdapter() {
             
             @Override
             public void keyPressed(KeyEvent e) {
+                System.out.println(e);
+                keyPressed = true;
                 boolean isTableCellEditor = false;
                 Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
                 if (tmp != null) {
@@ -102,6 +104,7 @@ public class ComboBoxFilter extends PlainDocument {
                 arrowKeyPressed = false;
                 finish = false;
                 int currentIndex = comboBox.getSelectedIndex();
+                
                 switch (e.getKeyCode()) {
                     
                     case KeyEvent.VK_ENTER:
@@ -115,6 +118,7 @@ public class ComboBoxFilter extends PlainDocument {
 
                     case KeyEvent.VK_UP:
                         arrowKeyPressed = true;
+                        
                         if (isTableCellEditor) {
                             /* For some reason, the JTable is stealing keyboard events and preventing us   *
                              * from moving up/down, so we have to select proper values manually.           *
@@ -154,6 +158,7 @@ public class ComboBoxFilter extends PlainDocument {
                     default:
                         selectedIndex = currentIndex;
                 } // switch
+                keyPressed = false;
             } // keyPressed() method
         });
         
@@ -181,7 +186,6 @@ public class ComboBoxFilter extends PlainDocument {
                 /* NOTE: Dimension returned by getSize() method is actually the dimension of the combo-box
                  *       popup menu! It is not the size of the JTextComponent object! :)
                  */
-                System.out.println("popupMenuWillBecomeVisible()");
                 JComboBox box = (JComboBox) pme.getSource();
                 popupMenuWidth = box.getSize().width;
                 popupMenuHeight = box.getSize().height;
@@ -256,18 +260,21 @@ public class ComboBoxFilter extends PlainDocument {
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         System.out.println("insertString(" + offs + ", " + str + ")");
-        
+        System.out.println("insertString(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             return;
         } // if
 
         if (arrowKeyPressed) {
+            arrowKeyPressed = false;
+            comboBox.putClientProperty("item-picked", Boolean.FALSE);
             return;
         }
 
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
+            System.out.println("================== MOUSE");
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);
@@ -275,14 +282,24 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
             }
-            comboBox.putClientProperty("item-picked", Boolean.TRUE);
-            super.insertString(offs, strs[idx], a);
 
+            // inform action-performed listeners that the item has been picked so they may update
+            // some other components
+            if (keyPressed) {
+                comboBox.putClientProperty("item-picked", Boolean.FALSE);
+            } else {
+                comboBox.putClientProperty("item-picked", Boolean.TRUE);
+            }
+
+            super.insertString(offs, strs[idx], a);
+            
             if (!isTableCellEditor()) {
                 // we have to filter after the user selects an item with the mouse.
                 // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
                 //          exact match - ie the item that user picked with the mouse.
                 filterTheModel();
+                
+                return;
             } // if
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
         } else {
@@ -313,6 +330,7 @@ public class ComboBoxFilter extends PlainDocument {
     @Override
     public void remove(int offs, int len) throws BadLocationException {
         System.out.println("remove(" + offs + ", " + len + ")");
+        System.out.println("remove(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be

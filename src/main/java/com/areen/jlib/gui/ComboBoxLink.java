@@ -64,6 +64,7 @@ public class ComboBoxLink implements ActionListener {
     private void update() {
         System.out.println(comboBox.getSelectedIndex());
         // When user presses enter, the index of the selected item is -1...
+        // However, when picks an item with the mouse, index is always greater or equal to 0.
         if (comboBox.getSelectedIndex() == -1) {
             return;
         }
@@ -79,10 +80,10 @@ public class ComboBoxLink implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         System.out.println(ae.getActionCommand());
-        System.out.println(comboBox.isPopupVisible());
         update();
 
         Boolean tmp = (Boolean) comboBox.getClientProperty("item-picked");
+        System.out.println("VAL:" + tmp.booleanValue());
         boolean itemPicked = false;
         if (tmp == null) {
             itemPicked = false;
@@ -104,11 +105,6 @@ public class ComboBoxLink implements ActionListener {
                     // nothing
             } // switch
         } else if (ae.getActionCommand().equals("comboBoxChanged") && itemPicked) {
-            // if user picked an item via mouse, we rely on the client property "item-picked"
-            // FIXME: ComboBoxLink should be a reusable component, this makes it depend on JComboBox to
-            //        be filtered! (Yes, ComboBoxLink works properly only with filtered combo box)
-            //        Perhaps better solution would be to use PopupMenuListener and trap the 
-            //        popupMenuWillBecomeInvisible event.
             switch(type) {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
@@ -125,3 +121,5 @@ public class ComboBoxLink implements ActionListener {
     } // actionPerformed() method
     
 } // ComboBoxLink class
+
+// $Id$
