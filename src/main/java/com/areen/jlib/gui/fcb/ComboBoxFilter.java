@@ -130,9 +130,6 @@ public class ComboBoxFilter extends PlainDocument {
                             // we set this to false ONLY if the combo box is a cell editor!
                             arrowKeyPressed = false;
                         } // if
-                        
-                        // not picked with mouse
-                        comboBox.putClientProperty("item-picked", Boolean.FALSE);
                         break;
                         
                     case KeyEvent.VK_DOWN:
@@ -152,9 +149,6 @@ public class ComboBoxFilter extends PlainDocument {
                             // we set this to false ONLY if the combo box is a cell editor!
                             arrowKeyPressed = false;
                         } // if
-                        
-                        // not picked with mouse
-                        comboBox.putClientProperty("item-picked", Boolean.FALSE);
                         break;
 
                     default:
@@ -262,7 +256,7 @@ public class ComboBoxFilter extends PlainDocument {
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         System.out.println("insertString(" + offs + ", " + str + ")");
-
+        
         // return immediately when selecting an item
         if (selecting) {
             return;
@@ -281,18 +275,19 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
             }
-            comboBox.putClientProperty("item-picked", Boolean.TRUE);
+            
             super.insertString(offs, strs[idx], a);
 
             if (!isTableCellEditor()) {
+                comboBox.putClientProperty("item-picked", Boolean.TRUE);
                 // we have to filter after the user selects an item with the mouse.
                 // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
                 //          exact match - ie the item that user picked with the mouse.
                 filterTheModel();
+                comboBox.putClientProperty("item-picked", Boolean.FALSE);
             } // if
         } else {
             // otherwise, insert the whole string
-            comboBox.putClientProperty("item-picked", Boolean.FALSE);
             super.insertString(offs, str, a);
         } // else
 
