@@ -91,7 +91,6 @@ public class ComboBoxFilter extends PlainDocument {
             
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e);
                 keyPressed = true;
                 boolean isTableCellEditor = false;
                 Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
@@ -303,6 +302,7 @@ public class ComboBoxFilter extends PlainDocument {
             } // if
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
         } else {
+            comboBox.putClientProperty("item-picked", Boolean.FALSE);
             // otherwise, insert the whole string
             super.insertString(offs, str, a);
         } // else
