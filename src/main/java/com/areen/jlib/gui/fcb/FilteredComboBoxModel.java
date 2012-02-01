@@ -607,16 +607,21 @@ public class FilteredComboBoxModel
      */
     private int check(String argWhat, Pair argPair) {
         //System.out.println("PAIR: " + argWhat + " ? " + argPair.toString());
-        String left = argPair.getFirst().toString();
-        String right = argPair.getSecond().toString();
+        String left = argPair.getFirst() != null ? argPair.getFirst().toString() : null;
+        String right = argPair.getSecond() != null ? argPair.getSecond().toString() : "";
         
-        if (left.toLowerCase().equals(argWhat.toLowerCase())
-                || right.toLowerCase().equals(argWhat.toLowerCase())) {
+        if (left == null && right == null) {
+            return 0;
+        } // if
+        
+        if ((left != null && left.toLowerCase().equals(argWhat.toLowerCase()))
+                || (right != null && right.toLowerCase().equals(argWhat.toLowerCase()))) {
             // we have an exact match
             return 2;
         } // if
-        if (left.toLowerCase().contains(argWhat.toLowerCase())
-                || right.toLowerCase().contains(argWhat.toLowerCase())) {
+        
+        if ((left != null && left.toLowerCase().contains(argWhat.toLowerCase()))
+                || (right != null && right.toLowerCase().contains(argWhat.toLowerCase()))) {
             // we found a partial match
             return 1;
         } // if
