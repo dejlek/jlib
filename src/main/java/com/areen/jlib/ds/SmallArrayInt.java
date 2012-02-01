@@ -44,9 +44,13 @@ public class SmallArrayInt extends SmallArray {
         System.out.println(wlz(data | ((int) Math.pow(2.0, argIdx * numberOfBits)) - 1));
     } // set() method
 
-    public static void main(final String[] args) throws SmallArrayException {
-        SmallArrayInt sai = new SmallArrayInt(3);
-        sai.set(3, 5);
+    public static void main(String[] args) {
+        try {
+            SmallArrayInt sai = new SmallArrayInt(3);
+            sai.set(3, 5);
+        } catch (SmallArrayException sae) {
+            System.out.println(sae.getMessage());
+        }
     }
 
     public String wlz(final int argValue) {

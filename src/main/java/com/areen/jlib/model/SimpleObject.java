@@ -12,16 +12,16 @@ import com.areen.jlib.pattern.ValueObject;
  * @author dejan
  */
 public interface SimpleObject<T extends ValueObject> {
-    public Object   get(int argIndex);
-    public Class<?> getFieldClass(int argIndex);
-    public byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
-    public String[] getTitles();
-    public T        getValue();
-    public T[]      newArray(int argNumberOfElements); /// This should be static too...
-    public T        newValue();
-    public Object   set(int argIndex, Object argValue);
-    public void     setTitles(String[] argTitles);
-    public void     setValue(T argVo);
+    Object   get(int argIndex);
+    Class<?> getFieldClass(int argIndex);
+    byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
+    String[] getTitles();
+    T        getValue();
+    T[]      newArray(int argNumberOfElements); /// This should be static too...
+    T        newValue();
+    Object   set(int argIndex, Object argValue);
+    void     setTitles(String[] argTitles);
+    void     setValue(T argVo);
 } // SimpleObject interface
 
 // $Id$

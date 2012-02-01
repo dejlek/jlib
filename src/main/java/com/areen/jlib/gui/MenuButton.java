@@ -1,5 +1,5 @@
 /**
- * $Id: AreenTablePanel.java 157 2011-10-12 12:47:16Z vipul $
+ * $Id$
  *
  * Copyright (c) 2009-2010 Areen Design Services Ltd
  * 23 Eyot Gardens; London; W6 9TR
@@ -54,8 +54,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
  * @author dejan
  */
 public class MenuButton extends JButton
-            implements ChangeListener, ActionListener, PopupMenuListener, PropertyChangeListener
-{
+            implements ChangeListener, ActionListener, PopupMenuListener, PropertyChangeListener {
 
     private JButton mainButton, dropDownButton;
     private JPopupMenu dropDownMenu;

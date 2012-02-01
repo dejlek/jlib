@@ -10,7 +10,8 @@ package com.areen.jlib.model;
  */
 public interface SimpleObjectFactory<T extends SimpleObject> {
 
-    public T create();
+    T create();
 
 } // SimpleObjectFactory interface
 
+// $Id$

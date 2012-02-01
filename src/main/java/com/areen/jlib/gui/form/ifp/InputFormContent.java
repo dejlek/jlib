@@ -18,13 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.Spring;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 import org.jdesktop.swingx.JXDatePicker;
 
 /**
@@ -37,8 +31,8 @@ import org.jdesktop.swingx.JXDatePicker;
  * @author dejan
  */
 public class InputFormContent<T extends SimpleObject> extends JPanel {
-    final public static int VERTICAL = 0;
-    final public static int HORIZONTAL = 1;
+    public static final int VERTICAL = 0;
+    public static final int HORIZONTAL = 1;
     LinkedHashMap<String, Object> globalLabels = new LinkedHashMap();
     HashMap<Integer, Object> specialComponentField = new HashMap();
     HashMap<Integer, Boolean> notLabeledField = new HashMap();
@@ -82,22 +76,23 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
         labelForField.put(argModelIndex, argLabel);
     }
     
-    public JPanel createSubGroupDetailsPanel(int[] argModelFields, int argFormColumns, int argFormAlignment){
-       int formColumns = argFormColumns;
-       LinkedHashMap<String, Object> labels = new LinkedHashMap();
-       for (int i = 0; i < argModelFields.length; i++) {
+    public JPanel createSubGroupDetailsPanel(int[] argModelFields, int argFormColumns, int argFormAlignment) {
+        int formColumns = argFormColumns;
+        LinkedHashMap<String, Object> labels = new LinkedHashMap();
+        String curLabel = "";
+        for (int i = 0; i < argModelFields.length; i++) {
+            curLabel = getModel().getTitles()[argModelFields[i]];
             System.out.println("TYPE: " + getModel().getFieldClass(argModelFields[i]));
             if (getModel().getFieldClass(argModelFields[i]).toString().indexOf("String") >= 0
                     || getModel().getFieldClass(argModelFields[i]).toString().indexOf("Integer") >= 0
                     || getModel().getFieldClass(argModelFields[i]).toString().indexOf("Float") >= 0
                     || getModel().getFieldClass(argModelFields[i]).toString().indexOf("Boolean") >= 0) {
                 if (!specialComponentField.containsKey(argModelFields[i])) {
-                    labels.put(getModel().getTitles()[argModelFields[i]], null);
+                    labels.put(curLabel, null);
                 } else {
-                    labels.put(getModel().getTitles()[argModelFields[i]], specialComponentField.get(argModelFields[i]));
+                    labels.put(curLabel, specialComponentField.get(argModelFields[i]));
                 }
-            } // if
-            else if (getModel().getFieldClass(argModelFields[i]).toString().indexOf("Date") >= 0) {
+            } else if (getModel().getFieldClass(argModelFields[i]).toString().indexOf("Date") >= 0) {
                 if (!specialComponentField.containsKey(argModelFields[i])) {
                     final JXDatePicker datePicker = new JXDatePicker();
                     final int n = argModelFields[i];
@@ -105,7 +100,8 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            changes.firePropertyChange("VALUE_CHANGE", getModel().getTitles()[n] + " : ", getModel().getTitles()[n] + " : " + datePicker.getDate());
+                            changes.firePropertyChange("VALUE_CHANGE", getModel().getTitles()[n] 
+                                    + " : ", getModel().getTitles()[n] + " : " + datePicker.getDate());
                         }
                     });
 
@@ -122,23 +118,23 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                         }
                     };
 
-                    labels.put(getModel().getTitles()[argModelFields[i]], new DatePicker());
+                    labels.put(curLabel, new DatePicker());
                 } else {
-                    labels.put(getModel().getTitles()[argModelFields[i]], specialComponentField.get(argModelFields[i]));
+                    labels.put(curLabel, specialComponentField.get(argModelFields[i]));
                 }
             } // else if
-       } // for 
-       JPanel groupFormContentPanel = new JPanel();
-       groupFormContentPanel.setLayout(new SpringLayout());
-       Iterator it = labels.entrySet().iterator();
-       int counter =0;
-       while (it.hasNext()) {
+        } // for 
+        JPanel groupFormContentPanel = new JPanel();
+        groupFormContentPanel.setLayout(new SpringLayout());
+        Iterator it = labels.entrySet().iterator();
+        int counter = 0;
+        while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             final JLabel fieldLabel = new JLabel(pairs.getKey().toString(), JLabel.TRAILING);
             String[] modelFieldTitles = getModel().getTitles();
             int fieldIndex = 0;
-            for (int i = 0; i<modelFieldTitles.length; i++) {
-                if (modelFieldTitles[i].equalsIgnoreCase(pairs.getKey().toString()) ) {
+            for (int i = 0; i < modelFieldTitles.length; i++) {
+                if (modelFieldTitles[i].equalsIgnoreCase(pairs.getKey().toString())) {
                     fieldIndex = i;
                     break;
                 } // if
@@ -152,8 +148,10 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
             } else {
                 groupFormContentPanel.add(fieldLabel);
             } // else
+
+            System.out.println("Field: " + pairs.getKey().toString() + " Form component: " 
+                    + pairs.getValue());
             
-            System.out.println("Field: "+ pairs.getKey().toString() + " Form component: " +pairs.getValue());
             if (pairs.getValue() == null) {
                 final JTextField fieldComponent = new JTextField();
                 System.out.println(getModel().get(argModelFields[counter]).toString());
@@ -175,7 +173,7 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                     } // keyReleased() method
                 });
                 fieldLabel.setLabelFor(fieldComponent);
-                
+
                 class FormTextField<fieldComponent> extends InputFormFieldEditor {
 
                     @Override
@@ -188,7 +186,7 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                         return fieldComponent;
                     }
                 };
-                
+
                 pairs.setValue(new FormTextField());
                 groupFormContentPanel.add(fieldComponent);
             } else if (pairs.getValue() instanceof Object[]) {
@@ -196,34 +194,33 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                 componentsPanel.setLayout(new BoxLayout(componentsPanel, BoxLayout.X_AXIS));
                 final Object[] components = (Object[]) pairs.getValue();
                 for (int i = 0; i < components.length; i++) {
-                    componentsPanel.add((JComponent)components[i]);
+                    componentsPanel.add((JComponent) components[i]);
                 } // for
                 groupFormContentPanel.add(componentsPanel);
-            } // if
-            else if(pairs.getValue()  instanceof InputFormFieldEditor){
+            } else if (pairs.getValue() instanceof InputFormFieldEditor) {
                 final Map.Entry fieldPair = pairs;
-                ((InputFormFieldEditor)pairs.getValue()).setValue(getModel().get(argModelFields[counter]).toString());
-                groupFormContentPanel.add(((InputFormFieldEditor)pairs.getValue()).getComponent());
-            } //else if
-            else{
-                groupFormContentPanel.add((JComponent)pairs.getValue());
+                String tmp = getModel().get(argModelFields[counter]).toString();
+                ((InputFormFieldEditor) pairs.getValue()).setValue(tmp);
+                groupFormContentPanel.add(((InputFormFieldEditor) pairs.getValue()).getComponent());
+            } else {
+                groupFormContentPanel.add((JComponent) pairs.getValue());
             } // else
             counter++;
         } // while
         if (argFormAlignment == VERTICAL) {
             makeCompactGrid(groupFormContentPanel, labels.size(), formColumns, 6, 6, 6, 6);
         } else if (argFormAlignment == HORIZONTAL && formColumns <= 1) {
-            makeCompactGrid(groupFormContentPanel, 1, labels.size()*2, 6, 6, 6, 6);
-        }        
+            makeCompactGrid(groupFormContentPanel, 1, labels.size() * 2, 6, 6, 6, 6);
+        }
         groupFormContentPanel.validate();
-        groupFormContentPanel.repaint(); 
-        System.out.println("SIZE: " +labels.size());
+        groupFormContentPanel.repaint();
+        System.out.println("SIZE: " + labels.size());
         globalLabels.putAll(labels);
         return groupFormContentPanel;
-    }
-    
-    public void setPropertyChangeSupport(PropertyChangeSupport changes){
-        this.changes = changes;
+    } // createSubGroupDetailsPanel() method
+
+    public void setPropertyChangeSupport(PropertyChangeSupport argChanges) {
+        changes = argChanges;
     }
 
     public PropertyChangeSupport getPropertyChangeSupport() {

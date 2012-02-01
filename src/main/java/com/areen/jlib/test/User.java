@@ -18,8 +18,8 @@ public class User implements SimpleObject<ValueObject> {
     String[] titles = new String[]{"User ID", "Department", "Username", "Password"};
 
     public static class VO implements ValueObject, Serializable {
-        long user_id = 0; /// reserved for future use
-    String userId = "UNK01";     /// "user_id" column
+        long userPk = 0; /// reserved for future use
+    String userId = "UNK01";     /// "userPk" column
     String dept;             /// reference VO an adequate row in the dir_val_depts table
     String userName = "unknown"; /// "vms_username" column
     String password = "unknown"; /// "extension" column

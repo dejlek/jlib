@@ -44,37 +44,37 @@ public interface CrudOperations<T extends ValueObject> {
     int DELETE_ARRAY = 8;
 
     // EXTRA METHODS ------------------------------------
-    public void    setOldValue(Object argOldValue);
-    public void    setArgs(String argInput); // Use this method to specify parameters to the CRUD object.
-    public void    set(String argName, Object argValue);
-    public Object  get(String argName);
-    public boolean check(int argOperation, T[] argVos); // Checks whether operation can be executed.
+    void    setOldValue(Object argOldValue);
+    void    setArgs(String argInput); // Use this method to specify parameters to the CRUD object.
+    void    set(String argName, Object argValue);
+    Object  get(String argName);
+    boolean check(int argOperation, T[] argVos); // Checks whether operation can be executed.
     
     /**
      * In the case check() fails, use this method to get the reason why.
      * @return String value with the message to the user. If return value is NULL, and operation is UPDATE,
      *         that means that the update operation failed!
      */
-    public String  getMessage();
+    String  getMessage();
     
-    public void    setOldValues(T[] argVos);
-    public boolean isLocked(int argRowIndex);
+    void    setOldValues(T[] argVos);
+    boolean isLocked(int argRowIndex);
 
     // CREATE -------------------------------------------
-    public T       create();
-    public T       create(T argVo);
-    public T[]     create(T[] argVos); // Used for duplicating rows
+    T       create();
+    T       create(T argVo);
+    T[]     create(T[] argVos); // Used for duplicating rows
 
     // READ ---------------------------------------------
-    public T[]     readAll();
+    T[]     readAll();
 
     // UPDATE -------------------------------------------
-    public T       update(T argOld);
-    public T       update(T argOld, int argFieldNumber); /** byte would be better here, but Java is stupid,
+    T       update(T argOld);
+    T       update(T argOld, int argFieldNumber); /** byte would be better here, but Java is stupid,
                                                              we would have to cast arg to byte every time */
     // DELETE -------------------------------------------
-    public boolean delete(T argVo);
-    public boolean delete(T[] argVos); /// Used to delete a group of rows
+    boolean delete(T argVo);
+    boolean delete(T[] argVos); /// Used to delete a group of rows
 } // CrudOperations<T> interface
 
 // $Id$

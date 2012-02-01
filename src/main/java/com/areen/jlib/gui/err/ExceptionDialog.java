@@ -91,19 +91,19 @@ public class ExceptionDialog extends java.awt.Dialog {
     } // </editor-fold>//GEN-END:initComponents
 
     /** Closes the dialog */
-    private void closeDialog(final java.awt.event.WindowEvent evt) { //GEN-FIRST:event_closeDialog
+    private void closeDialog(final java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
         dispose();
-    } //GEN-LAST:event_closeDialog
+    }//GEN-LAST:event_closeDialog
 
-    private void okButtonActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         setVisible(false);
-} //GEN-LAST:event_okButtonActionPerformed
+}//GEN-LAST:event_okButtonActionPerformed
 
     /**
     * @param args the command line arguments
     */
-    public static void main(final String args[]) {
+    public static void main(final String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ExceptionDialog dialog = new ExceptionDialog(new java.awt.Frame(), true);
