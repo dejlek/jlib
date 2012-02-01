@@ -22,7 +22,7 @@
  * Author(s) in chronological order:
  *   Mehjabeen Nujurally
  * Contributor(s):
- *   -
+ *   Dejan Lekic , http://dejan.lekic.org
  */
 package com.areen.jlib.gui.form.ifp;
 
@@ -55,7 +55,7 @@ public class InputFormPanel extends javax.swing.JPanel {
     InputFormModel formModel;
     InputFormContent formContent;
     PropertyChangeSupport changes;
-    private String VALUE_CHANGE = "";
+    public static final String VALUE_CHANGE = "VALUE_CHANGE";
 
     /** Creates new form InputFormPanel. */
     public InputFormPanel() {
@@ -537,27 +537,25 @@ public class InputFormPanel extends javax.swing.JPanel {
     public void triggerFieldUpdate(final int argModelIndex) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
-        done: while(it.hasNext()){
+        done: while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             if (counter == argModelIndex) {
-
-                if(pairs.getValue() instanceof InputFormFieldEditor) {
+                if (pairs.getValue() instanceof InputFormFieldEditor) {
                     changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() 
                             + " : ", pairs.getKey().toString() + " : " 
-                            + ((InputFormFieldEditor)pairs.getValue()).getValue());
-                }
-                else if (pairs.getValue() instanceof Object[]) {
-                    if(((Object[])pairs.getValue())[0] instanceof InputFormFieldEditor) {
+                            + ((InputFormFieldEditor) pairs.getValue()).getValue());
+                } else if (pairs.getValue() instanceof Object[]) {
+                    if (((Object[]) pairs.getValue())[0] instanceof InputFormFieldEditor) {
                         changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() 
                                 + " : ", pairs.getKey().toString() + " : " 
-                                + ((InputFormFieldEditor)((Object[])pairs.getValue())[0]).getValue());
-                    }
-                }
+                                + ((InputFormFieldEditor) ((Object[]) pairs.getValue())[0]).getValue());
+                    } // if
+                } // else if
                 break done;
             } // if
             counter++;
         } // while
-    }
+    } // triggerFieldUpdate() method
 
     public void triggerAllFieldUpdates() {
         Iterator it = labels.entrySet().iterator();
@@ -565,11 +563,15 @@ public class InputFormPanel extends javax.swing.JPanel {
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             if (pairs.getValue() instanceof InputFormFieldEditor) {
-                changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor) pairs.getValue()).getValue());
+                changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", 
+                        pairs.getKey().toString() + " : " 
+                        + ((InputFormFieldEditor) pairs.getValue()).getValue());
             } else if (pairs.getValue() instanceof JComponent[]) {
                 if (((Object[]) pairs.getValue())[0] instanceof InputFormFieldEditor) {
-                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", pairs.getKey().toString() + " : " + ((InputFormFieldEditor) ((Object[]) pairs.getValue())[0]).getValue());
-                }
+                    changes.firePropertyChange("VALUE_CHANGE", pairs.getKey().toString() + " : ", 
+                            pairs.getKey().toString() + " : " 
+                            + ((InputFormFieldEditor) ((Object[]) pairs.getValue())[0]).getValue());
+                } // if
             } // else if
         } // while
     } // triggerAllFieldUpdates() method
