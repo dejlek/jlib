@@ -23,6 +23,27 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     private JComboBox comboBox;
     private FilteredComboBoxModel comboBoxModel;
     private ComboBoxFilter cbFilter;
+
+    private int clickCountToStart = 1; // FIXME: clickCountToStart does not work atm...
+    
+    /** 
+     * Here we store the column index of the cell where user pressed a key. 
+     */
+    private int keyColumn = -1;
+
+    /**
+     * Similarly to the keyRow, we store the row index as well.
+     * @see keyRow
+     */
+    private int keyRow = -1;
+
+    /**
+     * We have to store the key that user pressed so in the case the cell editor is combo box, we can
+     * forward pressed key (character), so we can display it inside combo-box's editor component.
+     * 
+     * @see keyRow, keyColumn
+     */
+    private char pressedKey;
     
     public FilteredComboBoxCellEditor(JComboBox argComboBox) {
         comboBox = argComboBox;
@@ -35,6 +56,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         comboBoxModel = (FilteredComboBoxModel) comboBox.getModel();
         comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
         cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
+        setClickCountToStart(2);
     }
     
     /**
@@ -110,10 +132,47 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             boolean isSelected, 
             int row, 
             int column) {
-        setValue(value);
+        if ((row == keyRow)
+                && column == keyColumn) {
+            setValue(pressedKey);
+        } else {
+            setValue(value);
+        }
         return comboBox;
     } // getTableCellEditorComponent() method
     
+    /**
+     * This method should be called by a KeyListener installed on a JTable object to inform the cell editor
+     * where user pressed a key before the editing was triggered (with key press). By doing this, cell
+     * editor can take that key, and include it in the combo-box's editing component, otherwise it is lost.
+     * 
+     * @param argRow
+     * @param argColumn
+     * @param argChar 
+     */
+    public void storeKeyInfo(int argRow, int argColumn, char argChar) {
+        keyRow = argRow;
+        keyColumn = argColumn;
+        pressedKey = argChar;
+    } // storeKeyInfo
+
+    /**
+     * Specifies the number of clicks needed to start editing.
+     *
+     * @param count  an int specifying the number of clicks needed to start editing
+     * @see #getClickCountToStart
+     */
+    public void setClickCountToStart(int count) {
+        clickCountToStart = count;
+    }
+
+    /**
+     * Returns the number of clicks needed to start editing.
+     * @return the number of clicks needed to start editing
+     */
+    public int getClickCountToStart() {
+        return clickCountToStart;
+    }
 } // FilteredComboBoxCellEditor
 
 // $Id$

@@ -5,6 +5,7 @@
 package com.areen.jlib.test;
 
 import com.areen.jlib.tuple.Pair;
+import javax.swing.UIManager;
 
 /**
  *
@@ -296,6 +297,23 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
+            //Tell the UIManager to use the platform look and feel
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(new WindowsLookAndFeel());
+
+            /*
+            com.jgoodies.looks.windows.WindowsLookAndFeel
+            com.jgoodies.looks.plastic.PlasticLookAndFeel
+            com.jgoodies.looks.plastic.Plastic3DLookAndFeel
+            com.jgoodies.looks.plastic.PlasticXPLookAndFeel
+            */
+            //UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+            
+        } catch (Exception e) {
+            //Do nothing
+        }
+
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             @Override

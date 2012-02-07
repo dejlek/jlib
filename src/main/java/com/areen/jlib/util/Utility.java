@@ -23,6 +23,7 @@
 package com.areen.jlib.util;
 
 import com.areen.jlib.model.SimpleObject;
+import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -239,6 +240,22 @@ public class Utility {
         return ret;
     } // oa2string() method
     
+    /**
+     * Checks whether character argCharacter is printable or not.
+     * The code is taken from the following StackOverflow thread:
+     * http://stackoverflow.com/questions/220547/printable-char-in-java
+     * 
+     * @param argCharacter
+     * @return 
+     */
+    public static boolean isPrintableChar(char argCharacter) {
+        Character.UnicodeBlock block = Character.UnicodeBlock.of(argCharacter);
+        return (!Character.isISOControl(argCharacter))
+                && argCharacter != KeyEvent.CHAR_UNDEFINED
+                && block != null
+                && block != Character.UnicodeBlock.SPECIALS;
+    } // isPrintableChar() method
+
 } // Utility class
 
 // $Id$

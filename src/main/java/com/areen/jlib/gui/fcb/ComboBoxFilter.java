@@ -3,6 +3,7 @@
  */
 package com.areen.jlib.gui.fcb;
 
+import com.areen.jlib.gui.ColorArrowUI;
 import com.areen.jlib.util.Sise;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -11,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.AttributeSet;
@@ -82,6 +84,9 @@ public class ComboBoxFilter extends PlainDocument {
     public ComboBoxFilter(final JComboBox argComboBox, FilteredComboBoxModel argComboBoxModel) {
         comboBox = argComboBox;
         comboBox.setEditable(true);
+
+        fixComboBoxArrowUI();
+
         comboBoxModel = argComboBoxModel;
         comboBox.setModel(comboBoxModel);
         comboBox.putClientProperty("item-picked", Boolean.FALSE);
@@ -214,7 +219,7 @@ public class ComboBoxFilter extends PlainDocument {
         if (selected != null) {
             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
         }
-    } // ComboBoxFilter constructor
+    }
 
     /**
      * User typically will call this method from a table cell editor when we want to "inform" filtered
@@ -459,6 +464,19 @@ public class ComboBoxFilter extends PlainDocument {
         } // if 
         return;
     } // fixPopupSize() method
+
+    /**
+     * If the l&f is system, and OS is Windows, we have to fix the arrow UI of the combo box, when
+     * editing is enabled. This method is responsible for doing that.
+     */
+    private void fixComboBoxArrowUI() {
+        String scn = UIManager.getSystemLookAndFeelClassName();
+        if (System.getProperty("os.name").startsWith("Windows")
+            && UIManager.getLookAndFeel().getClass().getCanonicalName().equals(scn)) {
+            System.err.println("DEBUG: fixing the combo-box's arrow");
+            comboBox.setUI(ColorArrowUI.createUI(comboBox));
+        } // if
+    } // fixComboBoxArrowUI() method
     
 } // ComboBoxFilter class
 
