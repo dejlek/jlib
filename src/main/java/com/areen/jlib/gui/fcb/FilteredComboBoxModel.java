@@ -389,11 +389,13 @@ public class FilteredComboBoxModel
         exactIndex = -1;
         
         String copy = argPattern.trim();
-        if (lastPattern.equals(copy)) {
+        if (lastPattern.equals(copy)
+                && (argPattern.length() != copy.length())) {
             // we have the same pattern, probably with an additional space, no need for filtering.
-            //System.out.println("DEBUG: (equal) setPattern(" + argPattern + ");");
+            // However, we return only if length changed because in the case user picks an item (in table)
+            // and presses F2 to edit again, we lose the selected index, so we have to re-filter again.
             return;
-        }
+        } // if
         //System.out.println("DEBUG: setPattern(" + argPattern + ");");
         
         // record the size before we start modifying the filtered list of objects

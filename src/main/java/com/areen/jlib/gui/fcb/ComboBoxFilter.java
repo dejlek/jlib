@@ -60,6 +60,7 @@ public class ComboBoxFilter extends PlainDocument {
     private boolean keyPressed = false;
     private boolean finish = false;
     private int selectedIndex;
+    private Object pickedItem;
 
     private int previousItemCount;
     
@@ -105,7 +106,12 @@ public class ComboBoxFilter extends PlainDocument {
                 int currentIndex = comboBox.getSelectedIndex();
                 
                 switch (e.getKeyCode()) {
-                    
+                    case KeyEvent.VK_ESCAPE:
+                        if (pickedItem != null) {
+                            comboBox.setSelectedItem(pickedItem);
+                        } // if
+                        break;
+
                     case KeyEvent.VK_ENTER:
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
@@ -113,6 +119,7 @@ public class ComboBoxFilter extends PlainDocument {
                         if (!isTableCellEditor()) {
                             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                         }
+                        pickedItem = comboBox.getSelectedItem();
                         break;
 
                     case KeyEvent.VK_UP:
@@ -192,7 +199,7 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
-                // do nothing
+                comboBox.putClientProperty("item-picked", Boolean.FALSE);
             }
 
             @Override
@@ -202,6 +209,7 @@ public class ComboBoxFilter extends PlainDocument {
         });
         
         Object selected = comboBox.getSelectedItem();
+        pickedItem = selected;
         selectedIndex = comboBox.getSelectedIndex();
         if (selected != null) {
             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
@@ -216,7 +224,7 @@ public class ComboBoxFilter extends PlainDocument {
      * @param argPattern 
      */
     public void prepare(Object argPattern) {
-        //System.out.println("prepare(" + argPattern + ")");
+        System.out.println("prepare(" + argPattern + ")");
         try {
             selecting = true;
             if (isTableCellEditor()) {
@@ -228,6 +236,8 @@ public class ComboBoxFilter extends PlainDocument {
                 setText(argPattern.toString().trim());
             } // else
             filterTheModel(); // will set selecting to false
+            System.out.println(comboBox.getSelectedIndex());
+            pickedItem = comboBox.getSelectedItem();
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -273,7 +283,7 @@ public class ComboBoxFilter extends PlainDocument {
 
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
-            System.out.println("================== MOUSE");
+            System.out.println("%%%%%%%%%%%%%");
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);
@@ -297,9 +307,15 @@ public class ComboBoxFilter extends PlainDocument {
                 // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
                 //          exact match - ie the item that user picked with the mouse.
                 filterTheModel();
-                
+                if ((Boolean) comboBox.getClientProperty("item-picked")) {
+                    pickedItem = comboBox.getSelectedItem();
+                }
                 return;
             } // if
+
+            if ((Boolean) comboBox.getClientProperty("item-picked")) {
+                    pickedItem = comboBox.getSelectedItem();
+            }
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
         } else {
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
@@ -390,7 +406,9 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxModel.setReadyToFinish(false); // we must set this to false during the filtering
         previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
         int pos = comboBoxEditor.getCaretPosition();
-        comboBoxModel.setPattern(getText(0, getLength()));
+        String pattern = getText(0, getLength());
+        System.out.println("filterTheModel(): " + pattern);
+        comboBoxModel.setPattern(pattern);
         
         if (comboBoxEditor.getSelectedText() != null) {
             // we have a selected text, removing the selection.On Windows text may become selected by default
@@ -400,7 +418,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxEditor.setCaretPosition(pos);
         } // if
         
-        this.fixPopupSize();
+        fixPopupSize();
         
         comboBoxModel.setReadyToFinish(oldValue); // restore the value
         selecting = false;
@@ -440,58 +458,6 @@ public class ComboBoxFilter extends PlainDocument {
             } // if
         } // if 
         return;
-        /*
-        JComboBox box = comboBox;
-        int maxRows = box.getMaximumRowCount();
-        
-        if (!box.isPopupVisible()) {
-            // if popup menu is not visible, we should close it, there is no point of fixing the size
-            return;
-        }
-        
-        Object comp = box.getUI().getAccessibleChild(box, 0);
-        JPopupMenu popup;
-        if (comp instanceof JPopupMenu) { 
-            popup = (JPopupMenu) comp;
-        } else {
-            return;
-        }
-        
-        JComponent scrollPane = (JComponent) popup.getComponent(0);
-        Dimension size = new Dimension();
-        
-        /// We want to keep the same width all the time
-        size.width = popupMenuWidth; 
-        //size.width = box.getPreferredSize().width;
-        
-        size.height = scrollPane.getPreferredSize().height;
-        
-        System.out.println(size);
-        int newHeight = maxRows * 24;
-        if (comboBox.getItemCount() < maxRows && comboBox.getItemCount() > 0) {
-            newHeight = comboBox.getItemCount() * 24;
-            popupMenuHeight = Math.max(popupMenuHeight, newHeight);
-            popupMenuHeight = Math.max(popupMenuHeight, size.height);
-            newHeight = popupMenuHeight;
-        }
-        if (comboBox.getItemCount() >= maxRows) {
-            // we will store maximal popup height here
-            popupMenuHeight = Math.max(popupMenuHeight, size.height);
-            newHeight = popupMenuHeight;
-        } // if
-        System.out.println(popupMenuWidth + "," + popupMenuHeight);
-        size.height = newHeight;
-        System.out.println("fixed: " + size);
-        //scrollPane.setSize(size);
-        scrollPane.setPreferredSize(size);
-        popup.setPopupSize(size);
-        //comboBox.validate();
-        
-        //  following line for Tiger (MacOS X):
-        // scrollPane.setMaximumSize(size);
-        * 
-        * 
-        */
     } // fixPopupSize() method
     
 } // ComboBoxFilter class
