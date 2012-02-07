@@ -64,6 +64,12 @@ public class ComboBoxFilter extends PlainDocument {
     private int selectedIndex;
     private Object pickedItem;
 
+    /**
+     * This value is set by cell-editors to inform ComboBoxFilter whether to execute pick value or not
+     * during the preparation phase (prepare() method).
+     */
+    private boolean triggeredByKeyPress = false;
+
     private int previousItemCount;
     
     /**
@@ -244,7 +250,12 @@ public class ComboBoxFilter extends PlainDocument {
             } // else
             filterTheModel(); // will set selecting to false
             System.out.println(comboBox.getSelectedIndex());
-            pickedItem = comboBox.getSelectedItem();
+            if (isTriggeredByKeyPress()) {
+                // if the editing of the cell edited by a combo-box started via a key-press, we will
+                // not automatically pick the item. This is important so when user presses ESC key
+                // and cancels the editing, the table returns to the old value.
+                pickedItem = comboBox.getSelectedItem();
+            } // if
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -479,7 +490,16 @@ public class ComboBoxFilter extends PlainDocument {
             comboBox.setUI(ColorArrowUI.createUI(comboBox));
         } // if
     } // fixComboBoxArrowUI() method
-    
+
+    public boolean isTriggeredByKeyPress() {
+        return triggeredByKeyPress;
+    }
+
+    public void setTriggeredByKeyPress(boolean argTriggeredByKeyPress) {
+        triggeredByKeyPress = argTriggeredByKeyPress;
+    }
+
+
 } // ComboBoxFilter class
 
 // $Id$

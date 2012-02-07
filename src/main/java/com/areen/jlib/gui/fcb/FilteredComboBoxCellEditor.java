@@ -87,10 +87,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        System.out.println("---------------");
-        System.out.println("actionPerformed()");
-        System.out.println(e.getActionCommand());
-        System.out.println(comboBoxModel.isCancelled());
             System.out.println(e.getActionCommand());
         // Selecting an item results in an actioncommand "comboBoxChanged".
         // We should ignore these ones, but unfortunately we must allow user to finish the editing by picking
@@ -107,7 +103,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         }
 
         if (comboBoxModel.isCancelled() && "comboBoxChanged".equals(e.getActionCommand())) {
-            stopCellEditing();
+            cancelCellEditing();
             return;
         } // if
 
@@ -146,8 +142,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             int column) {
         if ((row == keyRow)
                 && column == keyColumn) {
+            cbFilter.setTriggeredByKeyPress(true);
             setValue(pressedKey);
         } else {
+            cbFilter.setTriggeredByKeyPress(false);
             setValue(value);
         }
         return comboBox;
