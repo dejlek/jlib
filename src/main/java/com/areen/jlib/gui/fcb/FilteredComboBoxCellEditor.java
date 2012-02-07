@@ -87,6 +87,11 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
+        System.out.println("---------------");
+        System.out.println("actionPerformed()");
+        System.out.println(e.getActionCommand());
+        System.out.println(comboBoxModel.isCancelled());
+            System.out.println(e.getActionCommand());
         // Selecting an item results in an actioncommand "comboBoxChanged".
         // We should ignore these ones, but unfortunately we must allow user to finish the editing by picking
         // an item with the mouse...
@@ -98,7 +103,14 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         // Hitting enter results in an actioncommand "comboBoxEdited"
         if (e.getActionCommand().equals("comboBoxEdited")) {
             stopCellEditing();
+            return;
         }
+
+        if (comboBoxModel.isCancelled() && "comboBoxChanged".equals(e.getActionCommand())) {
+            stopCellEditing();
+            return;
+        } // if
+
     } // actionPerformed() method
     
     // Implementing CellEditor

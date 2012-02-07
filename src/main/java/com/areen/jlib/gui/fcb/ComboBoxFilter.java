@@ -112,6 +112,7 @@ public class ComboBoxFilter extends PlainDocument {
                 
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_ESCAPE:
+                        comboBoxModel.setCancelled(true);
                         if (pickedItem != null) {
                             comboBox.setSelectedItem(pickedItem);
                         } // if
@@ -232,6 +233,7 @@ public class ComboBoxFilter extends PlainDocument {
         System.out.println("prepare(" + argPattern + ")");
         try {
             selecting = true;
+            comboBoxModel.setCancelled(false);
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(false);
             }

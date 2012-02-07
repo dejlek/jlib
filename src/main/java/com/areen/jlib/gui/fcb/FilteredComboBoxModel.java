@@ -61,6 +61,7 @@ public class FilteredComboBoxModel
     private Object exactObject = null; /// If there is an exact match, here we hold a reference to the Object.
     private int exactIndex = -1; /// If there is an exact match, here we hold the index of the Object.
     private int[] columns;
+    private boolean cancelled = false;
     /** 
      * Indicator whether cell editors should stop editing. This value is most useful in case when we want to
      * pick the item with the mouse.
@@ -674,7 +675,15 @@ public class FilteredComboBoxModel
         } // if
         return 0;
     } // check() method
-    
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean argCancelled) {
+        cancelled = argCancelled;
+    }
+
 } // FilteredComboBoxModel class
 
 // $Id$
