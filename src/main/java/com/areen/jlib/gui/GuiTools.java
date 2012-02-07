@@ -1,5 +1,5 @@
 /**
- * $Id: AreenTablePanel.java 348 2012-02-06 16:43:51Z dejan $
+ * $Id$
  *
  * Copyright (c) 2009-2010 Areen Design Services Ltd
  * 23 Eyot Gardens; London; W6 9TR
