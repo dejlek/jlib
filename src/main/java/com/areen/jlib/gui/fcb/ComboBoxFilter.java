@@ -309,7 +309,7 @@ public class ComboBoxFilter extends PlainDocument {
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         System.out.println("insertString(" + offs + ", " + str + ")");
-        System.out.println("insertString(" + selecting + ", " + arrowKeyPressed + ")");
+        //System.out.println("insertString(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             return;
@@ -449,7 +449,7 @@ public class ComboBoxFilter extends PlainDocument {
         previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
         int pos = comboBoxEditor.getCaretPosition();
         String pattern = getText(0, getLength());
-        System.out.println("filterTheModel(): " + pattern);
+        //System.out.println("filterTheModel(): " + pattern);
         comboBoxModel.setPattern(pattern);
         
         if (comboBoxEditor.getSelectedText() != null) {

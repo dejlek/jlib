@@ -145,19 +145,19 @@ public class FilteredComboBoxModel
                 int last;
                 switch (e.getType()) {
                     case TableModelEvent.INSERT:
-                        System.out.println("FCBM: TableModel insert");
+                        //System.out.println("FCBM: TableModel insert");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         //fcbObjects.add(first, getRow(first));
                         FilteredComboBoxModel.this.addElement(getRow(first));
                         break;
                     case TableModelEvent.DELETE:
-                        System.out.println("FCBM: TableModel delete");
+                        //System.out.println("FCBM: TableModel delete");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         break;
                     case TableModelEvent.UPDATE:
-                        System.out.println("FCBM: TableModel update");
+                        //System.out.println("FCBM: TableModel update");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         objects.set(first, getRow(first));
@@ -303,88 +303,6 @@ public class FilteredComboBoxModel
         }
     }
     
-/* backup copy
-    public void setPattern(String argPattern) {
-        Object exactObject = null;
-        int exactIndex = -1;
-        
-        String copy = argPattern.trim();
-        if (lastPattern.equals(copy)) {
-            // we have the same pattern, probably with an additional space, no need for filtering.
-            System.out.println("DEBUG: (equal) setPattern(" + argPattern + ");");
-            return;
-        }
-        System.out.println("DEBUG: setPattern(" + argPattern + ");");
-        
-        // record the size before we start modifying the filtered list of objects
-        int size1 = getSize();
-        
-        if (!objects.isEmpty()) {
-            objects.clear();
-        }
-        
-        if (argPattern.isEmpty()) {
-            // pattern contains no characters - might be erased, so we have to populate objects list.
-            objects.addAll(fcbObjects);
-        } else {
-            // Before we split, lets remove some special characters.
-            copy.replaceAll(" - ", " ");
-            // pattern contains at least one character
-            String[] strings = copy.split(" ");
-            
-            boolean found;
-
-            Object obj = null;
-            for (int i = 0; i < fcbObjects.size(); i++) {
-                obj = fcbObjects.get(i);
-                int tst = check("in", obj);
-                System.out.println(tst);
-                found = true;
-                for (String str : strings) {
-                    String itemAsString = null;
-                    if (tableModelInUse) {
-                        // if we use the table model, we have to convert an array of Objects to a String
-                        // before we try to find the match.
-                        itemAsString = Sise.record((Object[]) obj);
-                        //itemAsString = ((Object[]) obj)[0].toString();
-                    } else {
-                        itemAsString = obj.toString();
-                    } // else
-                    // we are going to to AND found with true or false because we want objects that 
-                    // match all elements in the "strings" array of String objects.
-                    if (itemAsString.toLowerCase().contains(str.toLowerCase())) {
-                        found &= true;
-                    } else {
-                        found &= false;
-                    }
-                } // foreach
-                if (found) {
-                    // obj contains one of the strings in the pattern. Let's see if we have that object in
-                    // filtered list. If not, we must add it.
-                    objects.add(obj);
-                } // if
-            } // for
-        } // else
-        
-        // get the size after filtering
-        int size2 = getSize();
-        
-        System.out.println(size1 + ", " + size2);
-        if (size1 < size2) {
-            fireIntervalAdded(this, size1, size2 - 1);
-            fireContentsChanged(this, 0, size1 - 1);
-        } else if (size1 > size2) {
-            fireIntervalRemoved(this, size2, size1 - 1);
-            fireContentsChanged(this, 0, size2 - 1);
-        } else {
-            fireContentsChanged(this, 0, size2 - 1);
-        }
-        if (this.getSize() > 0) {
-            setSelectedItem(objects.get(0));
-        }
-        lastPattern = copy;
-    } // setPattern() method implementation
- */
     public void setPattern(String argPattern) {
         exactObject = null;
         exactIndex = -1;
@@ -445,7 +363,7 @@ public class FilteredComboBoxModel
         // get the size after filtering
         int size2 = getSize();
         
-        System.out.println(size1 + ", " + size2);
+        //System.out.println(size1 + ", " + size2);
         if (size1 < size2) {
             fireIntervalAdded(this, size1, size2 - 1);
             fireContentsChanged(this, 0, size1 - 1);
@@ -460,8 +378,8 @@ public class FilteredComboBoxModel
         if (this.getSize() > 0) {
             if (exactMatchFound) {
                 // if we had an exact match, select that item.
-                System.out.println("### Exact match found!");
-                System.out.println("(" + exactIndex + ")" + exactObject.toString());
+                //System.out.println("### Exact match found!");
+                //System.out.println("(" + exactIndex + ")" + exactObject.toString());
                 setSelectedItem(exactObject);
             } else {
                 // if we did not have an exact match, select the first item in the newly created list.
