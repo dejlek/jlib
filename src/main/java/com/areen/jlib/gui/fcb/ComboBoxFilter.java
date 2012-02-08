@@ -104,6 +104,7 @@ public class ComboBoxFilter extends PlainDocument {
             
             @Override
             public void keyPressed(KeyEvent e) {
+                System.out.println("keyPressed()");
                 keyPressed = true;
                 boolean isTableCellEditor = false;
                 Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
@@ -335,34 +336,31 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
             }
-
+            
+            boolean itemPicked = false; // we need this value because item-packed may change due to chain
+                                        // of events
             // inform action-performed listeners that the item has been picked so they may update
             // some other components
             if (keyPressed) {
-                comboBox.putClientProperty("item-picked", Boolean.FALSE);
+                itemPicked = false;
             } else {
-                comboBox.putClientProperty("item-picked", Boolean.TRUE);
+                itemPicked = true;   
             }
-
-            super.insertString(offs, strs[idx], a);
+            comboBox.putClientProperty("item-picked", itemPicked);
             
-            if (!isTableCellEditor()) {
-                // we have to filter after the user selects an item with the mouse.
-                // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
-                //          exact match - ie the item that user picked with the mouse.
-                filterTheModel();
-                if ((Boolean) comboBox.getClientProperty("item-picked")) {
-                    pickedItem = comboBox.getSelectedItem();
-                    pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
-                }
-                return;
-            } // if
+            super.insertString(offs, strs[idx], a);
 
-            if ((Boolean) comboBox.getClientProperty("item-picked")) {
-                    pickedItem = comboBox.getSelectedItem();
-                    pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
-            }
+            // we have to filter after the user selects an item with the mouse.
+            // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
+            //          exact match - ie the item that user picked with the mouse.
+            filterTheModel();
+            
+            if (itemPicked) {
+                pickedItem = comboBox.getSelectedItem();
+                pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+            } // if
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
+            return;
         } else {
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
             // otherwise, insert the whole string
@@ -372,19 +370,6 @@ public class ComboBoxFilter extends PlainDocument {
         if (finish) {
             return;
         }
-
-/*
-        // lookup and select a matching item
-        Object lookupItem = comboBoxModel.lookupItem(getText(0, getLength()));
-        if (lookupItem != null) {
-            Object selectedItem = comboBox.getSelectedItem();
-            //System.out.println("LOOKUP:" + lookupItem);
-            //System.out.println("SELECTED:" + selectedItem);
-            if (lookupItem == selectedItem) {
-                return;
-            } // if
-        } // if
-*/
 
         filterTheModel();
     } // insertString() method
@@ -418,19 +403,7 @@ public class ComboBoxFilter extends PlainDocument {
         
         // remove the string from the document
         super.remove(offs, len);
-/*
-        // lookup and select a matching item
-        Object lookupItem = comboBoxModel.lookupItem(getText(0, getLength()));
-        if (lookupItem != null) {
-            Object selectedItem = comboBox.getSelectedItem();
-            //System.out.println("LOOKUP:" + lookupItem);
-            //System.out.println("SELECTED:" + selectedItem);
-            if (lookupItem == selectedItem) {
-                
-                return;
-            } // if
-        } // if
-*/        
+
         if (finish) {
             // user pressed ENTER so in the case remove is called we do not filter the model.
             return;

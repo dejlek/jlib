@@ -4,7 +4,6 @@
  */
 package com.areen.jlib.test;
 
-import com.areen.jlib.gui.ColorArrowUI;
 import com.areen.jlib.gui.ComboBoxLink;
 import com.areen.jlib.gui.ComboBoxPairRenderer;
 import com.areen.jlib.gui.WideComboBox;
@@ -49,7 +48,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         testTable.getColumnModel().getColumn(3).setCellEditor(new FilteredComboBoxCellEditor(fcb));
         
         // FILTERED COMBO BOX (TEST)
-        filteredComboBox.setUI(ColorArrowUI.createUI(filteredComboBox));
+        //filteredComboBox.setUI(ColorArrowUI.createUI(filteredComboBox));
         //filteredComboBox.setEditable(true);
         //filteredComboBox.setModel(cbModel); no need, the constructor will set the model for us
         new ComboBoxFilter(filteredComboBox, cbModel);
