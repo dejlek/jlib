@@ -5,6 +5,7 @@
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.WideComboBox;
+import com.areen.jlib.util.Sise;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -112,15 +113,23 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     // Implementing CellEditor
     @Override
     public Object getCellEditorValue() {
+        /*
         System.out.println("FilteredComboBoxCellEditor.getCellEditorValue()");
         System.out.println(" `--> " + comboBox.getSelectedItem().getClass().getCanonicalName());
+        System.out.println("    > " + comboBox.getSelectedItem());
+        System.out.println("    > " + comboBox.getSelectedIndex());
+        System.out.println("    > " + comboBoxModel.getSelectedItem());
         Object obj = comboBox.getSelectedItem();
-        if (obj.getClass().isPrimitive() || (obj.getClass() == String.class)) {
+        if ((comboBox.getSelectedIndex() >= 0)
+                && (obj.getClass().isPrimitive() || (obj.getClass() == String.class))) {
             return obj;
         } else {
             Object key = comboBoxModel.getKeyOfTheSelectedItem();
             return key;
         } // else
+        *
+        */
+        return cbFilter.getPickedKey();
     } // getCellEditorValue() method
     
     @Override
@@ -142,8 +151,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             int column) {
         if ((row == keyRow)
                 && column == keyColumn) {
+            keyRow = -1;
+            keyColumn = -1;
             cbFilter.setTriggeredByKeyPress(true);
-            setValue(pressedKey);
+            setValue(pressedKey + Sise.UNIT_SEPARATOR_STRING + value);
         } else {
             cbFilter.setTriggeredByKeyPress(false);
             setValue(value);

@@ -1,6 +1,9 @@
 package com.areen.jlib.gui;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.FocusEvent;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -8,6 +11,8 @@ import javax.swing.JComboBox;
 /**
  * This class implements a JComboBox which takes into account size of its components and make the pop-up
  * window wide enough.
+ * When an instance of this combo-box is a table cell editor, by default it will popup whenever edit starts.
+ * If you want to disable this behaviour, use the setPopupOnEditEnabled() method.
  * 
  * The code has been borrowed from http://www.jroller.com/santhosh/entry/make_jcombobox_popup_wide_enough
  * 
@@ -17,6 +22,7 @@ import javax.swing.JComboBox;
 public class WideComboBox extends JComboBox {
     private boolean layingOut = false;
     private int ww;
+    private boolean popupOnEditEnabled = true;
 
     public WideComboBox() {
         super();
@@ -33,6 +39,27 @@ public class WideComboBox extends JComboBox {
     public WideComboBox(ComboBoxModel aModel) {
         super(aModel);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * If popupOnEditEnabled is set, then we show the pop-up whenever user edits the cell.
+     */
+    @Override
+    public void processFocusEvent(FocusEvent fe) {
+        super.processFocusEvent(fe);
+        System.out.println(fe.toString());
+        if (popupOnEditEnabled && isTableCellEditor()) {
+            // if we have configured this WideComboBox instance to popup on edit
+            // and if it is a table cell editor, then we show the popup
+            // NOTE: it seems this solution does not work with editable combo-boxes... :(
+            Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+            if (isDisplayable() && fe.getID() == FocusEvent.FOCUS_GAINED
+                    && focusOwner == this && !isPopupVisible()) {
+                showPopup();
+            } //  if
+        } // if
+    } // processFocusEvent() method
 
     /**
      * @{@inheritDoc }
@@ -65,7 +92,28 @@ public class WideComboBox extends JComboBox {
         } // if
         return new Dimension(ww, dim.height);
     } //  getSize() method
-    
+
+    public boolean isPopupOnEditEnabled() {
+        return popupOnEditEnabled;
+    }
+
+    public void setPopupOnEditEnabled(boolean argPopupOnEditEnabled) {
+        popupOnEditEnabled = argPopupOnEditEnabled;
+    }
+
+    /**
+     * Use this method whenever you need to determine if the comboBox is used as a cell editor or not.
+     * @return boolean Value indicating whether comboBox is a cell editor (TRUE) or not (FALSE).
+     */
+    private boolean isTableCellEditor() {
+        boolean isTableCellEditor = false;
+        Object tmp = getClientProperty("JComboBox.isTableCellEditor");
+        if (tmp != null) {
+            isTableCellEditor = tmp.equals(Boolean.TRUE);
+        } // if
+        return isTableCellEditor;
+    } // isTableCellEditor method
+
 } // WideComboBox class
 
 // $Id$

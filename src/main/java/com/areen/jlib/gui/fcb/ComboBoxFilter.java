@@ -63,6 +63,7 @@ public class ComboBoxFilter extends PlainDocument {
     private boolean finish = false;
     private int selectedIndex;
     private Object pickedItem;
+    private Object pickedKey;
 
     /**
      * This value is set by cell-editors to inform ComboBoxFilter whether to execute pick value or not
@@ -132,6 +133,7 @@ public class ComboBoxFilter extends PlainDocument {
                             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                         }
                         pickedItem = comboBox.getSelectedItem();
+                        pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
                         break;
 
                     case KeyEvent.VK_UP:
@@ -186,6 +188,9 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
+                // When combo-box loses focus, we need to set the text to the selected
+                setText(pickedKey.toString());
+
                 // Workaround for Bug 5100422 - Hide Popup on focus loss
                 if (hidePopupOnFocusLoss) {
                     ComboBoxFilter.this.comboBox.setPopupVisible(false);
@@ -222,6 +227,7 @@ public class ComboBoxFilter extends PlainDocument {
         
         Object selected = comboBox.getSelectedItem();
         pickedItem = selected;
+        pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
         selectedIndex = comboBox.getSelectedIndex();
         if (selected != null) {
             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
@@ -243,18 +249,34 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(false);
             }
+
+            String pat = (String) argPattern;
+
+            /* If the editing is triggered by a key-press in a JTable, then we argPattern contains a string
+             * in SISE format, so we have to extract they key pressed and the previous value.
+             */
+            String key = "";
+            if (isTriggeredByKeyPress()) {
+                String[] strs = Sise.units(pat);
+                pat = strs[1];
+                key = strs[0];
+            }
+
             if (argPattern == null) {
                 setText("");
             } else {
-                setText(argPattern.toString().trim());
+                setText(pat.trim());
             } // else
-            filterTheModel(); // will set selecting to false
-            System.out.println(comboBox.getSelectedIndex());
+
+            filterTheModel();
+            pickedItem = comboBox.getSelectedItem();
+            pickedKey = comboBoxModel.getKeyOfTheSelectedItem();
+            
+            // Finally, when we have selected the item that was previously selected, now we can insert
+            // the character user typed inside a JTable
             if (isTriggeredByKeyPress()) {
-                // if the editing of the cell edited by a combo-box started via a key-press, we will
-                // not automatically pick the item. This is important so when user presses ESC key
-                // and cancels the editing, the table returns to the old value.
-                pickedItem = comboBox.getSelectedItem();
+                setText(key);
+                filterTheModel();
             } // if
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
@@ -327,12 +349,14 @@ public class ComboBoxFilter extends PlainDocument {
                 filterTheModel();
                 if ((Boolean) comboBox.getClientProperty("item-picked")) {
                     pickedItem = comboBox.getSelectedItem();
+                    pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
                 }
                 return;
             } // if
 
             if ((Boolean) comboBox.getClientProperty("item-picked")) {
                     pickedItem = comboBox.getSelectedItem();
+                    pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
             }
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
         } else {
@@ -497,6 +521,14 @@ public class ComboBoxFilter extends PlainDocument {
 
     public void setTriggeredByKeyPress(boolean argTriggeredByKeyPress) {
         triggeredByKeyPress = argTriggeredByKeyPress;
+    }
+
+    public Object getPickedItem() {
+        return pickedItem;
+    }
+
+    public Object getPickedKey() {
+        return pickedKey;
     }
 
 
