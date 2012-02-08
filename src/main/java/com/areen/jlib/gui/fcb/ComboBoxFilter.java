@@ -119,10 +119,14 @@ public class ComboBoxFilter extends PlainDocument {
                 
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_ESCAPE:
-                        comboBoxModel.setCancelled(true);
-                        if (pickedItem != null) {
-                            comboBox.setSelectedItem(pickedItem);
-                        } // if
+                        if (isTableCellEditor()) {
+                            comboBoxModel.setCancelled(true);
+                            if (pickedItem != null) {
+                                comboBox.setSelectedItem(pickedItem);
+                            } // if
+                        } else {
+                            ComboBoxFilter.this.setText(pickedKey.toString());
+                        }
                         break;
 
                     case KeyEvent.VK_ENTER:
