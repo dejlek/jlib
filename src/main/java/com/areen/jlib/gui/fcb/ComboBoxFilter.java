@@ -459,7 +459,7 @@ public class ComboBoxFilter extends PlainDocument {
     } // isTableCellEditor method
 
     /**
-     * This method is used internally to fix the popup-menu size. Apparantly JComboBox has a bug and does
+     * This method is used internally to fix the popup-menu size. Apparently JComboBox has a bug and does
      * not calculate the proper height of the popup.
      * 
      * The first time popup menu is shown, ComboBoxFilter stores the dimension, and re-adjusts the width to
@@ -476,7 +476,6 @@ public class ComboBoxFilter extends PlainDocument {
                 comboBox.setPopupVisible(true);
             } // if
         } // if 
-        return;
     } // fixPopupSize() method
 
     /**

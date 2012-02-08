@@ -113,7 +113,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     // Implementing CellEditor
     @Override
     public Object getCellEditorValue() {
-        
+        /*
         System.out.println("FilteredComboBoxCellEditor.getCellEditorValue()");
         System.out.println(" `--> " + comboBox.getSelectedItem().getClass().getCanonicalName());
         System.out.println("    > " + comboBox.getSelectedItem());
@@ -122,7 +122,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         System.out.println("    : " + cbFilter.getPickedItem());
         System.out.println("    : " + cbFilter.getPickedKey());
         Object obj = comboBox.getSelectedItem();
-        /*
+        
         if ((comboBox.getSelectedIndex() >= 0)
                 && (obj.getClass().isPrimitive() || (obj.getClass() == String.class))) {
             return obj;
