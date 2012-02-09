@@ -137,6 +137,7 @@
       <!-- See http://checkstyle.sf.net/config_javadoc.html -->
       <module name="JavadocMethod">
          <property name="severity" value="info"/>
+         <property name="suppressLoadErrors" value="true"/>
       </module>
       <module name="JavadocType">
          <property name="severity" value="info"/>
@@ -321,6 +322,7 @@
       </module>
       <module name="RedundantThrows">
          <property name="severity" value="error"/>
+         <property name="suppressLoadErrors" value="true"/>
       </module>
       <module name="SimplifyBooleanExpression">
          <property name="severity" value="error"/>
