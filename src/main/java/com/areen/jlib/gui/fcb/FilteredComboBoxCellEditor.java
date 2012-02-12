@@ -152,6 +152,19 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             boolean isSelected, 
             int row, 
             int column) {
+        
+        /*
+         * The following block is not needed anymore - it is handled by WideComboBox itself 
+         
+        if (comboBox instanceof WideComboBox) {
+            WideComboBox wcb = (WideComboBox) comboBox;
+            wcb.setMaxWidth(table.getSize().width * 3 / 4);
+         
+            System.out.println(wcb.getMaxWidth());
+        }
+        * 
+        */
+        
         if ((row == keyRow)
                 && column == keyColumn) {
             keyRow = -1;

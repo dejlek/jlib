@@ -291,6 +291,8 @@ public class Main {
         , new CodeAndValue("za" , "South Africa")
         , new CodeAndValue("zm" , "Zambia")
         , new CodeAndValue("zw" , "Zimbabwe")
+        , new CodeAndValue("zz" , "A wise man is superior to any insults which can be put upon him, and " 
+            + "the best reply to unseemly behavior is patience and moderation")
     };
 
     /**

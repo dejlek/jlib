@@ -23,6 +23,7 @@ public class WideComboBox extends JComboBox {
     private boolean layingOut = false;
     private int ww;
     private boolean popupOnEditEnabled = true;
+    private int maxWidth = -1; /// -1 indicates that it is not set
 
     public WideComboBox() {
         super();
@@ -84,10 +85,18 @@ public class WideComboBox extends JComboBox {
      */
     @Override
     public Dimension getSize() {
+        if (maxWidth == -1) {
+            maxWidth = getTopLevelAncestor().getPreferredSize().width;
+            maxWidth = 3 * maxWidth / 4; // We do not allow more than 3/4 of the max width for the combo box
+        } // if
         Dimension dim = super.getSize(); 
         if (!layingOut) {
             ww = Math.max(ww, dim.width); 
             ww = Math.max(ww, getPreferredSize().width);
+            if (ww > maxWidth) {
+                // if calculated new width exceeds the preferred width of the main container, we limit it.
+                ww = maxWidth;
+            } // if
             dim.width = ww;
         } // if
         return new Dimension(ww, dim.height);
@@ -114,6 +123,14 @@ public class WideComboBox extends JComboBox {
         return isTableCellEditor;
     } // isTableCellEditor method
 
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
+    public void setMaxWidth(int argMaxWidth) {
+        maxWidth = argMaxWidth;
+    }
+    
 } // WideComboBox class
 
 // $Id$
