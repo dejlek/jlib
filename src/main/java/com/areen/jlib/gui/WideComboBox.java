@@ -39,7 +39,7 @@ public class WideComboBox extends JComboBox {
     public WideComboBox(ComboBoxModel aModel) {
         super(aModel);
     }
-
+    
     /**
      * {@inheritDoc}
      *
@@ -48,7 +48,7 @@ public class WideComboBox extends JComboBox {
     @Override
     public void processFocusEvent(FocusEvent fe) {
         super.processFocusEvent(fe);
-        System.out.println(fe.toString());
+        //System.out.println(fe.toString());
         if (popupOnEditEnabled && isTableCellEditor()) {
             // if we have configured this WideComboBox instance to popup on edit
             // and if it is a table cell editor, then we show the popup

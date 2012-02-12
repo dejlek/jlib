@@ -5,13 +5,18 @@ package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.ColorArrowUI;
 import com.areen.jlib.util.Sise;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -99,6 +104,7 @@ public class ComboBoxFilter extends PlainDocument {
         comboBox.putClientProperty("item-picked", Boolean.FALSE);
         comboBoxEditor = (JTextComponent) comboBox.getEditor().getEditorComponent();
         comboBoxEditor.setDocument(this);
+        
                 // let's add a key listener to the editor
         comboBoxEditor.addKeyListener(new KeyAdapter() {
             
@@ -119,6 +125,18 @@ public class ComboBoxFilter extends PlainDocument {
                 int currentIndex = comboBox.getSelectedIndex();
                 
                 switch (e.getKeyCode()) {
+                    case KeyEvent.VK_TAB:
+                        System.out.println("TAB!");
+                        finish = true;
+                        comboBoxModel.setReadyToFinish(false); // we expect cell editor
+                        //setText(comboBox.getSelectedItem().toString());
+                        if (!isTableCellEditor()) {
+                            setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                        }
+                        pickedItem = comboBox.getSelectedItem();
+                        pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                        break;
+                        
                     case KeyEvent.VK_ESCAPE:
                         if (isTableCellEditor()) {
                             comboBoxModel.setCancelled(true);
@@ -229,6 +247,24 @@ public class ComboBoxFilter extends PlainDocument {
                 // do nothing
             }
         });
+        
+
+        if (!isTableCellEditor()) {
+            comboBoxEditor.setFocusTraversalKeysEnabled(false);
+
+            Action myAction = new AbstractAction() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Nothing is needed here - all we want is to skip focusLost() call when user presses TAB
+                    comboBoxEditor.transferFocus();
+                } // actionPerformed() method
+            };
+
+            comboBoxEditor.getActionMap().put("tab-action", myAction);
+            comboBoxEditor.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+                .put(KeyStroke.getKeyStroke("TAB"), "tab-action");
+        } // if
         
         Object selected = comboBox.getSelectedItem();
         pickedItem = selected;
@@ -454,7 +490,7 @@ public class ComboBoxFilter extends PlainDocument {
         Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
         if (tmp != null) {
             isTableCellEditor = tmp.equals(Boolean.TRUE);
-        } // if
+        }
         return isTableCellEditor;
     } // isTableCellEditor method
 
