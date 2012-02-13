@@ -290,19 +290,35 @@ public class ComboBoxFilter extends PlainDocument {
             String key = "";
             if (isTriggeredByKeyPress()) {
                 String[] strs = Sise.units(pat);
-                pat = strs[1];
+                /* In the case the cell's value was a NULL, then strs will have only one element.
+                 * In that case we set pat to be a null, and do not set the pickedItem.
+                 */
+                if (strs.length == 2) {
+                    pat = strs[1];
+                } else {
+                    pat = null;
+                } // else
                 key = strs[0];
-            }
+            } // if
 
             if (argPattern == null) {
                 setText("");
             } else {
-                setText(pat.trim());
+                if (pat != null) {
+                    setText(pat.trim());
+                }
             } // else
 
-            filterTheModel();
-            pickedItem = comboBox.getSelectedItem();
-            pickedKey = comboBoxModel.getKeyOfTheSelectedItem();
+            if (pat == null) {
+                pickedItem = null;
+                pickedKey = null;
+            } else {
+                // Cell's value was not a null, so we can execute filter so the combo-box updates the 
+                // selected item to be what was previously selected.
+                filterTheModel();
+                pickedItem = comboBox.getSelectedItem();
+                pickedKey = comboBoxModel.getKeyOfTheSelectedItem();
+            } // else
             
             // Finally, when we have selected the item that was previously selected, now we can insert
             // the character user typed inside a JTable
