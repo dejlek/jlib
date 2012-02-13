@@ -48,6 +48,9 @@ public class GuiTools {
     public static URL getResource(Class<?> argClass, String argResource) {
         URL url = argClass.getResource(argResource);
         if (url == null) {
+            if (parentFrame != null) {
+                parentFrame.setVisible(false);
+            }
             JOptionPane.showMessageDialog(GuiTools.parentFrame, "Resource '" + argResource + "' is missing.\n"
                     + "Application will now exit. Please contact developers and report this problem."
                     , "Resource missing!", JOptionPane.ERROR_MESSAGE);
