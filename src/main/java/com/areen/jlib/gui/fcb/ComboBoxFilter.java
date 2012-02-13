@@ -326,6 +326,9 @@ public class ComboBoxFilter extends PlainDocument {
                 setText(key);
                 filterTheModel();
             } // if
+            if (!comboBoxEditor.hasFocus()) {
+                comboBoxEditor.requestFocusInWindow();
+            }
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
