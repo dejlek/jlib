@@ -202,9 +202,11 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                // When combo-box loses focus, we need to set the text to the selected
-                setText(pickedKey.toString());
-
+                if (pickedKey != null) {
+                    // When combo-box loses focus, we need to set the text to the selected
+                    setText(pickedKey.toString());
+                } // if
+                
                 // Workaround for Bug 5100422 - Hide Popup on focus loss
                 if (hidePopupOnFocusLoss) {
                     ComboBoxFilter.this.comboBox.setPopupVisible(false);
