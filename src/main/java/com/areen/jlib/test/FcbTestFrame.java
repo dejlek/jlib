@@ -53,7 +53,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //filteredComboBox.setModel(cbModel); no need, the constructor will set the model for us
         new ComboBoxFilter(filteredComboBox, cbModel);
         filteredComboBox.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
-        System.out.println(filteredComboBox.getModel().getClass().getCanonicalName());
+        filteredComboBox.setSelectedIndex(5);
         //new ComboBoxLink(filteredComboBox, jTextArea1);
         new ComboBoxLink(filteredComboBox, jLabel1);
         
@@ -66,7 +66,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         normalComboBox.setModel(new FilteredComboBoxModel(codeAndValues));
         normalComboBox.setRenderer(new ComboBoxPairRenderer());
         //normalComboBox.setEditable(true);
-        new ComboBoxLink(normalComboBox, jLabel1);
+        //new ComboBoxLink(normalComboBox, jLabel1);
         
         tableComboBox.setEditable(true);
         FilteredComboBoxModel tableCbModel = new FilteredComboBoxModel(tableModel, new int[]{0, 1});

@@ -8,6 +8,7 @@ import com.areen.jlib.gui.WideComboBox;
 import com.areen.jlib.util.Sise;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JComboBox;
@@ -169,6 +170,13 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
                 && column == keyColumn) {
             keyRow = -1;
             keyColumn = -1;
+            System.out.println(pressedKey);
+            System.out.println(KeyEvent.VK_DELETE);
+            if (pressedKey == KeyEvent.VK_DELETE) {
+                System.out.println("DELETE pressed");
+                return table.getDefaultEditor(value.getClass()).getTableCellEditorComponent(table, value, 
+                        isSelected, row, row);
+            }
             cbFilter.setTriggeredByKeyPress(true);
             setValue(pressedKey + Sise.UNIT_SEPARATOR_STRING + value);
         } else {

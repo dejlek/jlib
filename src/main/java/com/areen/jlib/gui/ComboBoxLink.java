@@ -1,5 +1,5 @@
 /**
- * $Id: LocationPanel.java 1461 2012-01-18 18:38:07Z dejan $
+ * $Id$
  *
  * ComboBoxLink
  */
@@ -42,6 +42,7 @@ public class ComboBoxLink implements ActionListener {
         type = Type.LABEL;
         selectedItem = comboBox.getSelectedItem();
         update();
+        argLabel.setText(text);
         comboBox.addActionListener(this);
     } // ComboBoxLink constructor
     
@@ -51,6 +52,7 @@ public class ComboBoxLink implements ActionListener {
         type = Type.TEXT_AREA;
         selectedItem = comboBox.getSelectedItem();
         update();
+        argArea.setText(text);
         comboBox.addActionListener(this);
     } // ComboBoxLink constructor
     
@@ -62,14 +64,13 @@ public class ComboBoxLink implements ActionListener {
      * user picks, then we use the object selectedItem refers to.
      */
     private void update() {
-        System.out.println(comboBox.getSelectedIndex());
         // When user presses enter, the index of the selected item is -1...
         // However, when picks an item with the mouse, index is always greater or equal to 0.
         if (comboBox.getSelectedIndex() == -1) {
             return;
         }
         selectedItem = comboBox.getSelectedItem();
-        
+
         if (selectedItem instanceof Pair) {
             text = ((Pair) selectedItem).getSecond().toString();
         } else {
