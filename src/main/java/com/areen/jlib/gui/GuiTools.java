@@ -23,6 +23,7 @@
 
 package com.areen.jlib.gui;
 
+import java.awt.Component;
 import java.net.URL;
 import javax.swing.JOptionPane;
 
@@ -31,7 +32,8 @@ import javax.swing.JOptionPane;
  * @author Dejan
  */
 public class GuiTools {
-
+    private static Component parentFrame = null;
+    
     /**
      * Use this method if you want your application to stop whenever a resource is missing.
      * 
@@ -46,7 +48,7 @@ public class GuiTools {
     public static URL getResource(Class<?> argClass, String argResource) {
         URL url = argClass.getResource(argResource);
         if (url == null) {
-            JOptionPane.showMessageDialog(null, "Resource '" + argResource + "' is missing.\n"
+            JOptionPane.showMessageDialog(GuiTools.parentFrame, "Resource '" + argResource + "' is missing.\n"
                     + "Application will now exit. Please contact developers and report this problem."
                     , "Resource missing!", JOptionPane.ERROR_MESSAGE);
             System.exit(111); // We will exit with code 111 to notify (possibly) some other apps about
@@ -55,6 +57,9 @@ public class GuiTools {
         return url;
     } // getResource() method
 
+    public static void setParentComponent(Component argComponent) {
+        GuiTools.parentFrame = argComponent;
+    }
 } // GuiTools
 
 // $Id$
