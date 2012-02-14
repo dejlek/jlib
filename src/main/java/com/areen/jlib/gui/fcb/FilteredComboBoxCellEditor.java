@@ -8,7 +8,9 @@ import com.areen.jlib.gui.WideComboBox;
 import com.areen.jlib.util.Sise;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.util.EventObject;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -210,6 +212,17 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     public int getClickCountToStart() {
         return clickCountToStart;
     }
+
+    @Override
+    public boolean isCellEditable(EventObject eo) {
+        if (eo instanceof MouseEvent) {
+            MouseEvent me = (MouseEvent) eo;
+            return (me.getClickCount() >= clickCountToStart) 
+                    && super.isCellEditable(eo);
+        } // if
+        return super.isCellEditable(eo);
+    } // isCellEditable() method
+    
 } // FilteredComboBoxCellEditor
 
 // $Id$
