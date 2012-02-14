@@ -27,7 +27,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     private FilteredComboBoxModel comboBoxModel;
     private ComboBoxFilter cbFilter;
 
-    private int clickCountToStart = 1; // FIXME: clickCountToStart does not work atm...
+    private int clickCountToStart = 2;
     
     /** 
      * Here we store the column index of the cell where user pressed a key. 
@@ -215,6 +215,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
 
     @Override
     public boolean isCellEditable(EventObject eo) {
+        // PS. eo may be null, but the following block will work anyway... :)
         if (eo instanceof MouseEvent) {
             MouseEvent me = (MouseEvent) eo;
             return (me.getClickCount() >= clickCountToStart) 
