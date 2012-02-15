@@ -231,6 +231,16 @@ public class ComboBoxFilter extends PlainDocument {
                 } // if
                 comboBoxModel.setReadyToFinish(false);
             }
+
+            
+            @Override
+            public void focusGained(FocusEvent fe) {
+                System.out.println("focusGained()");
+                if (!isTableCellEditor()) {
+                    super.focusGained(fe);
+                    comboBoxEditor.selectAll();
+                } // if
+            } // focusGained() method
         });
         
         /*
