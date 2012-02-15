@@ -203,7 +203,10 @@ public class FilteredComboBoxModel
                 && anObject != null) {
             selectedObject = anObject;
             fireContentsChanged(this, -1, -1);
-        }
+        } // if
+        if (anObject == null) {
+            selectedObject = null;
+        } // if
     } // setSelectedItem() method
 
     // implements javax.swing.ComboBoxModel
@@ -373,7 +376,7 @@ public class FilteredComboBoxModel
         } else {
             fireContentsChanged(this, 0, size2 - 1);
         }
-        
+
         // Let's select appropriate item.
         if (this.getSize() > 0) {
             if (exactMatchFound) {
@@ -383,10 +386,14 @@ public class FilteredComboBoxModel
                 setSelectedItem(exactObject);
             } else {
                 // if we did not have an exact match, select the first item in the newly created list.
+                // WARNING: it is a BUG to select 
+                // 
                 setSelectedIndex(0);
             } // else
-        } // if
-        
+        } else {
+            setSelectedItem(null);
+        }
+
         lastPattern = copy;
     } // setPattern() method implementation
     
@@ -428,7 +435,9 @@ public class FilteredComboBoxModel
     public void setSelectedIndex(int argIndex) {
         if (argIndex > -1 && argIndex < getSize()) {
             setSelectedItem(objects.get(argIndex));
-        }
+        } else {
+            setSelectedItem(null);
+        } // else
     }
     
     /**
@@ -440,6 +449,9 @@ public class FilteredComboBoxModel
     public Object getKeyOfTheSelectedItem() {
         //System.out.println("getKeyOfTheSelectedItem()");
         Object selected = getSelectedItem();
+        if (selected == null) {
+            return null;
+        }
         if (selected instanceof Pair) {
             return ((Pair) selected).getFirst();
         }

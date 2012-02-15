@@ -119,13 +119,31 @@ public class ComboBoxFilter extends PlainDocument {
                     case KeyEvent.VK_TAB:
                         System.out.println("TAB!");
                         finish = true;
-                        comboBoxModel.setReadyToFinish(false); // we expect cell editor
-                        //setText(comboBox.getSelectedItem().toString());
+                        comboBoxModel.setReadyToFinish(false);
+
                         if (!isTableCellEditor()) {
                             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                         }
-                        pickedItem = comboBox.getSelectedItem();
-                        pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                        
+                        if ((comboBox.getSelectedItem() == null)) {
+                            /* if TAB is pressed, but nothing is selected, and the picked item is not null *
+                             * that means the user pressed tab when there was an empty list of items.      *
+                             * (Typically when user typed something that does not exist in the list of     *
+                             * items). In this case we cancel the editing.                                 */
+                            comboBoxModel.setCancelled(true);
+                        } // if
+                        
+                        if (comboBox.getSelectedItem() != null) {
+                            if (pickedItem == comboBox.getSelectedItem()) {
+                                /* We cancel the editing when the picked item is the same as the item that *
+                                 * is currently selected in the combo-box, because we do not want to       *
+                                 * trigger database change (there is no need to update to the same value). */
+                                comboBoxModel.setCancelled(true);
+                            } else {
+                                pickedItem = comboBox.getSelectedItem();
+                                pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                            } // else
+                        } // if
                         break;
                         
                     case KeyEvent.VK_ESCAPE:
