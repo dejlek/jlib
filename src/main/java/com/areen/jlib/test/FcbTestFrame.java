@@ -115,6 +115,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        testTable.setNextFocusableComponent(filteredComboBox);
         testTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 testTableKeyPressed(evt);

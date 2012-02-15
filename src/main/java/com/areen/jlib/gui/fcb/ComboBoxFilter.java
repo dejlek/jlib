@@ -102,12 +102,29 @@ public class ComboBoxFilter extends PlainDocument {
             @Override
             public void keyPressed(KeyEvent e) {
                 System.out.println("keyPressed()");
+                int keyCode = e.getKeyCode();
+                System.out.println(keyCode);
+
+                /* In the case user presses SHIFT, CTRL, ALT keys, or <ANY>+TAB, we return imediately.
+                 */
+                //int modifiers = e.getModifiersEx();
+                if (keyCode == KeyEvent.VK_SHIFT
+                        || (keyCode == KeyEvent.VK_ALT)
+                        || (keyCode == KeyEvent.VK_CONTROL)
+                        || (keyCode == KeyEvent.VK_WINDOWS)
+                        || (keyCode == KeyEvent.VK_CONTEXT_MENU)
+                        || (keyCode == KeyEvent.VK_TAB && e.isShiftDown())) {
+                    keyPressed = false;
+                    return;
+                } // if
+                
                 keyPressed = true;
                 boolean isTableCellEditor = false;
                 Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
                 if (tmp != null) {
                     isTableCellEditor = tmp.equals(Boolean.TRUE);
                 }
+                
                 if (comboBox.isDisplayable()) {
                     comboBox.setPopupVisible(true);
                 } // if
@@ -115,7 +132,7 @@ public class ComboBoxFilter extends PlainDocument {
                 finish = false;
                 int currentIndex = comboBox.getSelectedIndex();
                 
-                switch (e.getKeyCode()) {
+                switch (keyCode) {
                     case KeyEvent.VK_TAB:
                         System.out.println("TAB!");
                         finish = true;
@@ -220,6 +237,7 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
+                System.out.println("focusLost()");
                 if (pickedKey != null) {
                     // When combo-box loses focus, we need to set the text to the selected
                     setText(pickedKey.toString());
