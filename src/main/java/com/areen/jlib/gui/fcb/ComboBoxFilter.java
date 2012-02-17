@@ -57,6 +57,7 @@ public class ComboBoxFilter extends PlainDocument {
     private boolean arrowKeyPressed = false;
     private boolean keyPressed = false;
     private boolean finish = false;
+    private boolean inPreparation;
     private int selectedIndex;
     private Object pickedItem;
     private Object pickedKey;
@@ -128,6 +129,7 @@ public class ComboBoxFilter extends PlainDocument {
                 if (comboBox.isDisplayable()) {
                     comboBox.setPopupVisible(true);
                 } // if
+                
                 arrowKeyPressed = false;
                 finish = false;
                 int currentIndex = comboBox.getSelectedIndex();
@@ -166,9 +168,7 @@ public class ComboBoxFilter extends PlainDocument {
                     case KeyEvent.VK_ESCAPE:
                         if (isTableCellEditor()) {
                             comboBoxModel.setCancelled(true);
-                            if (pickedItem != null) {
-                                comboBox.setSelectedItem(pickedItem);
-                            } // if
+                            comboBox.setSelectedItem(pickedItem);
                         } else {
                             ComboBoxFilter.this.setText(pickedKey.toString());
                         }
@@ -253,7 +253,6 @@ public class ComboBoxFilter extends PlainDocument {
             
             @Override
             public void focusGained(FocusEvent fe) {
-                System.out.println("focusGained()");
                 if (!isTableCellEditor()) {
                     super.focusGained(fe);
                     comboBoxEditor.selectAll();
@@ -323,6 +322,7 @@ public class ComboBoxFilter extends PlainDocument {
      */
     public void prepare(Object argPattern) {
         System.out.println("prepare(" + argPattern + ")");
+        inPreparation = true;
         try {
             selecting = true;
             comboBoxModel.setCancelled(false);
@@ -373,15 +373,28 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTriggeredByKeyPress()) {
                 setText(key);
                 filterTheModel();
+                comboBox.validate();
             } // if
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
+        inPreparation = false;
     } // prepare() method
     
     // ======================================================================================================
     // ===== Private methods ================================================================================
     // ======================================================================================================
+    
+    private void clearTextSelection() {
+        if (comboBoxEditor.getSelectedText() != null) {
+            // we have a selected text, removing the selection. On Windows text may become selected by default
+            System.out.println("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
+            int pos = comboBoxEditor.getCaretPosition();
+            comboBoxEditor.select(0, 0);
+            // return caret position to the original place
+            comboBoxEditor.setCaretPosition(pos);
+        } // if
+    }
     
     private void setText(String text) {
         try {
@@ -515,18 +528,12 @@ public class ComboBoxFilter extends PlainDocument {
         boolean oldValue = comboBoxModel.isReadyToFinish();
         comboBoxModel.setReadyToFinish(false); // we must set this to false during the filtering
         previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
-        int pos = comboBoxEditor.getCaretPosition();
+        
         String pattern = getText(0, getLength());
         //System.out.println("filterTheModel(): " + pattern);
         comboBoxModel.setPattern(pattern);
         
-        if (comboBoxEditor.getSelectedText() != null) {
-            // we have a selected text, removing the selection.On Windows text may become selected by default
-            System.out.println("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
-            comboBoxEditor.select(0, 0);
-            // return caret position to the original place
-            comboBoxEditor.setCaretPosition(pos);
-        } // if
+        clearTextSelection();
         
         fixPopupSize();
         
@@ -534,7 +541,7 @@ public class ComboBoxFilter extends PlainDocument {
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
         //System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());
-    } // filterTheModel()
+    }
     
     /**
      * Use this method whenever you need to determine if the comboBox is used as a cell editor or not.
@@ -558,6 +565,10 @@ public class ComboBoxFilter extends PlainDocument {
      * while user types something.
      */
     private void fixPopupSize() {
+        if (inPreparation) {
+            return;
+        }
+        System.out.println("fixPopupSize()");
         int maxRows = comboBox.getMaximumRowCount();
         if ((previousItemCount < maxRows) || (comboBox.getItemCount() < maxRows)) {
             // do this only when we have less than maxRows items, to prevent the flickering.

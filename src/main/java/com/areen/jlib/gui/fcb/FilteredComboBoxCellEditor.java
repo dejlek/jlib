@@ -59,7 +59,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         comboBoxModel = (FilteredComboBoxModel) comboBox.getModel();
         comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
         cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
-        setClickCountToStart(2);
     }
     
     /**
@@ -106,7 +105,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         }
 
         if (comboBoxModel.isCancelled() && "comboBoxChanged".equals(e.getActionCommand())) {
-            cancelCellEditing();
+            stopCellEditing();
             return;
         } // if
 

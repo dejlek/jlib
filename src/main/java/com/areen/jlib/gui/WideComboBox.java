@@ -85,7 +85,7 @@ public class WideComboBox extends JComboBox {
      */
     @Override
     public Dimension getSize() {
-        if (maxWidth == -1) {
+        if ((maxWidth == -1) && (getTopLevelAncestor() != null)) {
             maxWidth = getTopLevelAncestor().getPreferredSize().width;
             maxWidth = 3 * maxWidth / 4; // We do not allow more than 3/4 of the max width for the combo box
         } // if
