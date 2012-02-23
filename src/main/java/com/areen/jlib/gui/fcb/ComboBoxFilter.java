@@ -322,33 +322,42 @@ public class ComboBoxFilter extends PlainDocument {
      */
     public void prepare(Object argPattern) {
         System.out.println("prepare(" + argPattern + ")");
+        
+        if (argPattern == null) {
+            // If the previous value is null, we simply exit this method.
+            pickedItem = null;
+            pickedKey = null;
+            comboBox.setSelectedItem(null);
+            return;
+        } // if
+        
         inPreparation = true;
+        selecting = true;
+        comboBoxModel.setCancelled(false);
+        if (isTableCellEditor()) {
+            comboBoxModel.setReadyToFinish(false);
+        }
+
+        String pat = (String) argPattern;
+
+        /* If the editing is triggered by a key-press in a JTable, then we argPattern contains a string
+            * in SISE format, so we have to extract they key pressed and the previous value.
+            */
+        String key = "";
+        if (isTriggeredByKeyPress()) {
+            String[] strs = Sise.units(pat);
+            /* In the case the cell's value was a NULL, then strs will have only one element.
+                * In that case we set pat to be a null, and do not set the pickedItem.
+                */
+            if (strs.length == 2) {
+                pat = strs[1];
+            } else {
+                pat = null;
+            } // else
+            key = strs[0];
+        } // if
+            
         try {
-            selecting = true;
-            comboBoxModel.setCancelled(false);
-            if (isTableCellEditor()) {
-                comboBoxModel.setReadyToFinish(false);
-            }
-
-            String pat = (String) argPattern;
-
-            /* If the editing is triggered by a key-press in a JTable, then we argPattern contains a string
-             * in SISE format, so we have to extract they key pressed and the previous value.
-             */
-            String key = "";
-            if (isTriggeredByKeyPress()) {
-                String[] strs = Sise.units(pat);
-                /* In the case the cell's value was a NULL, then strs will have only one element.
-                 * In that case we set pat to be a null, and do not set the pickedItem.
-                 */
-                if (strs.length == 2) {
-                    pat = strs[1];
-                } else {
-                    pat = null;
-                } // else
-                key = strs[0];
-            } // if
-
             if (argPattern == null) {
                 setText("");
             } else {
@@ -373,10 +382,13 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTriggeredByKeyPress()) {
                 setText(key);
                 filterTheModel();
-                comboBox.validate();
+                comboBox.showPopup();
             } // if
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (isTableCellEditor()) {
+            comboBoxModel.setReadyToFinish(false);
         }
         inPreparation = false;
     } // prepare() method
@@ -433,6 +445,7 @@ public class ComboBoxFilter extends PlainDocument {
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
             System.out.println("%%%%%%%%%%%%%");
+            System.out.println(str);
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);
@@ -452,6 +465,8 @@ public class ComboBoxFilter extends PlainDocument {
             }
             comboBox.putClientProperty("item-picked", itemPicked);
             
+            System.out.println(strs[idx]);
+            System.out.println(itemPicked);
             super.insertString(offs, strs[idx], a);
 
             // we have to filter after the user selects an item with the mouse.
@@ -462,7 +477,7 @@ public class ComboBoxFilter extends PlainDocument {
             if (itemPicked) {
                 pickedItem = comboBox.getSelectedItem();
                 pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
-            } // if
+            }
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
             return;
         } else {
