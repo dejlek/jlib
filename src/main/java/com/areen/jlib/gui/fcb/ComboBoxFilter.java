@@ -1,5 +1,12 @@
-/*
- * File: ComboBoxFilter.java
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
 package com.areen.jlib.gui.fcb;
 
@@ -277,6 +284,7 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
+                System.out.println("hiding popup...");
                 comboBox.putClientProperty("item-picked", Boolean.FALSE);
             }
 
@@ -340,15 +348,15 @@ public class ComboBoxFilter extends PlainDocument {
 
         String pat = (String) argPattern;
 
-        /* If the editing is triggered by a key-press in a JTable, then we argPattern contains a string
-            * in SISE format, so we have to extract they key pressed and the previous value.
-            */
+        /* If the editing is triggered by a key-press in a JTable, then the argPattern contains a string
+         * in SISE format, so we have to extract they key pressed and the previous value.
+         */
         String key = "";
         if (isTriggeredByKeyPress()) {
             String[] strs = Sise.units(pat);
             /* In the case the cell's value was a NULL, then strs will have only one element.
-                * In that case we set pat to be a null, and do not set the pickedItem.
-                */
+             * In that case we set pat to be a null, and do not set the pickedItem.
+             */
             if (strs.length == 2) {
                 pat = strs[1];
             } else {
@@ -382,7 +390,6 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTriggeredByKeyPress()) {
                 setText(key);
                 filterTheModel();
-                comboBox.showPopup();
             } // if
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
@@ -391,6 +398,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxModel.setReadyToFinish(false);
         }
         inPreparation = false;
+        System.out.println("prepare done.");
     } // prepare() method
     
     // ======================================================================================================
@@ -549,7 +557,6 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxModel.setPattern(pattern);
         
         clearTextSelection();
-        
         fixPopupSize();
         
         comboBoxModel.setReadyToFinish(oldValue); // restore the value

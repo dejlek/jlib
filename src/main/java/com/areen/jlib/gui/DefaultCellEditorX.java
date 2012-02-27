@@ -1,6 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
 package com.areen.jlib.gui;
 
@@ -14,8 +20,14 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
+/**
+ * This class is taken from the following thread:
+ * http://stackoverflow.com/questions/7873525
+ * /what-is-the-best-way-to-trigger-a-combo-box-cell-editor-by-typing-in-a-jtable-ce
+ * 
+ * @author kleopatra
+ */
 public class DefaultCellEditorX extends DefaultCellEditor {
     private AncestorListener ancestorListener;
     private PropertyChangeListener focusPropertyListener;
@@ -26,7 +38,6 @@ public class DefaultCellEditorX extends DefaultCellEditor {
         comboBox = argComboBox;
         comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
         comboBox.setEditable(true);
-        AutoCompleteDecorator.decorate(comboBox);
         setClickCountToStart(2);
         getComponent().setName("Table.editor");
     }
@@ -97,7 +108,6 @@ public class DefaultCellEditorX extends DefaultCellEditor {
     private void installKeyboardFocusListener() {
         if (focusPropertyListener == null) {
             focusPropertyListener = new PropertyChangeListener() {
-
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
                     //LOG.info("property: " + evt.getPropertyName());
@@ -106,11 +116,9 @@ public class DefaultCellEditorX extends DefaultCellEditor {
                             != getComponent().getEditor().getEditorComponent()) { 
                         return;
                     } // if
-                    focusManager()
-                       .removePropertyChangeListener("permanentFocusOwner", focusPropertyListener);
+                    focusManager().removePropertyChangeListener("permanentFocusOwner", focusPropertyListener);
                     showPopup();
                 }
-
             };
         }
         focusManager().addPropertyChangeListener("permanentFocusOwner", focusPropertyListener);
@@ -133,4 +141,6 @@ public class DefaultCellEditorX extends DefaultCellEditor {
         return (JComboBox) super.getComponent();
     }
 
-}
+} // DefaultCellEditorX class
+
+// $Id$

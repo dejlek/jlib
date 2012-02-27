@@ -1,11 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
 package com.areen.jlib.test;
 
 import com.areen.jlib.gui.ComboBoxLink;
 import com.areen.jlib.gui.ComboBoxPairRenderer;
+import com.areen.jlib.gui.DefaultCellEditorX;
 import com.areen.jlib.gui.WideComboBox;
 import com.areen.jlib.gui.fcb.ComboBoxFilter;
 import com.areen.jlib.gui.fcb.FilteredComboBoxCellEditor;
@@ -13,7 +20,6 @@ import com.areen.jlib.gui.fcb.FilteredComboBoxCellRenderer;
 import com.areen.jlib.gui.fcb.FilteredComboBoxModel;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
-import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -42,10 +48,14 @@ public class FcbTestFrame extends javax.swing.JFrame {
         testTable.setSurrendersFocusOnKeystroke(true);
         
         // TABLE
-        JComboBox fcb = new JComboBox(vecModel);
-        fcb.setEditable(true);
-        new ComboBoxFilter(fcb, vecModel);
-        testTable.getColumnModel().getColumn(3).setCellEditor(new FilteredComboBoxCellEditor(fcb));
+        //JComboBox fcb = new JComboBox(vecModel);
+        //fcb.setEditable(true);
+        //new ComboBoxFilter(fcb, vecModel);
+        //testTable.getColumnModel().getColumn(3).setCellEditor(new FilteredComboBoxCellEditor(fcb));
+        FilteredComboBoxModel nfcbm = new FilteredComboBoxModel(codeAndValues);
+        WideComboBox wcb = new WideComboBox(nfcbm);
+        //wcb.setEditable(true);
+        testTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditorX(wcb));
         
         // FILTERED COMBO BOX (TEST)
         //filteredComboBox.setUI(ColorArrowUI.createUI(filteredComboBox));
@@ -277,3 +287,5 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private javax.swing.JTable testTable;
     // End of variables declaration//GEN-END:variables
 }
+
+// $Id$

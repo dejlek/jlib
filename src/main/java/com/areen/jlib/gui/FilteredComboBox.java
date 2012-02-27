@@ -32,12 +32,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.AbstractListModel;
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -400,7 +395,7 @@ public class FilteredComboBox extends JComboBox {
             }
         }
 
-        void readData() {
+        final void readData() {
             String[] countries = {
                 "0 #Maufacturing, processing & preparation "
 , "01 #manufacturing & assembly ", "011 makeup ", "0111 curtain makeup ", "0112 sheers makeup "

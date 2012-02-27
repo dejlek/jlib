@@ -1,9 +1,17 @@
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
+ */
+
 package com.areen.jlib.gui;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.FocusEvent;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -40,17 +48,18 @@ public class WideComboBox extends JComboBox {
     public WideComboBox(ComboBoxModel aModel) {
         super(aModel);
     }
-    
+
     /**
      * {@inheritDoc}
      *
      * If popupOnEditEnabled is set, then we show the pop-up whenever user edits the cell.
-     */
+     *
     @Override
     public void processFocusEvent(FocusEvent fe) {
         super.processFocusEvent(fe);
         //System.out.println(fe.toString());
         if (popupOnEditEnabled && isTableCellEditor()) {
+            System.out.println("popupFocusEvent");
             // if we have configured this WideComboBox instance to popup on edit
             // and if it is a table cell editor, then we show the popup
             // NOTE: it seems this solution does not work with editable combo-boxes... :(
@@ -61,6 +70,7 @@ public class WideComboBox extends JComboBox {
             } //  if
         } // if
     } // processFocusEvent() method
+*/
 
     /**
      * @{@inheritDoc }
