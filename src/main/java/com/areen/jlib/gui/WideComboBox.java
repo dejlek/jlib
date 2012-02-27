@@ -5,6 +5,7 @@
  * 
  * Authors (in chronological order):
  *   Dejan Lekic - http://dejan.lekic.org
+ * 
  * Contributors (in chronological order):
  *   -
  */
