@@ -161,7 +161,6 @@ public class TextAreaOutputStream
         System.setOut(ps);
         System.setErr(ps);
 
-
         frame.add(new JScrollPane(ta));
 
         frame.pack();
