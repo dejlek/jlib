@@ -79,6 +79,8 @@ public class ComboBoxFilter extends PlainDocument {
     private int popupMenuWidth;
     private int popupMenuHeight;
 
+    static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
+    
     /**
      * This constructor adds filtering capability to the given JComboBox object
      * argComboBox. It will also assign appropriate model to the combo-box, one
@@ -105,7 +107,7 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println("keyPressed()");
+                LOGGER.info("keyPressed()");
                 int keyCode = e.getKeyCode();
                 System.out.println(keyCode);
 
@@ -141,7 +143,7 @@ public class ComboBoxFilter extends PlainDocument {
 
                 switch (keyCode) {
                     case KeyEvent.VK_TAB:
-                        System.out.println("TAB!");
+                        LOGGER.info("TAB!");
                         finish = true;
                         comboBoxModel.setReadyToFinish(false);
 
@@ -257,7 +259,7 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost()");
+                LOGGER.info("focusLost()");
                 if (pickedKey != null) {
                     // When combo-box loses focus, we need to set the text to the selected
                     setText(pickedKey.toString());
@@ -299,7 +301,7 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
-                System.out.println("hiding popup...");
+                LOGGER.info("hiding popup...");
                 comboBox.putClientProperty("item-picked", Boolean.FALSE);
             }
 
@@ -352,7 +354,7 @@ public class ComboBoxFilter extends PlainDocument {
      * @param argPattern
      */
     public void prepare(Object argPattern) {
-        System.out.println("prepare(" + argPattern + ")");
+        LOGGER.info("prepare(" + argPattern + ")");
 
         if (argPattern == null) {
             // If the previous value is null, we simply exit this method.
@@ -425,7 +427,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxModel.setReadyToFinish(false);
         }
         inPreparation = false;
-        System.out.println("prepare done.");
+        LOGGER.info("prepare done.");
     } // prepare() method
 
     // ======================================================================================================
@@ -434,7 +436,7 @@ public class ComboBoxFilter extends PlainDocument {
     private void clearTextSelection() {
         if (comboBoxEditor.getSelectedText() != null) {
             // we have a selected text, removing the selection. On Windows text may become selected by default
-            System.out.println("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
+            LOGGER.info("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
             int pos = comboBoxEditor.getCaretPosition();
             comboBoxEditor.select(0, 0);
             // return caret position to the original place
@@ -463,8 +465,8 @@ public class ComboBoxFilter extends PlainDocument {
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        System.out.println("insertString(" + offs + ", " + str + ")");
-        //System.out.println("insertString(" + selecting + ", " + arrowKeyPressed + ")");
+        LOGGER.info("insertString(" + offs + ", " + str + ")");
+        //LOGGER.info("insertString(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             return;
@@ -478,7 +480,7 @@ public class ComboBoxFilter extends PlainDocument {
 
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
-            System.out.println("%%%%%%%%%%%%%");
+            LOGGER.info("%%%%%%%%%%%%%");
             System.out.println(str);
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
@@ -534,8 +536,8 @@ public class ComboBoxFilter extends PlainDocument {
 
     @Override
     public void remove(int offs, int len) throws BadLocationException {
-        System.out.println("remove(" + offs + ", " + len + ")");
-        System.out.println("remove(" + selecting + ", " + arrowKeyPressed + ")");
+        LOGGER.info("remove(" + offs + ", " + len + ")");
+        LOGGER.info("remove(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be
@@ -585,7 +587,7 @@ public class ComboBoxFilter extends PlainDocument {
         previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
 
         String pattern = getText(0, getLength());
-        //System.out.println("filterTheModel(): " + pattern);
+        //LOGGER.info("filterTheModel(): " + pattern);
         comboBoxModel.setPattern(pattern);
 
         clearTextSelection();
@@ -594,7 +596,7 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxModel.setReadyToFinish(oldValue); // restore the value
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
-        //System.out.println("SELECTED AFTER:" + comboBox.getSelectedItem());
+        //LOGGER.info("SELECTED AFTER:" + comboBox.getSelectedItem());
     }
 
     /**
@@ -627,7 +629,7 @@ public class ComboBoxFilter extends PlainDocument {
         if (inPreparation) {
             return;
         }
-        System.out.println("fixPopupSize()");
+        LOGGER.info("fixPopupSize()");
         int maxRows = comboBox.getMaximumRowCount();
         if ((previousItemCount < maxRows) || (comboBox.getItemCount() < maxRows)) {
             // do this only when we have less than maxRows items, to prevent the flickering.
