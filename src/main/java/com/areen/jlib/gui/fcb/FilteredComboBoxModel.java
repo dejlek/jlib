@@ -573,7 +573,7 @@ public class FilteredComboBoxModel
         //System.out.println("OBJECT[]: " + argWhat + " ? " + Sise.record(argObjects));
         String str = null;
         for (Object obj : argObjects) {
-            str = obj.toString();
+            str = (obj == null) ? "" : obj.toString();
             if (str.equalsIgnoreCase(argWhat)) {
                 // we found an exact match
                 return 2;
