@@ -314,7 +314,14 @@ public class ComboBoxFilter extends PlainDocument {
         
         Object selected = comboBox.getSelectedItem();
         pickedItem = selected;
-        pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+        
+        Object tmp = comboBoxModel.getKeyOfTheSelectedItem();
+        if (tmp instanceof String) {
+            pickedKey = tmp.toString();
+        } else {
+            pickedKey = tmp;
+        } // else
+        
         selectedIndex = comboBox.getSelectedIndex();
         if (selected != null) {
             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
