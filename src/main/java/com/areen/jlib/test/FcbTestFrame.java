@@ -54,7 +54,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //testTable.getColumnModel().getColumn(3).setCellEditor(new FilteredComboBoxCellEditor(fcb));
         FilteredComboBoxModel nfcbm = new FilteredComboBoxModel(codeAndValues);
         WideComboBox wcb = new WideComboBox(nfcbm);
-        //wcb.setEditable(true);
+        // wcb.setEditable(true);
         testTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditorX(wcb));
         
         // FILTERED COMBO BOX (TEST)
