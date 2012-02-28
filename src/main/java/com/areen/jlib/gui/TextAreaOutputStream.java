@@ -151,25 +151,25 @@ public class TextAreaOutputStream
         return true;
     }
    
-    public static void main( String [] args ) throws InterruptedException  {
+    public static void main(String[] args) throws InterruptedException {
         JFrame frame = new JFrame();
-        frame.add( new JLabel(" Outout" ), BorderLayout.NORTH );
+        frame.add(new JLabel("Output"), BorderLayout.NORTH);
 
         JTextArea ta = new JTextArea();
-        TextAreaOutputStream taos = new TextAreaOutputStream( ta, 60 );
-        PrintStream ps = new PrintStream( taos );
-        System.setOut( ps );
-        System.setErr( ps );
+        TextAreaOutputStream taos = new TextAreaOutputStream(ta, 60);
+        PrintStream ps = new PrintStream(taos);
+        System.setOut(ps);
+        System.setErr(ps);
 
 
-        frame.add( new JScrollPane( ta )  );
+        frame.add(new JScrollPane(ta));
 
         frame.pack();
-        frame.setVisible( true );
+        frame.setVisible(true);
 
-        for( int i = 0 ; i < 100 ; i++ ) {
-            System.out.println( i );
-            Thread.sleep( 500 );
+        for (int i = 0; i < 100; i++) {
+            System.out.println(i);
+            Thread.sleep(500);
         }
     } // main() method
     
