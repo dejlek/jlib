@@ -71,7 +71,7 @@
    <module name="SuppressWithNearbyCommentFilter">
       <property name="commentFormat" value="GEN-BEGIN.*$"/>
       <property name="checkFormat" value=".*"/>
-      <property name="influenceFormat" value="0"/>
+      <property name="influenceFormat" value="-1"/>
    </module>   
    <module name="SuppressWithNearbyCommentFilter">
       <property name="commentFormat" value="GEN-END.*$"/>
