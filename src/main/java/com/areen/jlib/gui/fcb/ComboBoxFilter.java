@@ -1,9 +1,15 @@
 /**
- * Project: jlib Version: $Id: ComboBoxFilter.java 224 2012-02-28 09:41:42Z
- * dejan $ License: SPL
+ * Project: jlib 
+ * Version: $Id$ 
+ * License: SPL
  *
- * Authors (in chronological order): Dejan Lekic - http://dejan.lekic.org
- * Contributors (in chronological order): -
+ * This file is best viewed with 110 columns.
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ * 
+ * Authors (in chronological order): 
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order): 
+ *   -
  */
 package com.areen.jlib.gui.fcb;
 

@@ -1,23 +1,15 @@
 /**
- * $Id$
+ * Project: jlib 
+ * Version: $Id$
+ * License: SPL
  *
- * Copyright (c) 2009-2010 Areen Design Services Ltd
- * 23 Eyot Gardens; London; W6 9TR
- * http://www.areen.com
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * Areen Design Services Ltd ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entered into
- * with Areen Design Services Ltd.
- *
- * This file is best viewed with 128 columns.
-123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
- *
- * Author(s):
- *   Dejan Lekic , http://dejan.lekic.org
- * Contributor(s):
+ * This file is best viewed with 110 columns.
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ * 
+ * Authors (in chronological order): 
+ *   Dejan Lekic - http://dejan.lekic.org
+ * 
+ * Contributors (in chronological order): 
  *   -
  */
 
@@ -36,6 +28,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         super(parent, modal);
         initComponents();
         this.setTitle("Java exception information");
+        setResizable(true);
     }
 
     /** This method is called from within the constructor to
@@ -52,18 +45,16 @@ public class ExceptionDialog extends java.awt.Dialog {
         bottomPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
 
-        setMinimumSize(new java.awt.Dimension(500, 300));
+        setMinimumSize(new java.awt.Dimension(800, 300));
+        setPreferredSize(new java.awt.Dimension(800, 300));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(final java.awt.event.WindowEvent evt) {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
-        fileAndLineInformationLabel.setFont(fileAndLineInformationLabel.getFont().deriveFont(
-                fileAndLineInformationLabel.getFont().getStyle() | java.awt.Font.BOLD
-            )
-        );
+        fileAndLineInformationLabel.setFont(fileAndLineInformationLabel.getFont().deriveFont(fileAndLineInformationLabel.getFont().getStyle() | java.awt.Font.BOLD));
         fileAndLineInformationLabel.setText("Test10.java: Line 15");
         add(fileAndLineInformationLabel, java.awt.BorderLayout.PAGE_START);
 
@@ -79,7 +70,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         okButton.setMnemonic(KeyEvent.VK_ESCAPE);
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(final java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
@@ -88,7 +79,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 
         pack();
-    } // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
 
     /** Closes the dialog */
     private void closeDialog(final java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog

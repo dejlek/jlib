@@ -41,17 +41,30 @@ public class ExceptionUtility {
      */
     public static void exceptionDialog(final Frame argFrame, final Exception argException,
                                        final String argLineInfo) {
+        final String eof = System.getProperty("line.separator");
         ExceptionDialog ed = new ExceptionDialog(argFrame, true);
-        String exceptionString = argException + "\n:::::::::::::::::::::::::::::::::\n";
-        StackTraceElement[] elements = argException.getStackTrace();
-        for (int i = 0; i < elements.length; i++) {
-            exceptionString += elements[i].toString() + "\n";
-        }
+        String exceptionString = argException + eof + ":::::::::::::::::::::::::::::::::" + eof;
         ed.setInfo(argLineInfo);
-        ed.setExceptionText(exceptionString);
+        ed.setExceptionText(exceptionString + ExceptionUtility.getStackTrace(argException.getStackTrace()));
         ed.setLocationRelativeTo(argFrame);
         ed.setVisible(true);
     } // exceptionDialog() method
+    
+    /**
+     * Use this method to form a nice stack-trace text out of StackTraceElement objects.
+     * 
+     * @param argStackTraceElements
+     * @return 
+     */
+    public static String getStackTrace(StackTraceElement[] argStackTraceElements) {
+        String ret = "";
+        final String eof = System.getProperty("line.separator");
+        for (StackTraceElement el : argStackTraceElements) {
+            ret += el.toString() + eof;
+        }
+        return ret;
+    } // getStackTrace() method
+    
 } // ExceptionUtility class
 
 // $Id$
