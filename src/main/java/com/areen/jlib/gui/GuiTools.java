@@ -24,7 +24,9 @@
 package com.areen.jlib.gui;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.net.URL;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /**
@@ -63,6 +65,17 @@ public class GuiTools {
     public static void setParentComponent(Component argComponent) {
         GuiTools.parentFrame = argComponent;
     }
+
+    /**
+     * Use this method when you want to set font of several JComponent objects to be bold.
+     */
+    public static void makeBold(JComponent... argComponents) {
+        for (JComponent component : argComponents) {
+            Font newFont = new Font(component.getFont().getName(), Font.BOLD, component.getFont().getSize());
+            component.setFont(newFont);
+        } // foreach
+    } // makeBold() method
+
 } // GuiTools
 
 // $Id$

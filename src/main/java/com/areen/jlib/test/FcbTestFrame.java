@@ -141,14 +141,15 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
 
         filteredComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        filteredComboBox.setOpaque(false);
         filteredComboBox.setNextFocusableComponent(jButton1);
+        filteredComboBox.setOpaque(false);
         filteredComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filteredComboBoxActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel1.setText("<-- WideComboBox with ComboBoxFilter applied.");
         jLabel1.setFocusable(false);
 
