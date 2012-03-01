@@ -5,12 +5,9 @@
 package com.areen.jlib.test;
 
 import com.areen.jlib.gui.GuiTools;
-import com.areen.jlib.gui.LoggingEventQueue;
 import com.areen.jlib.tuple.Pair;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
+import com.areen.jlib.util.ExceptionLogger;
 import javax.swing.UIManager;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -325,17 +322,12 @@ public class Main {
 
             @Override
             public void run() {
+                Thread.setDefaultUncaughtExceptionHandler(new ExceptionLogger("com.areen.jtable"));
+                
                 FcbTestFrame mainFrame = new FcbTestFrame(Main.TLDS);
                 GuiTools.setParentComponent(mainFrame);
                 mainFrame.setLocationRelativeTo(null);
                 mainFrame.setVisible(true);
-                
-                Logger.getLogger("com.areen.table").info("BLA");
-                //if (Logger.getLogger("com.areen.table").isDebugEnabled()) {
-                    System.out.println("DEBUG ENABLED");
-                    EventQueue queue = Toolkit.getDefaultToolkit().getSystemEventQueue();
-                    queue.push(new LoggingEventQueue("com.areen.table", mainFrame));
-                //}
             }
         }); // invokeLater()
     } // main() method
