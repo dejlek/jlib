@@ -1,14 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib 
+ * Version: $Id$ 
+ * License: SPL
+ *
+ * This file is best viewed with 110 columns.
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ * 
+ * Authors (in chronological order): 
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order): 
+ *   -
  */
+
 package com.areen.jlib.util;
 
 import com.areen.jlib.gui.err.ExceptionUtility;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * This simple implementation of the Thread.UncaughtExceptionHandler will popup a dialog whenever an
+ * uncaught exception is thrown.
+ * 
+ * Example:
+ **********
+
+Thread.setDefaultUncaughtExceptionHandler(new ExceptionLogger("com.areen.jlib"));
+
+ **********
  * @author dejan
  */
 public class ExceptionLogger implements Thread.UncaughtExceptionHandler {
@@ -24,10 +42,10 @@ public class ExceptionLogger implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread argThread, Throwable argThrowable) {
+        /*
+         * 
         System.out.println("You crashed thread " + argThread.getName());
         System.out.println("Exception was: " + argThrowable.toString());
-        
-        /*
         ExceptionDialog ed = new ExceptionDialog(null, true);
         ed.setInfo(argThrowable.toString() + " Thread: " + argThread.getName());
         ed.setExceptionText(argThrowable.getMessage());
@@ -49,3 +67,5 @@ public class ExceptionLogger implements Thread.UncaughtExceptionHandler {
     } // uncaughtException() method
     
 } // ExceptionLogger class
+
+// $Id$

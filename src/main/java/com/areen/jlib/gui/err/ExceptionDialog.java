@@ -96,9 +96,11 @@ public class ExceptionDialog extends java.awt.Dialog {
     */
     public static void main(final String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 ExceptionDialog dialog = new ExceptionDialog(new java.awt.Frame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
                     public void windowClosing(final java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }

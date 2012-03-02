@@ -331,4 +331,7 @@ public class Main {
             }
         }); // invokeLater()
     } // main() method
+    
 } // Main class
+
+// $Id$
