@@ -154,7 +154,12 @@ public class ComboBoxFilter extends PlainDocument {
                         comboBoxModel.setReadyToFinish(false);
 
                         if (!isTableCellEditor()) {
-                            setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                            Object obj = comboBoxModel.getKeyOfTheSelectedItem();
+                            if (obj == null) {
+                                setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                            } else {
+                                setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                            }
                         }
 
                         if ((comboBox.getSelectedItem() == null)) {

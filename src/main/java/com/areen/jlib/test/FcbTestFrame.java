@@ -63,12 +63,15 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //filteredComboBox.setModel(cbModel); no need, the constructor will set the model for us
         //new ComboBoxFilter(filteredComboBox, cbModel);
         FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
-        fcb.addActionListener(new java.awt.event.ActionListener() {
+        /*        
+        * fcb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filteredComboBoxActionPerformed(evt);
             }
         });
-        fcb.setMultiSelectionAllowed(true);
+        * 
+        */
+        //fcb.setMultiSelectionAllowed(true);
         filteredComboBox.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
         filteredComboBox.setSelectedIndex(5);
         //fcb.setMultiSelectionAllowed(true);
@@ -233,9 +236,11 @@ public class FcbTestFrame extends javax.swing.JFrame {
         System.out.println("DEBUG: action performed: " + evt.getActionCommand());
         System.out.println("DEBUG: action performed sel: " + filteredComboBox.getSelectedItem());
         FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
-        System.out.println("DEBUG: last pattern: " + cbModel.getLastPattern());
-        for (Object obj : fcb.getSelectedItems()) {
-            System.out.println(obj.toString());
+        if (fcb.isMultiSelectionAllowed()) {
+            System.out.println("DEBUG: last pattern: " + cbModel.getLastPattern());
+            for (Object obj : fcb.getSelectedItems()) {
+                System.out.println(obj.toString());
+            }
         }
     }//GEN-LAST:event_filteredComboBoxActionPerformed
 
