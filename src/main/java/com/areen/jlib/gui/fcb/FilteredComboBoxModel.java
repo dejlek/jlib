@@ -68,6 +68,10 @@ public class FilteredComboBoxModel
      */
     private boolean readyToFinish = false; 
     private int keyIndex = 0; /// Index of a key in the SISE record.
+
+    private boolean hasWildcard = false;
+    private boolean multiSelectionAllowed = false;
+    private String storedPattern;
     
     /**
      * Constructs an empty ArrayListModel object.
@@ -311,6 +315,14 @@ public class FilteredComboBoxModel
         exactIndex = -1;
         
         String copy = argPattern.trim();
+        storedPattern = copy;
+        
+        if (isMultiSelectionAllowed()) {
+            if (copy.endsWith("*") && (copy.length() > 1)) {
+                hasWildcard = true;
+                copy = copy.substring(0, copy.length() - 1);
+            }
+        }
         if (lastPattern.equals(copy)
                 && (argPattern.length() != copy.length())) {
             // we have the same pattern, probably with an additional space, no need for filtering.
@@ -493,6 +505,18 @@ public class FilteredComboBoxModel
     public int getKeyIndex() {
         return keyIndex;
     } // getKeyIndex() method
+
+    public boolean isMultiSelectionAllowed() {
+        return multiSelectionAllowed;
+    }
+
+    public void setMultiSelectionAllowed(boolean argMultiSelectionAllowed) {
+        multiSelectionAllowed = argMultiSelectionAllowed;
+    }
+
+    public boolean hasWildcard() {
+        return hasWildcard;
+    }
     
     // ======================================================================================================
     //   Private methods
@@ -605,6 +629,50 @@ public class FilteredComboBoxModel
         } // if
         return 0;
     } // check() method
+    
+    /**
+     * Use this method to get an array of combo-box items selected with wildcard character '*'.
+     * @return An array of Objects that match the pattern.
+     */
+    public Object[] getMatchingItems() {
+        String argPrefix = lastPattern;
+        
+        if (fcbObjects.size() == 0) {
+            return null;
+        }
+        
+        ArrayList ret = new ArrayList();
+        
+        if (!hasWildcard()) {
+            // In the case when patern does not end with * , then we fall to the default case when we return
+            // only a single item. So, we call getSelectedItem(), and return an array with only one element.
+            Object[] retOne = new Object[1];
+            retOne[0] = getSelectedItem();
+            return retOne;
+        }
+                
+        if (fcbObjects.get(0) instanceof Pair) {
+            for (Object obj : fcbObjects) {
+                Pair tmp = (Pair) obj;
+                if (tmp.getKey().toString().toLowerCase().startsWith(argPrefix)) {
+                    ret.add(obj);
+                } // if
+            } // foreach
+        } // if
+
+        // TODO: when we deal with table model, we have to fix this block of code, for now I assume the first
+        //       element is the key.
+        if (fcbObjects.get(0) instanceof Object[]) {
+            for (Object obj : fcbObjects) {
+                Object[] tmp = (Object[]) obj;
+                if (tmp[0].toString().toLowerCase().startsWith(argPrefix)) {
+                    ret.add(obj);
+                } // if
+            } // foreach
+        } // if
+        
+        return ret.toArray();
+    } // getMatchingItems() method
 
     public boolean isCancelled() {
         return cancelled;
@@ -614,6 +682,15 @@ public class FilteredComboBoxModel
         cancelled = argCancelled;
     }
 
+    /**
+     * The reason why we return storedPattern instead of lastPattern is because lastPattern has wildcards
+     * *removed*. Sometimes we want to know the exact pattern.
+     * @return 
+     */
+    public String getLastPattern() {
+        return storedPattern;
+    }
+    
 } // FilteredComboBoxModel class
 
 // $Id$

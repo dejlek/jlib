@@ -14,12 +14,10 @@ import com.areen.jlib.gui.ComboBoxLink;
 import com.areen.jlib.gui.ComboBoxPairRenderer;
 import com.areen.jlib.gui.DefaultCellEditorX;
 import com.areen.jlib.gui.WideComboBox;
-import com.areen.jlib.gui.fcb.ComboBoxFilter;
-import com.areen.jlib.gui.fcb.FilteredComboBoxCellEditor;
-import com.areen.jlib.gui.fcb.FilteredComboBoxCellRenderer;
-import com.areen.jlib.gui.fcb.FilteredComboBoxModel;
+import com.areen.jlib.gui.fcb.*;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,11 +29,12 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private FilteredComboBoxModel cbModel;
     private FilteredComboBoxModel vecModel;
     private DefaultTableModel tableModel;
-    
+    static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     /**
      * Creates new form FcbTestFrame
      */
     public FcbTestFrame(Pair<String, String>[] argCodeAndValues) {
+        LOGGER.info("blah!");
         codeAndValues = argCodeAndValues;
         
         // we have to initialise the model before some of the combo-boxes are created
@@ -43,6 +42,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         vecModel = new FilteredComboBoxModel(codeAndValues);
         
         initComponents();
+        
         tableModel = (DefaultTableModel) testTable.getModel();
         
         testTable.setSurrendersFocusOnKeystroke(true);
@@ -61,9 +61,17 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //filteredComboBox.setUI(ColorArrowUI.createUI(filteredComboBox));
         //filteredComboBox.setEditable(true);
         //filteredComboBox.setModel(cbModel); no need, the constructor will set the model for us
-        new ComboBoxFilter(filteredComboBox, cbModel);
+        //new ComboBoxFilter(filteredComboBox, cbModel);
+        FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
+        fcb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filteredComboBoxActionPerformed(evt);
+            }
+        });
+        fcb.setMultiSelectionAllowed(true);
         filteredComboBox.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
         filteredComboBox.setSelectedIndex(5);
+        //fcb.setMultiSelectionAllowed(true);
         //new ComboBoxLink(filteredComboBox, jTextArea1);
         new ComboBoxLink(filteredComboBox, jLabel1);
         
@@ -96,7 +104,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         testTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        filteredComboBox = new WideComboBox(cbModel);
+        filteredComboBox = new FilteredComboBox(cbModel);
         jLabel1 = new javax.swing.JLabel();
         normalComboBox = new javax.swing.JComboBox();
         tableComboBox = new WideComboBox();
@@ -140,7 +148,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
             }
         });
 
-        filteredComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         filteredComboBox.setNextFocusableComponent(jButton1);
         filteredComboBox.setOpaque(false);
         filteredComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -223,8 +230,13 @@ public class FcbTestFrame extends javax.swing.JFrame {
 
     private void filteredComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filteredComboBoxActionPerformed
         // TODO add your handling code here:
-        // System.out.println("DEBUG: action performed: " + evt.getActionCommand());
-        // System.out.println("DEBUG: action performed sel: " + filteredComboBox.getSelectedItem());
+        System.out.println("DEBUG: action performed: " + evt.getActionCommand());
+        System.out.println("DEBUG: action performed sel: " + filteredComboBox.getSelectedItem());
+        FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
+        System.out.println("DEBUG: last pattern: " + cbModel.getLastPattern());
+        for (Object obj : fcb.getSelectedItems()) {
+            System.out.println(obj.toString());
+        }
     }//GEN-LAST:event_filteredComboBoxActionPerformed
 
     private void testTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_testTableKeyPressed

@@ -33,6 +33,7 @@ public class WideComboBox extends JComboBox {
     private int ww;
     private boolean popupOnEditEnabled = true;
     private int maxWidth = -1; /// -1 indicates that it is not set
+    
 
     public WideComboBox() {
         super();
@@ -71,7 +72,8 @@ public class WideComboBox extends JComboBox {
             } //  if
         } // if
     } // processFocusEvent() method
-*/
+    * 
+    */
 
     /**
      * @{@inheritDoc }
@@ -113,14 +115,6 @@ public class WideComboBox extends JComboBox {
         return new Dimension(ww, dim.height);
     } //  getSize() method
 
-    public boolean isPopupOnEditEnabled() {
-        return popupOnEditEnabled;
-    }
-
-    public void setPopupOnEditEnabled(boolean argPopupOnEditEnabled) {
-        popupOnEditEnabled = argPopupOnEditEnabled;
-    }
-
     /**
      * Use this method whenever you need to determine if the comboBox is used as a cell editor or not.
      * @return boolean Value indicating whether comboBox is a cell editor (TRUE) or not (FALSE).
@@ -134,6 +128,14 @@ public class WideComboBox extends JComboBox {
         return isTableCellEditor;
     } // isTableCellEditor method
 
+    public boolean isPopupOnEditEnabled() {
+        return popupOnEditEnabled;
+    }
+
+    public void setPopupOnEditEnabled(boolean argPopupOnEditEnabled) {
+        popupOnEditEnabled = argPopupOnEditEnabled;
+    }
+    
     public int getMaxWidth() {
         return maxWidth;
     }
@@ -141,6 +143,8 @@ public class WideComboBox extends JComboBox {
     public void setMaxWidth(int argMaxWidth) {
         maxWidth = argMaxWidth;
     }
+    
+
     
 } // WideComboBox class
 
