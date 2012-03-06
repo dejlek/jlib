@@ -386,7 +386,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxModel.setReadyToFinish(false);
         }
 
-        String pat = (String) argPattern;
+        String pat = (String) argPattern.toString();
 
         /*
          * If the editing is triggered by a key-press in a JTable, then the
