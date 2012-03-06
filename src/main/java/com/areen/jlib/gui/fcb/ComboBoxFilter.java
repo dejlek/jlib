@@ -156,7 +156,7 @@ public class ComboBoxFilter extends PlainDocument {
                         if (!isTableCellEditor()) {
                             Object obj = comboBoxModel.getKeyOfTheSelectedItem();
                             if (obj == null) {
-                                setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                                setText("");
                             } else {
                                 setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
                             }
@@ -203,12 +203,16 @@ public class ComboBoxFilter extends PlainDocument {
                     case KeyEvent.VK_ENTER:
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
-                        //setText(comboBox.getSelectedItem().toString());
+                        Object obj = comboBoxModel.getKeyOfTheSelectedItem();
+                        String txt = "";
+                        if (obj != null) {
+                            txt = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                        }
                         if (!isTableCellEditor()) {
-                            setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
+                            setText(txt);
                         }
                         pickedItem = comboBox.getSelectedItem();
-                        pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                        pickedKey = txt;
                         break;
 
                     case KeyEvent.VK_UP:
