@@ -1,7 +1,16 @@
-/*
+/**
  * Project: jlib
- * VCS: $Id$
- * License: Public Domain
+ * Version: $Id$
+ * License: SPL
+ *
+ * This file is best viewed with 110 columns.
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ *
+ * Authors (in chronological order):
+ *   Darryl Burke
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
 
 package com.areen.jlib.gui;
