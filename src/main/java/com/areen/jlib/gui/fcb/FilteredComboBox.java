@@ -46,7 +46,15 @@ public class FilteredComboBox extends WideComboBox {
     public String getLastPattern() {
         return comboBoxModel.getLastPattern();
     }
-    
+
+    public boolean isAnyPatternAllowed() {
+        return comboBoxModel.isAnyPatternAllowed();
+    }
+
+    public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
+        comboBoxModel.setAnyPatternAllowed(argAnyPatternAllowed);
+    }
+
 } // FilteredComboBox class
 
 // $Id$

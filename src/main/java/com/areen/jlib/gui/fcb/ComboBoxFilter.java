@@ -208,9 +208,14 @@ public class ComboBoxFilter extends PlainDocument {
                         if (obj != null) {
                             txt = obj.toString();
                         } // if
-                        if (!isTableCellEditor()) {
-                            setText(txt);
+
+                        if (!comboBoxModel.isAnyPatternAllowed()) {
+                            // If we do not allow any string to remain in the editor, then we set
+                            if (!isTableCellEditor()) {
+                                setText(txt);
+                            }
                         }
+
                         pickedItem = comboBox.getSelectedItem();
                         pickedKey = txt;
                         break;

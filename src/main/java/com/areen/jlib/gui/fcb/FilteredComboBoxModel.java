@@ -72,6 +72,10 @@ public class FilteredComboBoxModel
     private boolean hasWildcard = false;
     private boolean multiSelectionAllowed = false;
     private String storedPattern;
+    /**
+     * Indicates whether we want ComboBoxFilter to retain the entered string even if we found no matches.
+     */
+    private boolean anyPatternAllowed = false;
     
     /**
      * Constructs an empty ArrayListModel object.
@@ -690,7 +694,15 @@ public class FilteredComboBoxModel
     public String getLastPattern() {
         return storedPattern;
     }
-    
+
+    public boolean isAnyPatternAllowed() {
+        return anyPatternAllowed;
+    }
+
+    public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
+        anyPatternAllowed = argAnyPatternAllowed;
+    }
+
 } // FilteredComboBoxModel class
 
 // $Id$
