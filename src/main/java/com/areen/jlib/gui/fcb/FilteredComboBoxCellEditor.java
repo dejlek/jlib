@@ -8,6 +8,7 @@
  * Contributors (in chronological order):
  *   -
  */
+
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.WideComboBox;
