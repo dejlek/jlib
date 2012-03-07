@@ -206,8 +206,8 @@ public class ComboBoxFilter extends PlainDocument {
                         Object obj = comboBoxModel.getKeyOfTheSelectedItem();
                         String txt = "";
                         if (obj != null) {
-                            txt = comboBoxModel.getKeyOfTheSelectedItem().toString();
-                        }
+                            txt = obj.toString();
+                        } // if
                         if (!isTableCellEditor()) {
                             setText(txt);
                         }
