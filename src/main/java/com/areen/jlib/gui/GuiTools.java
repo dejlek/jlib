@@ -1,23 +1,14 @@
 /**
- * $Id$
- *
- * Copyright (c) 2009-2010 Areen Design Services Ltd
- * 23 Eyot Gardens; London; W6 9TR
- * http://www.areen.com
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * Areen Design Services Ltd ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entered into
- * with Areen Design Services Ltd.
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
  *
  * This file is best viewed with 110 columns.
-12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
  *
- * Author(s) in chronological order:
- *   Dejan Lekic , http://dejan.lekic.org
- * Contributor(s):
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
  *   -
  */
 
