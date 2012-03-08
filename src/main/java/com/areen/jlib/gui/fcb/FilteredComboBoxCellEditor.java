@@ -141,25 +141,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     // Implementing CellEditor
     @Override
     public Object getCellEditorValue() {
-        /*
-        System.out.println("FilteredComboBoxCellEditor.getCellEditorValue()");
-        System.out.println(" `--> " + comboBox.getSelectedItem().getClass().getCanonicalName());
-        System.out.println("    > " + comboBox.getSelectedItem());
-        System.out.println("    > " + comboBox.getSelectedIndex());
-        System.out.println("    > " + comboBoxModel.getSelectedItem());
-        System.out.println("    : " + cbFilter.getPickedItem());
-        System.out.println("    : " + cbFilter.getPickedKey());
-        Object obj = comboBox.getSelectedItem();
-        
-        if ((comboBox.getSelectedIndex() >= 0)
-                && (obj.getClass().isPrimitive() || (obj.getClass() == String.class))) {
-            return obj;
-        } else {
-            Object key = comboBoxModel.getKeyOfTheSelectedItem();
-            return key;
-        } // else
-        *
-        */
         return cbFilter.getPickedKey();
     } // getCellEditorValue() method
     
@@ -180,19 +161,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             boolean isSelected, 
             int row, 
             int column) {
-        
-        /*
-         * The following block is not needed anymore - it is handled by WideComboBox itself 
-         
-        if (comboBox instanceof WideComboBox) {
-            WideComboBox wcb = (WideComboBox) comboBox;
-            wcb.setMaxWidth(table.getSize().width * 3 / 4);
-         
-            System.out.println(wcb.getMaxWidth());
-        }
-        * 
-        */
-        
         if ((row == keyRow)
                 && column == keyColumn) {
             keyRow = -1;
@@ -269,7 +237,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         });
     }
 
-
     /**
      * Dynamically install self-uninstalling listener, depending on JComboBox
      * and JTable state. 
@@ -343,8 +310,6 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     } // getComboBoxModel
     
     // ================================================================================================ END ==
-    
-  
     
 } // FilteredComboBoxCellEditor
 
