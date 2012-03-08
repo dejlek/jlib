@@ -235,12 +235,24 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private void filteredComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filteredComboBoxActionPerformed
         // TODO add your handling code here:
         System.out.println("DEBUG: action performed: " + evt.getActionCommand());
+        
+        Object obj = filteredComboBox.getSelectedItem();
+        if (obj != null)
+            System.out.println(obj.getClass().getCanonicalName());
+        else 
+            System.out.println("null");
+        obj = filteredComboBox.getModel().getSelectedItem();
+        if (obj != null)
+            System.out.println(obj.getClass().getCanonicalName());
+        else 
+            System.out.println("null");
+        
         System.out.println("DEBUG: action performed sel: " + filteredComboBox.getSelectedItem());
         FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
         if (fcb.isMultiSelectionAllowed()) {
             System.out.println("DEBUG: last pattern: " + cbModel.getLastPattern());
-            for (Object obj : fcb.getSelectedItems()) {
-                System.out.println(obj.toString());
+            for (Object o : fcb.getSelectedItems()) {
+                System.out.println(o.toString());
             }
         }
     }//GEN-LAST:event_filteredComboBoxActionPerformed
