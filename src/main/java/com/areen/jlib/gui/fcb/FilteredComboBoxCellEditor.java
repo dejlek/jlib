@@ -333,7 +333,18 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         return KeyboardFocusManager.getCurrentKeyboardFocusManager();
     }
     
+    /**
+     * Returns the Combobox Model.
+     * 
+     * @return comboBoxModel.
+     */
+    public ComboBoxModel getComboBoxModel() {
+        return comboBoxModel;
+    } // getComboBoxModel
+    
     // ================================================================================================ END ==
+    
+  
     
 } // FilteredComboBoxCellEditor
 
