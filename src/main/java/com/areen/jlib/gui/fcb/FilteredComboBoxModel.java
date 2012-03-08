@@ -60,9 +60,7 @@ public class FilteredComboBoxModel
     private boolean readyToFinish = false; 
     private int keyIndex = 0; /// Index of a key in the SISE record.
 
-    private boolean hasWildcard = false;
     private boolean multiSelectionAllowed = false;
-    private String storedPattern;
     /**
      * Indicates whether we want ComboBoxFilter to retain the entered string even if we found no matches.
      */
@@ -310,14 +308,7 @@ public class FilteredComboBoxModel
         exactIndex = -1;
         
         String copy = argPattern.trim();
-        storedPattern = copy;
         
-        if (isMultiSelectionAllowed()) {
-            if (copy.endsWith("*") && (copy.length() > 1)) {
-                hasWildcard = true;
-                copy = copy.substring(0, copy.length() - 1);
-            }
-        }
         if (lastPattern.equals(copy)
                 && (argPattern.length() != copy.length())) {
             // we have the same pattern, probably with an additional space, no need for filtering.
@@ -508,10 +499,6 @@ public class FilteredComboBoxModel
     public void setMultiSelectionAllowed(boolean argMultiSelectionAllowed) {
         multiSelectionAllowed = argMultiSelectionAllowed;
     }
-
-    public boolean hasWildcard() {
-        return hasWildcard;
-    }
     
     // ======================================================================================================
     //   Private methods
@@ -630,6 +617,15 @@ public class FilteredComboBoxModel
      * @return An array of Objects that match the pattern.
      */
     public Object[] getMatchingItems() {
+        if (isMultiSelectionAllowed()) {
+            return objects.toArray();
+        } else {
+            // we fall back to the normal way of doing things
+            Object[] retOne = new Object[1];
+            retOne[0] = getSelectedItem();
+            return retOne;
+        } // else
+        /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: OLD CODE
         String argPrefix = lastPattern;
         
         if (fcbObjects.size() == 0) {
@@ -638,13 +634,12 @@ public class FilteredComboBoxModel
         
         ArrayList ret = new ArrayList();
         
-        if (!hasWildcard()) {
-            // In the case when patern does not end with * , then we fall to the default case when we return
-            // only a single item. So, we call getSelectedItem(), and return an array with only one element.
+        if (isMultiSelectionAllowed()) {
+            // we fall back to the normal way of doing things
             Object[] retOne = new Object[1];
             retOne[0] = getSelectedItem();
             return retOne;
-        }
+        } // if
                 
         if (fcbObjects.get(0) instanceof Pair) {
             for (Object obj : fcbObjects) {
@@ -667,6 +662,8 @@ public class FilteredComboBoxModel
         } // if
         
         return ret.toArray();
+        * .......................................................................................... OLD CODE
+        */
     } // getMatchingItems() method
 
     public boolean isCancelled() {
@@ -677,21 +674,16 @@ public class FilteredComboBoxModel
         cancelled = argCancelled;
     }
 
-    /**
-     * The reason why we return storedPattern instead of lastPattern is because lastPattern has wildcards
-     * *removed*. Sometimes we want to know the exact pattern.
-     * @return 
-     */
-    public String getLastPattern() {
-        return storedPattern;
-    }
-
     public boolean isAnyPatternAllowed() {
         return anyPatternAllowed;
     }
 
     public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
         anyPatternAllowed = argAnyPatternAllowed;
+    }
+
+    public String getLastPattern() {
+        return lastPattern;
     }
 
 } // FilteredComboBoxModel class

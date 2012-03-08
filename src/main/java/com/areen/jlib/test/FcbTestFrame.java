@@ -71,8 +71,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
         * 
         */
-        //fcb.setMultiSelectionAllowed(true);
-        cbModel.setAnyPatternAllowed(true);
+        cbModel.setMultiSelectionAllowed(true);
+        //cbModel.setAnyPatternAllowed(true);
         filteredComboBox.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
         filteredComboBox.setSelectedIndex(5);
         //fcb.setMultiSelectionAllowed(true);

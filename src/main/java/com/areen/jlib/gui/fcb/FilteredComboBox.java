@@ -38,11 +38,7 @@ public class FilteredComboBox extends WideComboBox {
         } // else
         return ret;
     }
-    
-    public boolean isMultipleSelectionTriggered() {
-        return comboBoxModel.hasWildcard();
-    }
-    
+        
     public String getLastPattern() {
         return comboBoxModel.getLastPattern();
     }

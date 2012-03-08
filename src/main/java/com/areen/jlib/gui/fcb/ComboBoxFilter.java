@@ -154,12 +154,7 @@ public class ComboBoxFilter extends PlainDocument {
                         comboBoxModel.setReadyToFinish(false);
 
                         if (!isTableCellEditor()) {
-                            Object obj = comboBoxModel.getKeyOfTheSelectedItem();
-                            if (obj == null) {
-                                setText("");
-                            } else {
-                                setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
-                            }
+                            String txt = updateFcbEditor();
                         }
 
                         if ((comboBox.getSelectedItem() == null)) {
@@ -203,18 +198,7 @@ public class ComboBoxFilter extends PlainDocument {
                     case KeyEvent.VK_ENTER:
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
-                        Object obj = comboBoxModel.getKeyOfTheSelectedItem();
-                        String txt = "";
-                        if (obj != null) {
-                            txt = obj.toString();
-                        } // if
-
-                        if (!comboBoxModel.isAnyPatternAllowed()) {
-                            // If we do not allow any string to remain in the editor, then we set
-                            if (!isTableCellEditor()) {
-                                setText(txt);
-                            }
-                        }
+                        String txt = updateFcbEditor();
 
                         pickedItem = comboBox.getSelectedItem();
                         pickedKey = txt;
@@ -270,6 +254,8 @@ public class ComboBoxFilter extends PlainDocument {
                 } // switch
                 keyPressed = false;
             } // keyPressed() method
+
+
         });
 
         // Bug 5100422 on Java 1.5: Editable JComboBox won't hide popup when tabbing out
@@ -279,8 +265,10 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void focusLost(FocusEvent e) {
+                boolean pa = comboBoxModel.isAnyPatternAllowed();
+                boolean ma = comboBoxModel.isMultiSelectionAllowed();
                 LOGGER.info("focusLost()");
-                if (pickedKey != null) {
+                if (pickedKey != null && !(pa || ma)) {
                     // When combo-box loses focus, we need to set the text to the selected
                     setText(pickedKey.toString());
                 } // if
@@ -674,6 +662,24 @@ public class ComboBoxFilter extends PlainDocument {
             comboBox.setUI(ColorArrowUI.createUI(comboBox));
         } // if
     } // fixComboBoxArrowUI() method
+    
+    private String updateFcbEditor() {
+        Object obj = comboBoxModel.getKeyOfTheSelectedItem();
+        String txt = null;
+        if (obj != null) {
+            txt = obj.toString();
+        } // if
+
+        if (!(comboBoxModel.isAnyPatternAllowed() || comboBoxModel.isMultiSelectionAllowed())) {
+            /* In the case when *any* pattern is allowed, or all we want is to get a   *
+             * listof items that match, then we do not update the comboBox editor      *
+             * component with the newly selected item's key.                           */
+            if (!isTableCellEditor()) {
+                setText(txt);
+            }
+        } // if
+        return txt;
+    } // updateFcbEditor() method
 
     public boolean isTriggeredByKeyPress() {
         return triggeredByKeyPress;
