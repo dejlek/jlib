@@ -232,7 +232,9 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                comboBox.setPopupVisible(true);
+                if (comboBox.isShowing()) {
+                    comboBox.setPopupVisible(true);
+                }
             }
         });
     }
