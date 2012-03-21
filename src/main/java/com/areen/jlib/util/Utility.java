@@ -151,6 +151,18 @@ public class Utility {
      * @return 0 if they are equal, some other value otherwise.
      */
     public static int compare(Object argFirst, Object argSecond, Class argClass) {
+        
+        // NULL cases
+        if (argFirst == null && argSecond == null) {
+            return 0;
+        }
+        if (argFirst == null && argSecond != null) {
+            return -1;
+        }
+        if (argFirst != null && argSecond == null) {
+            return 1;
+        }
+
         // if argFirst and argSecond references refer to the same object, return 0
         if (argFirst == argSecond) {
             return 0;
