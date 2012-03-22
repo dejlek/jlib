@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 public class FcbTestFrame extends javax.swing.JFrame {
     private Pair<String, String>[] codeAndValues;
     private FilteredComboBoxModel cbModel;
+    private FilteredComboBoxModel cbModel2;
     private FilteredComboBoxModel vecModel;
     private DefaultTableModel tableModel;
     static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
@@ -39,6 +40,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         
         // we have to initialise the model before some of the combo-boxes are created
         cbModel = new FilteredComboBoxModel(codeAndValues);
+        cbModel2 = new FilteredComboBoxModel(codeAndValues);
         vecModel = new FilteredComboBoxModel(codeAndValues);
         
         initComponents();
@@ -80,8 +82,13 @@ public class FcbTestFrame extends javax.swing.JFrame {
 
         //fcb.setMultiSelectionAllowed(true);
         //new ComboBoxLink(filteredComboBox, jTextArea1);
+        filteredComboBox.setSelectedItem(null);
         new ComboBoxLink(filteredComboBox, jLabel1);
         // filteredComboBox.setSelectedIndex(5); <-- does not make ComboBoxLink change the label! (BUG)
+        
+        // Second FCB
+        secondFcb.setSelectedItem(null);
+        new ComboBoxLink(secondFcb, jLabel2);
         
         // add it to the table too
         FilteredComboBoxModel fcbModel = new FilteredComboBoxModel(codeAndValues);
@@ -118,6 +125,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         tableComboBox = new WideComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        secondFcb = new FilteredComboBox(cbModel2);
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FilteredComboBox Test");
@@ -156,7 +165,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
             }
         });
 
-        filteredComboBox.setNextFocusableComponent(jButton1);
+        filteredComboBox.setNextFocusableComponent(secondFcb);
         filteredComboBox.setOpaque(false);
         filteredComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,6 +189,15 @@ public class FcbTestFrame extends javax.swing.JFrame {
         jTextArea1.setOpaque(false);
         jScrollPane2.setViewportView(jTextArea1);
 
+        secondFcb.setModel(cbModel2);
+        secondFcb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                secondFcbActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,34 +214,44 @@ public class FcbTestFrame extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(filteredComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(secondFcb, 0, 226, Short.MAX_VALUE)
+                            .addComponent(filteredComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(normalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(normalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filteredComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(normalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(secondFcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(tableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
@@ -267,6 +295,10 @@ public class FcbTestFrame extends javax.swing.JFrame {
             tableModel.addRow(new Object[] { tableModel.getRowCount(), "New", "", ""});
         }
     }//GEN-LAST:event_testTableKeyPressed
+
+    private void secondFcbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secondFcbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_secondFcbActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,11 +345,13 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox filteredComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JComboBox normalComboBox;
+    private javax.swing.JComboBox secondFcb;
     private javax.swing.JComboBox tableComboBox;
     private javax.swing.JTable testTable;
     // End of variables declaration//GEN-END:variables

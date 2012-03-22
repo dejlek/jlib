@@ -79,6 +79,7 @@ public class ComboBoxLink implements ActionListener {
             return;
         }
         selectedItem = comboBox.getSelectedItem();
+        System.out.println("update(): selected:" + selectedItem.toString());
 
         if (selectedItem instanceof Pair) {
             text = ((Pair) selectedItem).getSecond().toString();
@@ -100,12 +101,13 @@ public class ComboBoxLink implements ActionListener {
         } else {
             itemPicked = tmp.booleanValue();
         } // else
-
+        
         if (ae.getActionCommand().equals("comboBoxEdited")) {
             switch(type) {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
                     label.setText(text);
+                    
                     break;
                 case TEXT_AREA:
                     JTextArea area = (JTextArea) valueComponent;
@@ -119,6 +121,7 @@ public class ComboBoxLink implements ActionListener {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
                     label.setText(text);
+                    System.out.println("label changed: " + text);
                     break;
                 case TEXT_AREA:
                     JTextArea area = (JTextArea) valueComponent;
