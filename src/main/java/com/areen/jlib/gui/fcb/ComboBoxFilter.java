@@ -104,7 +104,18 @@ public class ComboBoxFilter extends PlainDocument {
 
         comboBoxModel = argComboBoxModel;
         comboBox.setModel(comboBoxModel);
-        comboBox.putClientProperty("item-picked", Boolean.FALSE);
+        
+        // If initially an item is selected, we will assume that item is a picked item.
+        comboBox.putClientProperty("item-picked", Boolean.TRUE);
+        /*
+        if (comboBox.getSelectedItem() == null) {
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
+        } else {
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
+        }
+        * 
+        */
+        
         comboBoxEditor = (JTextComponent) comboBox.getEditor().getEditorComponent();
         comboBoxEditor.setDocument(this);
 
@@ -152,7 +163,7 @@ public class ComboBoxFilter extends PlainDocument {
                         LOGGER.info("TAB!");
                         finish = true;
                         comboBoxModel.setReadyToFinish(false);
-
+                        
                         if (!isTableCellEditor()) {
                             String txt = updateFcbEditor();
                         }
@@ -485,7 +496,19 @@ public class ComboBoxFilter extends PlainDocument {
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
             return;
         }
-
+            
+        boolean itemPicked = false; // we need this value because item-packed may change due to chain
+        // of events
+        // inform action-performed listeners that the item has been picked so they may update
+        // some other components
+        if (keyPressed) {
+            itemPicked = false;
+        } else {
+            itemPicked = true;
+        }
+        boolean isPicked = (Boolean) comboBox.getClientProperty("item-picked");
+        comboBox.putClientProperty("item-picked", itemPicked || isPicked);
+        
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
             LOGGER.info("%%%%%%%%%%%%%");
@@ -498,19 +521,6 @@ public class ComboBoxFilter extends PlainDocument {
                 comboBoxModel.setReadyToFinish(true);
             }
 
-            boolean itemPicked = false; // we need this value because item-packed may change due to chain
-            // of events
-            // inform action-performed listeners that the item has been picked so they may update
-            // some other components
-            if (keyPressed) {
-                itemPicked = false;
-            } else {
-                itemPicked = true;
-            }
-            comboBox.putClientProperty("item-picked", itemPicked);
-
-            System.out.println(strs[idx]);
-            System.out.println(itemPicked);
             super.insertString(offs, strs[idx], a);
 
             // we have to filter after the user selects an item with the mouse.
@@ -526,11 +536,10 @@ public class ComboBoxFilter extends PlainDocument {
                 } else {
                     pickedKey = tmp;
                 } // else
-            }
-            comboBox.putClientProperty("item-picked", Boolean.FALSE);
+            } // if
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
             return;
         } else {
-            comboBox.putClientProperty("item-picked", Boolean.FALSE);
             // otherwise, insert the whole string
             super.insertString(offs, str, a);
         } // else

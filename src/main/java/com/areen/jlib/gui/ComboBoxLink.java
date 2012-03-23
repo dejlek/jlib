@@ -90,7 +90,7 @@ public class ComboBoxLink implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        System.out.println(ae.getActionCommand());
+        System.out.println("---------------------------------------" + ae.getActionCommand());
         update();
 
         Boolean tmp = (Boolean) comboBox.getClientProperty("item-picked");
@@ -121,6 +121,7 @@ public class ComboBoxLink implements ActionListener {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
                     label.setText(text);
+                    label.repaint();
                     System.out.println("label changed: " + text);
                     break;
                 case TEXT_AREA:
