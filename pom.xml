@@ -175,7 +175,7 @@ The idea is to open-source this library.</description>
 		<site>
 			<id>JLibWebServer</id>
 			<name>JLib Project Site</name>
-			<url>scp://srl009.adg.internal:22/srv/www/lighttpd/AreenProjs/jlib</url>
+			<url>scp://srl009.adg.internal:22/srv/www/lighttpd/AreenProjs/${project.version}/jlib</url>
 		</site>
 		<repository>
 			<id>areen-maven-repository</id>
