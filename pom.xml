@@ -29,6 +29,54 @@ The idea is to open-source this library.</description>
 		</profile>
 	</profiles>
 
+	<ciManagement>
+		<system>hudson</system>
+		<url>http://srl009.adg.internal:9999/</url>
+	</ciManagement>
+
+	<contributors>
+		<contributor>
+			<name>Deepa George</name>
+			<email>deepa.george@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Stakeholder</role>
+			</roles>
+			<timezone>0</timezone>
+		</contributor>
+		<contributor>
+			<name>Geffen Black</name>
+			<email>geffen.black@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Stakeholder</role>
+			</roles>
+			<timezone>0</timezone>
+		</contributor>
+		<contributor>
+			<name>Juliet Bok</name>
+			<email>juliet.bok@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Stakeholder</role>
+			</roles>
+			<timezone>0</timezone>
+		</contributor>
+		<contributor>
+			<name>Khaled Khalil</name>
+			<email>khaled.khalil@areen.com</email>
+			<organization>AreenDesignServices Ltd</organization>
+			<organizationUrl>www.areen.com</organizationUrl>
+			<roles>
+				<role>Stakeholder</role>
+			</roles>
+			<timezone>0</timezone>
+		</contributor>
+	</contributors>
+
 	<developers>
 		<developer>
 			<name>David Driscoll</name>
@@ -95,53 +143,15 @@ The idea is to open-source this library.</description>
 		</developer>
 	</developers>
 
-	<contributors>
-		<contributor>
-			<name>Deepa George</name>
-			<email>deepa.george@areen.com</email>
-			<organization>AreenDesignServices Ltd</organization>
-			<organizationUrl>www.areen.com</organizationUrl>
-			<roles>
-				<role>Stakeholder</role>
-			</roles>
-			<timezone>0</timezone>
-		</contributor>
-		<contributor>
-			<name>Geffen Black</name>
-			<email>geffen.black@areen.com</email>
-			<organization>AreenDesignServices Ltd</organization>
-			<organizationUrl>www.areen.com</organizationUrl>
-			<roles>
-				<role>Stakeholder</role>
-			</roles>
-			<timezone>0</timezone>
-		</contributor>
-		<contributor>
-			<name>Juliet Bok</name>
-			<email>juliet.bok@areen.com</email>
-			<organization>AreenDesignServices Ltd</organization>
-			<organizationUrl>www.areen.com</organizationUrl>
-			<roles>
-				<role>Stakeholder</role>
-			</roles>
-			<timezone>0</timezone>
-		</contributor>
-		<contributor>
-			<name>Khaled Khalil</name>
-			<email>khaled.khalil@areen.com</email>
-			<organization>AreenDesignServices Ltd</organization>
-			<organizationUrl>www.areen.com</organizationUrl>
-			<roles>
-				<role>Stakeholder</role>
-			</roles>
-			<timezone>0</timezone>
-		</contributor>
-	</contributors>
-
 	<issueManagement>
 		<system>Redmine</system>
 		<url>http://redmine.areen-online.co.uk:3000/</url>
 	</issueManagement>
+
+	<organization>
+		<name>AreenDesignServices Ltd</name>
+		<url>http://www.areen.com</url>
+	</organization>
 
 	<scm>
 		<connection>scm:svn:svn://srl009.adg.internal/jlib/trunk</connection>
@@ -411,9 +421,4 @@ The idea is to open-source this library.</description>
 			<version>1.2.16</version>
 		</dependency>
 	</dependencies>
-
-	<organization>
-		<name>AreenDesignServices Ltd</name>
-		<url>http://www.areen.com</url>
-	</organization>
 </project>
