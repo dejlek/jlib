@@ -265,8 +265,6 @@ public class ComboBoxFilter extends PlainDocument {
                 } // switch
                 keyPressed = false;
             } // keyPressed() method
-
-
         });
 
         // Bug 5100422 on Java 1.5: Editable JComboBox won't hide popup when tabbing out
@@ -452,6 +450,7 @@ public class ComboBoxFilter extends PlainDocument {
     // ======================================================================================================
     // ===== Private methods ================================================================================
     // ======================================================================================================
+    
     private void clearTextSelection() {
         if (comboBoxEditor.getSelectedText() != null) {
             // we have a selected text, removing the selection. On Windows text may become selected by default
