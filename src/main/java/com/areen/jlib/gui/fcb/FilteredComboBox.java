@@ -29,6 +29,36 @@ public class FilteredComboBox extends WideComboBox {
         comboBoxModel.setMultiSelectionAllowed(argMultiSelectionAllowed);
     }
  
+    /**
+     * Use this method to specify (programmatically) what Item is going to be the picked item.
+     * @param argObject 
+     */
+    @Override
+    public void setSelectedItem(Object argObject) {
+        if (comboBoxModel.isReadyToPick()) {
+            comboBoxFilter.pickItem(argObject);
+            
+            // DO NOT FORGET to return to the FALSE state here, otherwise combo-box will keep picking items!
+            comboBoxModel.setReadyToPick(false);
+        } // if
+        super.setSelectedItem(argObject);
+    } // setSelectedItem() method
+    
+    /**
+     * Use this method to specify (programmatically) what Item is going to be the picked item.
+     * @param argIndex 
+     */
+    @Override
+    public void setSelectedIndex(int argIndex) {
+        super.setSelectedIndex(argIndex);
+        if (comboBoxModel.isReadyToPick()) {
+            comboBoxFilter.pickItem(comboBoxModel.getSelectedItem());
+            
+            // DO NOT FORGET to return to the FALSE state here, otherwise combo-box will keep picking items!
+            comboBoxModel.setReadyToPick(false);
+        } // if
+    } // setSelectedItem() method
+    
     public Object[] getSelectedItems() {
         Object[] ret = null;
         if (isMultiSelectionAllowed() 

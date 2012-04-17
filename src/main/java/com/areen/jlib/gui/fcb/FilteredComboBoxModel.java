@@ -65,6 +65,10 @@ public class FilteredComboBoxModel
      * Indicates whether we want ComboBoxFilter to retain the entered string even if we found no matches.
      */
     private boolean anyPatternAllowed = false;
+    /**
+     * Should we pick an item after the next call to setSelectedItem() or setSelectedIndex() ?
+     */
+    private boolean readyToPick;
     
     /**
      * Constructs an empty ArrayListModel object.
@@ -437,30 +441,28 @@ public class FilteredComboBoxModel
             setSelectedItem(null);
         } // else
     }
-    
+
     /**
      * Use this method to objtain a reference to an object containing the key part of the Item. In the case
      * our combo-box contains a list of Pairs, we will get the first element. In the case it is a list of
      * Object[] arrays, then we use the columns array to get the index of the key.
      * @return 
      */
-    public Object getKeyOfTheSelectedItem() {
-        //System.out.println("getKeyOfTheSelectedItem()");
-        Object selected = getSelectedItem();
-        if (selected == null) {
+    public Object getKeyOfAnItem(Object argItem) {
+        if (argItem == null) {
             return null;
         }
-        if (selected instanceof Pair) {
-            return ((Pair) selected).getFirst();
+        if (argItem instanceof Pair) {
+            return ((Pair) argItem).getFirst();
         }
-        if (selected instanceof Object[]) {
+        if (argItem instanceof Object[]) {
             // we assume whenever we deal with Object[] array, it came from a table model.
             int idx = columns[0];
-            return ((Object[]) selected)[idx];
+            return ((Object[]) argItem)[idx];
         }
         
         // in any other case we will convert object to String and check if it is a Sise record or not.
-        String str = selected.toString();
+        String str = argItem.toString();
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
             // we deal with a Sise record
             String[] units = Sise.units(str);
@@ -468,13 +470,33 @@ public class FilteredComboBoxModel
         } else {
             // If it is any other String, just simply return it.
             return str;
-        } // else
+        } // else        
+    } // getKeyOfAnItem() method
+    
+    /**
+     * Use this method to obtain a key of the selected item.
+     * @return 
+     */
+    public Object getKeyOfTheSelectedItem() {
+        //System.out.println("getKeyOfTheSelectedItem()");
+        Object selected = getSelectedItem();
+        return getKeyOfAnItem(selected);
     } // getKeyOfTheSelectedItem() method
+    
+    
     
     // ======================================================================================================
     //   Accessors
     // ======================================================================================================
-
+    
+    public void setReadyToPick(boolean argReadyToPick) {
+        readyToPick = argReadyToPick;
+    }
+    
+    public boolean isReadyToPick() {
+        return readyToPick;
+    }
+    
     public boolean isReadyToFinish() {
         return readyToFinish;
     }

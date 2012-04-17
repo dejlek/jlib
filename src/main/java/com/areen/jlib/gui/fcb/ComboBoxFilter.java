@@ -588,6 +588,19 @@ public class ComboBoxFilter extends PlainDocument {
         // finally, do the filter
         filterTheModel();
     } // remove() method
+    
+    /**
+     * Use this method when you need to programmatically pick an item.
+     * @param argItem 
+     */
+    public void pickItem(Object argItem) {
+        Object obj = comboBoxModel.getKeyOfAnItem(argItem);
+        if ((argItem == null) && (obj == null)) {
+            return;
+        }
+        pickedItem = argItem;
+        pickedKey = obj.toString();
+    } // pickItem() method
 
     /**
      * This method calls the setPatter() method, and starts the filtering.

@@ -78,11 +78,12 @@ public class FcbTestFrame extends javax.swing.JFrame {
         fcb.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
 
         // atm CbomBoxLink behaves weird when we set selected item AFTER
+        cbModel.setReadyToPick(rootPaneCheckingEnabled);
         fcb.setSelectedIndex(5);
 
-        fcb.setMultiSelectionAllowed(true);
+        //fcb.setMultiSelectionAllowed(true);
         //new ComboBoxLink(filteredComboBox, jTextArea1);
-        fcb.setSelectedItem(null);
+        //fcb.setSelectedItem(null);
         new ComboBoxLink(fcb, jLabel1);
         // filteredComboBox.setSelectedIndex(5); <-- does not make ComboBoxLink change the label! (BUG)
         
