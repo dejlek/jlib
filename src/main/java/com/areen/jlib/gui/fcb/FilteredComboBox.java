@@ -77,6 +77,10 @@ public class FilteredComboBox extends WideComboBox {
         return comboBoxModel.isAnyPatternAllowed();
     }
 
+    /**
+     * Set to TRUE when we want ComboBoxFilter to retain the entered string even if we found no matches.
+     * @param argAnyPatternAllowed 
+     */
     public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
         comboBoxModel.setAnyPatternAllowed(argAnyPatternAllowed);
     }

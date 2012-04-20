@@ -483,7 +483,20 @@ public class FilteredComboBoxModel
         return getKeyOfAnItem(selected);
     } // getKeyOfTheSelectedItem() method
     
-    
+    /**
+     * Use this method to get an array of combo-box items selected with wildcard character '*'.
+     * @return An array of Objects that match the pattern.
+     */
+    public Object[] getMatchingItems() {
+        if (isMultiSelectionAllowed()) {
+            return objects.toArray();
+        } else {
+            // we fall back to the normal way of doing things
+            Object[] retOne = new Object[1];
+            retOne[0] = getSelectedItem();
+            return retOne;
+        } // else
+    } // getMatchingItems() method    
     
     // ======================================================================================================
     //   Accessors
@@ -520,6 +533,26 @@ public class FilteredComboBoxModel
 
     public void setMultiSelectionAllowed(boolean argMultiSelectionAllowed) {
         multiSelectionAllowed = argMultiSelectionAllowed;
+    }
+    
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean argCancelled) {
+        cancelled = argCancelled;
+    }
+
+    public boolean isAnyPatternAllowed() {
+        return anyPatternAllowed;
+    }
+
+    public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
+        anyPatternAllowed = argAnyPatternAllowed;
+    }
+
+    public String getLastPattern() {
+        return lastPattern;
     }
     
     // ======================================================================================================
@@ -634,79 +667,7 @@ public class FilteredComboBoxModel
         return 0;
     } // check() method
     
-    /**
-     * Use this method to get an array of combo-box items selected with wildcard character '*'.
-     * @return An array of Objects that match the pattern.
-     */
-    public Object[] getMatchingItems() {
-        if (isMultiSelectionAllowed()) {
-            return objects.toArray();
-        } else {
-            // we fall back to the normal way of doing things
-            Object[] retOne = new Object[1];
-            retOne[0] = getSelectedItem();
-            return retOne;
-        } // else
-        /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: OLD CODE
-        String argPrefix = lastPattern;
-        
-        if (fcbObjects.size() == 0) {
-            return null;
-        }
-        
-        ArrayList ret = new ArrayList();
-        
-        if (isMultiSelectionAllowed()) {
-            // we fall back to the normal way of doing things
-            Object[] retOne = new Object[1];
-            retOne[0] = getSelectedItem();
-            return retOne;
-        } // if
-                
-        if (fcbObjects.get(0) instanceof Pair) {
-            for (Object obj : fcbObjects) {
-                Pair tmp = (Pair) obj;
-                if (tmp.getKey().toString().toLowerCase().startsWith(argPrefix)) {
-                    ret.add(obj);
-                } // if
-            } // foreach
-        } // if
 
-        // TODO: when we deal with table model, we have to fix this block of code, for now I assume the first
-        //       element is the key.
-        if (fcbObjects.get(0) instanceof Object[]) {
-            for (Object obj : fcbObjects) {
-                Object[] tmp = (Object[]) obj;
-                if (tmp[0].toString().toLowerCase().startsWith(argPrefix)) {
-                    ret.add(obj);
-                } // if
-            } // foreach
-        } // if
-        
-        return ret.toArray();
-        * .......................................................................................... OLD CODE
-        */
-    } // getMatchingItems() method
-
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    public void setCancelled(boolean argCancelled) {
-        cancelled = argCancelled;
-    }
-
-    public boolean isAnyPatternAllowed() {
-        return anyPatternAllowed;
-    }
-
-    public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
-        anyPatternAllowed = argAnyPatternAllowed;
-    }
-
-    public String getLastPattern() {
-        return lastPattern;
-    }
 
 } // FilteredComboBoxModel class
 
