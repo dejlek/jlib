@@ -519,10 +519,16 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
             }
+            
+            // This is an ArrayOutOfBounds exception "fix". When user presses SPACE + ENTER sometimes we get
+            // an error, because strs is an empty array!
+            if (strs.length > 0) {
+                super.insertString(offs, strs[idx], a);
+            } else {
+                super.insertString(offs, "", a);
+            }
 
-            super.insertString(offs, strs[idx], a);
-
-            // we have to filter after the user selects an item with the mouse.
+            // We have to filter after the user selects an item with the mouse.
             // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
             //          exact match - ie the item that user picked with the mouse.
             filterTheModel();
