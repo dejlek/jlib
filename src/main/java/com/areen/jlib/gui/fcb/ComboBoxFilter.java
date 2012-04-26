@@ -207,7 +207,7 @@ public class ComboBoxFilter extends PlainDocument {
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
                         String txt = updateFcbEditor();
-                        if (txt == null) {
+                        if ((txt == null) && !comboBoxModel.isAnyPatternAllowed()) {
                             // if user types a string that has no match, we select the last picked item.
                             comboBox.setSelectedItem(pickedItem);
                             
@@ -711,8 +711,9 @@ public class ComboBoxFilter extends PlainDocument {
         if (obj != null) {
             txt = obj.toString();
         } // if
-
-        if (!(comboBoxModel.isAnyPatternAllowed() || comboBoxModel.isMultiSelectionAllowed())) {
+        
+        if ((!comboBoxModel.isAnyPatternAllowed() || !comboBoxModel.isMultiSelectionAllowed())
+                || (txt != null)) {
             /* In the case when *any* pattern is allowed, or all we want is to get a   *
              * listof items that match, then we do not update the comboBox editor      *
              * component with the newly selected item's key.                           */
