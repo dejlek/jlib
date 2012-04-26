@@ -61,9 +61,6 @@ public class ComboBoxFilter extends PlainDocument {
      */
     boolean selecting = false;
     boolean hidePopupOnFocusLoss;
-    // TODO: these two are not important, remove after debug
-    private boolean hitBackspaceOnSelection;
-    private boolean hitBackspace;
     private boolean arrowKeyPressed = false;
     private boolean keyPressed = false;
     private boolean finish = false;
@@ -210,9 +207,27 @@ public class ComboBoxFilter extends PlainDocument {
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
                         String txt = updateFcbEditor();
-
-                        pickedItem = comboBox.getSelectedItem();
-                        pickedKey = txt;
+                        if (txt == null) {
+                            // if user types a string that has no match, we select the last picked item.
+                            comboBox.setSelectedItem(pickedItem);
+                            
+                            // After all events are processed, alert the user
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String eol = System.getProperty("line.separator");
+                                    JOptionPane.showMessageDialog(comboBox, 
+                                            "You have entered text with no matching item."
+                                            + eol
+                                            + eol 
+                                            + "Returning to the previous state.");
+                                } // run() method
+                            }); // Runnable (anonymous) implementation
+                            
+                        } else {
+                            pickedItem = comboBox.getSelectedItem();
+                            pickedKey = txt;
+                        } // else
                         break;
 
                     case KeyEvent.VK_UP:
@@ -496,7 +511,7 @@ public class ComboBoxFilter extends PlainDocument {
             return;
         }
             
-        boolean itemPicked = false; // we need this value because item-packed may change due to chain
+        boolean itemPicked = false; // we need this value because item-picked may change due to chain
         // of events
         // inform action-performed listeners that the item has been picked so they may update
         // some other components
