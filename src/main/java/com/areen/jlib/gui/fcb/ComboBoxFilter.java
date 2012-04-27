@@ -217,10 +217,7 @@ public class ComboBoxFilter extends PlainDocument {
                                 public void run() {
                                     String eol = System.getProperty("line.separator");
                                     JOptionPane.showMessageDialog(comboBox, 
-                                            "You have entered text with no matching item."
-                                            + eol
-                                            + eol 
-                                            + "Returning to the previous state.");
+                                            "Invalid option.");
                                 } // run() method
                             }); // Runnable (anonymous) implementation
                             
