@@ -268,7 +268,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private void filteredComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filteredComboBoxActionPerformed
         // TODO add your handling code here:
         System.out.println("DEBUG: action performed: " + evt.getActionCommand());
-
+        /*
         Object obj = filteredComboBox.getSelectedItem();
         if (obj != null)
             System.out.println(obj.getClass().getCanonicalName());
@@ -293,6 +293,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
 
         System.out.println("DEBUG: # of matching items: " + fcb.getMatchingItems().length);
         System.out.println("DEBUG: picked: " + fcb.getPickedItem());
+        */
     }//GEN-LAST:event_filteredComboBoxActionPerformed
 
     private void testTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_testTableKeyPressed
