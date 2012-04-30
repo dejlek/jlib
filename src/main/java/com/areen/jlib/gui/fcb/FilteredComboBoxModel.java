@@ -40,6 +40,12 @@ public class FilteredComboBoxModel
         extends AbstractListModel
         implements MutableComboBoxModel, Serializable {
     
+    // ====================================================================================================
+    // ==== Variables =====================================================================================
+    // ====================================================================================================
+    
+    // :::::: PRIVATE/PROTECTED ::::::
+    
     //ArrayList<E> objects; JDK 7
     ArrayList objects;
     Object selectedObject;
@@ -69,6 +75,13 @@ public class FilteredComboBoxModel
      * Should we pick an item after the next call to setSelectedItem() or setSelectedIndex() ?
      */
     private boolean readyToPick;
+
+    private Object pickedItem;
+    private Object pickedKey;
+    
+    // ====================================================================================================
+    // ==== Constructors ==================================================================================
+    // ====================================================================================================
     
     /**
      * Constructs an empty ArrayListModel object.
@@ -171,26 +184,10 @@ public class FilteredComboBoxModel
         }); // TableModelListener implementation (anonymous)
     } // FilteredComboBoxModel constructor
 
-    /**
-     * Constructs a ArrayListModel object initialized with
-     * a ArrayList.
-     *
-     * @param v  a ArrayList object ...
-     */
-    public FilteredComboBoxModel(ArrayList v) {
-        objects = v;
-
-        if (getSize() > 0) {
-            selectedObject = getElementAt(0);
-        }
-        
-        fcbObjects = new ArrayList();
-        fcbObjects.ensureCapacity(v.size());
-        for (Object obj : v) {
-            fcbObjects.add(obj);
-        } // foreach
-    } //  // FilteredComboBoxModel constructor
-
+    // ====================================================================================================
+    // ==== Interface/Superclass Methods ==================================================================
+    // ====================================================================================================
+    
     // implements javax.swing.ComboBoxModel
     /**
      * Set the value of the selected item. The selected item may be null.
@@ -232,18 +229,7 @@ public class FilteredComboBoxModel
             return null;
         }
     }
-
-    /**
-     * Returns the index-position of the specified object in the list.
-     *
-     * @param anObject
-     * @return an int representing the index position, where 0 is
-     *         the first position
-     */
-    public int getIndexOf(Object anObject) {
-        return objects.indexOf(anObject);
-    }
-
+    
     // implements javax.swing.MutableComboBoxModel
     @Override
     public void addElement(Object anObject) {
@@ -290,6 +276,41 @@ public class FilteredComboBoxModel
             removeElementAt(index);
         }
     }
+    
+    // ====================================================================================================
+    // ==== Public Methods ================================================================================
+    // ====================================================================================================
+    
+    /**
+     * Constructs a ArrayListModel object initialized with
+     * a ArrayList.
+     *
+     * @param v  a ArrayList object ...
+     */
+    public FilteredComboBoxModel(ArrayList v) {
+        objects = v;
+
+        if (getSize() > 0) {
+            selectedObject = getElementAt(0);
+        }
+        
+        fcbObjects = new ArrayList();
+        fcbObjects.ensureCapacity(v.size());
+        for (Object obj : v) {
+            fcbObjects.add(obj);
+        } // foreach
+    } //  // FilteredComboBoxModel constructor
+
+    /**
+     * Returns the index-position of the specified object in the list.
+     *
+     * @param anObject
+     * @return an int representing the index position, where 0 is
+     *         the first position
+     */
+    public int getIndexOf(Object anObject) {
+        return objects.indexOf(anObject);
+    }
 
     /**
      * Empties the list.
@@ -308,6 +329,7 @@ public class FilteredComboBoxModel
     }
     
     public void setPattern(String argPattern) {
+        //System.out.println("setPattern(" + argPattern + ")");
         exactObject = null;
         exactIndex = -1;
         
@@ -488,7 +510,7 @@ public class FilteredComboBoxModel
      * @return An array of Objects that match the pattern.
      */
     public Object[] getMatchingItems() {
-        if (isMultiSelectionAllowed()) {
+        if (isMultiSelectionAllowed() && (exactObject == null)) {
             return objects.toArray();
         } else {
             // we fall back to the normal way of doing things
@@ -498,9 +520,26 @@ public class FilteredComboBoxModel
         } // else
     } // getMatchingItems() method    
     
-    // ======================================================================================================
-    //   Accessors
-    // ======================================================================================================
+    // ====================================================================================================
+    // ==== Accessors =====================================================================================
+    // ====================================================================================================
+
+    public Object getPickedItem() {
+        return pickedItem;
+    }
+    
+    public void setPickedItem(Object argPickedItem) {
+        exactObject = argPickedItem;
+        pickedItem = argPickedItem;
+    }
+
+    public Object getPickedKey() {
+        return pickedKey;
+    }
+
+    public void setPickedKey(Object argPickedKey) {
+        pickedKey = argPickedKey;
+    }
     
     public void setReadyToPick(boolean argReadyToPick) {
         readyToPick = argReadyToPick;
@@ -555,9 +594,9 @@ public class FilteredComboBoxModel
         return lastPattern;
     }
     
-    // ======================================================================================================
-    //   Private methods
-    // ======================================================================================================
+    // ====================================================================================================
+    // ==== Private Methods ===============================================================================
+    // ====================================================================================================
     
     /**
      * Use this method when you need to get all fields of a row in an AbstractTableModel as an array of
@@ -666,8 +705,6 @@ public class FilteredComboBoxModel
         } // if
         return 0;
     } // check() method
-    
-
 
 } // FilteredComboBoxModel class
 

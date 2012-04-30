@@ -192,6 +192,7 @@ public class ComboBoxFilter extends PlainDocument {
                                 pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
                             } // else
                         } // if
+
                         break;
 
                     case KeyEvent.VK_ESCAPE:
@@ -224,6 +225,7 @@ public class ComboBoxFilter extends PlainDocument {
                         } else {
                             pickedItem = comboBox.getSelectedItem();
                             pickedKey = txt;
+                            comboBoxModel.setPickedItem(pickedItem);
                         } // else
                         break;
 
@@ -709,14 +711,15 @@ public class ComboBoxFilter extends PlainDocument {
             txt = obj.toString();
         } // if
         
-        if ((!comboBoxModel.isAnyPatternAllowed() || !comboBoxModel.isMultiSelectionAllowed())
-                || (txt != null)) {
-            /* In the case when *any* pattern is allowed, or all we want is to get a   *
-             * listof items that match, then we do not update the comboBox editor      *
-             * component with the newly selected item's key.                           */
-            if (!isTableCellEditor()) {
-                setText(txt);
-            }
+        if (txt != null) {
+            if (!(comboBoxModel.isAnyPatternAllowed() || comboBoxModel.isMultiSelectionAllowed())) {
+                /* In the case when *any* pattern is allowed, or all we want is to get a   *
+                 * listof items that match, then we do not update the comboBox editor      *
+                 * component with the newly selected item's key.                           */
+                if (!isTableCellEditor()) {
+                    setText(txt);
+                }
+            } // if
         } // if
         return txt;
     } // updateFcbEditor() method

@@ -1,7 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * $Id$
+ *
+ * Copyright (c) 2009-2010 Areen Design Services Ltd
+ * 23 Eyot Gardens; London; W6 9TR
+ * http://www.areen.com
+ * All rights reserved.
+ * 
+ * This software is the confidential and proprietary information of
+ * Areen Design Services Ltd ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Areen Design Services Ltd.
+ * 
+ * This file is best viewed with 110 columns.
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+ * 
+ * Author(s) in chronological order:
+ *   Dejan Lekic , http://dejan.lekic.org
+ * Contributor(s):
+ *   -
  */
+
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.WideComboBox;
@@ -9,11 +28,22 @@ import com.areen.jlib.gui.WideComboBox;
 /**
  * This is a specialised WideComboBox that deals only with FilteredComboBoxModel(s). It also installs
  * the ComboBoxFilter so developers does not have to do it (her/him)self.
+ * 
  * @author dejan
  */
 public class FilteredComboBox extends WideComboBox {
+    
+    // ====================================================================================================
+    // ==== Variables =====================================================================================
+    // ====================================================================================================
+    
+    // :::::: PRIVATE/PROTECTED ::::::
     private FilteredComboBoxModel comboBoxModel;
     private ComboBoxFilter comboBoxFilter;
+   
+    // ====================================================================================================
+    // ==== Constructors ==================================================================================
+    // ====================================================================================================
     
     public FilteredComboBox(FilteredComboBoxModel argModel) {
         super(argModel);
@@ -21,14 +51,10 @@ public class FilteredComboBox extends WideComboBox {
         comboBoxFilter = new ComboBoxFilter(this, comboBoxModel);
     }
     
-    public boolean isMultiSelectionAllowed() {
-        return comboBoxModel.isMultiSelectionAllowed();
-    }
+    // ====================================================================================================
+    // ==== Interface/Superclass ==========================================================================
+    // ====================================================================================================
 
-    public void setMultiSelectionAllowed(boolean argMultiSelectionAllowed) {
-        comboBoxModel.setMultiSelectionAllowed(argMultiSelectionAllowed);
-    }
- 
     /**
      * Use this method to specify (programmatically) what Item is going to be the picked item.
      * @param argObject 
@@ -59,6 +85,10 @@ public class FilteredComboBox extends WideComboBox {
         } // if
     } // setSelectedItem() method
     
+    // ====================================================================================================
+    // ==== Public Methods ================================================================================
+    // ====================================================================================================
+
     public Object[] getSelectedItems() {
         Object[] ret = null;
         if (isMultiSelectionAllowed() 
@@ -68,7 +98,33 @@ public class FilteredComboBox extends WideComboBox {
         } // else
         return ret;
     }
-        
+
+    /**
+     * Use this method to get an array of matching items. In the case 
+     * @return 
+     */
+    public Object[] getMatchingItems() {
+        return comboBoxModel.getMatchingItems();
+    }
+    
+    // ====================================================================================================
+    // ==== Accessors =====================================================================================
+    // ====================================================================================================
+
+    public boolean isMultiSelectionAllowed() {
+        return comboBoxModel.isMultiSelectionAllowed();
+    }
+
+    /**
+     * Set to TRUE when we want to trigger multiple matching. In this case FilteredComboBox model will 
+     * maintain an internal list of matching items that can be obtained with getMatchingItems().
+     * @param argAnyPatternAllowed 
+     * @see getMatchingItems()
+     */
+    public void setMultiSelectionAllowed(boolean argMultiSelectionAllowed) {
+        comboBoxModel.setMultiSelectionAllowed(argMultiSelectionAllowed);
+    }
+
     public String getLastPattern() {
         return comboBoxModel.getLastPattern();
     }
@@ -84,7 +140,29 @@ public class FilteredComboBox extends WideComboBox {
     public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
         comboBoxModel.setAnyPatternAllowed(argAnyPatternAllowed);
     }
+    
+    public Object getPickedItem() {
+        return comboBoxModel.getPickedItem();
+    }
+    
+    public void setPickedItem(Object argPickedItem) {
+        comboBoxModel.setPickedItem(argPickedItem);
+    }
 
+    public Object getPickedKey() {
+        return comboBoxModel.getPickedKey();
+    }
+
+    public void setPickedKey(Object argPickedKey) {
+        comboBoxModel.setPickedKey(argPickedKey);
+    }
+    
+    // ====================================================================================================
+    // ==== Private Methods ===============================================================================
+    // ====================================================================================================
+    
+    // None
+    
 } // FilteredComboBox class
 
 // $Id$
