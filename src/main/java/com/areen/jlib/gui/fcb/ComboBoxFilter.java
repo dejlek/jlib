@@ -710,9 +710,9 @@ public class ComboBoxFilter extends PlainDocument {
         if (obj != null) {
             txt = obj.toString();
         } // if
-        
+        System.out.println("))))))))))))) " + txt);
         if (txt != null) {
-            if (!(comboBoxModel.isAnyPatternAllowed() || comboBoxModel.isMultiSelectionAllowed())) {
+            if (!comboBoxModel.isAnyPatternAllowed() || !comboBoxModel.isMultiSelectionAllowed()) {
                 /* In the case when *any* pattern is allowed, or all we want is to get a   *
                  * listof items that match, then we do not update the comboBox editor      *
                  * component with the newly selected item's key.                           */
