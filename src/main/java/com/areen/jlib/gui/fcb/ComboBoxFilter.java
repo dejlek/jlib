@@ -709,8 +709,7 @@ public class ComboBoxFilter extends PlainDocument {
         String txt = null;
         if (obj != null) {
             txt = obj.toString();
-        } // if
-        System.out.println("))))))))))))) " + txt);
+        } // if        
         if (txt != null) {
             if (!comboBoxModel.isAnyPatternAllowed() || !comboBoxModel.isMultiSelectionAllowed()) {
                 /* In the case when *any* pattern is allowed, or all we want is to get a   *
