@@ -299,7 +299,9 @@ public class ComboBoxFilter extends PlainDocument {
                     // When combo-box loses focus, we need to set the text to the selected
                     setText(pickedKey.toString());
                 } else {
-                    setText("");
+                    if (!(pa || ma)) {
+                        setText("");
+                    }
                 }
 
                 // Workaround for Bug 5100422 - Hide Popup on focus loss
@@ -719,7 +721,7 @@ public class ComboBoxFilter extends PlainDocument {
         if (txt != null) {
             if (!comboBoxModel.isAnyPatternAllowed() || !comboBoxModel.isMultiSelectionAllowed()) {
                 /* In the case when *any* pattern is allowed, or all we want is to get a   *
-                 * listof items that match, then we do not update the comboBox editor      *
+                 * list of items that match, then we do not update the comboBox editor      *
                  * component with the newly selected item's key.                           */
                 if (!isTableCellEditor()) {
                     setText(txt);
