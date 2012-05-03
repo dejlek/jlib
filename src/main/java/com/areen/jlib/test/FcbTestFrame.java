@@ -73,7 +73,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
         * 
         */
-        cbModel.setMultiSelectionAllowed(true);
+        cbModel.setMultiSelectionAllowed(false);
         cbModel.setAnyPatternAllowed(false);
         fcb.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
 
@@ -81,6 +81,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         cbModel.setReadyToPick(rootPaneCheckingEnabled);
         //fcb.setSelectedIndex(5);
         fcb.setSelectedItem(null);
+        
 
         //fcb.setMultiSelectionAllowed(true);
         //new ComboBoxLink(filteredComboBox, jTextArea1);
@@ -129,6 +130,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         secondFcb = new FilteredComboBox(cbModel2);
         jLabel2 = new javax.swing.JLabel();
+        debugButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FilteredComboBox Test");
@@ -168,7 +170,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
 
         filteredComboBox.setNextFocusableComponent(secondFcb);
-        filteredComboBox.setOpaque(false);
         filteredComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filteredComboBoxActionPerformed(evt);
@@ -188,7 +189,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jTextArea1.setBorder(null);
-        jTextArea1.setOpaque(false);
         jScrollPane2.setViewportView(jTextArea1);
 
         secondFcb.setModel(cbModel2);
@@ -199,6 +199,13 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
 
         jLabel2.setText("jLabel2");
+
+        debugButton.setText("Debug");
+        debugButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                debugButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -212,13 +219,15 @@ public class FcbTestFrame extends javax.swing.JFrame {
                         .addComponent(tableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 420, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(debugButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(filteredComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -247,7 +256,9 @@ public class FcbTestFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(debugButton)))
                     .addComponent(tableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -307,6 +318,13 @@ public class FcbTestFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_secondFcbActionPerformed
 
+    private void debugButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugButtonActionPerformed
+        // TODO add your handling code here:
+        FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
+        System.out.println(fcb.getPickedItem());
+        System.out.println(fcb.getPickedKey());
+    }//GEN-LAST:event_debugButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -349,6 +367,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton debugButton;
     private javax.swing.JComboBox filteredComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

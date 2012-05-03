@@ -228,6 +228,7 @@ public class ComboBoxFilter extends PlainDocument {
                             pickedItem = comboBox.getSelectedItem();
                             pickedKey = txt;
                             comboBoxModel.setPickedItem(pickedItem);
+                            comboBoxModel.setPickedKey(txt);
                         } // else
                         break;
 
@@ -293,10 +294,13 @@ public class ComboBoxFilter extends PlainDocument {
                 boolean pa = comboBoxModel.isAnyPatternAllowed();
                 boolean ma = comboBoxModel.isMultiSelectionAllowed();
                 LOGGER.info("focusLost()");
+
                 if (pickedKey != null && !(pa || ma)) {
                     // When combo-box loses focus, we need to set the text to the selected
                     setText(pickedKey.toString());
-                } // if
+                } else {
+                    setText("");
+                }
 
                 // Workaround for Bug 5100422 - Hide Popup on focus loss
                 if (hidePopupOnFocusLoss) {
