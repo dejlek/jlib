@@ -208,7 +208,8 @@ public class ComboBoxFilter extends PlainDocument {
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
                         String txt = updateFcbEditor();
-                        if ((txt == null) && !comboBoxModel.isAnyPatternAllowed()) {
+                        if ((txt == null) && (!comboBoxModel.isAnyPatternAllowed() 
+                                                || !comboBoxModel.isMultiSelectionAllowed())) {
                             // if user types a string that has no match, we select the last picked item.
                             comboBox.setSelectedItem(pickedItem);
                             
@@ -223,6 +224,7 @@ public class ComboBoxFilter extends PlainDocument {
                             }); // Runnable (anonymous) implementation
                             
                         } else {
+                            setText(txt); // we have to update the text here because updateFcbEditor won't
                             pickedItem = comboBox.getSelectedItem();
                             pickedKey = txt;
                             comboBoxModel.setPickedItem(pickedItem);
@@ -572,7 +574,7 @@ public class ComboBoxFilter extends PlainDocument {
 
     @Override
     public void remove(int offs, int len) throws BadLocationException {
-        LOGGER.info("remove(" + offs + ", " + len + ")");
+        LOGGER.log(Level.INFO, "remove({0}, {1})", new Object[]{offs, len});
         LOGGER.info("remove(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
@@ -709,7 +711,7 @@ public class ComboBoxFilter extends PlainDocument {
         String txt = null;
         if (obj != null) {
             txt = obj.toString();
-        } // if        
+        } // if 
         if (txt != null) {
             if (!comboBoxModel.isAnyPatternAllowed() || !comboBoxModel.isMultiSelectionAllowed()) {
                 /* In the case when *any* pattern is allowed, or all we want is to get a   *
