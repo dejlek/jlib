@@ -208,27 +208,40 @@ public class ComboBoxFilter extends PlainDocument {
                         finish = true;
                         comboBoxModel.setReadyToFinish(false); // we expect cell editor
                         String txt = updateFcbEditor();
-                        if ((txt == null) && (!comboBoxModel.isAnyPatternAllowed() 
-                                                || !comboBoxModel.isMultiSelectionAllowed())) {
-                            // if user types a string that has no match, we select the last picked item.
-                            comboBox.setSelectedItem(pickedItem);
-                            
-                            // After all events are processed, alert the user
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String eol = System.getProperty("line.separator");
-                                    JOptionPane.showMessageDialog(comboBox, 
-                                            "Invalid option.");
-                                } // run() method
-                            }); // Runnable (anonymous) implementation
-                            
+                        boolean pa = comboBoxModel.isAnyPatternAllowed();
+                        boolean ma = comboBoxModel.isMultiSelectionAllowed();
+                        if ((pa || ma)) {
+                            if (txt == null) {
+                                // do nothing
+                            } else {
+                                // we have to update the text here because updateFcbEditor won't
+                                setText(txt); 
+                                pickedItem = comboBox.getSelectedItem();
+                                pickedKey = txt;
+                                comboBoxModel.setPickedItem(pickedItem);
+                                comboBoxModel.setPickedKey(txt);
+                            }
                         } else {
-                            setText(txt); // we have to update the text here because updateFcbEditor won't
-                            pickedItem = comboBox.getSelectedItem();
-                            pickedKey = txt;
-                            comboBoxModel.setPickedItem(pickedItem);
-                            comboBoxModel.setPickedKey(txt);
+                            if (txt == null) {
+                                // if user types a string that has no match, we select the last picked item.
+                                comboBox.setSelectedItem(pickedItem);
+
+                                // After all events are processed, alert the user
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String eol = System.getProperty("line.separator");
+                                        JOptionPane.showMessageDialog(comboBox, 
+                                                "Invalid option.");
+                                    } // run() method
+                                }); // Runnable (anonymous) implementation
+                            } else {
+                                // setText(txt); // No need because updateFcbEditor will do it in this case
+                                pickedItem = comboBox.getSelectedItem();
+                                pickedKey = txt;
+                                comboBoxModel.setPickedItem(pickedItem);
+                                comboBoxModel.setPickedKey(txt);
+                            } // else
                         } // else
                         break;
 
