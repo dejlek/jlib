@@ -578,6 +578,8 @@ public class ComboBoxFilter extends PlainDocument {
                 } // else
             } // if
             comboBox.putClientProperty("item-picked", Boolean.TRUE);
+            comboBoxModel.setPickedItem(pickedItem);
+            comboBoxModel.setPickedKey(pickedKey);
             return;
         } else {
             // otherwise, insert the whole string
