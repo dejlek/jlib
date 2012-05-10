@@ -24,6 +24,7 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import org.apache.log4j.Logger;
 
 /**
  * The only reason for this class is that we have to maintain two lists. One list is the list of ALL
@@ -78,6 +79,8 @@ public class FilteredComboBoxModel
 
     private Object pickedItem;
     private Object pickedKey;
+    
+    private static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -381,7 +384,7 @@ public class FilteredComboBoxModel
                 } // foreach
                 
                 if (found) {
-                    System.out.println("M(" + exactIndex + ")" + obj.toString());
+                    LOGGER.info("Exact match `" + obj.toString() + "` found at idx=" + exactIndex);
                     objects.add(obj);
                 } // if
             } // for

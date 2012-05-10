@@ -14,6 +14,7 @@
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.ColorArrowUI;
+import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.Sise;
 import java.awt.event.*;
 import java.util.logging.Level;
@@ -584,6 +585,13 @@ public class ComboBoxFilter extends PlainDocument {
         } else {
             // otherwise, insert the whole string
             super.insertString(offs, str, a);
+            Object obj = comboBoxModel.getSelectedItem();
+            if (obj != null) {
+                if (itemPicked && !(obj instanceof Pair) && !(obj instanceof Object[])) {
+                    comboBoxModel.setPickedItem(obj);
+                    comboBoxModel.setPickedKey(obj);
+                } // if
+            } // if
         } // else
 
         if (finish) {
