@@ -42,6 +42,7 @@ public interface CrudOperations<T extends ValueObject> {
     int UPDATE_ARRAY = 6;
     int DELETE_VO = 7;
     int DELETE_ARRAY = 8;
+    int READ = 9;
 
     // EXTRA METHODS ------------------------------------
     void    setOldValue(Object argOldValue);
@@ -67,6 +68,7 @@ public interface CrudOperations<T extends ValueObject> {
 
     // READ ---------------------------------------------
     T[]     readAll();
+    T[]     read(T[] argVos);
 
     // UPDATE -------------------------------------------
     T       update(T argOld);
