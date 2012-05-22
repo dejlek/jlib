@@ -8,6 +8,9 @@ import com.areen.jlib.pattern.ValueObject;
  * You can say that SimpleObject is a wrapper for its own transfer object (VO).
  * SimpleObject types are most often going to be used as simple models or as a
  * way to obtain/use underlying transfer object as a model...
+ * 
+ * What this basically means is - a SimpleObject implementation is a WRAPPER of the underlying ValueObject.
+ * It is also a FACTORY of the ValueObject.
  *
  * @author dejan
  */

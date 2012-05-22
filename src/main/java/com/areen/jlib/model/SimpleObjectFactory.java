@@ -11,6 +11,7 @@ package com.areen.jlib.model;
 public interface SimpleObjectFactory<T extends SimpleObject> {
 
     T create();
+    T[] create(int argSize);
 
 } // SimpleObjectFactory interface
 
