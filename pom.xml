@@ -16,6 +16,7 @@ The idea is to open-source this library.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compilerSource>1.6</compilerSource>
+		<patchNumber>0</patchNumber>
 		<dependencyReport /> <!-- disabled by default (empty) -->
 	</properties>
 
@@ -227,11 +228,6 @@ The idea is to open-source this library.</description>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.7</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.3</version>
 				</plugin>
@@ -307,8 +303,100 @@ The idea is to open-source this library.</description>
 						<headerLocation>${basedir}/codechecks/checkstyle/license.txt</headerLocation>
 					</configuration>
 				</plugin>
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.6</version> 
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.ant</groupId>
+							<artifactId>ant-jsch</artifactId>
+							<version>1.8.1</version>
+						</dependency>
+						<dependency>
+							<groupId>com.jcraft</groupId>
+							<artifactId>jsch</artifactId>
+							<version>0.1.42</version>
+						</dependency>
+					</dependencies> 
+				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version> 
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>0.1.42</version>
+					</dependency>
+				</dependencies> 
+				<executions>
+					<!--
+						private static final String prjVersion = "__MVNINJECT_POMVERSION__";
+						private static final String patchNumber = "__MVNINJECT_PATCH#__";
+						private static final String svnRevision = "__MVNINJECT_SVNVERSION__";
+					-->
+					<execution>
+						<id>update-project-version-info</id>
+						<phase>process-sources</phase>
+						<configuration>
+							<target name="inject-prj-version">
+								<replaceregexp byline="true">
+									<regexp pattern="private static final String prjVersion = .*;$" />
+									<substitution expression="private static final String prjVersion = &quot;${project.version}&quot;;" />
+									<fileset dir="src/main/java/com/areen/jlib/util" includes="JlibInfo.java" />
+								</replaceregexp>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>update-patch-number-info</id>
+						<phase>process-sources</phase>
+						<configuration>
+							<target name="inject-patch-number">
+								<replaceregexp byline="true">
+									<regexp pattern="private static final String patchNumber = .*;$" />
+									<substitution expression="private static final String patchNumber = &quot;${patchNumber}&quot;;" />
+									<fileset dir="src/main/java/com/areen/jlib/util" includes="JlibInfo.java" />
+								</replaceregexp>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>update-svn-version-info</id>
+						<phase>process-sources</phase>
+						<configuration>
+							<target name="inject-svnrepo-version">
+								<exec dir="${basedir}" executable="svnversion" outputproperty="svnVersion">
+									<arg line="."/>
+								</exec>
+								<replaceregexp byline="true">
+									<regexp pattern="private static final String svnRevision = .*;$" />
+									<substitution expression="private static final String svnRevision = &quot;${svnVersion}&quot;;" />
+									<fileset dir="src/main/java/com/areen/jlib/util" includes="JlibInfo.java" />
+								</replaceregexp>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<reporting>
