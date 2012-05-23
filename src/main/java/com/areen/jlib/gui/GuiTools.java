@@ -15,10 +15,13 @@
 package com.areen.jlib.gui;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
 import java.net.URL;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -66,6 +69,24 @@ public class GuiTools {
             component.setFont(newFont);
         } // foreach
     } // makeBold() method
+    
+    public static JFrame getFrame(JComponent argComponent) {
+        boolean found = false;
+        JFrame result = null;
+        Container container = argComponent.getParent();
+        
+        while (!found) {
+            if (!(container instanceof JPanel)) {
+                if (container instanceof JFrame) {
+                    return (JFrame) container;
+                } else {
+                    return null;
+                }
+            }
+            container = container.getParent();
+        }
+        return result; // we should never reach this line
+    } // getFrame() method
 
 } // GuiTools
 
