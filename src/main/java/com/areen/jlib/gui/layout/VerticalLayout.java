@@ -25,27 +25,28 @@ public class VerticalLayout implements LayoutManager {
     /**
      * The horizontal alignment constant that designates centering. Also used to designate center anchoring.
      */
-    public final static int CENTER = 0;
+    public static final int CENTER = 0;
     /**
      * The horizontal alignment constant that designates right justification.
      */
-    public final static int RIGHT = 1;
+    public static final int RIGHT = 1;
     /**
      * The horizontal alignment constant that designates left justification.
      */
-    public final static int LEFT = 2;
+    public static final int LEFT = 2;
     /**
      * The horizontal alignment constant that designates stretching the component horizontally.
      */
-    public final static int BOTH = 3;
+    public static final int BOTH = 3;
     /**
      * The anchoring constant that designates anchoring to the top of the display area
      */
-    public final static int TOP = 1;
+    public static final int TOP = 1;
     /**
      * The anchoring constant that designates anchoring to the bottom of the display area
      */
-    public final static int BOTTOM = 2;
+    public static final int BOTTOM = 2;
+    
     private int vgap; //the vertical vgap between components...defaults to 5
     private int alignment; //LEFT, RIGHT, CENTER or BOTH...how the components are justified
     private int anchor; //TOP, BOTTOM or CENTER ...where are the components positioned in an overlarge space
@@ -64,38 +65,38 @@ public class VerticalLayout implements LayoutManager {
      * Constructs a VerticalLayout instance with horizontal centering, anchored to the top with the specified
      * vgap
      *     
-* @param vgap An int value indicating the vertical seperation of the components
+* @param argVgap An int value indicating the vertical seperation of the components
      */
-    public VerticalLayout(int vgap) {
-        this(vgap, CENTER, TOP);
+    public VerticalLayout(int argVgap) {
+        this(argVgap, CENTER, TOP);
     }
 
     /**
      * Constructs a VerticalLayout instance anchored to the top with the specified vgap and horizontal
      * alignment
      *     
-     * @param vgap An int value indicating the vertical seperation of the components
-     * @param alignment An int value which is one of
+     * @param argVgap An int value indicating the vertical seperation of the components
+     * @param argAlignment An int value which is one of
      * <code>RIGHT, LEFT, CENTER, BOTH</code> for the horizontal alignment.
      */
-    public VerticalLayout(int vgap, int alignment) {
-        this(vgap, alignment, TOP);
+    public VerticalLayout(int argVgap, int argAlignment) {
+        this(argVgap, argAlignment, TOP);
     }
 
     /**
      * Constructs a VerticalLayout instance with the specified vgap, horizontal alignment and anchoring
      *     
-     * @param vgap An int value indicating the vertical seperation of the components
-     * @param alignment An int value which is one of
+     * @param argVgap An int value indicating the vertical seperation of the components
+     * @param argAlignment An int value which is one of
      * <code>RIGHT, LEFT, CENTER, BOTH</code> for the horizontal alignment.
-     * @param anchor An int value which is one of
+     * @param argAnchor An int value which is one of
      * <code>TOP, BOTTOM, CENTER</code> indicating where the components are to appear if the display area
      * exceeds the minimum necessary.
      */
-    public VerticalLayout(int vgap, int alignment, int anchor) {
-        this.vgap = vgap;
-        this.alignment = alignment;
-        this.anchor = anchor;
+    public VerticalLayout(int argVgap, int argAlignment, int argAnchor) {
+        this.vgap = argVgap;
+        this.alignment = argAlignment;
+        this.anchor = argAnchor;
     }
 
     private Dimension layoutSize(Container parent, boolean minimum) {
@@ -120,7 +121,6 @@ public class VerticalLayout implements LayoutManager {
         dim.height += insets.top + insets.bottom + vgap + vgap;
         return dim;
     }
-//-----------------------------------------------------------------------------
 
     /**
      * Lays out the container.
@@ -164,19 +164,16 @@ public class VerticalLayout implements LayoutManager {
             }
         }
     }
-//-----------------------------------------------------------------------------
 
     @Override
     public Dimension minimumLayoutSize(Container parent) {
         return layoutSize(parent, false);
     }
-//-----------------------------------------------------------------------------
 
     @Override
     public Dimension preferredLayoutSize(Container parent) {
         return layoutSize(parent, false);
     }
-//----------------------------------------------------------------------------
 
     /**
      * Not used by this class
@@ -184,7 +181,6 @@ public class VerticalLayout implements LayoutManager {
     @Override
     public void addLayoutComponent(String name, Component comp) {
     }
-//-----------------------------------------------------------------------------
 
     /**
      * Not used by this class
@@ -192,10 +188,12 @@ public class VerticalLayout implements LayoutManager {
     @Override
     public void removeLayoutComponent(Component comp) {
     }
-//-----------------------------------------------------------------------------
 
     @Override
     public String toString() {
         return getClass().getName() + "[vgap=" + vgap + " align=" + alignment + " anchor=" + anchor + "]";
     }
-}
+    
+} // VerticalLayout class
+
+// $Id$
