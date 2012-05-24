@@ -6,7 +6,9 @@ package com.areen.jlib.test;
 
 import com.areen.jlib.gui.GuiTools;
 import com.areen.jlib.tuple.Pair;
+import com.areen.jlib.util.JlibInfo;
 import com.areen.jlib.util.ExceptionLogger;
+import java.io.IOException;
 import javax.swing.UIManager;
 
 /**
@@ -300,7 +302,10 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        // Instansiate JlibInfo Class to load version resources
+        JlibInfo versionInfo = new JlibInfo();
+
         try {
             //Tell the UIManager to use the platform look and feel
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

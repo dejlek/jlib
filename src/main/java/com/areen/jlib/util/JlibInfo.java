@@ -13,6 +13,10 @@
  */
 package com.areen.jlib.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+ 
 /**
  * Use this class to keep information about the application.
  *
@@ -30,14 +34,33 @@ public class JlibInfo {
      *   build  : SVN Global Branch Revision
      * Versioning Nomenclature
      ************************************************************************/
-    private static final String prjVersion = "1.0_Beta5-SNAPSHOT";
-    private static final String patchNumber = "0";
-    private static final String svnRevision = "394M";
-    private static final String verMajor = prjVersion.split("\\.")[0];
-    private static final String verMinor = prjVersion.split("\\.")[1];
-    private static final String jlibVersion = verMajor + "." + verMinor + "." + patchNumber + "." + svnRevision;
+    private static String prjVersion = "";
+    private static String patchNumber = "";
+    private static String svnRevision = "";
+    private static String verMajor = "";
+    private static String verMinor = "";
+    private static String jlibVersion = "";
 
-    public JlibInfo() {
+    public JlibInfo() throws IOException {
+        Properties versionInfo = new Properties();
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("jlibversion.properties");
+
+        try {
+            versionInfo.load(in);
+
+				// Initialise parameters from Properties file
+            prjVersion = versionInfo.getProperty("prjVersion");
+            patchNumber = versionInfo.getProperty("patchNumber");
+            svnRevision = versionInfo.getProperty("svnRevision");
+            verMajor = prjVersion.split("\\.")[0];
+            verMinor = prjVersion.split("\\.")[1];
+            jlibVersion = verMajor + "." + verMinor + "." + patchNumber + "." + svnRevision;
+        } catch (IOException e) {
+            System.err.println("Error loading Jlib Properties file.");
+        }
+
+        // release resource (will get tidied up on exit of constructor anyway)
+        in.close();
     }
 
     public static String getMajor() {
