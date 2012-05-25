@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * 
  * @author dejan
  */
 public class FcbTestFrame extends javax.swing.JFrame {
@@ -42,9 +42,9 @@ public class FcbTestFrame extends javax.swing.JFrame {
         cbModel = new FilteredComboBoxModel(codeAndValues);
         cbModel2 = new FilteredComboBoxModel(codeAndValues);
         vecModel = new FilteredComboBoxModel(codeAndValues);
-        
+
         initComponents();
-        
+
         tableModel = (DefaultTableModel) testTable.getModel();
         
         testTable.setSurrendersFocusOnKeystroke(true);
@@ -81,7 +81,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
         cbModel.setReadyToPick(rootPaneCheckingEnabled);
         //fcb.setSelectedIndex(5);
         fcb.setSelectedItem(null);
-        
 
         //fcb.setMultiSelectionAllowed(true);
         //new ComboBoxLink(filteredComboBox, jTextArea1);
