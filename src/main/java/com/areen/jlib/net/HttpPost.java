@@ -48,6 +48,7 @@ import java.util.logging.Logger;
  * TODO:
  *   - Add support for arbitrary form fields.
  *   - Add support for more than just one file.
+ *   - Allow for changing of the boundary
  * 
  * @author dejan
  */
@@ -70,105 +71,6 @@ public class HttpPost {
         fileNames = argFiles;
     }
     
-    public void post2() {
-        URLConnection conn = null;
-        OutputStream os = null;
-        InputStream is = null;
-
-        try {
-            System.out.println("url:" + url);
-            conn = url.openConnection();
-            conn.setDoOutput(true);
-
-            String postData = "";
-
-            //InputStream imgIs = getClass().getResourceAsStream("/home/dejan/work/ddn-100x46.png");
-             
-             InputStream imgIs = new FileInputStream("/home/dejan/work/ddn-100x46.png");
-             
-            byte[] imgData = new byte[imgIs.available()];
-            imgIs.read(imgData);
-
-            String message1 = "";
-            message1 += "--" + boundary + crlf;
-            message1 += "Content-Disposition: form-data; name=\"userfile\"; filename=\"ddn-100x46.png\""
-                    + crlf;
-            message1 += "Content-Type: image/jpeg" + crlf;
-            message1 += crlf;
-
-            // the image is sent between the messages in the multipart message.
-            String message2 = "";
-            message2 += crlf + "--" + boundary + "--" + crlf;
-
-            conn.setRequestProperty("Content-Type",("multipart/form-data; boundary=" + boundary));
-            System.out.println("multipart/form-data; boundary=---------------------------4664151417711");
-            // might not need to specify the content-length when sending chunked
-            // data.
-            System.out.println("Content-Length" + 
-                    String.valueOf(message1.length() + message2.length() + imgData.length));
-            conn.setRequestProperty("Content-Length", 
-                    String.valueOf(message1.length() + message2.length() + imgData.length));
-
-            System.out.println("open os");
-            os = conn.getOutputStream();
-
-            System.out.println(message1);
-            os.write(message1.getBytes());
-
-            // SEND THE IMAGE
-            int index = 0;
-            int size = 1024;
-            do {
-                System.out.println("write:" + index);
-                if ((index + size) > imgData.length) {
-                    size = imgData.length - index;
-                }
-                os.write(imgData, index, size);
-                index += size;
-            } while (index < imgData.length);
-            System.out.println("written:" + index);
-
-            System.out.println(message2);
-            os.write(message2.getBytes());
-            os.flush();
-
-            System.out.println("open is");
-            is = conn.getInputStream();
-
-            char buff = 512;
-            int len;
-            byte[] data = new byte[buff];
-            do {
-                System.out.println("READ");
-                len = is.read(data);
-
-                if (len > 0) {
-                    System.out.println(new String(data, 0, len));
-                }
-            } while (len > 0);
-
-            System.out.println("DONE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println("Close connection");
-            try {
-                os.close();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                is.close();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-    }
     public void post() {
         try {
             System.out.println("url:" + url);
@@ -191,7 +93,7 @@ public class HttpPost {
             part1 += "--" + boundary + crlf;
             File f = new File(fileNames[0]);
             fileName = f.getName(); // we do not want the whole path, just the name
-            part1 += "Content-Disposition: form-data; name=\"userfile\"; filename=\"ddn-100x46.png\"" + crlf;
+            part1 += "Content-Disposition: form-data; name=\"userfile\"; filename=\"" + fileName + "\"" + crlf;
             
             // CONTENT-TYPE
             // TODO: add proper MIME support here
