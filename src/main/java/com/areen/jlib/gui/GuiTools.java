@@ -99,25 +99,28 @@ public class GuiTools {
     /**
      * Use this method to create a screenshot of the JFrame object argFrame.
      * @param argFrame JFrame you want to make screenshot of.
+     * @return File containing the screenshot.
      */
-    public static void makeScreenshot(String argPrefix, JFrame argFrame) {
+    public static File makeScreenshot(String argPrefix, JFrame argFrame) {
         String prefix = (argPrefix == null) ? "screenshot" : argPrefix;
         Rectangle rec = argFrame.getBounds();
         BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
         argFrame.paint(bufferedImage.getGraphics());
-        
+        File temp = null;
         try {
             // Create temp file.
-            File temp = File.createTempFile(prefix, ".png");
+            temp = File.createTempFile(prefix, ".png");
             
             // Use the ImageIO API to write the bufferedImage to a temporary file
             ImageIO.write(bufferedImage, "png", temp);
 
             // Delete temp file when program exits.
             temp.deleteOnExit();
+            
         } catch (IOException ioe) {
             LOGGER.debug(ioe.toString());
         } // catch
+        return temp;
     } // makeScreenshot method
 
 } // GuiTools
