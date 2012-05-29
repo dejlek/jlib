@@ -10,10 +10,7 @@
  */
 package com.areen.jlib.test;
 
-import com.areen.jlib.gui.ComboBoxLink;
-import com.areen.jlib.gui.ComboBoxPairRenderer;
-import com.areen.jlib.gui.DefaultCellEditorX;
-import com.areen.jlib.gui.WideComboBox;
+import com.areen.jlib.gui.*;
 import com.areen.jlib.gui.fcb.*;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
@@ -322,6 +319,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
         System.out.println(fcb.getPickedItem());
         System.out.println(fcb.getPickedKey());
+        GuiTools.makeScreenshot("apc-client", this);
     }//GEN-LAST:event_debugButtonActionPerformed
 
     /**

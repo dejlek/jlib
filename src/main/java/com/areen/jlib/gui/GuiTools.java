@@ -14,14 +14,21 @@
 
 package com.areen.jlib.gui;
 
+import com.areen.jlib.gui.fcb.ComboBoxFilter;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -29,6 +36,7 @@ import javax.swing.JPanel;
  */
 public class GuiTools {
     private static Component parentFrame = null;
+    static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     
     /**
      * Use this method if you want your application to stop whenever a resource is missing.
@@ -41,7 +49,7 @@ public class GuiTools {
      * @param argResource
      * @return
      */
-    public static URL getResource(Class<?> argClass, String argResource) {
+    public static final URL getResource(Class<?> argClass, String argResource) {
         URL url = argClass.getResource(argResource);
         if (url == null) {
             if (parentFrame != null) {
@@ -56,21 +64,21 @@ public class GuiTools {
         return url;
     } // getResource() method
 
-    public static void setParentComponent(Component argComponent) {
+    public static final void setParentComponent(Component argComponent) {
         GuiTools.parentFrame = argComponent;
     }
 
     /**
      * Use this method when you want to set font of several JComponent objects to be bold.
      */
-    public static void makeBold(JComponent... argComponents) {
+    public static final void makeBold(JComponent... argComponents) {
         for (JComponent component : argComponents) {
             Font newFont = new Font(component.getFont().getName(), Font.BOLD, component.getFont().getSize());
             component.setFont(newFont);
         } // foreach
     } // makeBold() method
     
-    public static JFrame getFrame(JComponent argComponent) {
+    public static final JFrame getFrame(JComponent argComponent) {
         boolean found = false;
         JFrame result = null;
         Container container = argComponent.getParent();
@@ -87,6 +95,30 @@ public class GuiTools {
         }
         return result; // we should never reach this line
     } // getFrame() method
+    
+    /**
+     * Use this method to create a screenshot of the JFrame object argFrame.
+     * @param argFrame JFrame you want to make screenshot of.
+     */
+    public static final void makeScreenshot(String argPrefix, JFrame argFrame) {
+        String prefix = (argPrefix == null) ? "screenshot" : argPrefix;
+        Rectangle rec = argFrame.getBounds();
+        BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
+        argFrame.paint(bufferedImage.getGraphics());
+        
+        try {
+            // Create temp file.
+            File temp = File.createTempFile(prefix, ".png");
+            
+            // Use the ImageIO API to write the bufferedImage to a temporary file
+            ImageIO.write(bufferedImage, "png", temp);
+
+            // Delete temp file when program exits.
+            temp.deleteOnExit();
+        } catch (IOException ioe) {
+            LOGGER.debug(ioe.toString());
+        } // catch
+    } // makeScreenshot method
 
 } // GuiTools
 
