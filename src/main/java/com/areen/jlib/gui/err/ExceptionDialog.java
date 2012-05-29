@@ -109,6 +109,7 @@ public class ExceptionDialog extends java.awt.Dialog {
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         if (exceptionInfoSender != null) {
             exceptionInfoSender.setDescription(description);
+            exceptionInfoSender.setSubject(title);
             exceptionInfoSender.send();
         } // if
         setVisible(false);
