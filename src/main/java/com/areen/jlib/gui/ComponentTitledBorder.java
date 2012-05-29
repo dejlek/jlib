@@ -13,13 +13,7 @@
  */
 package com.areen.jlib.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
@@ -45,10 +39,12 @@ public class ComponentTitledBorder implements Border, MouseListener, SwingConsta
            container.addMouseListener(this); 
        } // ComponentTitledBorder constructor
     
+    @Override
        public boolean isBorderOpaque() { 
            return true; 
        } // isBorderOpaque() method
     
+    @Override
        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) { 
            Insets borderInsets = border.getBorderInsets(c); 
            Insets insets = getBorderInsets(c); 
@@ -59,6 +55,7 @@ public class ComponentTitledBorder implements Border, MouseListener, SwingConsta
            SwingUtilities.paintComponent(g, comp, (Container) c, rect); 
        } // paintBorder() method
     
+    @Override
        public Insets getBorderInsets(Component c) { 
            Dimension size = comp.getPreferredSize(); 
            Insets insets = border.getBorderInsets(c); 
