@@ -61,6 +61,7 @@ public class HttpPost {
     private String[] fileNames;
     private String output;
     private String boundary;
+    private final int bufferSize = 4096;
     
     public HttpPost(URL argUrl) {
         url = argUrl;
@@ -76,9 +77,8 @@ public class HttpPost {
             System.out.println("url:" + url);
             urlConnection = url.openConnection();
             urlConnection.setDoOutput(true);
-            //urlConnection.setDoInput(true);
-            //urlConnection.setUseCaches(false);
-            //urlConnection.setChunkedStreamingMode(1024);
+            urlConnection.setDoInput(true);
+            urlConnection.setUseCaches(false);
             urlConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
             String postData = "";
@@ -123,7 +123,7 @@ public class HttpPost {
             outputStream.write(part1.getBytes());
 
             int index = 0;
-            int size = 1024;
+            int size = bufferSize;
             do {
                 System.out.println("wrote " + index + "b");
                 if ((index + size) > fileData.length) {
