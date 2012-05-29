@@ -125,14 +125,14 @@ public class HttpPost {
             int index = 0;
             int size = 1024;
             do {
-                System.out.println("write:" + index);
+                System.out.println("wrote " + index + "b");
                 if ((index + size) > fileData.length) {
                     size = fileData.length - index;
                 }
                 outputStream.write(fileData, index, size);
                 index += size;
             } while (index < fileData.length);
-            System.out.println("written:" + index);
+            System.out.println("wrote " + index + "b");
 
             System.out.println(part2);
             outputStream.write(part2.getBytes());
