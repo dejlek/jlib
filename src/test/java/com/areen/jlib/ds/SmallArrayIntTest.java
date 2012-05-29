@@ -49,7 +49,8 @@ public class SmallArrayIntTest {
         } catch (SmallArrayException ex) {
             Logger.getLogger(SmallArrayIntTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        assertTrue("Incorrect number of elements. Got " + testArray.size() + ", expected 10.", (testArray.size() == 10));
+        assertTrue("Incorrect number of elements. Got " + testArray.size() + ", expected 10.", 
+                (testArray.size() == 10));
     } // testConstructor() method
 
 } // SmallArrayIntTest class
