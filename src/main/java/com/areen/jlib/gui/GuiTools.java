@@ -49,7 +49,7 @@ public class GuiTools {
      * @param argResource
      * @return
      */
-    public static final URL getResource(Class<?> argClass, String argResource) {
+    public static URL getResource(Class<?> argClass, String argResource) {
         URL url = argClass.getResource(argResource);
         if (url == null) {
             if (parentFrame != null) {
@@ -64,21 +64,21 @@ public class GuiTools {
         return url;
     } // getResource() method
 
-    public static final void setParentComponent(Component argComponent) {
+    public static void setParentComponent(Component argComponent) {
         GuiTools.parentFrame = argComponent;
     }
 
     /**
      * Use this method when you want to set font of several JComponent objects to be bold.
      */
-    public static final void makeBold(JComponent... argComponents) {
+    public static void makeBold(JComponent... argComponents) {
         for (JComponent component : argComponents) {
             Font newFont = new Font(component.getFont().getName(), Font.BOLD, component.getFont().getSize());
             component.setFont(newFont);
         } // foreach
     } // makeBold() method
     
-    public static final JFrame getFrame(JComponent argComponent) {
+    public static JFrame getFrame(JComponent argComponent) {
         boolean found = false;
         JFrame result = null;
         Container container = argComponent.getParent();
@@ -100,7 +100,7 @@ public class GuiTools {
      * Use this method to create a screenshot of the JFrame object argFrame.
      * @param argFrame JFrame you want to make screenshot of.
      */
-    public static final void makeScreenshot(String argPrefix, JFrame argFrame) {
+    public static void makeScreenshot(String argPrefix, JFrame argFrame) {
         String prefix = (argPrefix == null) ? "screenshot" : argPrefix;
         Rectangle rec = argFrame.getBounds();
         BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
