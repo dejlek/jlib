@@ -10,6 +10,7 @@ package com.areen.jlib.util;
  */
 public interface ExceptionInfoSender {
     void setDescription(String argDescription);
+    void setSubject(String argSubject);
     void send();
 } // ExceptionInformationSender interface
 

@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 public class ExceptionDialog extends java.awt.Dialog {
     private ExceptionInfoSender exceptionInfoSender;
     private String description;
+    private String title;
 
     /** Creates new form ExceptionDialog */
     public ExceptionDialog(final java.awt.Frame parent, final boolean modal) {
@@ -135,11 +136,12 @@ public class ExceptionDialog extends java.awt.Dialog {
     }
 
     public void setInfo(final String argInfo) {
-        description = argInfo;
+        title = argInfo;
         fileAndLineInformationLabel.setText(description);
     }
 
     public void setExceptionText(final String argExc) {
+        description = argExc;
         exceptionTextArea.setText(argExc);
     }
     
