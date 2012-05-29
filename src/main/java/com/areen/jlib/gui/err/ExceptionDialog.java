@@ -15,6 +15,7 @@
 
 package com.areen.jlib.gui.err;
 
+import com.areen.jlib.util.ExceptionInfoSender;
 import java.awt.event.KeyEvent;
 
 /**
@@ -22,11 +23,14 @@ import java.awt.event.KeyEvent;
  * @author dejan
  */
 public class ExceptionDialog extends java.awt.Dialog {
+    private ExceptionInfoSender exceptionInfoSender;
+    private String description;
 
     /** Creates new form ExceptionDialog */
     public ExceptionDialog(final java.awt.Frame parent, final boolean modal) {
         super(parent, modal);
         initComponents();
+        sendButton.setVisible(false);
         this.setTitle("Java exception information");
         setResizable(true);
     }
@@ -43,6 +47,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         exceptionTextArea = new javax.swing.JTextArea();
         bottomPanel = new javax.swing.JPanel();
+        sendButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(800, 300));
@@ -66,6 +71,15 @@ public class ExceptionDialog extends java.awt.Dialog {
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         bottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        sendButton.setText("Send");
+        sendButton.setToolTipText("Send the error report.");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonActionPerformed(evt);
+            }
+        });
+        bottomPanel.add(sendButton);
 
         okButton.setMnemonic(KeyEvent.VK_ESCAPE);
         okButton.setText("OK");
@@ -91,6 +105,15 @@ public class ExceptionDialog extends java.awt.Dialog {
         setVisible(false);
 }//GEN-LAST:event_okButtonActionPerformed
 
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        if (exceptionInfoSender != null) {
+            exceptionInfoSender.setDescription(description);
+            exceptionInfoSender.send();
+        } // if
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_sendButtonActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -112,12 +135,26 @@ public class ExceptionDialog extends java.awt.Dialog {
     }
 
     public void setInfo(final String argInfo) {
-        fileAndLineInformationLabel.setText(argInfo);
+        description = argInfo;
+        fileAndLineInformationLabel.setText(description);
     }
 
     public void setExceptionText(final String argExc) {
         exceptionTextArea.setText(argExc);
     }
+    
+    /**
+     * In the case we have made an implementation of the ExceptionInfoSender interface, we may use this
+     * method to assign the object that is going to be used to send the error report.
+     * 
+     * @param argSender ExceptionInfoSender object used to send the error report.
+     */
+    public void setExceptionInfoSender(ExceptionInfoSender argSender) {
+        if (argSender != null) {
+            exceptionInfoSender = argSender;
+            sendButton.setVisible(true);
+        }
+    } // setExceptionInfoSender() method
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
@@ -125,8 +162,9 @@ public class ExceptionDialog extends java.awt.Dialog {
     private javax.swing.JLabel fileAndLineInformationLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okButton;
+    private javax.swing.JButton sendButton;
     // End of variables declaration//GEN-END:variables
 
-}
+} // ExceptionDialog class
 
 // $Id$
