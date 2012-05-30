@@ -54,7 +54,7 @@ public class GuiTools {
         if (url == null) {
             if (parentFrame != null) {
                 parentFrame.setVisible(false);
-            }
+            } // if
             JOptionPane.showMessageDialog(GuiTools.parentFrame, "Resource '" + argResource + "' is missing.\n"
                     + "Application will now exit. Please contact developers and report this problem."
                     , "Resource missing!", JOptionPane.ERROR_MESSAGE);
@@ -64,12 +64,17 @@ public class GuiTools {
         return url;
     } // getResource() method
 
+    /**
+     * 
+     * @param argComponent
+     */
     public static void setParentComponent(Component argComponent) {
         GuiTools.parentFrame = argComponent;
-    }
+    } // setParentComponent() method
 
     /**
      * Use this method when you want to set font of several JComponent objects to be bold.
+     * @param argComponents 
      */
     public static void makeBold(JComponent... argComponents) {
         for (JComponent component : argComponents) {
@@ -78,6 +83,11 @@ public class GuiTools {
         } // foreach
     } // makeBold() method
     
+    /**
+     * 
+     * @param argComponent
+     * @return
+     */
     public static JFrame getFrame(JComponent argComponent) {
         boolean found = false;
         JFrame result = null;
@@ -89,15 +99,16 @@ public class GuiTools {
                     return (JFrame) container;
                 } else {
                     return null;
-                }
-            }
+                } // else
+            } // if
             container = container.getParent();
-        }
+        } // while
         return result; // we should never reach this line
     } // getFrame() method
     
     /**
      * Use this method to create a screenshot of the JFrame object argFrame.
+     * @param argPrefix 
      * @param argFrame JFrame you want to make screenshot of.
      * @return File containing the screenshot.
      */
@@ -121,7 +132,7 @@ public class GuiTools {
             LOGGER.debug(ioe.toString());
         } // catch
         return temp;
-    } // makeScreenshot method
+    } // makeScreenshot() method
 
 } // GuiTools
 

@@ -29,11 +29,17 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
  */
 public class ColorArrowUI extends BasicComboBoxUI {
 
+    /**
+     * 
+     * @param c
+     * @return
+     */
     public static ComboBoxUI createUI(JComponent c) {
         return new ColorArrowUI();
-    }
+    } // createUI() method
 
-    @Override protected JButton createArrowButton() {
+    @Override 
+    protected JButton createArrowButton() {
         return new BasicArrowButton(
             BasicArrowButton.SOUTH, // down arrow
             Color.LIGHT_GRAY, // background of the arrow button

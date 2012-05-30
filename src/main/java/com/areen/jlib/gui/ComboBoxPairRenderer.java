@@ -35,7 +35,7 @@ public class ComboBoxPairRenderer extends DefaultListCellRenderer {
         if (value instanceof Pair) {
             Pair p = (Pair) value;
             setText(p.getFirst() + " - " + p.getSecond());
-        }
+        } // if
         return this;
     } // getListCellRendererComponent() method
     

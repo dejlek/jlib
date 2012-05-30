@@ -34,6 +34,10 @@ public class DefaultCellEditorX extends DefaultCellEditor {
     private PropertyChangeListener focusPropertyListener;
     JComboBox comboBox;
 
+    /**
+     * 
+     * @param argComboBox
+     */
     public DefaultCellEditorX(JComboBox argComboBox) {
         super(argComboBox);
         comboBox = argComboBox;
@@ -41,7 +45,7 @@ public class DefaultCellEditorX extends DefaultCellEditor {
         comboBox.setEditable(true);
         setClickCountToStart(2);
         getComponent().setName("Table.editor");
-    }
+    } // DefaultCellEditorX() method
 
     /** 
      * Overridden to install an appriate listener which opens the
@@ -55,7 +59,7 @@ public class DefaultCellEditorX extends DefaultCellEditor {
         super.getTableCellEditorComponent(table, value, isSelected, row, column);
         installListener(table);
         return getComponent();
-    }
+    } // getTableCellEditorComponent() method
 
     /**
      * Shows popup.
@@ -65,9 +69,9 @@ public class DefaultCellEditorX extends DefaultCellEditor {
             @Override
             public void run() {
                 getComponent().setPopupVisible(true);
-            }
+            } // run() method
         });
-    }
+    } // showPopup() method
 
 
     /**
@@ -80,8 +84,8 @@ public class DefaultCellEditorX extends DefaultCellEditor {
             installKeyboardFocusListener();
         } else {
             installAncestorListener();
-        }
-    }
+        } // else
+    } // installListener() method
 
     private void installAncestorListener() {
         if (ancestorListener == null) {
@@ -91,20 +95,20 @@ public class DefaultCellEditorX extends DefaultCellEditor {
                 public void ancestorAdded(AncestorEvent event) {
                     getComponent().removeAncestorListener(ancestorListener);
                     showPopup();
-                }
+                } // ancestorAdded() method
 
                 @Override
                 public void ancestorRemoved(AncestorEvent event) {
-                }
+                } // ancestorRemoved() method
 
                 @Override
                 public void ancestorMoved(AncestorEvent event) {
-                }
+                } // ancestorMoved() method
 
             };
-        }
+        } // if
         getComponent().addAncestorListener(ancestorListener);
-    }
+    } // installAncestorListener() method
 
     private void installKeyboardFocusListener() {
         if (focusPropertyListener == null) {
@@ -119,11 +123,11 @@ public class DefaultCellEditorX extends DefaultCellEditor {
                     } // if
                     focusManager().removePropertyChangeListener("permanentFocusOwner", focusPropertyListener);
                     showPopup();
-                }
+                } // propertyChange() method
             };
-        }
+        } // if
         focusManager().addPropertyChangeListener("permanentFocusOwner", focusPropertyListener);
-    }
+    } // installKeyboardFocusListener() method
 
     /**
      * Convience for less typing.
@@ -131,7 +135,7 @@ public class DefaultCellEditorX extends DefaultCellEditor {
      */
     protected KeyboardFocusManager focusManager() {
         return KeyboardFocusManager.getCurrentKeyboardFocusManager();
-    }
+    } // focusManager() method
 
     /** 
      * Convenience for type cast.
@@ -140,7 +144,7 @@ public class DefaultCellEditorX extends DefaultCellEditor {
     @Override
     public JComboBox getComponent() {
         return (JComboBox) super.getComponent();
-    }
+    } // getComponent() method
 
 } // DefaultCellEditorX class
 

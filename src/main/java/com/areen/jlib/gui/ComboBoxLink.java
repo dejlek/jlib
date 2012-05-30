@@ -32,7 +32,7 @@ public class ComboBoxLink implements ActionListener {
     enum Type {
         LABEL,
         TEXT_AREA
-    }
+    } // Type enumeration
     private Type type;
     private JComponent valueComponent;
     private JComboBox comboBox;
@@ -55,6 +55,11 @@ public class ComboBoxLink implements ActionListener {
         comboBox.addActionListener(this);
     } // ComboBoxLink constructor
     
+    /**
+     * 
+     * @param argComboBox
+     * @param argArea
+     */
     public ComboBoxLink(JComboBox argComboBox, JTextArea argArea) {
         comboBox = argComboBox;
         valueComponent = argArea;
@@ -77,7 +82,7 @@ public class ComboBoxLink implements ActionListener {
         // However, when picks an item with the mouse, index is always greater or equal to 0.
         if (comboBox.getSelectedIndex() == -1) {
             return;
-        }
+        } // if
         selectedItem = comboBox.getSelectedItem();
         System.out.println("update(): selected:" + selectedItem.toString());
 
@@ -85,7 +90,7 @@ public class ComboBoxLink implements ActionListener {
             text = ((Pair) selectedItem).getSecond().toString();
         } else {
             text = selectedItem.toString();
-        }
+        } // else
     } // update() method
     
     @Override
