@@ -27,14 +27,17 @@ public class ExceptionDialog extends java.awt.Dialog {
     private String description;
     private String title;
 
-    /** Creates new form ExceptionDialog */
+    /** Creates new form ExceptionDialog
+     * @param parent 
+     * @param modal 
+     */
     public ExceptionDialog(final java.awt.Frame parent, final boolean modal) {
         super(parent, modal);
         initComponents();
         sendButton.setVisible(false);
         this.setTitle("Java exception information");
         setResizable(true);
-    }
+    } // ExceptionDialog() method
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -128,23 +131,31 @@ public class ExceptionDialog extends java.awt.Dialog {
                     @Override
                     public void windowClosing(final java.awt.event.WindowEvent e) {
                         System.exit(0);
-                    }
+                    } // windowClosing() method
                 });
                 dialog.setModal(true);
                 dialog.setVisible(true);
-            }
+            } // run() method
         });
-    }
+    } // main() method
 
+    /**
+     * 
+     * @param argInfo
+     */
     public void setInfo(final String argInfo) {
         title = argInfo;
         fileAndLineInformationLabel.setText(description);
-    }
+    } // setInfo() method
 
+    /**
+     * 
+     * @param argExc
+     */
     public void setExceptionText(final String argExc) {
         description = argExc;
         exceptionTextArea.setText(argExc);
-    }
+    } // setExceptionText() method
     
     /**
      * In the case we have made an implementation of the ExceptionInfoSender interface, we may use this
@@ -156,7 +167,7 @@ public class ExceptionDialog extends java.awt.Dialog {
         if (argSender != null) {
             exceptionInfoSender = argSender;
             sendButton.setVisible(true);
-        }
+        } // if
     } // setExceptionInfoSender() method
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
