@@ -21,11 +21,12 @@ public abstract class SmallArray {
      * Class Constructor.
      * @author dejan
      * @param argNob specifies the number of bits being used for representation
+     * @throws SmallArrayException  
      */
     public SmallArray(final int argNob) throws SmallArrayException {
         if (argNob > 64) {
             throw new SmallArrayException("Number of bits is too large.");
-        }
+        } // if
 
         numberOfBits = (byte) argNob;
         length = 0;
@@ -33,32 +34,35 @@ public abstract class SmallArray {
 
     /**
      * Accessor method to return the number of bits being used for representation.
+     * @return 
      * @author dejan
      */
     public byte getNumberOfBits() {
         return numberOfBits;
-    }
+    } // getNumberOfBits() method
 
     /**
      * Registers/changes the number of bits used for representation.
      * @author dejan
      * @param argNob specifies the number of bits being used for representation
+     * @throws SmallArrayException  
      */
     public void setNumberOfBits(final byte argNob) throws SmallArrayException {
         if (argNob > 64) {
             throw new SmallArrayException("Number of bits is too large.");
-        }
+        } // if
 
         this.numberOfBits = argNob;
     } // setNumberOfBits() method
 
     /**
      * Accessor methor to return the length of the array.
+     * @return 
      * @author dejan
      */
     public byte size() {
         return length;
-    }
+    } // size() method
 
 } // SmallArray abstract class
 

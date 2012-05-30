@@ -13,27 +13,39 @@ import com.areen.jlib.exceptions.SmallArrayException;
 public class SmallArrayInt extends SmallArray {
     int data;
 
+    /**
+     * 
+     * @param argNob
+     * @throws SmallArrayException
+     */
     public SmallArrayInt(final int argNob) throws SmallArrayException {
         super(argNob);
         length = (byte) (32 / argNob);
-    }
+    } // SmallArrayInt() method
 
+    /**
+     * 
+     * @param argIdx
+     * @param argValue
+     * @throws SmallArrayException
+     * @throws ArrayIndexOutOfBoundsException
+     */
     public void set(final int argIdx, final int argValue)
             throws SmallArrayException, ArrayIndexOutOfBoundsException {
         int maxVal = (int) Math.pow(2.0, numberOfBits);
         if (length < argIdx) {
             throw new ArrayIndexOutOfBoundsException(argIdx);
-        }
+        } // if
         if (argValue >= maxVal) {
             throw new SmallArrayException("Value is greater than the maximum allowed for an element. Got "
                     + argValue + ", but can handle values up to " + maxVal);
-        }
+        } // if
         data = (int) Math.pow(2.0, 32) - 1;
         for (int j = 0; j < 4; j++) {
             for (int i = 7; i >= 0; i--) {
                 System.out.print(i);
-            }
-        }
+            } // for
+        } // for
 
         System.out.println();
         System.out.println(wlz(6));
@@ -44,20 +56,29 @@ public class SmallArrayInt extends SmallArray {
         System.out.println(wlz(data | ((int) Math.pow(2.0, argIdx * numberOfBits)) - 1));
     } // set() method
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             SmallArrayInt sai = new SmallArrayInt(3);
             sai.set(3, 5);
         } catch (SmallArrayException sae) {
             System.out.println(sae.getMessage());
-        }
-    }
+        } // catch
+    } // main() method
 
+    /**
+     * 
+     * @param argValue
+     * @return
+     */
     public String wlz(final int argValue) {
         String binString = Integer.toBinaryString(argValue);
         return "00000000000000000000000000000000".substring(binString.length())
                 + binString + " : " + argValue;
-    }
+    } // wlz() method
 
 } // SmallArrayInt class
 
