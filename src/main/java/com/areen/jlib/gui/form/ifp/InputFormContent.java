@@ -28,10 +28,17 @@ import org.jdesktop.swingx.JXDatePicker;
  * SimpleObject types are most often going to be used as simple models or as a
  * way to obtain/use underlying transfer object as a model...
  *
+ * @param <T> 
  * @author dejan
  */
 public class InputFormContent<T extends SimpleObject> extends JPanel {
+    /**
+     * 
+     */
     public static final int VERTICAL = 0;
+    /**
+     * 
+     */
     public static final int HORIZONTAL = 1;
     LinkedHashMap<String, Object> globalLabels = new LinkedHashMap();
     HashMap<Integer, Object> specialComponentField = new HashMap();
@@ -39,6 +46,10 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
     HashMap<Integer, String> labelForField = new HashMap();
     PropertyChangeSupport changes;
     T model;
+    /**
+     * 
+     * @param argSo
+     */
     public InputFormContent(final T argSo) { 
         model = argSo; 
         if (changes == null) {
@@ -58,24 +69,58 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                 reportChange(evt);
             } // propertyChange() method
         });
-    }
+    } // InputFormContent() method
+    
+    /**
+     * 
+     * @return
+     */
     public T getModel() {
         return model;
-    }
-    public void setModel(final T argSo) { model = argSo; }
+    } // getModel() method
     
+    /**
+     * 
+     * @param argSo
+     */
+    public void setModel(final T argSo) { 
+        model = argSo; 
+    } // setModel() method
+    
+    /**
+     * 
+     * @param argModelIndex
+     * @param argComponent
+     */
     public void setComponentForModelIndex(int argModelIndex, Object argComponent) { 
         specialComponentField.put(argModelIndex, argComponent);
-    }
+    } // setComponentForModelIndex() method
     
+    /**
+     * 
+     * @param argModelIndex
+     * @param argUnLabeled
+     */
     public void setUnLabeledForModelIndex(int argModelIndex, boolean argUnLabeled) { 
         notLabeledField.put(argModelIndex, argUnLabeled);
-    }
+    } // setUnLabeledForModelIndex() method
     
+    /**
+     * 
+     * @param argModelIndex
+     * @param argLabel
+     */
     public void setLabelForModelIndex(int argModelIndex, String argLabel) { 
         labelForField.put(argModelIndex, argLabel);
-    }
+    } // setLabelForModelIndex() method
     
+    /**
+     * 
+     * @param argModelFields
+     * @param argFormColumns
+     * @param argFormAlignment
+     * @return
+     */
     public JPanel createSubGroupDetailsPanel(int[] argModelFields, int argFormColumns, int argFormAlignment) {
         int formColumns = argFormColumns;
         LinkedHashMap<String, Object> labels = new LinkedHashMap();
@@ -91,7 +136,7 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                     labels.put(curLabel, null);
                 } else {
                     labels.put(curLabel, specialComponentField.get(argModelFields[i]));
-                }
+                } // else
             } else if (getModel().getFieldClass(argModelFields[i]).toString().indexOf("Date") >= 0) {
                 if (!specialComponentField.containsKey(argModelFields[i])) {
                     final JXDatePicker datePicker = new JXDatePicker();
@@ -102,7 +147,7 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                         public void actionPerformed(ActionEvent e) {
                             changes.firePropertyChange("VALUE_CHANGE", getModel().getTitles()[n] 
                                     + " : ", getModel().getTitles()[n] + " : " + datePicker.getDate());
-                        }
+                        } // actionPerformed() method
                     });
 
                     class DatePicker<datePicker> extends InputFormFieldEditor {
@@ -110,18 +155,18 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                         @Override
                         public Object getValue() {
                             return datePicker.getDate();
-                        }
+                        } // getValue() method
 
                         @Override
                         public JComponent getComponent() {
                             return datePicker;
-                        }
+                        } // getComponent() method
                     };
 
                     labels.put(curLabel, new DatePicker());
                 } else {
                     labels.put(curLabel, specialComponentField.get(argModelFields[i]));
-                }
+                } // else
             } // else if
         } // for 
         JPanel groupFormContentPanel = new JPanel();
@@ -179,12 +224,12 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                     @Override
                     public Object getValue() {
                         return fieldComponent.getText();
-                    }
+                    } // getValue() method
 
                     @Override
                     public JComponent getComponent() {
                         return fieldComponent;
-                    }
+                    } // getComponent() method
                 };
 
                 pairs.setValue(new FormTextField());
@@ -211,7 +256,7 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
             makeCompactGrid(groupFormContentPanel, labels.size(), formColumns, 6, 6, 6, 6);
         } else if (argFormAlignment == HORIZONTAL && formColumns <= 1) {
             makeCompactGrid(groupFormContentPanel, 1, labels.size() * 2, 6, 6, 6, 6);
-        }
+        } // else if
         groupFormContentPanel.validate();
         groupFormContentPanel.repaint();
         System.out.println("SIZE: " + labels.size());
@@ -219,14 +264,32 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
         return groupFormContentPanel;
     } // createSubGroupDetailsPanel() method
 
+    /**
+     * 
+     * @param argChanges
+     */
     public void setPropertyChangeSupport(PropertyChangeSupport argChanges) {
         changes = argChanges;
-    }
+    } // setPropertyChangeSupport() method
 
+    /**
+     * 
+     * @return
+     */
     public PropertyChangeSupport getPropertyChangeSupport() {
         return changes;
-    }
+    } // getPropertyChangeSupport() method
     
+    /**
+     * 
+     * @param parent
+     * @param rows
+     * @param cols
+     * @param initialX
+     * @param initialY
+     * @param xPad
+     * @param yPad
+     */
     public static void makeCompactGrid(final Container parent, final int rows, final int cols,
             final int initialX, final int initialY,
             final int xPad, final int yPad) {
@@ -290,6 +353,10 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
         return layout.getConstraints(c);
     } // getConstraintsForCell() method
 
+    /**
+     * 
+     * @param evt
+     */
     public void reportChange(final PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
         //DEBUG:

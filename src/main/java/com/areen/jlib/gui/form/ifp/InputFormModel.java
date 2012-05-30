@@ -10,10 +10,20 @@ import javax.swing.Action;
 
 /**
  *
+ * @param <T> 
  * @author mehjabeen
  */
 public class InputFormModel<T extends SimpleObject> {
+    /**
+     * 
+     */
     public T model = null;
+    /**
+     * 
+     */
     public String title = null;
+    /**
+     * 
+     */
     public ArrayList<Action> actions = new ArrayList();
 }

@@ -30,14 +30,19 @@ import com.areen.jlib.tuple.Pair;
  */
 public class CodePair extends Pair<String, String> {
 
+    /**
+     * 
+     * @param left
+     * @param right
+     */
     public CodePair(final String left, final String right) {
         super(left, right);
-    }
+    } // CodePair() method
 
     @Override
     public String toString() {
         return first + " - " + second;
-    }
+    } // toString() method
 } // CodePair class
 
 // $Id: CodePair.java 76 2011-08-11 12:10:31Z dejan $

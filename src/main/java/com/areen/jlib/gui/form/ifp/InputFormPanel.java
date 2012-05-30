@@ -27,7 +27,10 @@
 package com.areen.jlib.gui.form.ifp;
 
 import com.areen.jlib.model.SimpleObject;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,6 +58,9 @@ public class InputFormPanel extends javax.swing.JPanel {
     InputFormModel formModel;
     InputFormContent formContent;
     PropertyChangeSupport changes;
+    /**
+     * 
+     */
     public static final String VALUE_CHANGE = "VALUE_CHANGE";
 
     /** Creates new form InputFormPanel. */
@@ -81,13 +87,17 @@ public class InputFormPanel extends javax.swing.JPanel {
         });
     } // InputFormPanel() method
 
-    /** Creates new form InputFormPanel. */
+    /** Creates new form InputFormPanel.
+     * @param argRequisitionId 
+     */
     public InputFormPanel(final int argRequisitionId) {
         this();
         currentRequisition = argRequisitionId;
     } // InputFormPanel() method
 
-    /** Creates new form InputFormPanel. */
+    /** Creates new form InputFormPanel.
+     * @param argModel 
+     */
     public InputFormPanel(final InputFormModel argModel) {
         this();
         initComponents();
@@ -111,7 +121,7 @@ public class InputFormPanel extends javax.swing.JPanel {
                     public void actionPerformed(ActionEvent e) {
                         changes.firePropertyChange("VALUE_CHANGE", formModel.model.getTitles()[n] 
                                 + " : ", formModel.model.getTitles()[n] + " : " + datePicker.getDate());
-                    }
+                    } // actionPerformed() method
                 });
 
                 class DatePicker<datePicker> extends InputFormFieldEditor {
@@ -119,12 +129,12 @@ public class InputFormPanel extends javax.swing.JPanel {
                     @Override
                     public Object getValue() {
                         return datePicker.getDate();
-                    }
+                    } // getValue() method
 
                     @Override
                     public JComponent getComponent() {
                         return datePicker;
-                    }
+                    } // getComponent() method
                 };
 
                 addFormField(formModel.model.getTitles()[i], new DatePicker());
@@ -136,7 +146,10 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // InputFormPanel() method
 
-    /** Creates new form InputFormPanel. */
+    /** Creates new form InputFormPanel.
+     * @param argModel 
+     * @param argFormContentPanel 
+     */
     public InputFormPanel(final InputFormModel argModel, final InputFormContent argFormContentPanel) {
         this();
         initComponents();
@@ -155,18 +168,34 @@ public class InputFormPanel extends javax.swing.JPanel {
         this.repaint();
     } // InputFormPanel() method
 
+    /**
+     * 
+     * @param argTitle
+     */
     public void setTitle(final String argTitle) {
         titleLabel.setText(argTitle);
     } // setTitle() method
 
+    /**
+     * 
+     * @param argButton
+     */
     public void addButton(final JButton argButton) {
         buttonContainerPanel.add(argButton);
     } // addButton() method
 
+    /**
+     * 
+     * @param argFieldName
+     * @param argFieldComponent
+     */
     public void addFormField(String argFieldName, Object argFieldComponent) {
         labels.put(argFieldName, argFieldComponent);
     } // addFormField() method
 
+    /**
+     * 
+     */
     public void configureResizing() {
         formContentPanel.removeAll();
         formContentPanel.setLayout(new SpringLayout());
@@ -200,12 +229,12 @@ public class InputFormPanel extends javax.swing.JPanel {
                     @Override
                     public Object getValue() {
                         return fieldComponent.getText();
-                    }
+                    } // getValue() method
 
                     @Override
                     public JComponent getComponent() {
                         return fieldComponent;
-                    }
+                    } // getComponent() method
                 };
                 
                 pairs.setValue(new FormTextField());
@@ -232,6 +261,10 @@ public class InputFormPanel extends javax.swing.JPanel {
         this.repaint();
     } // configureResizing() method
 
+    /**
+     * 
+     * @return
+     */
     public SimpleObject getModel() {
         if (formModel != null) {
             return formModel.model;
@@ -239,6 +272,10 @@ public class InputFormPanel extends javax.swing.JPanel {
         return null;
     } // getModel() method
 
+    /**
+     * 
+     * @param argModel
+     */
     public void setModel(final SimpleObject argModel) {
         if (formModel != null) {
             formModel.model = argModel;
@@ -248,13 +285,21 @@ public class InputFormPanel extends javax.swing.JPanel {
         } // if
     } // setModel() method
 
+    /**
+     * 
+     * @param argFormModel
+     */
     public void setFormModel(InputFormModel argFormModel) {
         formModel = argFormModel;
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
         titleLabel.setText(formModel.title);
-    }
+    } // setFormModel() method
     
+    /**
+     * 
+     * @param argFormContent
+     */
     public void setFormContent(InputFormContent argFormContent) {
         formContent = argFormContent;
         formContentPanel.removeAll();
@@ -267,7 +312,7 @@ public class InputFormPanel extends javax.swing.JPanel {
         formContentPanel.repaint();
         this.validate();
         this.repaint();
-    }
+    } // setFormContent() method
     
     @Override
     public void setFont(final Font argFont) {
@@ -283,14 +328,22 @@ public class InputFormPanel extends javax.swing.JPanel {
         this.repaint();
     } // setFont() method
 
+    /**
+     * 
+     * @param argSize
+     */
     public void setTitleSize(final float argSize) {
         titleFontSize = argSize;
         Font titleFont = defaultFont.deriveFont(titleFontSize);
         titleLabel.setFont(titleFont);
         titleLabel.validate();
         titleLabel.repaint();
-    } // setTitleSize()
+    } // setTitleSize() method
 
+    /**
+     * 
+     * @param argModelIndices
+     */
     public void setHiddenFields(final int... argModelIndices) {
         for (int i = argModelIndices.length - 1; i >= 0; i--) {
             //DEBUG: System.out.println(argModelIndices[i] + " "
@@ -302,6 +355,11 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setHiddenFields() method
 
+    /**
+     * 
+     * @param argModelIndex
+     * @param argComponent
+     */
     public void setFieldWithInputComponent(int argModelIndex, InputFormFieldEditor argComponent) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
@@ -317,6 +375,12 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setFieldWithInputComponent() method
 
+    /**
+     * 
+     * @param argModelIdx
+     * @param argComponent
+     * @param argLbl
+     */
     public void setFieldWithInputComponentAndLabel(int argModelIdx, 
             InputFormFieldEditor argComponent, 
             JLabel argLbl) {
@@ -376,6 +440,11 @@ public class InputFormPanel extends javax.swing.JPanel {
         } // while
     } // setFieldWithValue() method
 
+    /**
+     * 
+     * @param argModelIndex
+     * @param argFormIndex
+     */
     public void setFieldAtFormIndex(final int argModelIndex, final int argFormIndex) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
@@ -417,6 +486,10 @@ public class InputFormPanel extends javax.swing.JPanel {
         configureResizing();
     } // setFieldWithInputComponent() method
 
+    /**
+     * 
+     * @param evt
+     */
     public void reportChange(final PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
         //DEBUG:
@@ -435,6 +508,16 @@ public class InputFormPanel extends javax.swing.JPanel {
         } // if
     } // reportChange() method
 
+    /**
+     * 
+     * @param parent
+     * @param rows
+     * @param cols
+     * @param initialX
+     * @param initialY
+     * @param xPad
+     * @param yPad
+     */
     public static void makeCompactGrid(final Container parent, final int rows, final int cols,
             final int initialX, final int initialY,
             final int xPad, final int yPad) {
@@ -498,10 +581,19 @@ public class InputFormPanel extends javax.swing.JPanel {
         return layout.getConstraints(c);
     } // getConstraintsForCell() method
 
+    /**
+     * 
+     * @return
+     */
     public PropertyChangeSupport getChangesTrigger() {
         return changes;
-    }
+    } // getChangesTrigger() method
 
+    /**
+     * 
+     * @param argModelIndex
+     * @return
+     */
     public Object getFieldInputComponent(final int argModelIndex) {
         Object ret = null;
         int counter = 0;
@@ -518,6 +610,11 @@ public class InputFormPanel extends javax.swing.JPanel {
         return ret;
     } // getFieldInputComponent() method
 
+    /**
+     * 
+     * @param argModelIndex
+     * @return
+     */
     public String getFieldLabel(final int argModelIndex) {
         String ret = null;
         int counter = 0;
@@ -534,6 +631,10 @@ public class InputFormPanel extends javax.swing.JPanel {
         return ret;
     } // getFieldInputComponent() method
 
+    /**
+     * 
+     * @param argModelIndex
+     */
     public void triggerFieldUpdate(final int argModelIndex) {
         int counter = 0;
         Iterator it = labels.entrySet().iterator();
@@ -557,6 +658,9 @@ public class InputFormPanel extends javax.swing.JPanel {
         } // while
     } // triggerFieldUpdate() method
 
+    /**
+     * 
+     */
     public void triggerAllFieldUpdates() {
         Iterator it = labels.entrySet().iterator();
         done:
