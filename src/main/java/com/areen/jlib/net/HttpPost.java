@@ -93,7 +93,8 @@ public class HttpPost {
             part1 += "--" + boundary + crlf;
             File f = new File(fileNames[0]);
             fileName = f.getName(); // we do not want the whole path, just the name
-            part1 += "Content-Disposition: form-data; name=\"userfile\"; filename=\"" + fileName + "\"" + crlf;
+            part1 += "Content-Disposition: form-data; name=\"userfile\"; filename=\"" + fileName + "\"" 
+                    + crlf;
             
             // CONTENT-TYPE
             // TODO: add proper MIME support here
@@ -108,7 +109,7 @@ public class HttpPost {
             // File's binary data will be sent after this part
 
             // ::::: PART 2 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-            String part2 = crlf + "--" +boundary + "--" + crlf;
+            String part2 = crlf + "--" + boundary + "--" + crlf;
 
             
 
