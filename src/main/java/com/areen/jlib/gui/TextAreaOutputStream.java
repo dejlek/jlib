@@ -51,44 +51,58 @@ public class TextAreaOutputStream
     // *****************************************************************************
     // INSTANCE CONSTRUCTORS/INIT/CLOSE/FINALIZE
     // *****************************************************************************
+    /**
+     * 
+     * @param ta
+     */
     public TextAreaOutputStream(JTextArea ta) {
         this(ta, 1000);
-    }
+    } // TextAreaOutputStream() method
 
+    /**
+     * 
+     * @param ta
+     * @param ml
+     */
     public TextAreaOutputStream(JTextArea ta, int ml) {
         if (ml < 1) {
             throw new IllegalArgumentException("Maximum lines of " + ml 
                     + " in TextAreaOutputStream constructor is not permitted");
-        }
+        } // if
         textArea = ta;
         maxLines = ml;
         lineLengths = new LinkedList();
         curLength = 0;
         oneByte = new byte[1];
-    }
+    } // TextAreaOutputStream() method
 
     // *****************************************************************************
     // INSTANCE METHODS - ACCESSORS
     // *****************************************************************************
+    /**
+     * 
+     */
     public synchronized void clear() {
         lineLengths = new LinkedList();
         curLength = 0;
         textArea.setText("");
-    }
+    } // clear() method
 
     /**
      * Get the number of lines this TextArea will hold.
+     * @return 
      */
     public synchronized int getMaximumLines() {
         return maxLines;
-    }
+    } // getMaximumLines() method
 
     /**
      * Set the number of lines this TextArea will hold.
+     * @param val 
      */
     public synchronized void setMaximumLines(int val) {
         maxLines = val;
-    }
+    } // setMaximumLines() method
 
     // *****************************************************************************
     // INSTANCE METHODS
@@ -99,23 +113,23 @@ public class TextAreaOutputStream
             textArea = null;
             lineLengths = null;
             oneByte = null;
-        }
-    }
+        } // if
+    } // close() method
 
     @Override
     public void flush() {
-    }
+    } // flush() method
 
     @Override
     public void write(int val) {
         oneByte[0] = (byte) val;
         write(oneByte, 0, 1);
-    }
+    } // write() method
 
     @Override
     public void write(byte[] ba) {
         write(ba, 0, ba.length);
-    }
+    } // write() method
 
     @Override
     public synchronized void write(byte[] ba, int str, int len) {
@@ -126,8 +140,8 @@ public class TextAreaOutputStream
                 curLength = 0;
                 if (lineLengths.size() > maxLines) {
                     textArea.replaceRange(null, 0, ((Integer) lineLengths.removeFirst()).intValue());
-                }
-            }
+                } // if
+            } // if
             for (int xa = 0; xa < 10; xa++) {
                 try {
                     textArea.append(new String(ba, str, len));
@@ -138,29 +152,34 @@ public class TextAreaOutputStream
                         thr.printStackTrace();
                     } else {
                         Thread.sleep(200);
-                    }
-                }
-            }
+                    } // else
+                } // catch
+            } // for
         } catch (Throwable thr) {
             CharArrayWriter caw = new CharArrayWriter();
             thr.printStackTrace(new PrintWriter(caw, true));
             textArea.append(System.getProperty("line.separator", "\n"));
             textArea.append(caw.toString());
-        }
-    }
+        } // catch
+    } // write() method
 
     private boolean bytesEndWith(byte[] ba, int str, int len, byte[] ew) {
         if (len < LINE_SEP.length) {
             return false;
-        }
+        } // if
         for (int xa = 0, xb = (str + len - LINE_SEP.length); xa < LINE_SEP.length; xa++, xb++) {
             if (LINE_SEP[xa] != ba[xb]) {
                 return false;
-            }
-        }
+            } // if
+        } // for
         return true;
-    }
+    } // bytesEndWith() method
    
+    /**
+     * 
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         JFrame frame = new JFrame();
         frame.add(new JLabel("Output"), BorderLayout.NORTH);
@@ -179,7 +198,7 @@ public class TextAreaOutputStream
         for (int i = 0; i < 100; i++) {
             System.out.println(i);
             Thread.sleep(500);
-        }
+        } // for
     } // main() method
     
 } // TextAreaOutputStream class

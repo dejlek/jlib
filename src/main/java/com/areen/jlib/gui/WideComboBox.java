@@ -37,21 +37,36 @@ public class WideComboBox extends JComboBox {
     private int maxWidth = -1; /// -1 indicates that it is not set
     
 
+    /**
+     * 
+     */
     public WideComboBox() {
         super();
-    }
+    } // WideComboBox() method
 
+    /**
+     * 
+     * @param items
+     */
     public WideComboBox(final Object[] items) {
         super(items);
-    }
+    } // WideComboBox() method
 
+    /**
+     * 
+     * @param items
+     */
     public WideComboBox(Vector items) {
         super(items);
-    }
+    } // WideComboBox() method
 
+    /**
+     * 
+     * @param aModel
+     */
     public WideComboBox(ComboBoxModel aModel) {
         super(aModel);
-    }
+    } // WideComboBox() method
 
     /**
      * {@inheritDoc}
@@ -128,23 +143,39 @@ public class WideComboBox extends JComboBox {
             isTableCellEditor = tmp.equals(Boolean.TRUE);
         } // if
         return isTableCellEditor;
-    } // isTableCellEditor method
+    } // isTableCellEditor() method
 
+    /**
+     * 
+     * @return
+     */
     public boolean isPopupOnEditEnabled() {
         return popupOnEditEnabled;
-    }
+    } // isPopupOnEditEnabled() method
 
+    /**
+     * 
+     * @param argPopupOnEditEnabled
+     */
     public void setPopupOnEditEnabled(boolean argPopupOnEditEnabled) {
         popupOnEditEnabled = argPopupOnEditEnabled;
-    }
+    } // setPopupOnEditEnabled() method
     
+    /**
+     * 
+     * @return
+     */
     public int getMaxWidth() {
         return maxWidth;
-    }
+    } // getMaxWidth() method
 
+    /**
+     * 
+     * @param argMaxWidth
+     */
     public void setMaxWidth(int argMaxWidth) {
         maxWidth = argMaxWidth;
-    }
+    } // setMaxWidth() method
     
 
     

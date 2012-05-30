@@ -16,24 +16,12 @@
 
 package com.areen.jlib.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
@@ -55,14 +43,15 @@ public class MenuButton extends JButton
      */
     public MenuButton() {
         this("");
-    }
+    } // MenuButton() method
 
     /**
      * Default Constructor that creates a blank button with the specified action and a down facing arrow.
+     * @param argAction 
      */
     public MenuButton(final javax.swing.Action argAction) {
         this(new JButton(argAction), SwingConstants.SOUTH);
-    }
+    } // MenuButton() method
 
 
     /**
@@ -71,7 +60,7 @@ public class MenuButton extends JButton
      */
     public MenuButton(final String argLabel) {
         this(new JButton(argLabel), SwingConstants.SOUTH);
-    }
+    } // MenuButton() method
 
     /**
      * Creates a button with the specified text
@@ -81,12 +70,12 @@ public class MenuButton extends JButton
      */
     public MenuButton(final String text, final int orientation) {
         this(new JButton(text), orientation);
-    }
+    } // MenuButton() method
 
     /**
      * Passes in the button to use in the left hand side, with the specified
      * orientation for the arrow on the right hand side.
-     * @param mainButton JButton
+     * @param argMainButton 
      * @param orientation int
      */
     public MenuButton(final JButton argMainButton, final int orientation) {
@@ -111,19 +100,19 @@ public class MenuButton extends JButton
         this.add(mainButton, BorderLayout.CENTER);
         this.add(dropDownButton, BorderLayout.EAST);
         this.mainButton.addPropertyChangeListener("enabled", this);
-    }
+    } // MenuButton() method
 
     @Override
     public void setIcon(final Icon defaultIcon) {
         super.setIcon(defaultIcon);
         this.mainButton.setIcon(defaultIcon);
-    }
+    } // setIcon() method
 
     @Override
     public void setToolTipText(final String text) {
         this.mainButton.setToolTipText(text);
         this.dropDownButton.setToolTipText(text);
-    }
+    } // setToolTipText() method
 
     /**
      * Sets the popup menu to show when the arrow is clicked.
@@ -131,7 +120,7 @@ public class MenuButton extends JButton
      */
     public void setMenu(final JPopupMenu menu) {
         this.dropDownMenu = menu;
-    }
+    } // setMenu() method
 
     /**
      * gets the drop down menu
@@ -139,7 +128,7 @@ public class MenuButton extends JButton
      */
     public JPopupMenu getMenu() {
         return dropDownMenu;
-    }
+    } // getMenu() method
 
     /**
      * returns the main (left hand side) button.
@@ -147,7 +136,7 @@ public class MenuButton extends JButton
      */
     public JButton getMainButton() {
         return mainButton;
-    }
+    } // getMainButton() method
 
     /**
      * gets the drop down button (with the arrow)
@@ -155,63 +144,69 @@ public class MenuButton extends JButton
      */
     public JButton getDropDownButton() {
         return dropDownButton;
-    }
+    } // getDropDownButton() method
 
 
+    @Override
     public void propertyChange(final PropertyChangeEvent evt) {
         dropDownButton.setEnabled(mainButton.isEnabled());
-    }
+    } // propertyChange() method
 
+    @Override
     public void stateChanged(final ChangeEvent e) {
         if (e.getSource() == mainButton.getModel()) {
             if (dropDownMenu.isVisible() && !mainButton.getModel().isRollover()) {
                 mainButton.getModel().setRollover(true);
                 return;
-            }
+            } // if
             dropDownButton.getModel().setRollover(mainButton.getModel().isRollover());
             dropDownButton.setSelected(mainButton.getModel().isArmed() && mainButton.getModel().isPressed());
         } else {
             if (dropDownMenu.isVisible() && !dropDownButton.getModel().isSelected()) {
                 dropDownButton.getModel().setSelected(true);
                 return;
-            }
+            } // if
             mainButton.getModel().setRollover(dropDownButton.getModel().isRollover());
-        }
-    }
+        } // else
+    } // stateChanged() method
 
     /**
      * action listener for the arrow button- shows / hides the popup menu.
      * @param e ActionEvent
      */
+    @Override
     public void actionPerformed(final ActionEvent e) {
         if (this.dropDownMenu == null) {
             return;
-        }
+        } // if
 
         Point p = this.getLocationOnScreen();
         dropDownMenu.setLocation((int) p.getX(),
                 (int) p.getY() + this.getHeight());
         dropDownMenu.show(mainButton, 0, mainButton.getHeight());
 
-    }
+    } // actionPerformed() method
 
+    @Override
     public void popupMenuCanceled(final PopupMenuEvent e) {
         dropDownMenu.setVisible(false);
-    }
+    } // popupMenuCanceled() method
 
+    @Override
     public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 
         mainButton.getModel().setRollover(true);
         dropDownButton.getModel().setSelected(true);
-    }
+    } // popupMenuWillBecomeVisible() method
 
+    @Override
     public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
         //popupVisible = false;
 
         mainButton.getModel().setRollover(false);
         dropDownButton.getModel().setSelected(false);
         ((JPopupMenu) e.getSource()).removePopupMenuListener(this); // act as good programmer :)
-    }
+    } // popupMenuWillBecomeInvisible() method
 
     /**
      * adds a action listener to this button (actually to the left hand side
@@ -219,11 +214,15 @@ public class MenuButton extends JButton
      * be affected.
      * @param al ActionListener
      */
+    @Override
     public void addActionListener(final ActionListener al) {
         this.mainButton.addActionListener(al);
         //this.addActionListener(al);
-    }
+    } // addActionListener() method
 
+    /**
+     * 
+     */
     public static void test() {
         JFrame frame = new JFrame("Simple Split Button Test");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -254,23 +253,28 @@ public class MenuButton extends JButton
         frame.setSize(200, 100);
         frame.show();
 
-    }
+    } // test() method
 
     private static JMenuItem addMI(final String text) {
         JMenuItem mi = new JMenuItem(text);
         mi.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 System.out.println(e.getActionCommand());
-            }
+            } // actionPerformed() method
         });
 
         return mi;
-    }
+    } // addMI() method
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(final String[] args) {
         test();
-    }
+    } // main() method
 
 } // MenuButton class
 

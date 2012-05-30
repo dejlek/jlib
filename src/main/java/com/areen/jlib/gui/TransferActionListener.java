@@ -50,6 +50,9 @@ public class TransferActionListener implements ActionListener,
                                               PropertyChangeListener {
     private JComponent focusOwner = null;
     
+    /**
+     * 
+     */
     public TransferActionListener() {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addPropertyChangeListener("permanentFocusOwner", this);
@@ -62,19 +65,19 @@ public class TransferActionListener implements ActionListener,
             focusOwner = (JComponent) o;
         } else {
             focusOwner = null;
-        }
+        } // else
     } // propertyChange() method
     
     @Override
     public void actionPerformed(ActionEvent e) {
         if (focusOwner == null) {
             return;
-        }
+        } // if
         String action = (String) e.getActionCommand();
         Action a = focusOwner.getActionMap().get(action);
         if (a != null) {
             a.actionPerformed(new ActionEvent(focusOwner, ActionEvent.ACTION_PERFORMED, null));
-        }
+        } // if
     } // actionPerformed() method
     
 } // TransferActionListener class

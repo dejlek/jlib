@@ -15,19 +15,9 @@
 
 package com.areen.jlib.gui;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  * A simple class if we need a JButton with vertical text.
@@ -40,6 +30,11 @@ import javax.swing.SwingUtilities;
  */
 public class VerticalButton extends JButton {
 
+    /**
+     * 
+     * @param caption
+     * @param clockwise
+     */
     public VerticalButton(final String caption, final boolean clockwise) {
         Font f = getFont();
         FontMetrics fm = getFontMetrics(f);
@@ -62,7 +57,7 @@ public class VerticalButton extends JButton {
         } else {
             g.rotate(-Math.PI / 2);
             g.translate(-bi.getHeight(), bi.getWidth());
-        }
+        } // else
         g.drawString(caption, 2, -6);
 
         Icon icon = new ImageIcon(bi);
@@ -72,13 +67,22 @@ public class VerticalButton extends JButton {
         setActionCommand(caption);
     } // VerticalButton constructor
 
+    /**
+     * 
+     * @param caption
+     */
     public VerticalButton(final String caption) {
         this(caption, false);
     } // VerticalButton constructor
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 JFrame frame = new JFrame("Vertical Button Demo");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,7 +91,7 @@ public class VerticalButton extends JButton {
                 frame.add(new VerticalButton("Vertical Down", true));
                 frame.pack();
                 frame.setVisible(true);
-            }
+            } // run() method
         });
     } // main() method
 
