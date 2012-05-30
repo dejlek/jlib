@@ -4,12 +4,18 @@
  */
 package com.areen.jlib.gui.weber;
 
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.Vector;
 import javax.swing.*;
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.text.Document;
 
 /**
@@ -30,8 +36,9 @@ public class Weber {
     private boolean addressBarEnabled = false;
 
     /** Set the page.
-    @param jep the pane on which to display the url
-    @param url the url to display */
+     * @param jep the pane on which to display the url
+     * @param argUrl  
+    */
     protected static void setPage(final JEditorPane jep, final String argUrl) {
         try {
             jep.setPage(argUrl);
@@ -39,9 +46,9 @@ public class Weber {
             System.err.println(argUrl);
             System.err.println(e);
             //System.exit(-1);
-        }
+        } // catch
 
-    }
+    } // setPage() method
 
     /** An inner class which listens for keypresses on the Back button. */
     class BackButtonListener implements ActionListener {
@@ -57,7 +64,7 @@ public class Weber {
             this.backButton = argBackBtn;
             this.history = argHist;
             this.label = argLbl;
-        }
+        } // BackButtonListener() method
 
         /** The action is to show the last url in the history.
         @param e the event*/
@@ -73,12 +80,12 @@ public class Weber {
                 label.setText("<html><b>URL:</b> " + curl);
                 if (history.size() == 1) {
                     backButton.setEnabled(false);
-                }
+                } // if
             } catch (Exception ex) {
                 System.out.println("Exception " + ex);
-            }
-        }
-    }
+            } // catch
+        }  // actionPerformed() method
+    } // BackButtonListener inner class
 
     /** An inner class that listens for hyperlinkEvent.*/
     class LinkFollower implements HyperlinkListener {
@@ -95,11 +102,11 @@ public class Weber {
             this.backButton = argBackBtn;
             this.history = argHist;
             this.label = argLbl;
-        }
+        } // LinkFollower() method
 
         public String getCurrentUrl() {
             return currentUrl;
-        }
+        } // getCurrentUrl() method
 
         /** The action is to show the page of the URL the user clicked on.
         @param evt the event. We only care when its type is ACTIVATED. */
@@ -114,7 +121,7 @@ public class Weber {
                     Object ojb = jep.getDocument().getProperty("title");
                     if (ojb != null) {
                         title = (String) ojb;
-                    }
+                    } // if
                     label.setText("<html><b>URL:</b> " + currentUrl + " <b>TITLE:</b>" + title);
                 } catch (Exception e) {
                     System.out.println("ERROR: Trouble fetching url");
@@ -125,7 +132,8 @@ public class Weber {
 
     /** The contructor runs the browser. It displays the main frame with the
     fetched initialPage
-    @param initialPage the first page to show */
+    * @param argContainer 
+    * @param initialPage the first page to show */
     public Weber(final Container argContainer, final String initialPage) {
         title = "N/A";
 
@@ -140,7 +148,7 @@ public class Weber {
         Object ojb = jep.getDocument().getProperty("title");
         if (ojb != null) {
             title = (String) ojb;
-        }
+        } // if
 
         // set up the window
         JScrollPane scrollPane = new JScrollPane(jep);
@@ -166,7 +174,7 @@ public class Weber {
                 Document doc = jep.getDocument();
                 doc.putProperty(Document.StreamDescriptionProperty, null);
                 setPage(jep, history.lastElement().toString());
-            }
+            } // actionPerformed() method
         });
 
         // A toolbar to hold all our buttons
@@ -190,21 +198,31 @@ public class Weber {
 
     } // Weber constructor
 
+    /**
+     * 
+     * @return
+     */
     public JPanel getPanel() {
         return panel;
-    }
+    } // getPanel() method
 
+    /**
+     * 
+     * @return
+     */
     public String getTitle() {
         return title;
-    }
+    } // getTitle() method
 
-    /** Create a Weber object. Use the command-line url if given */
+    /** Create a Weber object. Use the command-line url if given
+     * @param args 
+     */
     public static void main(final String[] args) {
         String initialPage = new String("http://www.google.com");
 
         if (args.length > 0) {
             initialPage = args[0];
-        }
+        } // if
 
         JFrame f = new JFrame("Simple Web Browser");
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -215,14 +233,14 @@ public class Weber {
             @Override
             public void windowClosing(final WindowEvent e) {
                 System.exit(0);
-            }
+            } // windowClosing() method
         }); // WindowListener
 
         Weber b = new Weber(f.getContentPane(), initialPage);
         f.pack();
         f.setSize(640, 360);
         f.setVisible(true);
-    }
+    } // main() method
 
 } // Weber class
 
