@@ -146,7 +146,7 @@ public class ComboBoxFilter extends PlainDocument {
                 Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
                 if (tmp != null) {
                     isTableCellEditor = tmp.equals(Boolean.TRUE);
-                }
+                } // if
 
                 if (comboBox.isDisplayable()) {
                     comboBox.setPopupVisible(true);
@@ -164,7 +164,7 @@ public class ComboBoxFilter extends PlainDocument {
                         
                         if (!isTableCellEditor()) {
                             String txt = updateFcbEditor();
-                        }
+                        } // if
 
                         if ((comboBox.getSelectedItem() == null)) {
                             /*
@@ -202,7 +202,7 @@ public class ComboBoxFilter extends PlainDocument {
                             comboBox.setSelectedItem(pickedItem);
                         } else {
                             ComboBoxFilter.this.setText(pickedKey.toString());
-                        }
+                        } // else
                         break;
 
                     case KeyEvent.VK_ENTER:
@@ -221,7 +221,7 @@ public class ComboBoxFilter extends PlainDocument {
                                 pickedKey = txt;
                                 comboBoxModel.setPickedItem(pickedItem);
                                 comboBoxModel.setPickedKey(txt);
-                            }
+                            } //else
                         } else {
                             if (txt == null) {
                                 // if user types a string that has no match, we select the last picked item.
@@ -262,7 +262,7 @@ public class ComboBoxFilter extends PlainDocument {
                                 selectedIndex = currentIndex - 1;
                             } else {
                                 selectedIndex = currentIndex;
-                            }
+                            } // else
 
                             // we set this to false ONLY if the combo box is a cell editor!
                             arrowKeyPressed = false;
@@ -315,15 +315,15 @@ public class ComboBoxFilter extends PlainDocument {
                 } else {
                     if (!(pa || ma)) {
                         setText("");
-                    }
-                }
+                    } // if
+                } // else
 
                 // Workaround for Bug 5100422 - Hide Popup on focus loss
                 if (hidePopupOnFocusLoss) {
                     ComboBoxFilter.this.comboBox.setPopupVisible(false);
                 } // if
                 comboBoxModel.setReadyToFinish(false);
-            }
+            } // focusLost() method
 
             @Override
             public void focusGained(FocusEvent fe) {
@@ -350,18 +350,18 @@ public class ComboBoxFilter extends PlainDocument {
                 JComboBox box = (JComboBox) pme.getSource();
                 popupMenuWidth = box.getSize().width;
                 popupMenuHeight = box.getSize().height;
-            }
+            } // popupMenuWillBecomeVisible() method
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
                 LOGGER.info("hiding popup...");
                 comboBox.putClientProperty("item-picked", Boolean.FALSE);
-            }
+            } // popupMenuWillBecomeInvisible() method
 
             @Override
             public void popupMenuCanceled(PopupMenuEvent pme) {
                 // do nothing
-            }
+            } // popupMenuCanceled() method
         });
 
 
@@ -395,8 +395,8 @@ public class ComboBoxFilter extends PlainDocument {
         selectedIndex = comboBox.getSelectedIndex();
         if (selected != null) {
             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
-        }
-    }
+        } // if
+    } // ComboBoxFilter() method
 
     /**
      * User typically will call this method from a table cell editor when we
@@ -422,7 +422,7 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxModel.setCancelled(false);
         if (isTableCellEditor()) {
             comboBoxModel.setReadyToFinish(false);
-        }
+        } // if
 
         String pat = (String) argPattern.toString();
 
@@ -453,7 +453,7 @@ public class ComboBoxFilter extends PlainDocument {
             } else {
                 if (pat != null) {
                     setText(pat.trim());
-                }
+                } // if
             } // else
 
             if (pat == null) {
@@ -475,10 +475,10 @@ public class ComboBoxFilter extends PlainDocument {
             } // if
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } // catch
         if (isTableCellEditor()) {
             comboBoxModel.setReadyToFinish(false);
-        }
+        } // if
         inPreparation = false;
         LOGGER.info("prepare done.");
     } // prepare() method
@@ -496,7 +496,7 @@ public class ComboBoxFilter extends PlainDocument {
             // return caret position to the original place
             comboBoxEditor.setCaretPosition(pos);
         } // if
-    }
+    } // clearTextSelection() method
 
     private void setText(String text) {
         try {
@@ -505,8 +505,8 @@ public class ComboBoxFilter extends PlainDocument {
             super.insertString(0, text, null);
         } catch (BadLocationException e) {
             throw new RuntimeException(e.toString());
-        }
-    }
+        } // catch
+    } // setText() method
 
     /**
      * This method is a leftover from the previous version of the
@@ -515,7 +515,7 @@ public class ComboBoxFilter extends PlainDocument {
     private void highlightCompletedText(int start) {
         comboBoxEditor.setCaretPosition(getLength());
         comboBoxEditor.moveCaretPosition(start);
-    }
+    } // highlightCompletedText() method
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -530,7 +530,7 @@ public class ComboBoxFilter extends PlainDocument {
             arrowKeyPressed = false;
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
             return;
-        }
+        } // if
             
         boolean itemPicked = false; // we need this value because item-picked may change due to chain
         // of events
@@ -540,7 +540,7 @@ public class ComboBoxFilter extends PlainDocument {
             itemPicked = false;
         } else {
             itemPicked = true;
-        }
+        } // else
         boolean isPicked = (Boolean) comboBox.getClientProperty("item-picked");
         comboBox.putClientProperty("item-picked", itemPicked || isPicked);
         
@@ -554,7 +554,7 @@ public class ComboBoxFilter extends PlainDocument {
             int idx = comboBoxModel.getKeyIndex();
             if (isTableCellEditor()) {
                 comboBoxModel.setReadyToFinish(true);
-            }
+            } // if
             
             // This is an ArrayOutOfBounds exception "fix". When user presses SPACE + ENTER sometimes we get
             // an error, because strs is an empty array!
@@ -562,7 +562,7 @@ public class ComboBoxFilter extends PlainDocument {
                 super.insertString(offs, strs[idx], a);
             } else {
                 super.insertString(offs, "", a);
-            }
+            } // else
 
             // We have to filter after the user selects an item with the mouse.
             // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
@@ -596,7 +596,7 @@ public class ComboBoxFilter extends PlainDocument {
 
         if (finish) {
             return;
-        }
+        } // if
 
         filterTheModel();
     } // insertString() method
@@ -648,7 +648,7 @@ public class ComboBoxFilter extends PlainDocument {
         Object obj = comboBoxModel.getKeyOfAnItem(argItem);
         if ((argItem == null) && (obj == null)) {
             return;
-        }
+        } // if 
         pickedItem = argItem;
         pickedKey = obj.toString();
     } // pickItem() method
@@ -677,7 +677,7 @@ public class ComboBoxFilter extends PlainDocument {
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
         //LOGGER.info("SELECTED AFTER:" + comboBox.getSelectedItem());
-    }
+    } // filterTheModel() method
 
     /**
      * Use this method whenever you need to determine if the comboBox is used as
@@ -691,9 +691,9 @@ public class ComboBoxFilter extends PlainDocument {
         Object tmp = comboBox.getClientProperty("JComboBox.isTableCellEditor");
         if (tmp != null) {
             isTableCellEditor = tmp.equals(Boolean.TRUE);
-        }
+        } // if
         return isTableCellEditor;
-    } // isTableCellEditor method
+    } // isTableCellEditor() method
 
     /**
      * This method is used internally to fix the popup-menu size. Apparently
@@ -708,7 +708,7 @@ public class ComboBoxFilter extends PlainDocument {
     private void fixPopupSize() {
         if (inPreparation) {
             return;
-        }
+        } // if
         LOGGER.info("fixPopupSize()");
         int maxRows = comboBox.getMaximumRowCount();
         if ((previousItemCount < maxRows) || (comboBox.getItemCount() < maxRows)) {
@@ -748,27 +748,43 @@ public class ComboBoxFilter extends PlainDocument {
                  * component with the newly selected item's key.                           */
                 if (!isTableCellEditor()) {
                     setText(txt);
-                }
+                } // if
             } // if
         } // if
         return txt;
     } // updateFcbEditor() method
 
+    /**
+     * 
+     * @return
+     */
     public boolean isTriggeredByKeyPress() {
         return triggeredByKeyPress;
-    }
+    } // isTriggeredByKeyPress() method
 
+    /**
+     * 
+     * @param argTriggeredByKeyPress
+     */
     public void setTriggeredByKeyPress(boolean argTriggeredByKeyPress) {
         triggeredByKeyPress = argTriggeredByKeyPress;
-    }
+    } // setTriggeredByKeyPress() method
 
+    /**
+     * 
+     * @return
+     */
     public Object getPickedItem() {
         return pickedItem;
-    }
+    } // getPickedItem() method
 
+    /**
+     * 
+     * @return
+     */
     public Object getPickedKey() {
         return pickedKey;
-    }
+    } // getPickedKey() method
 } // ComboBoxFilter class
 
 // $Id$
