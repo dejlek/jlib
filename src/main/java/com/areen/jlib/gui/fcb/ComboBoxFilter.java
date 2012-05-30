@@ -117,8 +117,7 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor = (JTextComponent) comboBox.getEditor().getEditorComponent();
         comboBoxEditor.setDocument(this);
 
-        // let's add a key listener to the editor
-        comboBoxEditor.addKeyListener(new KeyAdapter() {
+        KeyAdapter keyAdapter = new KeyAdapter() {
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -296,7 +295,10 @@ public class ComboBoxFilter extends PlainDocument {
                 } // switch
                 keyPressed = false;
             } // keyPressed() method
-        });
+        }; // KeyAdapter subclass (anonymous)
+        
+        // add the keyAdapter as *the first* KeyListener registered in the comboBoxEditor
+        addAsTheFirstKeyListener(keyAdapter);
 
         // Bug 5100422 on Java 1.5: Editable JComboBox won't hide popup when tabbing out
         hidePopupOnFocusLoss = System.getProperty("java.version").startsWith("1.5");
@@ -753,6 +755,41 @@ public class ComboBoxFilter extends PlainDocument {
         } // if
         return txt;
     } // updateFcbEditor() method
+    
+    /**
+     * This method is used internally to insert the ComboBoxFilter's internal KeyAdapter object as
+     * *the first* key listener of the combo box editor component. 
+     * Other key listeners will come after.
+     * When ComboBoxFilter is instantiated some key listeners may already be installed in the comboBoxEditor.
+     * This method fixes that.
+     * @param argKeyAdapter 
+     */
+    private void addAsTheFirstKeyListener(KeyAdapter argKeyAdapter) {
+        System.out.println("addAsTheFirstKeyListener()");
+        // get old key listeners
+        KeyListener[] keyListeners = comboBoxEditor.getKeyListeners();
+        
+        if (keyListeners.length == 0) {
+            // if there are no other key listeners installed, install the internal one and return.
+            comboBoxEditor.addKeyListener(argKeyAdapter);
+        } else {
+            // if there were some key listeners do the following:
+            
+            // remove all
+            for (KeyListener kl : keyListeners) {
+                comboBoxEditor.removeKeyListener(kl);
+                System.out.println("[[[[[[[[ " + kl);
+            }
+
+            // now add ComboBoxFilter's KeyAdapter as the first:
+            comboBoxEditor.addKeyListener(argKeyAdapter);
+
+            // now add all old key listeners
+            for (KeyListener kl : keyListeners) {
+                comboBoxEditor.addKeyListener(kl);
+            }
+        } // else
+    } // makeFirstKeyListener() method
 
     /**
      * 

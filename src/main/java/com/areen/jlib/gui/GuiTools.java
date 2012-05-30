@@ -117,6 +117,7 @@ public class GuiTools {
         Rectangle rec = argFrame.getBounds();
         BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
         argFrame.paint(bufferedImage.getGraphics());
+        
         File temp = null;
         try {
             // Create temp file.

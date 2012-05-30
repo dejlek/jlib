@@ -10,11 +10,13 @@
  */
 package com.areen.jlib.test;
 
-import com.areen.jlib.gui.*;
+import com.areen.jlib.gui.ComboBoxLink;
+import com.areen.jlib.gui.ComboBoxPairRenderer;
+import com.areen.jlib.gui.DefaultCellEditorX;
+import com.areen.jlib.gui.WideComboBox;
 import com.areen.jlib.gui.fcb.*;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
@@ -320,8 +322,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
         System.out.println(fcb.getPickedItem());
         System.out.println(fcb.getPickedKey());
-        File file = GuiTools.makeScreenshot("apc-client", this);
-        System.out.println("Screenshot file: " + file);
+        //File file = GuiTools.makeScreenshot("apc-client", this);
+        //System.out.println("Screenshot file: " + file);
     }//GEN-LAST:event_debugButtonActionPerformed
 
     /**
