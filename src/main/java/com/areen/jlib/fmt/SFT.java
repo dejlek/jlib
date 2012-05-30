@@ -34,18 +34,28 @@ public class SFT {
 
     // in order to use it as a stack, use: addFirst(e), removeFirst(e), peekFirst(e)
 
+    /**
+     * 
+     */
     public SFT() {
         stack = new ArrayDeque<Object>();
         queue = new LinkedList<Object>();
         text = "";
         position = 0;
-    }
+    } // SFT() method
 
+    /**
+     * 
+     * @param argText
+     */
     public SFT(final String argText) {
         this();
         text = argText;
-    }
+    } // SFT() method
 
+    /**
+     * 
+     */
     public void parse() {
         int pos = lookAhead('(');
         if (pos == -1) {
@@ -69,7 +79,7 @@ public class SFT {
             if (end != -1) {
                 queue.add(text.substring(start, end));
             } // if
-        }
+        } // while
 
         if (end == -1) {
             end = lookAhead(')');
@@ -82,7 +92,7 @@ public class SFT {
                 state = State.END_ELEMENT;
             } // else
         } // if
-    } // parse()
+    } // parse() method
 
     /**
      * Scan until argWhat is found.
@@ -105,19 +115,26 @@ public class SFT {
      */
     public Object peek() {
         return queue.peek();
-    }
+    } // peek() method
 
+    /**
+     * 
+     */
     public void dump() {
         for (Object obj : queue) {
             System.out.println("[" + obj + "]");
-        }
-    }
+        } // for
+    } // dump() method
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(final String[] args) {
         SFT sft = new SFT("(User LED01 Dejan Lekic 2000.22)");
         sft.parse();
         sft.dump();
-    }
+    } // main() method
 
 } // SFT class
 
