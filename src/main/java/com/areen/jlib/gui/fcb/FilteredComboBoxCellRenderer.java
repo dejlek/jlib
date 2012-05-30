@@ -41,6 +41,10 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
         super();
     } // FilteredComboBoxCell constructor (default)
     
+    /**
+     * 
+     * @param argCBModel
+     */
     public FilteredComboBoxCellRenderer(FilteredComboBoxModel argCBModel) {
         super();
         cbModel = argCBModel;
@@ -55,12 +59,12 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
         if (System.getSecurityManager() != null) {
             if (border != null) {
                 return border;
-            }
+            } // if
             return SAFE_NO_FOCUS_BORDER;
         } else {
             if (border != null && (noFocusBorder == null || noFocusBorder == DEFAULT_NO_FOCUS_BORDER)) {
                 return border;
-            }
+            } // if
             return noFocusBorder;
         } // else
     } // getNoFocusBorder() method
@@ -87,7 +91,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
                 isSelected = true;
             } else {
                 isSelected = false;
-            }
+            } // else
         } // if
         
         setComponentOrientation(list.getComponentOrientation());
@@ -104,7 +108,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             fg = DefaultLookup.getColor(this, ui, "List.dropCellForeground");
 
             isSelected = true;
-        }
+        } // if
 
         if (isSelected) {
             setBackground(bg == null ? list.getSelectionBackground() : bg);
@@ -112,7 +116,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
         } else {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
-        }
+        } // else
         
         if (value instanceof Icon) {
             setIcon((Icon) value);
@@ -124,7 +128,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             } else {
                 //setText(Arrays.toString((Object[]) value));
                 setText(Utility.oa2string((Object[]) value, " - "));
-            }
+            } // else
         } else if (value instanceof Pair) {
             setIcon(null);
             if (value == null) {
@@ -132,11 +136,11 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             } else {
                 Pair pair = (Pair) value;
                 setText(pair.getFirst() + " - " + pair.getSecond());
-            }
+            } // else
         } else {
             setIcon(null);
             setText((value == null) ? "" : value.toString());
-        }
+        } // else
 
         setEnabled(list.isEnabled());
         setFont(list.getFont());
@@ -145,13 +149,13 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
         if (cellHasFocus) {
             if (isSelected) {
                 border = DefaultLookup.getBorder(this, ui, "List.focusSelectedCellHighlightBorder");
-            }
+            } // if
             if (border == null) {
                 border = DefaultLookup.getBorder(this, ui, "List.focusCellHighlightBorder");
-            }
+            } // if
         } else {
             border = getNoFocusBorder();
-        }
+        } // else
         setBorder(border);
 
         return this;

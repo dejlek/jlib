@@ -70,6 +70,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     private AncestorListener ancestorListener;
     private PropertyChangeListener focusPropertyListener;
     
+    /**
+     * 
+     * @param argComboBox
+     */
     public FilteredComboBoxCellEditor(JComboBox argComboBox) {
         comboBox = argComboBox;
         comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
@@ -83,7 +87,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
         comboBox.addActionListener(this);
         comboBox.setName("Table.editor");
-    }
+    } // FilteredComboBoxCellEditor() method
     
     /**
      * A convenient constructor that does almost all we have to do. Just give it a model, and it will do
@@ -106,7 +110,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     
     private void setValue(Object value) {
         cbFilter.prepare(value);
-    }
+    } // setValue() method
     
     /**
      * {@inheritDoc}
@@ -123,13 +127,13 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         if (comboBoxModel.isReadyToFinish() && "comboBoxChanged".equals(e.getActionCommand())) {
             stopCellEditing();
             return;
-        }
+        } // if
 
         // Hitting enter results in an actioncommand "comboBoxEdited"
         if (e.getActionCommand().equals("comboBoxEdited")) {
             stopCellEditing();
             return;
-        }
+        } // if
 
         if (comboBoxModel.isCancelled() && "comboBoxChanged".equals(e.getActionCommand())) {
             stopCellEditing();
@@ -149,10 +153,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         if (comboBox.isEditable()) {
             // Notify the combo box that editing has stopped (e.g. User pressed F2)
             comboBox.actionPerformed(new ActionEvent(this, 0, ""));
-        }
+        } // if
         fireEditingStopped();
         return true;
-    }
+    } // stopCellEditing() method
     
     // Implementing TableCellEditor
     @Override
@@ -170,7 +174,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         } else {
             cbFilter.setTriggeredByKeyPress(false);
             setValue(value);
-        }
+        } // else
         installListener(table);
         return comboBox;
     } // getTableCellEditorComponent() method
@@ -188,7 +192,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         keyRow = argRow;
         keyColumn = argColumn;
         pressedKey = argChar;
-    } // storeKeyInfo
+    } // storeKeyInfo() method
 
     /**
      * Specifies the number of clicks needed to start editing.
@@ -198,7 +202,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     public void setClickCountToStart(int count) {
         clickCountToStart = count;
-    }
+    } // setClickCountToStart() method
 
     /**
      * Returns the number of clicks needed to start editing.
@@ -206,7 +210,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     public int getClickCountToStart() {
         return clickCountToStart;
-    }
+    } // getClickCountToStart() method
 
     @Override
     public boolean isCellEditable(EventObject eo) {
@@ -234,10 +238,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             public void run() {
                 if (comboBox.isShowing()) {
                     comboBox.setPopupVisible(true);
-                }
-            }
+                } // if
+            } // run() method
         });
-    }
+    } // showPopup() method
 
     /**
      * Dynamically install self-uninstalling listener, depending on JComboBox
@@ -249,8 +253,8 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             installKeyboardFocusListener();
         } else {
             installAncestorListener();
-        }
-    }
+        } // else
+    } // installListener() method
 
     private void installAncestorListener() {
         if (ancestorListener == null) {
@@ -260,20 +264,20 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
                 public void ancestorAdded(AncestorEvent event) {
                     comboBox.removeAncestorListener(ancestorListener);
                     showPopup();
-                }
+                } // ancestorAdded() method
 
                 @Override
                 public void ancestorRemoved(AncestorEvent event) {
-                }
+                } // ancestorRemoved() method
 
                 @Override
                 public void ancestorMoved(AncestorEvent event) {
-                }
+                } // ancestorMoved() method
 
             };
-        }
+        } // if
         comboBox.addAncestorListener(ancestorListener);
-    }
+    } // installAncestorListener() method
 
     private void installKeyboardFocusListener() {
         if (focusPropertyListener == null) {
@@ -288,11 +292,11 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
                     } // if
                     focusManager().removePropertyChangeListener("permanentFocusOwner", focusPropertyListener);
                     showPopup();
-                }
+                } // propertyChange() method
             };
-        }
+        } // if
         focusManager().addPropertyChangeListener("permanentFocusOwner", focusPropertyListener);
-    }
+    } // installKeyboardFocusListener() method
 
     /**
      * Convience for less typing.
@@ -300,7 +304,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     protected KeyboardFocusManager focusManager() {
         return KeyboardFocusManager.getCurrentKeyboardFocusManager();
-    }
+    } // focusManager() method
     
     /**
      * Returns the Combobox Model.
@@ -309,7 +313,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     public ComboBoxModel getComboBoxModel() {
         return comboBoxModel;
-    } // getComboBoxModel
+    } // getComboBoxModel() method
     
     // ================================================================================================ END ==
     

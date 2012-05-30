@@ -113,7 +113,7 @@ public class FilteredComboBoxModel
 
         if (getSize() > 0) {
             setSelectedItem(getElementAt(0));
-        }
+        } // if
         
         // fcbObjects = new ArrayList<E>(); JDK 7
         fcbObjects = new ArrayList();
@@ -124,9 +124,7 @@ public class FilteredComboBoxModel
      * Be sure the type E is equal to Object[] when using this constructor!
      * 
      * @param argAbstractTableModel
-     * @param columns An int[] array holding information what columns from the model we want to show in the
-     *                combo-box. The first element in the columns array contains the index of the key field.
-     * @param argKeyFieldNumber 
+     * @param argColumns  
      */
     public FilteredComboBoxModel(
             AbstractTableModel argAbstractTableModel
@@ -152,7 +150,7 @@ public class FilteredComboBoxModel
         
         if (getSize() > 0) {
             setSelectedItem(getElementAt(0));
-        }
+        } // if
         
         tableModel.addTableModelListener(new TableModelListener() {
 
@@ -214,13 +212,13 @@ public class FilteredComboBoxModel
     @Override
     public Object getSelectedItem() {
         return selectedObject;
-    }
+    } // getSelectedItem() method
 
     // implements javax.swing.ListModel
     @Override
     public int getSize() {
         return objects.size();
-    }
+    } // getSize() method
 
     // implements javax.swing.ListModel
     @Override
@@ -230,8 +228,8 @@ public class FilteredComboBoxModel
             return objects.get(index);
         } else {
             return null;
-        }
-    }
+        } // else
+    } // getElementAt() method
     
     // implements javax.swing.MutableComboBoxModel
     @Override
@@ -252,7 +250,7 @@ public class FilteredComboBoxModel
         //objects.insertElementAt(anObject, index);
         objects.add(index, anObject);
         fireIntervalAdded(this, index, index);
-    }
+    } // insertElementAt() method
 
     // implements javax.swing.MutableComboBoxModel
     @Override
@@ -262,14 +260,14 @@ public class FilteredComboBoxModel
                 setSelectedItem(getSize() == 1 ? null : getElementAt(index + 1));
             } else {
                 setSelectedItem(getElementAt(index - 1));
-            }
-        }
+            } // else
+        } // if
 
         //objects.removeElementAt(index);
         objects.remove(index);
         
         fireIntervalRemoved(this, index, index);
-    }
+    } // removeElementAt() method
 
     // implements javax.swing.MutableComboBoxModel
     @Override
@@ -277,8 +275,8 @@ public class FilteredComboBoxModel
         int index = objects.indexOf(anObject);
         if (index != -1) {
             removeElementAt(index);
-        }
-    }
+        } // if
+    } // removeElement() method
     
     // ====================================================================================================
     // ==== Public Methods ================================================================================
@@ -295,7 +293,7 @@ public class FilteredComboBoxModel
 
         if (getSize() > 0) {
             selectedObject = getElementAt(0);
-        }
+        } // if
         
         fcbObjects = new ArrayList();
         fcbObjects.ensureCapacity(v.size());
@@ -313,7 +311,7 @@ public class FilteredComboBoxModel
      */
     public int getIndexOf(Object anObject) {
         return objects.indexOf(anObject);
-    }
+    } // getIndexOf() method
 
     /**
      * Empties the list.
@@ -328,9 +326,13 @@ public class FilteredComboBoxModel
             fireIntervalRemoved(this, firstIndex, lastIndex);
         } else {
             selectedObject = null;
-        }
-    }
+        } // else
+    } // removeAllElements() method
     
+    /**
+     * 
+     * @param argPattern
+     */
     public void setPattern(String argPattern) {
         //System.out.println("setPattern(" + argPattern + ")");
         exactObject = null;
@@ -352,7 +354,7 @@ public class FilteredComboBoxModel
         
         if (!objects.isEmpty()) {
             objects.clear();
-        }
+        } // if
         
         boolean exactMatchFound = false;
         if (argPattern.isEmpty()) {
@@ -402,7 +404,7 @@ public class FilteredComboBoxModel
             fireContentsChanged(this, 0, size2 - 1);
         } else {
             fireContentsChanged(this, 0, size2 - 1);
-        }
+        } // else
 
         // Let's select appropriate item.
         if (this.getSize() > 0) {
@@ -419,11 +421,16 @@ public class FilteredComboBoxModel
             } // else
         } else {
             setSelectedItem(null);
-        }
+        } // else
 
         lastPattern = copy;
     } // setPattern() method implementation
     
+    /**
+     * 
+     * @param argPattern
+     * @return
+     */
     public Object lookupItem(String argPattern) {
         if (argPattern.isEmpty()) {
             return null;
@@ -444,47 +451,60 @@ public class FilteredComboBoxModel
         } // else
         // no item starts with the pattern => return null
         return null;
-    }
+    } // lookupItem() method
 
     // checks if str1 starts with str2 - ignores case
     private boolean startsWithIgnoreCase(String str1, String str2) {
         return str1.toUpperCase().startsWith(str2.toUpperCase());
-    }
+    } // startsWithIgnoreCase() method
 
+    /**
+     * 
+     * @return
+     */
     public boolean isTableModelInUse() {
         return tableModelInUse;
-    }
+    } // isTableModelInUse() method
 
+    /**
+     * 
+     * @param argTableModelInUse
+     */
     public void setTableModelInUse(boolean argTableModelInUse) {
         tableModelInUse = argTableModelInUse;
-    }
+    } // setTableModelInUse() method
 
+    /**
+     * 
+     * @param argIndex
+     */
     public void setSelectedIndex(int argIndex) {
         if (argIndex > -1 && argIndex < getSize()) {
             setSelectedItem(objects.get(argIndex));
         } else {
             setSelectedItem(null);
         } // else
-    }
+    } // setSelectedIndex() method
 
     /**
      * Use this method to objtain a reference to an object containing the key part of the Item. In the case
      * our combo-box contains a list of Pairs, we will get the first element. In the case it is a list of
      * Object[] arrays, then we use the columns array to get the index of the key.
+     * @param argItem 
      * @return 
      */
     public Object getKeyOfAnItem(Object argItem) {
         if (argItem == null) {
             return null;
-        }
+        } // if
         if (argItem instanceof Pair) {
             return ((Pair) argItem).getFirst();
-        }
+        } // if
         if (argItem instanceof Object[]) {
             // we assume whenever we deal with Object[] array, it came from a table model.
             int idx = columns[0];
             return ((Object[]) argItem)[idx];
-        }
+        } // if
         
         // in any other case we will convert object to String and check if it is a Sise record or not.
         String str = argItem.toString();
@@ -527,38 +547,70 @@ public class FilteredComboBoxModel
     // ==== Accessors =====================================================================================
     // ====================================================================================================
 
+    /**
+     * 
+     * @return
+     */
     public Object getPickedItem() {
         return pickedItem;
-    }
+    } // getPickedItem() method
     
+    /**
+     * 
+     * @param argPickedItem
+     */
     public void setPickedItem(Object argPickedItem) {
         exactObject = argPickedItem;
         pickedItem = argPickedItem;
-    }
+    } // setPickedItem() method
 
+    /**
+     * 
+     * @return
+     */
     public Object getPickedKey() {
         return pickedKey;
-    }
+    } // getPickedKey() method
 
+    /**
+     * 
+     * @param argPickedKey
+     */
     public void setPickedKey(Object argPickedKey) {
         pickedKey = argPickedKey;
-    }
+    } // setPickedKey() method
     
+    /**
+     * 
+     * @param argReadyToPick
+     */
     public void setReadyToPick(boolean argReadyToPick) {
         readyToPick = argReadyToPick;
-    }
+    } // setReadyToPick() method
     
+    /**
+     * 
+     * @return
+     */
     public boolean isReadyToPick() {
         return readyToPick;
-    }
+    } // isReadyToPick() method
     
+    /**
+     * 
+     * @return
+     */
     public boolean isReadyToFinish() {
         return readyToFinish;
-    }
+    } // isReadyToFinish() method
 
+    /**
+     * 
+     * @param argReadyToFinish
+     */
     public void setReadyToFinish(boolean argReadyToFinish) {
         readyToFinish = argReadyToFinish;
-    }
+    } // setReadyToFinish() method
     
     /**
      * Use this method to obtain the index of the key in a SISE record.
@@ -569,33 +621,61 @@ public class FilteredComboBoxModel
         return keyIndex;
     } // getKeyIndex() method
 
+    /**
+     * 
+     * @return
+     */
     public boolean isMultiSelectionAllowed() {
         return multiSelectionAllowed;
-    }
+    } // isMultiSelectionAllowed() method
 
+    /**
+     * 
+     * @param argMultiSelectionAllowed
+     */
     public void setMultiSelectionAllowed(boolean argMultiSelectionAllowed) {
         multiSelectionAllowed = argMultiSelectionAllowed;
-    }
+    } // setMultiSelectionAllowed() method
     
+    /**
+     * 
+     * @return
+     */
     public boolean isCancelled() {
         return cancelled;
-    }
+    } // isCancelled() method
 
+    /**
+     * 
+     * @param argCancelled
+     */
     public void setCancelled(boolean argCancelled) {
         cancelled = argCancelled;
-    }
+    } // setCancelled() method
 
+    /**
+     * 
+     * @return
+     */
     public boolean isAnyPatternAllowed() {
         return anyPatternAllowed;
-    }
+    } // isAnyPatternAllowed() method
 
+    /**
+     * 
+     * @param argAnyPatternAllowed
+     */
     public void setAnyPatternAllowed(boolean argAnyPatternAllowed) {
         anyPatternAllowed = argAnyPatternAllowed;
-    }
+    } // setAnyPatternAllowed() method
 
+    /**
+     * 
+     * @return
+     */
     public String getLastPattern() {
         return lastPattern;
-    }
+    } // getLastPattern() method
     
     // ====================================================================================================
     // ==== Private Methods ===============================================================================
@@ -612,9 +692,9 @@ public class FilteredComboBoxModel
         Object[] row = new Object[tableModel.getColumnCount()];
         for (int j = 0; j < row.length; j++) {
             row[j] = tableModel.getValueAt(argRowIndex, j);
-        }
+        } // for
         return row;
-    }
+    } // getRow() method
     
     /**
      * This method acts as a "dispatcher" to appropriate check() function.
