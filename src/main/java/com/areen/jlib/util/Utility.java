@@ -132,12 +132,13 @@ public class Utility {
             } //end of try
         } catch (NumberFormatException numberFormat) {
             System.out.println("DEBUG: NumberFormat Error");
-             if (argSo.getFieldClass(argIndex) == Double.class
-                || argSo.getFieldClass(argIndex) == Float.class) {
+             if (argSo.getFieldClass(argIndex) == Double.class) {
                 argSo.set(argIndex, 0.0);
+            } else if (argSo.getFieldClass(argIndex) == Float.class) {
+                argSo.set(argIndex, 0.0f);  
             } else if (argSo.getFieldClass(argIndex) == Integer.class) {
                 argSo.set(argIndex, 0);
-            }
+            } // else if
         } // end catch
     } // set() method
     
