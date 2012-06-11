@@ -160,23 +160,23 @@ public class FilteredComboBoxModel
                 int last;
                 switch (e.getType()) {
                     case TableModelEvent.INSERT:
-                        //System.out.println("FCBM: TableModel insert");
+                        System.out.println("FCBM: TableModel insert");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         //fcbObjects.add(first, getRow(first));
                         FilteredComboBoxModel.this.addElement(getRow(first));
                         break;
                     case TableModelEvent.DELETE:
-                        //System.out.println("FCBM: TableModel delete");
+                        System.out.println("FCBM: TableModel delete");
                         first = e.getFirstRow();
                         last = e.getLastRow();
                         break;
                     case TableModelEvent.UPDATE:
-                        //System.out.println("FCBM: TableModel update");
+                        System.out.println("FCBM: TableModel update");
                         first = e.getFirstRow();
                         last = e.getLastRow();
-                        objects.set(first, getRow(first));
-                        fcbObjects.set(first, getRow(first));
+                        //objects.set(first, getRow(first));
+                        //fcbObjects.set(first, getRow(first));
                         break;
                     default:
                         // nothing
