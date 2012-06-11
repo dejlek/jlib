@@ -200,7 +200,11 @@ public class ComboBoxFilter extends PlainDocument {
                             comboBoxModel.setCancelled(true);
                             comboBox.setSelectedItem(pickedItem);
                         } else {
-                            ComboBoxFilter.this.setText(pickedKey.toString());
+                            if (pickedKey == null) {
+                                ComboBoxFilter.this.setText("");
+                            } else {
+                                ComboBoxFilter.this.setText(pickedKey.toString());
+                            } // else
                         } // else
                         break;
 

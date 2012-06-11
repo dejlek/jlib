@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class FilteredComboBoxModel
         extends AbstractListModel
-        implements MutableComboBoxModel, Serializable {
+        implements MutableComboBoxModel, TableModelListener, Serializable {
     
     // ====================================================================================================
     // ==== Variables =====================================================================================
@@ -129,13 +129,15 @@ public class FilteredComboBoxModel
     public FilteredComboBoxModel(
             AbstractTableModel argAbstractTableModel
             , int[] argColumns) {
-        tableModelInUse = true;
+        setTableModelInUse(true);
         tableModel = argAbstractTableModel;
         columns = argColumns;
         objects = new ArrayList();
-        objects.ensureCapacity(argAbstractTableModel.getRowCount());
+        int initialRowCount = argAbstractTableModel.getRowCount();
+        initialRowCount = (initialRowCount <= 0) ? 4 : initialRowCount;
+        objects.ensureCapacity(initialRowCount);
         fcbObjects = new ArrayList();
-        fcbObjects.ensureCapacity(argAbstractTableModel.getRowCount());
+        fcbObjects.ensureCapacity(initialRowCount);
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             //objects.addElement(items[i]);
             Object[] row = new Object[tableModel.getColumnCount()];
@@ -151,38 +153,8 @@ public class FilteredComboBoxModel
         if (getSize() > 0) {
             setSelectedItem(getElementAt(0));
         } // if
-        
-        tableModel.addTableModelListener(new TableModelListener() {
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int first;
-                int last;
-                switch (e.getType()) {
-                    case TableModelEvent.INSERT:
-                        System.out.println("FCBM: TableModel insert");
-                        first = e.getFirstRow();
-                        last = e.getLastRow();
-                        //fcbObjects.add(first, getRow(first));
-                        FilteredComboBoxModel.this.addElement(getRow(first));
-                        break;
-                    case TableModelEvent.DELETE:
-                        System.out.println("FCBM: TableModel delete");
-                        first = e.getFirstRow();
-                        last = e.getLastRow();
-                        break;
-                    case TableModelEvent.UPDATE:
-                        System.out.println("FCBM: TableModel update");
-                        first = e.getFirstRow();
-                        last = e.getLastRow();
-                        //objects.set(first, getRow(first));
-                        //fcbObjects.set(first, getRow(first));
-                        break;
-                    default:
-                        // nothing
-                } // switch
-            } // tableChanged() method
-        }); // TableModelListener implementation (anonymous)
+               
+        tableModel.addTableModelListener(this);
     } // FilteredComboBoxModel constructor
 
     // ====================================================================================================
@@ -239,9 +211,11 @@ public class FilteredComboBoxModel
         objects.add(anObject);
         fcbObjects.add(anObject);
         fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
+        /*
         if (objects.size() == 1 && selectedObject == null && anObject != null) {
             setSelectedItem(anObject);
         } // if
+        */
     } // addElement() method
 
     // implements javax.swing.MutableComboBoxModel
@@ -277,6 +251,37 @@ public class FilteredComboBoxModel
             removeElementAt(index);
         } // if
     } // removeElement() method
+    
+    // ::::: TableModelListener ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        int first;
+        int last;
+        switch (e.getType()) {
+            case TableModelEvent.INSERT:
+                System.out.println("FCBM: TableModel insert");
+                first = e.getFirstRow();
+                last = e.getLastRow();
+                addElement(getRow(first));
+                System.out.println(">>>" + objects.size());
+                break;
+            case TableModelEvent.DELETE:
+                System.out.println("FCBM: TableModel delete");
+                first = e.getFirstRow();
+                last = e.getLastRow();
+                break;
+            case TableModelEvent.UPDATE:
+                System.out.println("FCBM: TableModel update");
+                first = e.getFirstRow();
+                last = e.getLastRow();
+                Object obj = getRow(first);
+                updateElement(first, obj);
+                break;
+            default:
+                // nothing
+        } // switch
+    } // tableChanged() method
     
     // ====================================================================================================
     // ==== Public Methods ================================================================================
@@ -680,6 +685,11 @@ public class FilteredComboBoxModel
     // ====================================================================================================
     // ==== Private Methods ===============================================================================
     // ====================================================================================================
+    
+    private void updateElement(int argIndex, Object argObject) {
+        objects.set(argIndex, argObject);
+        fcbObjects.set(argIndex, argObject);
+    }
     
     /**
      * Use this method when you need to get all fields of a row in an AbstractTableModel as an array of
