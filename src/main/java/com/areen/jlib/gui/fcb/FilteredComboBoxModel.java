@@ -14,8 +14,11 @@
 
 package com.areen.jlib.gui.fcb;
 
+import com.areen.jlib.beans.AtmRegistry;
 import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.Sise;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +42,7 @@ import org.apache.log4j.Logger;
  */
 public class FilteredComboBoxModel
         extends AbstractListModel
-        implements MutableComboBoxModel, TableModelListener, Serializable {
+        implements MutableComboBoxModel, TableModelListener, PropertyChangeListener, Serializable {
     
     // ====================================================================================================
     // ==== Variables =====================================================================================
@@ -80,7 +83,9 @@ public class FilteredComboBoxModel
     private Object pickedItem;
     private Object pickedKey;
     
-    private static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
+    private static final Logger LOGGER = Logger.getLogger(FilteredComboBoxModel.class.getCanonicalName());
+    private String dataSetID = "unknown";
+    private AtmRegistry tableModelRegistry;
     
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -121,40 +126,43 @@ public class FilteredComboBoxModel
     } // FilteredComboBoxModel constructor
     
     /**
-     * Be sure the type E is equal to Object[] when using this constructor!
+     * If FilteredComboBox should show values from some JTable object, use this constructor.
+     * 
+     * NOTE: argAbstractTableModel MAY be null! Later developer may call setTableModel() method to set the
+     * reference to the actual table model object.
+     * 
+     * The reason why we have argModelID here is that it is very much possible that argAbstractTableModel
+     * could be a DefaultTableModel, not AreenTableModel, so we have to give it a unique ID ourselves.
      * 
      * @param argAbstractTableModel
      * @param argColumns  
      */
     public FilteredComboBoxModel(
-            AbstractTableModel argAbstractTableModel
-            , int[] argColumns) {
+            AbstractTableModel argAbstractTableModel, int[] argColumns, String argModelID) {
         setTableModelInUse(true);
+        dataSetID = argModelID;
         tableModel = argAbstractTableModel;
         columns = argColumns;
-        objects = new ArrayList();
-        int initialRowCount = argAbstractTableModel.getRowCount();
-        initialRowCount = (initialRowCount <= 0) ? 4 : initialRowCount;
-        objects.ensureCapacity(initialRowCount);
         fcbObjects = new ArrayList();
-        fcbObjects.ensureCapacity(initialRowCount);
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            //objects.addElement(items[i]);
-            Object[] row = new Object[tableModel.getColumnCount()];
-            for (int j = 0; j < tableModel.getColumnCount(); j++) {
-                row[j] = tableModel.getValueAt(i, j);
-            } // for
-            objects.add(row); // have to cast because Java will shout otherwise...
-            fcbObjects.add(row);
-        } // for
-
-        keyIndex = columns[0]; // by convention the first element in the columns array is the index of the key
-        
-        if (getSize() > 0) {
-            setSelectedItem(getElementAt(0));
-        } // if
-               
-        tableModel.addTableModelListener(this);
+        handleNewTableModel(tableModel);
+    } // FilteredComboBoxModel constructor
+    
+    /**
+     * If we have an AtmRegistry object, then we use this constructor to find appropriate table-model to use
+     * for value changes...
+     * 
+     * @param argAtmRegistry
+     * @param argColumns
+     * @param argModelID 
+     */
+    public FilteredComboBoxModel(AtmRegistry argAtmRegistry, int[] argColumns, String argModelID) {
+        setTableModelInUse(true);
+        dataSetID = argModelID;
+        setTableModelRegistry(argAtmRegistry);
+        tableModel = argAtmRegistry.get(argModelID);
+        columns = argColumns;
+        fcbObjects = new ArrayList();
+        handleNewTableModel(tableModel);
     } // FilteredComboBoxModel constructor
 
     // ====================================================================================================
@@ -282,6 +290,18 @@ public class FilteredComboBoxModel
                 // nothing
         } // switch
     } // tableChanged() method
+    
+    // ::::: PropertyChangeListener ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (dataSetID == null) {
+            return;
+        }
+        if (evt.getPropertyName().equals(dataSetID)) {
+            tableModel = (AbstractTableModel) evt.getNewValue();
+        }
+    } // propertyChange() method
     
     // ====================================================================================================
     // ==== Public Methods ================================================================================
@@ -682,12 +702,34 @@ public class FilteredComboBoxModel
         return lastPattern;
     } // getLastPattern() method
     
+    /**
+     * Use this method to set a reference to an AtmRegistry object
+     * 
+     * PRE: dataSetID String must be set.
+     * 
+     * @param argTMRegistry 
+     */
+    public void setTableModelRegistry(AtmRegistry argTMRegistry) {
+        if (tableModelRegistry == null) {
+            tableModelRegistry = argTMRegistry;
+        } else {
+            if (tableModelRegistry != argTMRegistry) {
+                tableModelRegistry = argTMRegistry;
+                tableModelRegistry.addPropertyChangeListener(dataSetID, this);
+            } // if
+        } // else
+    } // setTableModelRegistry() method
+    
+    public AtmRegistry getTableModelRegistry() {
+        return tableModelRegistry;
+    }
+    
     // ====================================================================================================
     // ==== Private Methods ===============================================================================
     // ====================================================================================================
     
     private void updateElement(int argIndex, Object argObject) {
-        objects.set(argIndex, argObject);
+//        objects.set(argIndex, argObject);
         fcbObjects.set(argIndex, argObject);
     }
     
@@ -798,6 +840,35 @@ public class FilteredComboBoxModel
         } // if
         return 0;
     } // check() method
+
+    private void handleNewTableModel(AbstractTableModel argAbstractTableModel) {
+        objects = new ArrayList();
+        int rowCount = (argAbstractTableModel == null) ? 0 : argAbstractTableModel.getRowCount();
+        int initialRowCount = rowCount;
+        initialRowCount = (initialRowCount <= 0) ? 4 : initialRowCount;
+        objects.ensureCapacity(initialRowCount);
+        
+        fcbObjects.ensureCapacity(initialRowCount);
+        for (int i = 0; i < rowCount; i++) {
+            //objects.addElement(items[i]);
+            Object[] row = new Object[tableModel.getColumnCount()];
+            for (int j = 0; j < tableModel.getColumnCount(); j++) {
+                row[j] = tableModel.getValueAt(i, j);
+            } // for
+            objects.add(row); // have to cast because Java will shout otherwise...
+            fcbObjects.add(row);
+        } // for
+
+        keyIndex = columns[0]; // by convention the first element in the columns array is the index of the key
+        
+        if (getSize() > 0) {
+            setSelectedItem(getElementAt(0));
+        } // if
+
+        if (tableModel != null) {
+            tableModel.addTableModelListener(this);
+        }
+    }
 
 } // FilteredComboBoxModel class
 
