@@ -710,14 +710,25 @@ public class FilteredComboBoxModel
      * @param argTMRegistry 
      */
     public void setTableModelRegistry(AtmRegistry argTMRegistry) {
+        boolean changed = false;
+        
         if (tableModelRegistry == null) {
             tableModelRegistry = argTMRegistry;
+            changed = true;
         } else {
             if (tableModelRegistry != argTMRegistry) {
                 tableModelRegistry = argTMRegistry;
-                tableModelRegistry.addPropertyChangeListener(dataSetID, this);
+                changed = true;
+                
             } // if
         } // else
+        
+        if (changed) {
+            if ((tableModel != null)  && (dataSetID != null) && (!dataSetID.isEmpty())) {
+                tableModelRegistry.set(dataSetID, tableModel);
+            }
+            tableModelRegistry.addPropertyChangeListener(dataSetID, this);
+        } // if
     } // setTableModelRegistry() method
     
     public AtmRegistry getTableModelRegistry() {
