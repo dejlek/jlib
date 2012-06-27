@@ -85,6 +85,14 @@ public class MenuButton extends JButton
 
         this.dropDownButton = new BasicArrowButton(orientation);
         dropDownButton.addActionListener(this);
+        AbstractAction action = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MenuButton.this.actionPerformed(e);
+            } // actionPerformed() method
+        };
+        dropDownButton.setAction(action);
 
         this.setBorderPainted(false);
         this.dropDownButton.setBorderPainted(false);
