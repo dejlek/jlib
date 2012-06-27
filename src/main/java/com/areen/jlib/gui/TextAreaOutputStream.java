@@ -164,15 +164,20 @@ public class TextAreaOutputStream
     } // write() method
 
     private boolean bytesEndWith(byte[] ba, int str, int len, byte[] ew) {
+        boolean returnValue = false; //PMDOnlyOneReturn introduced local variable
         if (len < LINE_SEP.length) {
-            return false;
+            //PMDOnlyOneReturn: return false;
+            returnValue = false; //PMDOnlyOneReturn utilised local variable
         } // if
         for (int xa = 0, xb = (str + len - LINE_SEP.length); xa < LINE_SEP.length; xa++, xb++) {
             if (LINE_SEP[xa] != ba[xb]) {
-                return false;
+                //PMDOnlyOneReturn: return false;
+                returnValue = false; //PMDOnlyOneReturn utilised local variable
+                break;
             } // if
         } // for
-        return true;
+        //PMDOnlyOneReturn: return true;
+        return returnValue; //PMDOnlyOneReturn utilised local variable
     } // bytesEndWith() method
    
     /**
