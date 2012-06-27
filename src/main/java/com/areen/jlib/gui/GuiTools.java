@@ -96,9 +96,11 @@ public class GuiTools {
         while (!found) {
             if (!(container instanceof JPanel)) {
                 if (container instanceof JFrame) {
-                    return (JFrame) container;
+                    //PMDOnlyOneReturn: return (JFrame) container;
+                    result = (JFrame) container; //PMDOnlyOneReturn utilised local variable
+                    found = true; //PMDOnlyOneReturn ensure break point
                 } else {
-                    return null;
+                    result = null; //PMDOnlyOneReturn utilised local variable
                 } // else
             } // if
             container = container.getParent();

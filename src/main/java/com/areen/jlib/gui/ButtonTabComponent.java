@@ -57,11 +57,14 @@ public class ButtonTabComponent extends JPanel {
         JLabel iconLabel = new JLabel() {
             @Override
             public Icon getIcon() {
+                Icon returnIcon = null; //PMDOnlyOneReturn introduced local variable
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
-                    return pane.getIconAt(i);
-                }
-                return null;
+                    //PMDOnlyOneReturn: return pane.getIconAt(i);
+                    returnIcon = pane.getIconAt(i); //PMDOnlyOneReturn utilised local variable
+                } // if
+                //PMDOnlyOneReturn: return null;
+                return returnIcon; //PMDOnlyOneReturn utilised local variable
             }
         };
         add(iconLabel);
@@ -71,11 +74,14 @@ public class ButtonTabComponent extends JPanel {
         JLabel label = new JLabel() {
 
             public String getText() {
+                String returnTitle = null; //PMDOnlyOneReturn introduced local variable
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
-                    return pane.getTitleAt(i);
+                    //PMDOnlyOneReturn: return pane.getTitleAt(i);
+                    returnTitle = pane.getTitleAt(i); //PMDOnlyOneReturn utilised local variable
                 }
-                return null;
+                //PMDOnlyOneReturn: return null;
+                return returnTitle; //PMDOnlyOneReturn utilised local variable
             }
         };
 

@@ -5,7 +5,7 @@
  */
 package com.areen.jlib.fmt;
 
-import java.util.ArrayDeque;
+//PMDUnusedImports: import java.util.ArrayDeque;
 import java.util.LinkedList;
 
 /**
@@ -24,11 +24,11 @@ public class SFT {
         ERROR
     } // State enum
 
-    private ArrayDeque<Object> stack; /// Stack used for parsing
+    //PMDUnusedPrivateField: private ArrayDeque<Object> stack; /// Stack used for parsing
     private LinkedList<Object> queue; /// Here we store all values
     private String text;
     private int position;
-    private State state = State.START;
+    //PMDUnusedPrivateField: private State state = State.START;
     int start = 0;
     int end = 0;
 
@@ -38,7 +38,7 @@ public class SFT {
      * 
      */
     public SFT() {
-        stack = new ArrayDeque<Object>();
+        //PMDUnusedPrivateField: stack = new ArrayDeque<Object>();
         queue = new LinkedList<Object>();
         text = "";
         position = 0;
@@ -59,21 +59,21 @@ public class SFT {
     public void parse() {
         int pos = lookAhead('(');
         if (pos == -1) {
-            state = State.ERROR;
+            //PMDUnusedPrivateField: state = State.ERROR;
             return;
-        } else {
-            state = State.BEGIN_ELEMENT;
-        } // else
+        } //PMDEmptyIfStmt: else {
+            //PMDUnusedPrivateField: state = State.BEGIN_ELEMENT;
+        //PMDEmptyIfStmt: } // else
         ++position;
         start = position;
-        state = State.TYPE;
+        //PMDUnusedPrivateField: state = State.TYPE;
         end = lookAhead(' ');
         String val = text.substring(start, end);
         queue.add(val);
 
         while (end != -1) {
             ++position;
-            state = State.VALUE;
+            //PMDUnusedPrivateField: state = State.VALUE;
             start = position;
             end = lookAhead(' ');
             if (end != -1) {
@@ -83,13 +83,14 @@ public class SFT {
 
         if (end == -1) {
             end = lookAhead(')');
-            if (end == -1) {
-                state = State.ERROR;
-            } else {
+            //PMDEmptyIfStmt: if (end == -1) {
+                //PMDUnusedPrivateField: state = State.ERROR;
+            //PMDEmptyIfStmt: } else {
+            if (end != -1) { //PMDEmptyIfStmt introduced check instead
                 //end = end - 1;
-                state = State.VALUE;
+                //PMDUnusedPrivateField: state = State.VALUE;
                 queue.add(text.substring(start, end));
-                state = State.END_ELEMENT;
+                //PMDUnusedPrivateField: state = State.END_ELEMENT;
             } // else
         } // if
     } // parse() method
@@ -100,13 +101,16 @@ public class SFT {
      * @return
      */
     private int lookAhead(final char argWhat) {
+        int returnPosition = -1; //PMDOnlyOneReturn introduced local variable 
         for (int i = position; i < text.length(); i++) {
             position = i;
             if (text.charAt(position) == argWhat) {
-                return position;
+                //PMDOnlyOneReturn: return position;
+                returnPosition = position; //PMDOnlyOneReturn utilised local variable 
             } // if
         } // for
-        return -1;
+        //PMDOnlyOneReturn: return -1;
+        return returnPosition; //PMDOnlyOneReturn utilised local variable
     } // lookAhead() method
 
     /**

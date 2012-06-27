@@ -31,7 +31,8 @@ public class ComboBoxPairRenderer extends DefaultListCellRenderer {
             int index, 
             boolean isSelected, 
             boolean cellHasFocus) {
-        Component ret = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        //PMDUnusedLocalVariable: Component ret = super.getListCellRendererComponent(list, value, index, 
+        //isSelected, cellHasFocus);
         if (value instanceof Pair) {
             Pair p = (Pair) value;
             setText(p.getFirst() + " - " + p.getSecond());

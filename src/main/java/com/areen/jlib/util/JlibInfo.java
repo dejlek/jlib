@@ -44,23 +44,24 @@ public class JlibInfo {
     public JlibInfo() throws IOException {
         Properties versionInfo = new Properties();
         InputStream in = this.getClass().getClassLoader().getResourceAsStream("jlibversion.properties");
+        if (in != null) {
+            try {
+                versionInfo.load(in);
 
-        try {
-            versionInfo.load(in);
+                                    // Initialise parameters from Properties file
+                prjVersion = versionInfo.getProperty("prjVersion");
+                patchNumber = versionInfo.getProperty("patchNumber");
+                svnRevision = versionInfo.getProperty("svnRevision");
+                verMajor = prjVersion.split("\\.")[0];
+                verMinor = prjVersion.split("\\.")[1];
+                jlibVersion = verMajor + "." + verMinor + "." + patchNumber + "." + svnRevision;
+            } catch (IOException e) {
+                System.err.println("Error loading Jlib Properties file.");
+            }
 
-				// Initialise parameters from Properties file
-            prjVersion = versionInfo.getProperty("prjVersion");
-            patchNumber = versionInfo.getProperty("patchNumber");
-            svnRevision = versionInfo.getProperty("svnRevision");
-            verMajor = prjVersion.split("\\.")[0];
-            verMinor = prjVersion.split("\\.")[1];
-            jlibVersion = verMajor + "." + verMinor + "." + patchNumber + "." + svnRevision;
-        } catch (IOException e) {
-            System.err.println("Error loading Jlib Properties file.");
+            // release resource (will get tidied up on exit of constructor anyway)
+            in.close();
         }
-
-        // release resource (will get tidied up on exit of constructor anyway)
-        in.close();
     }
 
     public static String getMajor() {
