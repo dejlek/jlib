@@ -15,10 +15,6 @@
  * This file is best viewed with 110 columns.
 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
  *
- * This is the main class for the "apc-client" application.
- * Execute apc-client like this: java -jar apc-client.jar -Dareen.developer=dejan
- * You can ommit the parameter if you do not want to debug the application.
- *
  * Author(s) in chronological order:
  *   Dejan Lekic , http://dejan.lekic.org
  * Contributor(s):
