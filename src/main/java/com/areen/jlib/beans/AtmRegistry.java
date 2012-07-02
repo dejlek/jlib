@@ -56,6 +56,7 @@ public class AtmRegistry implements Serializable {
     
     public AtmRegistry() {
         propertySupport = new PropertyChangeSupport(this);
+        areenTableModels = new  HashMap<String, AbstractTableModel>();
     }
         
     // ====================================================================================================
