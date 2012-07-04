@@ -129,7 +129,7 @@
 
    <module name="TreeWalker">
       <!-- Default Areen TAB width -->
-      <property name="tabWidth" value="3"/>
+      <property name="tabWidth" value="4"/>
 
       <module name="FileContentsHolder"/>
 
