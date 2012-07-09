@@ -43,6 +43,16 @@ import org.apache.log4j.Logger;
 public class FilteredComboBoxModel
         extends AbstractListModel
         implements MutableComboBoxModel, TableModelListener, PropertyChangeListener, Serializable {
+    /*
+     * There are two major use-cases for the FilteredComboBoxModel (FCBM) class:
+     * 1) When it deals with arrays of Pair objects.
+     *    In this case FCBM object maintains an internal liste of all Pair objects inside the `fcbObjects`
+     *    ArrayList. The `objects` ArrayList in this case stores references to the table-model rows (whatever
+     *    the getElementAt() method returns.
+     * 2) When it deals with the table model objects.
+     *    In this case, we use the table model, and we maintain only the list of filtered table model objects
+     *    using the `objects` ArrayList object.
+     */
     
     // ====================================================================================================
     // ==== Variables =====================================================================================
@@ -50,15 +60,18 @@ public class FilteredComboBoxModel
     
     // :::::: PRIVATE/PROTECTED ::::::
     
-    //ArrayList<E> objects; JDK 7
-    ArrayList objects;
+    /**
+     * In the case we use table model as the source for combo-box items, the objects ArrayList object stores
+     * model indexes of filtered items. If the table-model is not used, then objects ArrayList stores either
+     * Pair(s), or Object[]s.
+     */
+    ArrayList objects; // TODO: Once we switch to JDK7 we will use the element type E: ArrayList<E> objects;
+    private final ArrayList fcbObjects; // TODO: same here
     Object selectedObject;
-    //private ArrayList<E> fcbObjects; JDK 7
-    private final ArrayList fcbObjects;
     private String lastPattern = "";
     private int keyFieldIndex = 0; /// The index of the (unique) key part of each item.
     private boolean tableModelInUse = false;
-    AbstractTableModel tableModel;
+    private AbstractTableModel tableModel;
     private Object exactObject = null; /// If there is an exact match, here we hold a reference to the Object.
     private int exactIndex = -1; /// If there is an exact match, here we hold the index of the Object.
     private int[] columns;
@@ -86,6 +99,10 @@ public class FilteredComboBoxModel
     private static final Logger LOGGER = Logger.getLogger(FilteredComboBoxModel.class.getCanonicalName());
     private String dataSetID = "unknown";
     private AtmRegistry tableModelRegistry;
+
+    private ArrayList<Integer> objmap;
+    private String[] patternParts;
+    private int tableModelIndex;
     
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -142,6 +159,7 @@ public class FilteredComboBoxModel
         setTableModelInUse(true);
         dataSetID = argModelID;
         tableModel = argAbstractTableModel;
+        objects = new ArrayList();
         columns = argColumns;
         fcbObjects = new ArrayList();
         handleNewTableModel(tableModel);
@@ -160,6 +178,7 @@ public class FilteredComboBoxModel
         dataSetID = argModelID;
         setTableModelRegistry(argAtmRegistry);
         tableModel = argAtmRegistry.get(argModelID);
+        objects = new ArrayList();
         columns = argColumns;
         fcbObjects = new ArrayList();
         handleNewTableModel(tableModel);
@@ -211,13 +230,30 @@ public class FilteredComboBoxModel
         } // else
     } // getElementAt() method
     
-    // implements javax.swing.MutableComboBoxModel
+    /**
+     * Use this method to insert an item into the combo-box model.
+     * Precondition:
+     *   This method expect tableModelIndex value to be set, so it can insert a proper Integer object into
+     *   the objects array.
+     * NOTE: implements javax.swing.MutableComboBoxModel
+     */
     @Override
     public void addElement(Object anObject) {
-        //TODO: when an element is added to the combo box, we should check if it matches the filter or not!
-        //objects.addElement(anObject);
-        objects.add(anObject);
-        fcbObjects.add(anObject);
+        System.out.println("addElement(" + anObject.getClass().getCanonicalName() + ")");
+        /* 
+         * TODO: when an element is added to the combo box, we should check if it matches the filter or not!
+         *       If it does, then we add it to the `objects` array, and only then we fireIntervalAdded().
+         */
+        if (isTableModelInUse()) {
+            // Check if anObject matches the pattern
+            if (matchesPattern(anObject)) {
+                objects.add(tableModelIndex);
+            }
+        } else {
+            fcbObjects.add(anObject);
+            objects.add(anObject);
+        }
+        
         fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
         /*
         if (objects.size() == 1 && selectedObject == null && anObject != null) {
@@ -380,7 +416,7 @@ public class FilteredComboBoxModel
         if (!objects.isEmpty()) {
             objects.clear();
         } // if
-        
+        String[] strings = null;
         boolean exactMatchFound = false;
         if (argPattern.isEmpty()) {
             // pattern contains no characters - might be erased, so we have to populate objects list.
@@ -389,7 +425,7 @@ public class FilteredComboBoxModel
             // Before we split, lets remove some special characters.
             copy.replaceAll(" - ", " ");
             // pattern contains at least one character
-            String[] strings = copy.split(" ");
+            strings = copy.split(" ");
             
             boolean found;
             Object obj = null;
@@ -449,6 +485,7 @@ public class FilteredComboBoxModel
         } // else
 
         lastPattern = copy;
+        patternParts = strings; // store the patternParts so we do not have to split again
     } // setPattern() method implementation
     
     /**
@@ -740,8 +777,14 @@ public class FilteredComboBoxModel
     // ====================================================================================================
     
     private void updateElement(int argIndex, Object argObject) {
+        /* TODO: whenever an item is updated (typically in the case when table model is in use), we have to
+         *       call this.fireContentsChanged() method to inform listeners about the change.
+         */
 //        objects.set(argIndex, argObject);
-        fcbObjects.set(argIndex, argObject);
+
+        if (!isTableModelInUse()) {
+            fcbObjects.set(argIndex, argObject);
+        }
     }
     
     /**
@@ -879,7 +922,38 @@ public class FilteredComboBoxModel
         if (tableModel != null) {
             tableModel.addTableModelListener(this);
         }
-    }
+    } // handleNewTableModel() method
+
+    /**
+     * Use this method to find out whether the object anObject matches the pattern.
+     * 
+     * NOTE: We assume that if the pattern is an empty string, everything matches.
+     * 
+     * Preconditions:
+     *   This method expects lastPattern to be set. By default it is an empty string.
+     * 
+     * @param anObject
+     * @return Boolean true if it matches the pattern (or if pattern is empty), false if not.
+     */
+    private boolean matchesPattern(Object anObject) {
+        boolean ret = false;
+        
+        String copy = lastPattern;
+        
+        if (copy.isEmpty() || (patternParts == null)) {
+            ret = true;
+        } else {            
+            boolean found = true;
+            int val = 0;
+            for (String str : patternParts) {
+                val = check(str, anObject);
+                found &= ((val == 1) || (val == 2));
+            } // foreach
+            ret = found;
+        } // else
+        
+        return ret;
+    } // matchesPattern() method
 
 } // FilteredComboBoxModel class
 
