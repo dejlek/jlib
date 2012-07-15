@@ -51,7 +51,8 @@ public class FilteredComboBoxModel
      *    the getElementAt() method returns.
      * 2) When it deals with the table model objects.
      *    In this case, we use the table model, and we maintain only the list of filtered table model objects
-     *    using the `objects` ArrayList object.
+     *    using the `objects` ArrayList object. fcbObjects is an ArrayList of Object[] arrays that store 
+     *    references to individual cell objects.
      */
     
     // ====================================================================================================
@@ -152,7 +153,9 @@ public class FilteredComboBoxModel
      * could be a DefaultTableModel, not AreenTableModel, so we have to give it a unique ID ourselves.
      * 
      * @param argAbstractTableModel
-     * @param argColumns  
+     * @param argColumns int[] object holding (table model) column indexes that should be included in the
+     *   filtering process. By convention, the first index in this array is the index of the primary key
+     *   column.
      */
     public FilteredComboBoxModel(
             AbstractTableModel argAbstractTableModel, int[] argColumns, String argModelID) {
@@ -170,7 +173,9 @@ public class FilteredComboBoxModel
      * for value changes...
      * 
      * @param argAtmRegistry
-     * @param argColumns
+     * @param argColumns int[] object holding (table model) column indexes that should be included in the
+     *   filtering process. By convention, the first index in this array is the index of the primary key
+     *   column.
      * @param argModelID 
      */
     public FilteredComboBoxModel(AtmRegistry argAtmRegistry, int[] argColumns, String argModelID) {
@@ -904,8 +909,8 @@ public class FilteredComboBoxModel
         
         fcbObjects.ensureCapacity(initialRowCount);
         for (int i = 0; i < rowCount; i++) {
-            //objects.addElement(items[i]);
             Object[] row = new Object[tableModel.getColumnCount()];
+            
             for (int j = 0; j < tableModel.getColumnCount(); j++) {
                 row[j] = tableModel.getValueAt(i, j);
             } // for
