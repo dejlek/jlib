@@ -50,9 +50,8 @@ public class FilteredComboBoxModel
      *    ArrayList. The `objects` ArrayList in this case stores references to the table-model rows (whatever
      *    the getElementAt() method returns.
      * 2) When it deals with the table model objects.
-     *    In this case, we use the table model, and we maintain only the list of filtered table model objects
-     *    using the `objects` ArrayList object. fcbObjects is an ArrayList of Object[] arrays that store 
-     *    references to individual cell objects.
+     *    In this case, we use the table model, fcbObjects and objects are ArrayLists of Object[] arrays that 
+     *    store references to individual cell objects.
      */
     
     // ====================================================================================================
@@ -245,6 +244,7 @@ public class FilteredComboBoxModel
     @Override
     public void addElement(Object anObject) {
         System.out.println("addElement(" + anObject.getClass().getCanonicalName() + ")");
+        fcbObjects.add(anObject);
         /* 
          * TODO: when an element is added to the combo box, we should check if it matches the filter or not!
          *       If it does, then we add it to the `objects` array, and only then we fireIntervalAdded().
@@ -255,7 +255,6 @@ public class FilteredComboBoxModel
                 objects.add(tableModelIndex);
             }
         } else {
-            fcbObjects.add(anObject);
             objects.add(anObject);
         }
         
@@ -312,20 +311,26 @@ public class FilteredComboBoxModel
                 System.out.println("FCBM: TableModel insert");
                 first = e.getFirstRow();
                 last = e.getLastRow();
+                System.out.println("      F: " + first + "   L: " + last);
                 addElement(getRow(first));
-                System.out.println(">>>" + objects.size());
+                fireIntervalAdded(this, first, last);
                 break;
             case TableModelEvent.DELETE:
                 System.out.println("FCBM: TableModel delete");
                 first = e.getFirstRow();
                 last = e.getLastRow();
+                System.out.println("      F: " + first + "   L: " + last);
+                removeElements(first, last);
+                fireIntervalRemoved(this, first, last);
                 break;
             case TableModelEvent.UPDATE:
                 System.out.println("FCBM: TableModel update");
                 first = e.getFirstRow();
                 last = e.getLastRow();
+                System.out.println("      F: " + first + "   L: " + last);
                 Object obj = getRow(first);
                 updateElement(first, obj);
+                fireContentsChanged(this, first, last);
                 break;
             default:
                 // nothing
@@ -610,10 +615,44 @@ public class FilteredComboBoxModel
         } // else
     } // getMatchingItems() method    
     
+    public void printDebugInfo() {
+        System.out.println("++++ types ++++++++++++++++++++++++++++++++++++++++++++++++");
+        Object[] objs = (Object[]) fcbObjects.get(0);
+        for (Object obj : objs) {
+            if (obj == null) {
+                System.out.println("NULL");
+            } else {
+                System.out.println(obj.getClass().getCanonicalName());
+            }
+        }
+        System.out.println("++++ fcbObjects ++++++++++++++++++++++++++++++++++++++++++++++++");
+        for (Object row : fcbObjects) {
+            Object[] tmp = (Object[]) row;
+            System.out.println(Arrays.toString(tmp));
+        }
+        System.out.println("++++ objects ++++++++++++++++++++++++++++++++++++++++++++++++");
+        for (Object row : objects) {
+            Object[] tmp = (Object[]) row;
+            System.out.println(Arrays.toString(tmp));
+        }
+    }
+    
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
 
+    /**
+     * Use this method to get an array of (model) column indexes that define what columns are included in
+     * the combo-box lookup.
+     * 
+     * NOTE: the first element of the return array is the index of the column which contains the KEY.
+     * 
+     * @return int[] array.
+     */
+    public int[] getColumns() {
+        return columns;
+    } // getColumns() method
+    
     /**
      * 
      * @return
@@ -713,7 +752,7 @@ public class FilteredComboBoxModel
     } // isCancelled() method
 
     /**
-     * 
+        * 
      * @param argCancelled
      */
     public void setCancelled(boolean argCancelled) {
@@ -781,16 +820,61 @@ public class FilteredComboBoxModel
     // ==== Private Methods ===============================================================================
     // ====================================================================================================
     
+    /**
+     * This method is used internally to find an item argItem (which is expected to be an array of Objects)
+     * in the given ArrayList object `data`.
+     * 
+     * We use this method to find an object in the objects ArrayList that has an equal key, so we can remove
+     * the correct element in the objects ArrayList as well.
+     * 
+     * @param argItem
+     * @param data
+     * @return 
+     */
+    private Object findItem(Object[] argItem, ArrayList data) {
+        int ret = -1;
+        int cnt = 0;
+        for (Object obj : data) {
+            Object[] row = (Object[]) obj;
+            if (argItem[keyIndex].equals(row[keyIndex])) {
+                return obj;
+            }
+            ++cnt;
+        } // foreach
+        return null;
+    } // findItem() method
+    
+    /**
+     * This method is used internally to delete elements in the fcbObjects (and objects) ArrayLists with
+     * indexes between argStart and argEnd.
+     * 
+     * @param argStart
+     * @param argEnd 
+     */
+    private void removeElements(int argStart, int argEnd) {
+        for (int i = argStart; i <= argEnd; i++) {
+            
+            Object removedObject = fcbObjects.remove(i);
+            Object obj = findItem((Object[]) removedObject, objects);
+            if (obj != null) {
+                objects.remove(obj);
+            }
+        }
+    } // removeElements() method
+    
     private void updateElement(int argIndex, Object argObject) {
-        /* TODO: whenever an item is updated (typically in the case when table model is in use), we have to
-         *       call this.fireContentsChanged() method to inform listeners about the change.
-         */
-//        objects.set(argIndex, argObject);
-
-        if (!isTableModelInUse()) {
+        if (isTableModelInUse()) {
+            Object updatedObject = fcbObjects.get(argIndex);
+            int idx = objects.indexOf(updatedObject);
+            System.out.println(">>>>>" + idx);
+            if (idx > -1) {
+                objects.set(idx, argObject);
+            }
+            fcbObjects.set(argIndex, argObject);
+        } else {
             fcbObjects.set(argIndex, argObject);
         }
-    }
+    } // updateElement
     
     /**
      * Use this method when you need to get all fields of a row in an AbstractTableModel as an array of
@@ -900,6 +984,15 @@ public class FilteredComboBoxModel
         return 0;
     } // check() method
 
+    /**
+     * This method is used internally, by the constructors mostly, to initialise fcbObjects and objects
+     * ArrayList objects.
+     * 
+     * PRE-CONDITION:
+     *   1) the columns array is expected to be initialised.
+     * 
+     * @param argAbstractTableModel AbstractTableModel that holds the source of data.
+     */
     private void handleNewTableModel(AbstractTableModel argAbstractTableModel) {
         objects = new ArrayList();
         int rowCount = (argAbstractTableModel == null) ? 0 : argAbstractTableModel.getRowCount();
@@ -908,14 +1001,15 @@ public class FilteredComboBoxModel
         objects.ensureCapacity(initialRowCount);
         
         fcbObjects.ensureCapacity(initialRowCount);
+
         for (int i = 0; i < rowCount; i++) {
             Object[] row = new Object[tableModel.getColumnCount()];
             
             for (int j = 0; j < tableModel.getColumnCount(); j++) {
                 row[j] = tableModel.getValueAt(i, j);
             } // for
-            objects.add(row); // have to cast because Java will shout otherwise...
             fcbObjects.add(row);
+            objects.add(row);
         } // for
 
         keyIndex = columns[0]; // by convention the first element in the columns array is the index of the key

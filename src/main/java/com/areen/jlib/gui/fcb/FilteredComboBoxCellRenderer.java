@@ -126,8 +126,21 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
             if (value == null) {
                 setText("");
             } else {
-                //setText(Arrays.toString((Object[]) value));
-                setText(Utility.oa2string((Object[]) value, " - "));
+                if (cbModel != null) {
+                    if (cbModel.isTableModelInUse()) {
+                        Object[] row = (Object[]) value;
+                        int[] cols = cbModel.getColumns();
+                        String txt = row[cols[0]].toString();
+                        for (int i = 1; i < cols.length; i++) {
+                            txt += " - " + row[i];
+                        }
+                        setText(txt);
+                    } else {
+                        setText(Utility.oa2string((Object[]) value, " - "));
+                    }
+                } else {
+                    setText(Utility.oa2string((Object[]) value, " - "));
+                }
             } // else
         } else if (value instanceof Pair) {
             setIcon(null);

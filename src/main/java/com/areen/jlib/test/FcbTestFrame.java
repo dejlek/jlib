@@ -31,6 +31,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private FilteredComboBoxModel cbModel2;
     private FilteredComboBoxModel vecModel;
     private DefaultTableModel tableModel;
+    private FilteredComboBoxModel tableCbModel; /// Table model used for FCB that uses table-model
+    
     static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     /**
      * Creates new form FcbTestFrame
@@ -105,8 +107,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //new ComboBoxLink(normalComboBox, jLabel1);
         AtmRegistry atmRegistry = new AtmRegistry();
         atmRegistry.set("/ds/demo", tableModel);
-        tableComboBox.setEditable(true);
-        FilteredComboBoxModel tableCbModel = new FilteredComboBoxModel(atmRegistry, 
+        //tableComboBox.setEditable(true);
+        tableCbModel = new FilteredComboBoxModel(atmRegistry, 
                 new int[]{0, 1}, 
                 "/ds/demo");
         tableComboBox.setRenderer(new FilteredComboBoxCellRenderer(tableCbModel));
@@ -123,18 +125,20 @@ public class FcbTestFrame extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         testTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         filteredComboBox = new FilteredComboBox(cbModel);
         jLabel1 = new javax.swing.JLabel();
         normalComboBox = new javax.swing.JComboBox();
-        tableComboBox = new WideComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         secondFcb = new FilteredComboBox(cbModel2);
         jLabel2 = new javax.swing.JLabel();
-        debugButton = new javax.swing.JButton();
         customPanel = new javax.swing.JPanel();
+        tableComboBox = new WideComboBox();
+        debugButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FilteredComboBox Test");
@@ -166,13 +170,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(testTable);
 
-        jButton1.setText("Close");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         filteredComboBox.setNextFocusableComponent(secondFcb);
         filteredComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,8 +182,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
         jLabel1.setFocusable(false);
 
         normalComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        tableComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
@@ -204,14 +199,44 @@ public class FcbTestFrame extends javax.swing.JFrame {
 
         jLabel2.setText("jLabel2");
 
+        customPanel.setPreferredSize(new java.awt.Dimension(0, 32));
+        customPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        tableComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        tableComboBox.setPreferredSize(new java.awt.Dimension(200, 25));
+        customPanel.add(tableComboBox);
+
         debugButton.setText("Debug");
         debugButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 debugButtonActionPerformed(evt);
             }
         });
+        customPanel.add(debugButton);
 
-        customPanel.setPreferredSize(new java.awt.Dimension(0, 32));
+        jButton1.setText("Close");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        customPanel.add(jButton1);
+
+        addButton.setText("+");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+        customPanel.add(addButton);
+
+        removeButton.setText("-");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+        customPanel.add(removeButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -221,16 +246,6 @@ public class FcbTestFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(tableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2)
-                        .addGap(18, 18, 18)
-                        .addComponent(debugButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(107, 107, 107))
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -242,7 +257,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
                             .addComponent(secondFcb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(normalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(customPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(customPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -261,20 +277,10 @@ public class FcbTestFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(tableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(debugButton)
-                                .addComponent(jButton1))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(customPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(customPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -337,7 +343,19 @@ public class FcbTestFrame extends javax.swing.JFrame {
         System.out.println(fcb.getPickedKey());
         //File file = GuiTools.makeScreenshot("apc-client", this);
         //System.out.println("Screenshot file: " + file);
+        tableCbModel.printDebugInfo();
     }//GEN-LAST:event_debugButtonActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        tableModel.addRow(new Object[] { tableModel.getRowCount() + 100, "New", "", ""});
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        int selRow = testTable.getSelectedRow();
+        if (selRow > -1) {
+            tableModel.removeRow(selRow);
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -381,6 +399,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private javax.swing.JPanel customPanel;
     private javax.swing.JButton debugButton;
     private javax.swing.JComboBox filteredComboBox;
@@ -392,6 +411,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JComboBox normalComboBox;
+    private javax.swing.JButton removeButton;
     private javax.swing.JComboBox secondFcb;
     private javax.swing.JComboBox tableComboBox;
     private javax.swing.JTable testTable;
