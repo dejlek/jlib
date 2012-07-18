@@ -253,17 +253,12 @@ public class FilteredComboBoxModel
             // Check if anObject matches the pattern
             if (matchesPattern(anObject)) {
                 objects.add(tableModelIndex);
+                fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
             }
         } else {
             objects.add(anObject);
-        }
-        
-        fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
-        /*
-        if (objects.size() == 1 && selectedObject == null && anObject != null) {
-            setSelectedItem(anObject);
-        } // if
-        */
+            fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
+        } // else
     } // addElement() method
 
     // implements javax.swing.MutableComboBoxModel
@@ -336,7 +331,7 @@ public class FilteredComboBoxModel
                 // nothing
         } // switch
     } // tableChanged() method
-    
+
     // ::::: PropertyChangeListener ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     
     @Override
