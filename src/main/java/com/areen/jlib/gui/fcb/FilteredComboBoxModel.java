@@ -396,8 +396,11 @@ public class FilteredComboBoxModel
     } // removeAllElements() method
     
     /**
+     * This method is the most important method for the filtered combo-box. Here we set the pattern, and
+     * filter the items in the fcbObjects ArrayList to objects ArrayList. If all fcbObject items match the
+     * pattern, than objects ArrayList should have the same content as the fcbObjects.
      * 
-     * @param argPattern
+     * @param argPattern String object containing a pattern to match against.
      */
     public void setPattern(String argPattern) {
         //System.out.println("setPattern(" + argPattern + ")");
@@ -452,7 +455,8 @@ public class FilteredComboBoxModel
                 } // foreach
                 
                 if (found) {
-                    LOGGER.info("Exact match `" + obj.toString() + "` found at idx=" + exactIndex);
+                    //Logging just slows the function - the function needs to finish as soon as possible!
+                    //LOGGER.info("Exact match `" + obj.toString() + "` found at idx=" + exactIndex);
                     objects.add(obj);
                 } // if
             } // for
