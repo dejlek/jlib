@@ -121,9 +121,7 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                LOGGER.info("keyPressed()");
                 int keyCode = e.getKeyCode();
-                System.out.println(keyCode);
 
                 /*
                  * In the case user presses SHIFT, CTRL, ALT keys, or <ANY>+TAB,
@@ -157,7 +155,6 @@ public class ComboBoxFilter extends PlainDocument {
 
                 switch (keyCode) {
                     case KeyEvent.VK_TAB:
-                        LOGGER.info("TAB!");
                         finish = true;
                         comboBoxModel.setReadyToFinish(false);
                         
@@ -313,7 +310,6 @@ public class ComboBoxFilter extends PlainDocument {
             public void focusLost(FocusEvent e) {
                 boolean pa = comboBoxModel.isAnyPatternAllowed();
                 boolean ma = comboBoxModel.isMultiSelectionAllowed();
-                LOGGER.info("focusLost()");
 
                 if (pickedKey != null && !(pa || ma)) {
                     // When combo-box loses focus, we need to set the text to the selected
@@ -360,7 +356,6 @@ public class ComboBoxFilter extends PlainDocument {
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
-                LOGGER.info("hiding popup...");
                 comboBox.putClientProperty("item-picked", Boolean.FALSE);
             } // popupMenuWillBecomeInvisible() method
 
@@ -413,7 +408,6 @@ public class ComboBoxFilter extends PlainDocument {
      * @param argPattern
      */
     public void prepare(Object argPattern) {
-        LOGGER.info("prepare(" + argPattern + ")");
 
         if (argPattern == null) {
             // If the previous value is null, we simply exit this method.
@@ -486,7 +480,6 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxModel.setReadyToFinish(false);
         } // if
         inPreparation = false;
-        LOGGER.info("prepare done.");
     } // prepare() method
 
     // ======================================================================================================
@@ -496,7 +489,6 @@ public class ComboBoxFilter extends PlainDocument {
     private void clearTextSelection() {
         if (comboBoxEditor.getSelectedText() != null) {
             // we have a selected text, removing the selection. On Windows text may become selected by default
-            LOGGER.info("SELECTED TEXT: " + comboBoxEditor.getSelectedText());
             int pos = comboBoxEditor.getCaretPosition();
             comboBoxEditor.select(0, 0);
             // return caret position to the original place
@@ -525,8 +517,6 @@ public class ComboBoxFilter extends PlainDocument {
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        LOGGER.info("insertString(" + offs + ", " + str + ")");
-        //LOGGER.info("insertString(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             return;
@@ -552,7 +542,6 @@ public class ComboBoxFilter extends PlainDocument {
         
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
-            LOGGER.info("%%%%%%%%%%%%%");
             System.out.println(str);
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
@@ -609,8 +598,6 @@ public class ComboBoxFilter extends PlainDocument {
 
     @Override
     public void remove(int offs, int len) throws BadLocationException {
-        LOGGER.log(Level.INFO, "remove({0}, {1})", new Object[]{offs, len});
-        LOGGER.info("remove(" + selecting + ", " + arrowKeyPressed + ")");
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be
@@ -673,7 +660,6 @@ public class ComboBoxFilter extends PlainDocument {
         previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
 
         String pattern = getText(0, getLength());
-        //LOGGER.info("filterTheModel(): " + pattern);
         comboBoxModel.setPattern(pattern);
 
         clearTextSelection();
@@ -682,7 +668,6 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxModel.setReadyToFinish(oldValue); // restore the value
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
-        //LOGGER.info("SELECTED AFTER:" + comboBox.getSelectedItem());
     } // filterTheModel() method
 
     /**
@@ -715,7 +700,6 @@ public class ComboBoxFilter extends PlainDocument {
         if (inPreparation) {
             return;
         } // if
-        LOGGER.info("fixPopupSize()");
         int maxRows = comboBox.getMaximumRowCount();
         if ((previousItemCount < maxRows) || (comboBox.getItemCount() < maxRows)) {
             // do this only when we have less than maxRows items, to prevent the flickering.
@@ -769,7 +753,6 @@ public class ComboBoxFilter extends PlainDocument {
      * @param argKeyAdapter 
      */
     private void addAsTheFirstKeyListener(KeyAdapter argKeyAdapter) {
-        System.out.println("addAsTheFirstKeyListener()");
         // get old key listeners
         KeyListener[] keyListeners = comboBoxEditor.getKeyListeners();
         
@@ -782,7 +765,6 @@ public class ComboBoxFilter extends PlainDocument {
             // remove all
             for (KeyListener kl : keyListeners) {
                 comboBoxEditor.removeKeyListener(kl);
-                System.out.println("[[[[[[[[ " + kl);
             }
 
             // now add ComboBoxFilter's KeyAdapter as the first:
