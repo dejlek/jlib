@@ -187,6 +187,26 @@ public class FilteredComboBoxModel
         fcbObjects = new ArrayList();
         handleNewTableModel(tableModel);
     } // FilteredComboBoxModel constructor
+    
+    /**
+     * Constructs a ArrayListModel object initialized with
+     * a ArrayList.
+     *
+     * @param v  a ArrayList object ...
+     */
+    public FilteredComboBoxModel(ArrayList v) {
+        objects = v;
+
+        if (getSize() > 0) {
+            selectedObject = getElementAt(0);
+        } // if
+        
+        fcbObjects = new ArrayList();
+        fcbObjects.ensureCapacity(v.size());
+        for (Object obj : v) {
+            fcbObjects.add(obj);
+        } // foreach
+    } //  // FilteredComboBoxModel constructor
 
     // ====================================================================================================
     // ==== Interface/Superclass Methods ==================================================================
@@ -252,7 +272,7 @@ public class FilteredComboBoxModel
         if (isTableModelInUse()) {
             // Check if anObject matches the pattern
             if (matchesPattern(anObject)) {
-                objects.add(tableModelIndex);
+                objects.add(anObject);
                 fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
             }
         } else {
@@ -347,26 +367,6 @@ public class FilteredComboBoxModel
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
-    
-    /**
-     * Constructs a ArrayListModel object initialized with
-     * a ArrayList.
-     *
-     * @param v  a ArrayList object ...
-     */
-    public FilteredComboBoxModel(ArrayList v) {
-        objects = v;
-
-        if (getSize() > 0) {
-            selectedObject = getElementAt(0);
-        } // if
-        
-        fcbObjects = new ArrayList();
-        fcbObjects.ensureCapacity(v.size());
-        for (Object obj : v) {
-            fcbObjects.add(obj);
-        } // foreach
-    } //  // FilteredComboBoxModel constructor
 
     /**
      * Returns the index-position of the specified object in the list.
@@ -851,21 +851,19 @@ public class FilteredComboBoxModel
      * @param argEnd 
      */
     private void removeElements(int argStart, int argEnd) {
-        for (int i = argStart; i <= argEnd; i++) {
-            
+        for (int i = argEnd; i >= argStart; i--) {
             Object removedObject = fcbObjects.remove(i);
             Object obj = findItem((Object[]) removedObject, objects);
             if (obj != null) {
                 objects.remove(obj);
-            }
-        }
+            } // if
+        } // for
     } // removeElements() method
     
     private void updateElement(int argIndex, Object argObject) {
         if (isTableModelInUse()) {
             Object updatedObject = fcbObjects.get(argIndex);
             int idx = objects.indexOf(updatedObject);
-            System.out.println(">>>>>" + idx);
             if (idx > -1) {
                 objects.set(idx, argObject);
             }
