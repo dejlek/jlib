@@ -20,11 +20,21 @@ public interface SimpleObject<T extends ValueObject> {
     byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
     String[] getTitles();
     T        getValue();
-    T[]      newArray(int argNumberOfElements); /// This should be static too...
-    T        newValue();
+    
     Object   set(int argIndex, Object argValue);
     void     setTitles(String[] argTitles);
     void     setValue(T argVo);
+    
+    // ::::: factory methods :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    // ValueObject
+    T[]               newArray(int argNumberOfElements);
+    T                 newValue();
+    
+    // SimpleObject - basically, the following two are part of the Prototype design pattern
+    //                (however, they do not have to clone the object though)
+    SimpleObject<T>   create();
+    SimpleObject<T>[] create(int argNumberOfElements);
 } // SimpleObject interface
 
 // $Id$

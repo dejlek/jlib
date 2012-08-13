@@ -17,6 +17,16 @@ public class User implements SimpleObject<ValueObject> {
     static final byte NUMBER_OF_FIELDS = 4;
     String[] titles = new String[]{"User ID", "Department", "Username", "Password"};
 
+    @Override
+    public User create() {
+        return new User();
+    }
+
+    @Override
+    public User[] create(int arg) {
+        return new User[arg];
+    }
+
     public static class VO implements ValueObject, Serializable {
         long userPk = 0; /// reserved for future use
     String userId = "UNK01";     /// "userPk" column
