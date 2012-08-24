@@ -9,12 +9,13 @@
  * Authors (in chronological order):
  *   Dejan Lekic - http://dejan.lekic.org
  * Contributors (in chronological order):
- *   -
+ *   Vipul Kumar
  */
 
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.beans.AtmRegistry;
+import com.areen.jlib.gui.form.ifp.CodePair;
 import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.Sise;
 import java.beans.PropertyChangeEvent;
@@ -815,6 +816,65 @@ public class FilteredComboBoxModel
         return tableModelRegistry;
     }
     
+    /**
+     * This method is used to return the ComboBox value at the requested 
+     * index as a KeyValue Pair. 
+     * In case of atmRegistry this extracts 
+     * the key and value from the given table model in atmRegistry.
+     * CodePair is cast to Pair.
+     * In case where there may not be a key and value, or is not of
+     * type Pair or CodePair or atmRegistry, this
+     * returns both key and value of the Pair as the same element value. 
+     * @param index
+     * @return 
+     */
+    public Pair getKeyValuePairForElementAt(int index) {
+
+        Pair retKeyValuePair = null;
+
+        if (index >= 0 && index < objects.size()) {
+            
+            Object element = objects.get(index);
+            
+            if (element != null) {
+                
+                if (element instanceof CodePair) {
+
+                    retKeyValuePair = (Pair) element;
+
+                } else if (element instanceof Pair) {
+
+                    retKeyValuePair = (Pair) element;
+
+                } else if (tableModelRegistry != null) {
+                    
+                    if (tableModel != null && columns.length >= 2) {
+                        
+                        if (index < tableModel.getRowCount()
+                                && columns[0] < tableModel.getColumnCount()
+                                && columns[1] < tableModel.getColumnCount()) {
+
+                            Object tmpKey = tableModel.getValueAt(index, columns[0]);
+                            Object tmpValue = tableModel.getValueAt(index, columns[1]);
+
+                            retKeyValuePair = new Pair((String) tmpKey.toString(),
+                                    (String) tmpValue.toString());
+                        } // if
+                    } // if
+
+                } else {
+
+                    //could be text field
+                    retKeyValuePair = new Pair(element, element);
+
+                } // else
+            }
+
+        } // if
+        return retKeyValuePair;
+    } // getKeyValuePairForElementAt() method
+
+
     // ====================================================================================================
     // ==== Private Methods ===============================================================================
     // ====================================================================================================
