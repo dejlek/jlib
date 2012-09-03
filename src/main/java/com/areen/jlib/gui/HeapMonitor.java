@@ -105,11 +105,18 @@ public class HeapMonitor extends JComponent implements ActionListener {
         g.fillRect(0, 0, Math.min(usedX, warnX), bounds.height);
         
         g.setColor(WARN_COLOR);
+        
+        
         g.fillRect(warnX, 0, 
                 Math.min(usedX - warnX, dangerX - warnX), 
                 bounds.height);
         
-        g.setColor(CRITICAL_COLOR);
+        // TODO: Change this background color depending on the percentage used... I have removed CRITICAL
+        //       color because it may confuse user into thinking that something is wrong.
+        
+        //g.setColor(CRITICAL_COLOR); 
+        g.setColor(Color.GREEN.darker());
+        
         g.fillRect(dangerX, 0, 
                 Math.min(usedX - dangerX, bounds.width - dangerX), 
                 bounds.height);
@@ -129,7 +136,7 @@ public class HeapMonitor extends JComponent implements ActionListener {
         g.drawString(s, x, y);
         
         g.setColor(savedColor);
-    }
+    } // paint() method
 
     /*
      * Timer action method.  Periodically update our stats and force a repaint.
