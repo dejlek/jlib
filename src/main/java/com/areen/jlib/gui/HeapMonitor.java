@@ -106,7 +106,6 @@ public class HeapMonitor extends JComponent implements ActionListener {
         
         g.setColor(WARN_COLOR);
         
-        
         g.fillRect(warnX, 0, 
                 Math.min(usedX - warnX, dangerX - warnX), 
                 bounds.height);
