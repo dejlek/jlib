@@ -1,7 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id: JlibTestFrame.java 463 2012-09-17 10:58:04Z dejan $
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
+
 package com.areen.jlib.net;
 
 import java.io.File;
