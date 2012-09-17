@@ -1,12 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
+
 package com.areen.jlib.test;
 
 import java.awt.Desktop;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -75,3 +81,5 @@ public class BrowserTestPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }
+
+// $Id$

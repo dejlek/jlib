@@ -1,13 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
+
 package com.areen.jlib.test;
 
 import java.awt.CardLayout;
 
 /**
- *
+ * This class is a beginning of JLib's new (manual) testing frame which will be used for all sorts of manual
+ * tests.
+ * 
  * @author Dejan
  */
 public class JlibTestFrame extends javax.swing.JFrame {
@@ -150,3 +159,5 @@ public class JlibTestFrame extends javax.swing.JFrame {
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 }
+
+// $Id$
