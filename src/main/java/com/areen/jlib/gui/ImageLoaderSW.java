@@ -8,8 +8,6 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -42,7 +40,12 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
     @Override
     protected void done() {
         try {
-            imageLabel.setIcon(new ImageIcon(get()));
+            Image image = get();
+            if (image == null) {
+                imageLabel.setIcon(new ImageIcon());
+            } else {
+                imageLabel.setIcon(new ImageIcon(image));
+            }
         } catch (InterruptedException ex) {
             System.out.println(ex);
             //Logger.getLogger(ImageLoaderSW.class.getName()).log(Level.SEVERE, null, ex);

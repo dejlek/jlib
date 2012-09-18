@@ -11,6 +11,8 @@
 
 package com.areen.jlib.test;
 
+import com.areen.jlib.test.panels.BrowserTestPanel;
+import com.areen.jlib.test.panels.ImageLoaderPanel;
 import java.awt.CardLayout;
 
 /**
@@ -21,6 +23,7 @@ import java.awt.CardLayout;
  */
 public class JlibTestFrame extends javax.swing.JFrame {
     BrowserTestPanel browserTestPanel;
+    ImageLoaderPanel imageLoaderPanel;
     
     /**
      * Creates new form JlibTestFrame
@@ -30,6 +33,9 @@ public class JlibTestFrame extends javax.swing.JFrame {
         
         browserTestPanel = new BrowserTestPanel();
         contentPanel.add(browserTestPanel, "browser_test");
+        
+        imageLoaderPanel = new ImageLoaderPanel();
+        contentPanel.add(imageLoaderPanel, "image_loader_panel");
     }
 
     /**
@@ -52,7 +58,9 @@ public class JlibTestFrame extends javax.swing.JFrame {
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
+        topPanel.setBackground(new java.awt.Color(204, 204, 0));
         topPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         headerLabel.setText("JLib Tests");
@@ -60,9 +68,10 @@ public class JlibTestFrame extends javax.swing.JFrame {
 
         getContentPane().add(topPanel, java.awt.BorderLayout.PAGE_START);
 
+        bottomPanel.setBackground(new java.awt.Color(51, 204, 0));
         bottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -85,8 +94,13 @@ public class JlibTestFrame extends javax.swing.JFrame {
         navigatorPanel.add(browserButton);
 
         navigatorButtonGroup.add(jToggleButton2);
-        jToggleButton2.setText("jToggleButton2");
+        jToggleButton2.setText("ImageLoader test");
         jToggleButton2.setMaximumSize(new java.awt.Dimension(640, 25));
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
         navigatorPanel.add(jToggleButton2);
 
         mainSplitPane.setLeftComponent(navigatorPanel);
@@ -107,6 +121,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "image_loader_panel");
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     /**
      * @param args the command line arguments

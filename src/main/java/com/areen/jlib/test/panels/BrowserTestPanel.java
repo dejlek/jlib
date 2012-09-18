@@ -9,7 +9,7 @@
  *   -
  */
 
-package com.areen.jlib.test;
+package com.areen.jlib.test.panels;
 
 import java.awt.Desktop;
 import java.io.IOException;
