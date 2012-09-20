@@ -158,8 +158,27 @@ public class ComboBoxFilter extends PlainDocument {
                         finish = true;
                         comboBoxModel.setReadyToFinish(false);
                         
-                        if (!isTableCellEditor()) {
+                        if (!isTableCellEditor()) {                           
                             String txt = updateFcbEditor();
+                            
+                            boolean pa = comboBoxModel.isAnyPatternAllowed();
+                            boolean ma = comboBoxModel.isMultiSelectionAllowed();
+                            if (pa || ma) {
+                                // TODO
+                            } else {
+                                if (txt == null) {
+                                    // After all events are processed, alert the user
+                                    SwingUtilities.invokeLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            String eol = System.getProperty("line.separator");
+                                            JOptionPane.showMessageDialog(comboBox, 
+                                                    "Invalid option. Old value restored.");
+                                            comboBox.requestFocusInWindow();
+                                        } // run() method
+                                    }); // Runnable (anonymous) implementation
+                                } // if
+                            } // else
                         } // if
 
                         if ((comboBox.getSelectedItem() == null)) {
