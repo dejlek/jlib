@@ -183,7 +183,7 @@ public class ComboBoxFilter extends PlainDocument {
 
                         if ((comboBox.getSelectedItem() == null)) {
                             /*
-                             * if TAB is pressed, but nothing is selected, and
+                             * If TAB is pressed, but nothing is selected, and
                              * the picked item is not null * that means the user
                              * pressed tab when there was an empty list of
                              * items. * (Typically when user typed something
