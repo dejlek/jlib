@@ -43,8 +43,10 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
             Image image = get();
             if (image == null) {
                 imageLabel.setIcon(new ImageIcon());
+                imageLabel.setText("N/A");
             } else {
                 imageLabel.setIcon(new ImageIcon(image));
+                imageLabel.setText("");
             }
         } catch (InterruptedException ex) {
             System.out.println(ex);
