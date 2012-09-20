@@ -37,7 +37,8 @@ public class SecureWebURL {
     private String userID;
     private String userEmail;
     private String password;
-    
+    private String sessionID; // clientID + sessionID. Example: "apc" + "/" + "3247" = apc/3247
+                              // Not in use at the moment.
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
