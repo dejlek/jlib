@@ -157,7 +157,7 @@ public class SecureWebURL {
     
 	public static void main(String[] args) {
         // #1 - No arguments in the baseURL
-		SecureWebURL swu = new SecureWebURL("https://www.areen-online.co.uk/staffnet/apc_dashboard.asp");
+		SecureWebURL swu = new SecureWebURL("https://www.areen-online.co.uk/staffnet/hash_test.asp");
         swu.setUserID("LED01");
         swu.setPassword("testpass");
         swu.setEmail("dejan.lekic@areen.com");
@@ -171,7 +171,7 @@ public class SecureWebURL {
         }
         
         // #2 - We already have some arguments in the URL
-        swu.setBaseURL("https://www.areen-online.co.uk/staffnet/apc_dashboard.asp?something=1221");
+        swu.setBaseURL("https://www.areen-online.co.uk/staffnet/hash_test.asp?something=42");
         try {
             System.out.println(swu.getURL());
         } catch (MalformedURLException ex) {

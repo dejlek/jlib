@@ -11,10 +11,13 @@
 
 package com.areen.jlib.test.panels;
 
+import com.areen.jlib.net.SecureWebURL;
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,12 +26,27 @@ import java.util.logging.Logger;
  * @author Dejan
  */
 public class BrowserTestPanel extends javax.swing.JPanel {
-
+    URL secureURL;
+    
     /**
      * Creates new form BrowserTestPanel
      */
     public BrowserTestPanel() {
         initComponents();
+        SecureWebURL swu = new SecureWebURL("https://www.areen-online.co.uk/staffnet/hash_test.asp");
+        swu.setUserID("LED01");
+        swu.setPassword("testpass");
+        swu.setEmail("dejan.lekic@areen.com");
+        
+        try {
+            secureURL = new URL("http://www.areen.com");
+            secureURL = swu.getURL();
+            System.out.println(swu.getURL());
+            System.out.println(swu.getURL().toString().length());
+            System.out.println(swu.getURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(SecureWebURL.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -69,7 +87,8 @@ public class BrowserTestPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Desktop desktop = Desktop.getDesktop();
         try {
-            desktop.browse(new URI("http://www.areen.com"));
+            URI secureURI = new URI(secureURL.toString());
+            desktop.browse(secureURI);
         } catch (IOException ex) {
             Logger.getLogger(BrowserTestPanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (URISyntaxException ex) {
