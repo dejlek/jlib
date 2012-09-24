@@ -70,6 +70,11 @@ public interface CrudOperations<T extends ValueObject> {
     T       update(T argOld);
     T       update(T argOld, int argFieldNumber); /** byte would be better here, but Java is stupid,
                                                              we would have to cast arg to byte every time */
+    /**
+     * This method is executed in all multiple-updates.
+     * @param argVos An array of MODIFIED ValueObjects
+     * @return An array of ValueObjects potentially modified by the database layer.
+     */
     T[]     update(T[] argVos);
     
     // DELETE -------------------------------------------
