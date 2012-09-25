@@ -35,6 +35,8 @@ public interface SimpleObject<T extends ValueObject> {
     //                (however, they do not have to clone the object though)
     SimpleObject<T>   create();
     SimpleObject<T>[] create(int argNumberOfElements);
+    
+    SimpleObject<T>   clone();
 } // SimpleObject interface
 
 // $Id$

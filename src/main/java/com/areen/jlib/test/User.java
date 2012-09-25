@@ -1,7 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * $Id: AreenTableModel.java 825 2012-08-13 16:37:23Z dejan $
+ *
+ * Copyright (c) 2009-2012 Areen Design Services Ltd
+ * 23 Eyot Gardens; London; W6 9TR
+ * http://www.areen.com
+ * All rights reserved.
+ * 
+ * This software is the confidential and proprietary information of
+ * Areen Design Services Ltd ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Areen Design Services Ltd.
+ * 
+ * This file is best viewed with 110 columns.
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+ * 
+ * Author(s) in chronological order:
+ *   Dejan Lekic , http://dejan.lekic.org
+ * Contributor(s):
+ *   -
  */
+
 package com.areen.jlib.test;
 
 import com.areen.jlib.model.SimpleObject;
@@ -10,9 +29,9 @@ import java.io.Serializable;
 
 /**
  *
- * @author mehjabeen
+ * @author dejan
  */
-public class User implements SimpleObject<ValueObject> {
+public final class User implements SimpleObject<User.VO> {
 
     static final byte NUMBER_OF_FIELDS = 4;
     String[] titles = new String[]{"User ID", "Department", "Username", "Password"};
@@ -69,6 +88,19 @@ public class User implements SimpleObject<ValueObject> {
         value.password = argpassword;
     } // User constructor
 
+    /**
+     * Copy constructor.
+     * Used by clone().
+     * @param argOriginal 
+     */
+    public User(User argOriginal) {
+        value = new User.VO();
+        User.VO originalValue = (User.VO) argOriginal.getValue();
+        value.userId = originalValue.userId;
+        value.dept = originalValue.dept;
+        value.userName = originalValue.userName;
+        value.password = originalValue.password;
+    }
 
     @Override
     public Object get(final int argIndex) {
@@ -107,17 +139,17 @@ public class User implements SimpleObject<ValueObject> {
     }
 
     @Override
-    public ValueObject getValue() {
+    public User.VO getValue() {
         return value;
     }
 
     @Override
-    public ValueObject[] newArray(final int argNumberOfElements) {
+    public User.VO[] newArray(final int argNumberOfElements) {
         return new User.VO[argNumberOfElements];
     }
 
     @Override
-    public ValueObject newValue() {
+    public User.VO newValue() {
          return new User.VO();
     }
 
@@ -143,7 +175,7 @@ public class User implements SimpleObject<ValueObject> {
     }
 
     @Override
-    public void setValue(final ValueObject argVo) {
+    public void setValue(final User.VO argVo) {
         value = (User.VO) argVo;
     }
 
@@ -155,6 +187,14 @@ public class User implements SimpleObject<ValueObject> {
         + "`" + value.userName + "` "
         + "`" + value.password + "` "
                 + ")";
-    }
+    } // toString() method
 
+    @Override
+    public SimpleObject<User.VO> clone() {
+        User ret = new User(this);
+        return ret;
+    }
+    
 } // User class
+
+// $Id$
