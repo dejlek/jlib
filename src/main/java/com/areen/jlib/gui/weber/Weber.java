@@ -218,7 +218,7 @@ public class Weber {
      * @param args 
      */
     public static void main(final String[] args) {
-        String initialPage = new String("http://www.google.com");
+        String initialPage = new String("https://www.areen-online.co.uk");
 
         if (args.length > 0) {
             initialPage = args[0];

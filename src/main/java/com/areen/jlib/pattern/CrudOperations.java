@@ -30,15 +30,15 @@ package com.areen.jlib.pattern;
  */
 public interface CrudOperations<T extends ValueObject> {
     // CONSTANTS ----------------------------------------
-    int CREATE = 1;
-    int CREATE_VO = 2;
-    int CREATE_ARRAY = 3;
-    int READ_ALL = 4;
-    int UPDATE_VO = 5;
-    int UPDATE_ARRAY = 6;
-    int DELETE_VO = 7;
-    int DELETE_ARRAY = 8;
-    int READ = 9;
+    int CREATE = 1;       // for creating a new record without any parameter given
+    int CREATE_VO = 2;    // --//-- with a VO as parameter
+    int CREATE_ARRAY = 3; // --//-- new records with an array of VO objects as parameter
+    int READ_ALL = 4;     // READ all records
+    int UPDATE_VO = 5;    // A VO given as parameter to the UPDATE
+    int UPDATE_ARRAY = 6; // An array of VOs given as parameter to the UPDATE
+    int DELETE_VO = 7;    // A VO given as parameter to the DELETE
+    int DELETE_ARRAY = 8; // An array of VOs given as parameter to the DELETE
+    int READ = 9;         // READ a single record
 
     // EXTRA METHODS ------------------------------------
     void    setOldValue(Object argOldValue);

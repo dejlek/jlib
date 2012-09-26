@@ -14,7 +14,7 @@ import com.areen.jlib.pattern.ValueObject;
  *
  * @author dejan
  */
-public interface SimpleObject<T extends ValueObject> {
+public interface SimpleObject<T extends ValueObject> extends Cloneable {
     Object   get(int argIndex);
     Class<?> getFieldClass(int argIndex);
     byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
@@ -36,7 +36,7 @@ public interface SimpleObject<T extends ValueObject> {
     SimpleObject<T>   create();
     SimpleObject<T>[] create(int argNumberOfElements);
     
-    SimpleObject<T>   clone();
+    SimpleObject<T>   clone() throws CloneNotSupportedException;
 } // SimpleObject interface
 
 // $Id$

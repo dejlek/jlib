@@ -48,10 +48,10 @@ public final class User implements SimpleObject<User.VO> {
 
     public static class VO implements ValueObject, Serializable {
         long userPk = 0; /// reserved for future use
-    String userId = "UNK01";     /// "userPk" column
-    String dept;             /// reference VO an adequate row in the dir_val_depts table
-    String userName = "unknown"; /// "vms_username" column
-    String password = "unknown"; /// "extension" column
+        String userId = "UNK01";     /// "userPk" column
+        String dept;             /// reference VO an adequate row in the dir_val_depts table
+        String userName = "unknown"; /// "vms_username" column
+        String password = "unknown"; /// "extension" column
         /**
          * user_id                          char            5  yes    null     1
          * dept_code                        char            3  yes    null
@@ -75,10 +75,6 @@ public final class User implements SimpleObject<User.VO> {
         value = new User.VO();
     } // User (default) constructor
 
-    public User(final User.VO argValue) {
-        value = argValue;
-    } // User constructor
-
     public User(final String  argUserId, final String argdepartment, final String arguserName,
                 final String argpassword) {
         value = new User.VO();
@@ -88,6 +84,14 @@ public final class User implements SimpleObject<User.VO> {
         value.password = argpassword;
     } // User constructor
 
+    /**
+     * Copy constructor
+     * @param argValue 
+     */
+    public User(final User.VO argValue) {
+        this(argValue.userId, argValue.dept, argValue.userName, argValue.password);
+    } // User constructor
+    
     /**
      * Copy constructor.
      * Used by clone().
@@ -194,6 +198,18 @@ public final class User implements SimpleObject<User.VO> {
         User ret = new User(this);
         return ret;
     }
+    
+    // ====================================================================================================
+    // ==== Main function =================================================================================
+    // ====================================================================================================
+    
+	public static void main(String[] args) {
+		User user = new User();
+        if (user instanceof Cloneable) {
+            System.out.println("Cloneable!");
+        }
+        
+	} // main() function
     
 } // User class
 
