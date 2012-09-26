@@ -60,7 +60,7 @@ public class SecureWebURL {
      */
     public URL getURL() throws MalformedURLException {
         String what = baseURL.contains("?") ? "&" : "?";
-        URL ret = new URL(baseURL + what + "user_id=" + userID + "&code=" + getHexSHA1());
+        URL ret = new URL(baseURL + what + "rlo=" + userID + "&code=" + getHexSHA1());
         return ret;
     } // getURL() method
     
@@ -124,7 +124,7 @@ public class SecureWebURL {
     
     private String getSharedSecret() {
         String ret = userID + password + userEmail;
-        System.out.println("shared secret: " + ret);
+        //System.out.println("shared secret: " + ret);
         return ret;
     } // getSharedSecret() method
     
