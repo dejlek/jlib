@@ -160,7 +160,7 @@ public class SecureWebURL {
         // #1 - No arguments in the baseURL
 		SecureWebURL swu = new SecureWebURL("https://www.areen-online.co.uk/staffnet/hash_test.asp");
         swu.setUserID("LED01");
-        swu.setPassword("testpass");
+        swu.setPassword("ar33na");
         swu.setEmail("dejan.lekic@areen.com");
         System.out.println(swu.getHexSHA1());
         System.out.println(swu.getHexSHA1().length());
