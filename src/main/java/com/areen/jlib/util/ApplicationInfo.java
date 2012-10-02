@@ -50,6 +50,11 @@ public class ApplicationInfo {
         this.vendor = argVendor;
     }
 
+    @Override
+    public String toString() {
+        return "(ApplicationInfo `" + vendor + "` `" + name + "`)";
+    }
+    
 } // ApplicationInfo class
 
 // $Id$
