@@ -173,6 +173,16 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
 
         return this;
     } // getListCellRendererComponent() method
+
+    /**
+     * Introduced this method to set the combobox model, when the model is changed in a fly.
+     * DL & SN discussed.
+     * 
+     * @param argcombBoxModel 
+     */
+    public void setComboBoxModel(FilteredComboBoxModel argcombBoxModel) {
+        this.cbModel = argcombBoxModel;
+    } // setComboBoxModel()   
     
 } // FilteredComboBoxCell
 
