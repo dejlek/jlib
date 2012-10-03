@@ -24,7 +24,6 @@
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.WideComboBox;
-import javax.swing.ComboBoxModel;
 
 /**
  * This is a specialised WideComboBox that deals only with FilteredComboBoxModel(s). It also installs
@@ -90,15 +89,18 @@ public class FilteredComboBox extends WideComboBox {
         } // if
     } // setSelectedItem() method
     
-    
+    // Throws null pointer exception, comboboxfilter is  NULL.
+    // DL && SN discussed and commented.
+    /**
     @Override
     public void setModel(ComboBoxModel argModel) {
         super.setModel(argModel);
         if (argModel instanceof FilteredComboBoxModel) {
             comboBoxFilter.setModel((FilteredComboBoxModel) argModel);
+            System.out.println("sdsdsdsd");
         }
     }
-    
+    **/
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
@@ -203,12 +205,21 @@ public class FilteredComboBox extends WideComboBox {
         comboBoxModel.setPickedKey(argPickedKey);
     } // setPickedKey() method
     
+    /**
+     * 
+     * @return comboBoxFilter.
+     */
+    public ComboBoxFilter getComboBoxFilter() {
+        return comboBoxFilter;
+    } // getComboBoxFilter().
+    
+    
     // ====================================================================================================
     // ==== Private Methods ===============================================================================
     // ====================================================================================================
     
     // None
-    
+
 } // FilteredComboBox class
 
 // $Id$
