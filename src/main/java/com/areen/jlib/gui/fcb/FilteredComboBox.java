@@ -24,6 +24,7 @@
 package com.areen.jlib.gui.fcb;
 
 import com.areen.jlib.gui.WideComboBox;
+import javax.swing.ComboBoxModel;
 
 /**
  * This is a specialised WideComboBox that deals only with FilteredComboBoxModel(s). It also installs
@@ -88,6 +89,15 @@ public class FilteredComboBox extends WideComboBox {
             comboBoxModel.setReadyToPick(false);
         } // if
     } // setSelectedItem() method
+    
+    
+    @Override
+    public void setModel(ComboBoxModel argModel) {
+        super.setModel(argModel);
+        if (argModel instanceof FilteredComboBoxModel) {
+            comboBoxFilter.setModel((FilteredComboBoxModel) argModel);
+        }
+    }
     
     // ====================================================================================================
     // ==== Public Methods ================================================================================

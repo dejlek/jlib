@@ -827,6 +827,12 @@ public class ComboBoxFilter extends PlainDocument {
     public Object getPickedKey() {
         return pickedKey;
     } // getPickedKey() method
+    
+    public void setModel(FilteredComboBoxModel argModel) {
+        // TODO: we must add more stuff here, update the stuff, etc.
+        comboBoxModel = argModel;
+    }
+    
 } // ComboBoxFilter class
 
 // $Id$
