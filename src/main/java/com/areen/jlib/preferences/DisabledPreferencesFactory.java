@@ -29,11 +29,13 @@ import java.util.prefs.Preferences;
  * @author Robert Slifka (robert.slifka@gmail.com)
  */
 public class DisabledPreferencesFactory implements PreferencesFactory {
-
+    
+    @Override
     public Preferences systemRoot() {
         return new DisabledPreferences();
     }
 
+    @Override
     public Preferences userRoot() {
         return new DisabledPreferences();
     }

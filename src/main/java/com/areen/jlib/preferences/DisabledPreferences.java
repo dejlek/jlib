@@ -25,6 +25,9 @@ import java.util.prefs.BackingStoreException;
  * A do-nothing Preferences implementation so that we can avoid the hassles
  * of the JVM Preference implementations.
  *
+ * Usage:
+ *   java -Djava.util.prefs.PreferencesFactory=DisabledPreferencesFactory ...
+ * 
  * @author Robert Slifka (robert.slifka@gmail.com)
  */
 public class DisabledPreferences extends AbstractPreferences {
