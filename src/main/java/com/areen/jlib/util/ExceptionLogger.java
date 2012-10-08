@@ -17,6 +17,7 @@ package com.areen.jlib.util;
 import com.areen.jlib.gui.err.ExceptionDialog;
 import com.areen.jlib.gui.err.ExceptionUtility;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 /**
@@ -50,26 +51,41 @@ public class ExceptionLogger implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread argThread, Throwable argThrowable) {
         if (argThrowable instanceof Exception) {
+            
             final String eof = System.getProperty("line.separator");
             Exception ex = (Exception) argThrowable;
             String header = ex + "  Thread: " + argThread.getName() + eof 
                         + ":::::::::::::::::::::::::::::::::" + eof;
-            
+
             JFrame frame = null; // parent frame
             
-            ExceptionDialog ed = new ExceptionDialog(frame, true);
-            String exceptionString = ex + eof + ":::::::::::::::::::::::::::::::::" + eof;
-            String lineInfo = argThrowable.toString() + " Thread: " + argThread.getName();
-            ed.setInfo(lineInfo);
-            ed.setExceptionText(exceptionString + ExceptionUtility.getStackTrace(ex.getStackTrace()));
-            ed.setLocationRelativeTo(frame);
-            ed.setExceptionInfoSender(exceptionInfoSender);
-            ed.setVisible(true);
+            // First we show a dialog
+            Object[] options = { "More...", "OK"};
+            int ret = JOptionPane.showOptionDialog(frame, 
+                    "Unexpected error. \nClick on `More...` for more information.", 
+                    "APC error", 
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE, 
+                    null, 
+                    options, 
+                    options[1]);
             
-            if (logger.isDebugEnabled()) {
-                logger.debug(header + ExceptionUtility.getStackTrace(ex.getStackTrace()));
-            }
-        }
+            if (ret == 0) {
+                // User pressed "More..." 
+                ExceptionDialog ed = new ExceptionDialog(frame, true);
+                String exceptionString = ex + eof + ":::::::::::::::::::::::::::::::::" + eof;
+                String lineInfo = argThrowable.toString() + " Thread: " + argThread.getName();
+                ed.setInfo(lineInfo);
+                ed.setExceptionText(exceptionString + ExceptionUtility.getStackTrace(ex.getStackTrace()));
+                ed.setLocationRelativeTo(frame);
+                ed.setExceptionInfoSender(exceptionInfoSender);
+                ed.setVisible(true);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug(header + ExceptionUtility.getStackTrace(ex.getStackTrace()));
+                } // if
+            } // if
+        } // if
     } // uncaughtException() method
     
 } // ExceptionLogger class
