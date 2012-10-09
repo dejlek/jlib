@@ -148,7 +148,6 @@ public class HttpPost {
 
             // ::::: Download result into the 'output' String :::::::::::::::::::::::::::::::::::::::::::::::
             inputStream = urlConnection.getInputStream();
-            
             StringBuilder sb = new StringBuilder();
             char buff = 512;
             int len;

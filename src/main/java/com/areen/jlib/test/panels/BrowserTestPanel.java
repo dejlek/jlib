@@ -35,15 +35,19 @@ public class BrowserTestPanel extends javax.swing.JPanel {
         initComponents();
         SecureWebURL swu = new SecureWebURL("https://www.areen-online.co.uk/staffnet/hash_test.asp");
         swu.setUserID("LED01");
-        swu.setPassword("testpass");
+        swu.setPassword("something");
         swu.setEmail("dejan.lekic@areen.com");
         
         try {
             secureURL = new URL("http://www.areen.com");
             secureURL = swu.getURL();
+            jXHyperlink1.setURI(secureURL.toURI());
+            jXHyperlink1.setText("Go to areen website.");
             System.out.println(swu.getURL());
             System.out.println(swu.getURL().toString().length());
             System.out.println(swu.getURL());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(BrowserTestPanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
             Logger.getLogger(SecureWebURL.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,6 +62,7 @@ public class BrowserTestPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jXHyperlink1 = new org.jdesktop.swingx.JXHyperlink();
 
         jButton1.setText("Go to Areen website");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -66,21 +71,29 @@ public class BrowserTestPanel extends javax.swing.JPanel {
             }
         });
 
+        jXHyperlink1.setText("Go to Areen website");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(0, 233, Short.MAX_VALUE))
+                    .addComponent(jXHyperlink1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(229, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -98,6 +111,7 @@ public class BrowserTestPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private org.jdesktop.swingx.JXHyperlink jXHyperlink1;
     // End of variables declaration//GEN-END:variables
 }
 
