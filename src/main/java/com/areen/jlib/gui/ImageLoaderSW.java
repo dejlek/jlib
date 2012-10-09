@@ -42,8 +42,9 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
         try {
             Image image = get();
             if (image == null) {
-                imageLabel.setIcon(new ImageIcon());
-                imageLabel.setText("N/A");
+                imageLabel.setIcon(new ImageIcon(GuiTools.getResource(getClass(), 
+                        "/com/areen/jlib/res/icons/image_not_available.png")));
+                imageLabel.setText("");
             } else {
                 imageLabel.setIcon(new ImageIcon(image));
                 imageLabel.setText("");
@@ -54,8 +55,8 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
         } catch (ExecutionException ex) {
             System.out.println(ex);
             //Logger.getLogger(ImageLoaderSW.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    } // 
+        } // catch
+    } // done() method
     
 } // ImageLoaderSW class
 
