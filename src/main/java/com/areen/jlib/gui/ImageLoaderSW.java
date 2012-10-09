@@ -45,9 +45,12 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
                 imageLabel.setIcon(new ImageIcon(GuiTools.getResource(getClass(), 
                         "/com/areen/jlib/res/icons/image_not_available.png")));
                 imageLabel.setText("");
+                // we use this value to check whether we may show picture dialog or not
+                imageLabel.setName("imageLabel(na)"); 
             } else {
                 imageLabel.setIcon(new ImageIcon(image));
                 imageLabel.setText("");
+                imageLabel.setName("imageLabel(ok)");
             }
         } catch (InterruptedException ex) {
             System.out.println(ex);
