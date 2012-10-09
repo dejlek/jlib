@@ -11,6 +11,7 @@
 
 package com.areen.jlib.test.panels;
 
+import com.areen.jlib.gui.GuiTools;
 import com.areen.jlib.net.SecureWebURL;
 import java.awt.Desktop;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -43,6 +45,8 @@ public class BrowserTestPanel extends javax.swing.JPanel {
             secureURL = swu.getURL();
             jXHyperlink1.setURI(secureURL.toURI());
             jXHyperlink1.setText("Go to areen website.");
+            jXHyperlink1.setIcon(new ImageIcon(GuiTools.getResource(getClass(), 
+                    "/com/areen/jlib/res/icons/arrow_up.png")));
             System.out.println(swu.getURL());
             System.out.println(swu.getURL().toString().length());
             System.out.println(swu.getURL());
