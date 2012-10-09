@@ -98,9 +98,9 @@ public class MenuButton extends JButton
         this.dropDownButton.setBorderPainted(false);
         this.mainButton.setBorderPainted(false);
 
-        this.setPreferredSize(new Dimension(34, 24));
-        this.setMaximumSize(new Dimension(40, 24));
-        this.setMinimumSize(new Dimension(34, 24));
+        this.setPreferredSize(new Dimension(40, 30));
+        this.setMaximumSize(new Dimension(46, 30));
+        this.setMinimumSize(new Dimension(40, 30));
 
         this.setLayout(new BorderLayout());
         this.setMargin(new Insets(-3, -3, -3, -3));
