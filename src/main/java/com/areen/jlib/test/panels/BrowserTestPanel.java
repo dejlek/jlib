@@ -46,7 +46,7 @@ public class BrowserTestPanel extends javax.swing.JPanel {
             jXHyperlink1.setURI(secureURL.toURI());
             jXHyperlink1.setText("Go to areen website.");
             jXHyperlink1.setIcon(new ImageIcon(GuiTools.getResource(getClass(), 
-                    "/com/areen/jlib/res/icons/arrow_up.png")));
+                    "/com/areen/jlib/res/icons/link.png")));
             System.out.println(swu.getURL());
             System.out.println(swu.getURL().toString().length());
             System.out.println(swu.getURL());
