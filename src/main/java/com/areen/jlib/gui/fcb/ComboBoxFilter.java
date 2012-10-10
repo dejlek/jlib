@@ -208,7 +208,11 @@ public class ComboBoxFilter extends PlainDocument {
                                 pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
                             } // else
                         } // if
-
+                        
+                        if (pickedItem != null) {
+                            comboBoxModel.setPickedItem(pickedItem);
+                            comboBoxModel.setPickedKey(pickedKey);
+                        } // if
                         break;
 
                     case KeyEvent.VK_ESCAPE:
@@ -559,9 +563,10 @@ public class ComboBoxFilter extends PlainDocument {
         boolean isPicked = (Boolean) comboBox.getClientProperty("item-picked");
         comboBox.putClientProperty("item-picked", itemPicked || isPicked);
         
+        System.out.println("STR: " + str);
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
-            System.out.println(str);
+            
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);

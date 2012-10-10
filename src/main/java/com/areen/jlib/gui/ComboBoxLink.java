@@ -84,7 +84,7 @@ public class ComboBoxLink implements ActionListener {
             return;
         } // if
         selectedItem = comboBox.getSelectedItem();
-        System.out.println("update(): selected:" + selectedItem.toString());
+        //System.out.println("update(): selected:" + selectedItem.toString());
 
         if (selectedItem instanceof Pair) {
             text = ((Pair) selectedItem).getSecond().toString();
@@ -95,11 +95,11 @@ public class ComboBoxLink implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        System.out.println("---------------------------------------" + ae.getActionCommand());
+        //System.out.println("---------------------------------------" + ae.getActionCommand());
         update();
 
         Boolean tmp = (Boolean) comboBox.getClientProperty("item-picked");
-        System.out.println("VAL:" + tmp.booleanValue());
+        //System.out.println("VAL:" + tmp.booleanValue());
         boolean itemPicked = false;
         if (tmp == null) {
             itemPicked = false;
@@ -127,7 +127,7 @@ public class ComboBoxLink implements ActionListener {
                     JLabel label = (JLabel) valueComponent;
                     label.setText(text);
                     label.repaint();
-                    System.out.println("label changed: " + text);
+                    //System.out.println("label changed: " + text);
                     break;
                 case TEXT_AREA:
                     JTextArea area = (JTextArea) valueComponent;

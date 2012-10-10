@@ -76,12 +76,12 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
         * 
         */
-        cbModel.setMultiSelectionAllowed(true);
-        cbModel.setAnyPatternAllowed(true);
+        //cbModel.setMultiSelectionAllowed(true);
+        //cbModel.setAnyPatternAllowed(true);
         fcb.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
 
         // atm CbomBoxLink behaves weird when we set selected item AFTER
-        cbModel.setReadyToPick(rootPaneCheckingEnabled);
+        cbModel.setReadyToPick(true);
         //fcb.setSelectedIndex(5);
         fcb.setSelectedItem(null);
 
