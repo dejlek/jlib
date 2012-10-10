@@ -4,6 +4,7 @@
  */
 package com.areen.jlib.gui.weber;
 
+import com.areen.jlib.gui.GuiTools;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -157,16 +158,24 @@ public class Weber {
         JLabel label = new JLabel("<html><b>URL:</b> " + initialPage);
 
 
-        JButton backButton = new JButton("Back");
+//        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
+                "/icons/global_back.png")));
         backButton.setActionCommand("back");
         backButton.setToolTipText("Go to previous page");
+//        backButton.setIcon(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
+//                "/icons/global_back.png")));
         backButton.setEnabled(false);
         backButton.addActionListener(new BackButtonListener(jep, backButton, history, label));
 
 
-        JButton refreshButton = new JButton("Reload");
+//        JButton refreshButton = new JButton("Reload");
+        JButton refreshButton = new JButton(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
+                "/icons/global_refresh.png")));
         refreshButton.setActionCommand("reload");
         refreshButton.setToolTipText("Reload the page");
+//        refreshButton.setIcon(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
+//                "/icons/global_refresh.png")));
         refreshButton.addActionListener(new ActionListener() {
 
             @Override
