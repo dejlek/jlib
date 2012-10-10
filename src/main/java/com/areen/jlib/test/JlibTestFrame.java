@@ -13,6 +13,7 @@ package com.areen.jlib.test;
 
 import com.areen.jlib.test.panels.BrowserTestPanel;
 import com.areen.jlib.test.panels.ImageLoaderPanel;
+import com.areen.jlib.test.panels.JXButtonPanel;
 import java.awt.CardLayout;
 
 /**
@@ -22,8 +23,6 @@ import java.awt.CardLayout;
  * @author Dejan
  */
 public class JlibTestFrame extends javax.swing.JFrame {
-    BrowserTestPanel browserTestPanel;
-    ImageLoaderPanel imageLoaderPanel;
     
     /**
      * Creates new form JlibTestFrame
@@ -31,11 +30,9 @@ public class JlibTestFrame extends javax.swing.JFrame {
     public JlibTestFrame() {
         initComponents();
         
-        browserTestPanel = new BrowserTestPanel();
-        contentPanel.add(browserTestPanel, "browser_test");
-        
-        imageLoaderPanel = new ImageLoaderPanel();
-        contentPanel.add(imageLoaderPanel, "image_loader_panel");
+        contentPanel.add(new BrowserTestPanel(), "browser_test");
+        contentPanel.add(new ImageLoaderPanel(), "image_loader_panel");
+        contentPanel.add(new JXButtonPanel(), "jxbutton_panel");
     }
 
     /**
@@ -55,6 +52,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         navigatorPanel = new javax.swing.JPanel();
         browserButton = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
+        jButton2 = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -103,6 +101,14 @@ public class JlibTestFrame extends javax.swing.JFrame {
         });
         navigatorPanel.add(jToggleButton2);
 
+        jButton2.setText("JXButton with painters");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        navigatorPanel.add(jButton2);
+
         mainSplitPane.setLeftComponent(navigatorPanel);
 
         contentPanel.setLayout(new java.awt.CardLayout());
@@ -126,6 +132,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, "image_loader_panel");
     }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "jxbutton_panel");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,6 +182,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
     private javax.swing.JPanel contentPanel;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.ButtonGroup navigatorButtonGroup;
