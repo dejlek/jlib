@@ -33,7 +33,7 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
             image = ImageIO.read(webAddress);
         } catch (IOException e) {
         	//e.printStackTrace();
-                System.out.println("ImageLoaderSW:IOException caught, cause: " + e.getCause());
+                System.err.println("ImageLoaderSW:IOException caught, cause: " + e.getCause());
         }
         return image;
     } // diInBackground() method
