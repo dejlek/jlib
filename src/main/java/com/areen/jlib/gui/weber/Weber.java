@@ -160,7 +160,7 @@ public class Weber {
 
 //        JButton backButton = new JButton("Back");
         JButton backButton = new JButton(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
-                "/icons/global_back.png")));
+                "/com/areen/jlib/res/icons/global_back.png")));
         backButton.setActionCommand("back");
         backButton.setToolTipText("Go to previous page");
 //        backButton.setIcon(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
@@ -171,7 +171,7 @@ public class Weber {
 
 //        JButton refreshButton = new JButton("Reload");
         JButton refreshButton = new JButton(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
-                "/icons/global_refresh.png")));
+                "/com/areen/jlib/res/icons/global_refresh.png")));
         refreshButton.setActionCommand("reload");
         refreshButton.setToolTipText("Reload the page");
 //        refreshButton.setIcon(new javax.swing.ImageIcon(GuiTools.getResource(getClass(),
