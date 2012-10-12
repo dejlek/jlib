@@ -420,6 +420,19 @@ public class ComboBoxFilter extends PlainDocument {
         if (selected != null) {
             setText(comboBoxModel.getKeyOfTheSelectedItem().toString());
         } // if
+        
+        if (!isTableCellEditor()) {
+            if (pickedItem == null) {
+                comboBox.setSelectedIndex(0);
+                pickedItem = comboBox.getSelectedItem();
+                Object tmpKey = comboBoxModel.getKeyOfTheSelectedItem();
+                if (tmpKey instanceof String) {
+                    pickedKey = tmpKey.toString();
+                } else {
+                    pickedKey = tmpKey;
+                } // else
+            } // if
+        } // if
     } // ComboBoxFilter() method
 
     /**
