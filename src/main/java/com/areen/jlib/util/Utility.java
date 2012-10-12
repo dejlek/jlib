@@ -262,6 +262,12 @@ public class Utility {
 
     /**
      * Use this method to convert any Number object to a double.
+     * 
+     * NOTE: This method may become deprecated because user can simply do:
+     * 
+     * Number num = (Number) object; // object is an instance of any Number subtype.
+     * double value = num.doubleValue();
+     * 
      * @param argSource
      * @return 
      */
