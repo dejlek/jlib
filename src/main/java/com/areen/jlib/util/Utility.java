@@ -260,6 +260,41 @@ public class Utility {
                 && block != Character.UnicodeBlock.SPECIALS;
     } // isPrintableChar() method
 
+    /**
+     * Use this method to convert any Number object to a double.
+     * @param argSource
+     * @return 
+     */
+    public static double toDouble(Object argSource) {
+        double ret = Double.NaN;
+        Class argClass = argSource.getClass();
+        
+        if (argClass == Byte.class) {
+            Byte val = (Byte) argSource;
+            ret = val.doubleValue();
+        }
+        if (argClass == Short.class) {
+            Short val = (Short) argSource;
+            ret = val.doubleValue();
+        }
+        if (argClass == Integer.class) {
+            Integer val = (Integer) argSource;
+            ret = val.doubleValue();
+        }
+        if (argClass == Long.class) {
+            Long val = (Long) argSource;
+            ret = val.doubleValue();
+        }
+        if (argClass == Float.class) {
+            Float val = (Float) argSource;
+            ret = val.doubleValue();
+        }
+        if (argClass == Double.class) {
+            ret = (Double) argSource;
+        }
+        return ret;
+    } // toDouble() method
+    
 } // Utility class
 
 // $Id$
