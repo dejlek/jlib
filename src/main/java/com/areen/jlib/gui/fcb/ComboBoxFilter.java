@@ -422,7 +422,7 @@ public class ComboBoxFilter extends PlainDocument {
         } // if
         
         if (!isTableCellEditor()) {
-            if (pickedItem == null) {
+            if ((pickedItem == null) && (comboBox.getItemCount() > 0)) {
                 comboBox.setSelectedIndex(0);
                 pickedItem = comboBox.getSelectedItem();
                 Object tmpKey = comboBoxModel.getKeyOfTheSelectedItem();
