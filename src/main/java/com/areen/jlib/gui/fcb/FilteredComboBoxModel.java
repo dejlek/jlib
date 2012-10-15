@@ -637,10 +637,77 @@ public class FilteredComboBoxModel
         }
     }
     
+    /**
+     * This method is used to return the ComboBox value at the requested 
+     * index as a KeyValue Pair. 
+     * In case of atmRegistry this extracts 
+     * the key and value from the given table model in atmRegistry.
+     * CodePair is cast to Pair.
+     * In case where there may not be a key and value, or is not of
+     * type Pair or CodePair or atmRegistry, this
+     * returns both key and value of the Pair as the same element value. 
+     * @param index
+     * @return 
+     */
+    public Pair getKeyValuePairForElementAt(int index) {
+
+        Pair retKeyValuePair = null;
+
+        if (index >= 0 && index < objects.size()) {
+            
+            Object element = objects.get(index);
+            
+            if (element != null) {
+                
+                if (element instanceof CodePair) {
+
+                    retKeyValuePair = (Pair) element;
+
+                } else if (element instanceof Pair) {
+
+                    retKeyValuePair = (Pair) element;
+
+                } else if (tableModelRegistry != null) {
+                    
+                    if (tableModel != null && columns.length >= 2) {
+                        
+                        if (index < tableModel.getRowCount()
+                                && columns[0] < tableModel.getColumnCount()
+                                && columns[1] < tableModel.getColumnCount()) {
+
+                            Object tmpKey = tableModel.getValueAt(index, columns[0]);
+                            Object tmpValue = tableModel.getValueAt(index, columns[1]);
+
+                            retKeyValuePair = new Pair((String) tmpKey.toString(),
+                                    (String) tmpValue.toString());
+                        } // if
+                    } // if
+
+                } else {
+
+                    //could be text field
+                    retKeyValuePair = new Pair(element, element);
+
+                } // else
+            }
+
+        } // if
+        return retKeyValuePair;
+    } // getKeyValuePairForElementAt() method
+
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
 
+    /**
+     * Use this method to obtain the array of all items (the original list of items).
+     * 
+     * @return A shallow copy (clone) of the fcbObjects array.
+     */
+    public ArrayList getFcbObjects() {
+        return (ArrayList) fcbObjects.clone();
+    } // getFcbObjects() method
+    
     /**
      * Use this method to get an array of (model) column indexes that define what columns are included in
      * the combo-box lookup.
@@ -815,65 +882,6 @@ public class FilteredComboBoxModel
     public AtmRegistry getTableModelRegistry() {
         return tableModelRegistry;
     }
-    
-    /**
-     * This method is used to return the ComboBox value at the requested 
-     * index as a KeyValue Pair. 
-     * In case of atmRegistry this extracts 
-     * the key and value from the given table model in atmRegistry.
-     * CodePair is cast to Pair.
-     * In case where there may not be a key and value, or is not of
-     * type Pair or CodePair or atmRegistry, this
-     * returns both key and value of the Pair as the same element value. 
-     * @param index
-     * @return 
-     */
-    public Pair getKeyValuePairForElementAt(int index) {
-
-        Pair retKeyValuePair = null;
-
-        if (index >= 0 && index < objects.size()) {
-            
-            Object element = objects.get(index);
-            
-            if (element != null) {
-                
-                if (element instanceof CodePair) {
-
-                    retKeyValuePair = (Pair) element;
-
-                } else if (element instanceof Pair) {
-
-                    retKeyValuePair = (Pair) element;
-
-                } else if (tableModelRegistry != null) {
-                    
-                    if (tableModel != null && columns.length >= 2) {
-                        
-                        if (index < tableModel.getRowCount()
-                                && columns[0] < tableModel.getColumnCount()
-                                && columns[1] < tableModel.getColumnCount()) {
-
-                            Object tmpKey = tableModel.getValueAt(index, columns[0]);
-                            Object tmpValue = tableModel.getValueAt(index, columns[1]);
-
-                            retKeyValuePair = new Pair((String) tmpKey.toString(),
-                                    (String) tmpValue.toString());
-                        } // if
-                    } // if
-
-                } else {
-
-                    //could be text field
-                    retKeyValuePair = new Pair(element, element);
-
-                } // else
-            }
-
-        } // if
-        return retKeyValuePair;
-    } // getKeyValuePairForElementAt() method
-
 
     // ====================================================================================================
     // ==== Private Methods ===============================================================================

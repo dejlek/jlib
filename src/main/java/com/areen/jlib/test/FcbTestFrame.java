@@ -291,6 +291,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
         System.out.println("===================================================");
         System.out.println("Final selection: " + filteredComboBox.getSelectedItem());
         System.out.println("------ Bye! ---------------------------------------");
+        
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
