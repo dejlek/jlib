@@ -757,7 +757,6 @@ public class ComboBoxFilter extends PlainDocument {
         String scn = UIManager.getSystemLookAndFeelClassName();
         if (System.getProperty("os.name").startsWith("Windows")
                 && UIManager.getLookAndFeel().getClass().getCanonicalName().equals(scn)) {
-            System.err.println("DEBUG: fixing the combo-box's arrow");
             comboBox.setUI(ColorArrowUI.createUI(comboBox));
         } // if
     } // fixComboBoxArrowUI() method
