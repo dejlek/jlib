@@ -76,8 +76,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         });
         * 
         */
-        //cbModel.setMultiSelectionAllowed(true);
-        cbModel.setAnyPatternAllowed(true);
+        // cbModel.setMultiSelectionAllowed(true);
+        // cbModel.setAnyPatternAllowed(true);
         fcb.setRenderer(new FilteredComboBoxCellRenderer(cbModel));
 
         // atm CbomBoxLink behaves weird when we set selected item AFTER
@@ -340,11 +340,12 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private void debugButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugButtonActionPerformed
         // TODO add your handling code here:
         FilteredComboBox fcb = (FilteredComboBox) filteredComboBox;
-        System.out.println(fcb.getPickedItem());
-        System.out.println(fcb.getPickedKey());
+        System.out.println("I: " + fcb.getPickedItem());
+        System.out.println("K: " + fcb.getPickedKey());
+        System.out.println("SI: " + fcb.getSelectedItem());
         //File file = GuiTools.makeScreenshot("apc-client", this);
         //System.out.println("Screenshot file: " + file);
-        tableCbModel.printDebugInfo();
+        //tableCbModel.printDebugInfo();
     }//GEN-LAST:event_debugButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed

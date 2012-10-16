@@ -17,8 +17,6 @@ import com.areen.jlib.gui.ColorArrowUI;
 import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.Sise;
 import java.awt.event.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -26,6 +24,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
+import org.apache.log4j.Logger;
 
 /**
  * Lots of ideas from http://www.orbital-computer.de/JComboBox/ To take a look:
@@ -167,10 +166,16 @@ public class ComboBoxFilter extends PlainDocument {
 
                         if (!isTableCellEditor()) {                           
                             String txt = updateFcbEditor();
+                            String enteredText = "";
+                            try {
+                                enteredText = getText(0, getLength());
+                            } catch (BadLocationException ex) {
+                                Logger.getLogger(ComboBoxFilter.class.getName()).error(ex.toString());
+                            }
                             if (pa || ma) {
                                 // TODO
                             } else {
-                                if (txt == null) {
+                                if ((txt == null) && !enteredText.isEmpty()) {
                                     // After all events are processed, alert the user
                                     SwingUtilities.invokeLater(new Runnable() {
                                         @Override
@@ -220,6 +225,8 @@ public class ComboBoxFilter extends PlainDocument {
                                      */
                                     pickedItem = comboBox.getSelectedItem();
                                     pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                                } else {
+                                    System.out.println(obj.toString());
                                 }
                             } // else
                         } // if
@@ -536,7 +543,7 @@ public class ComboBoxFilter extends PlainDocument {
                 filterTheModel();
             } // if
         } catch (BadLocationException ex) {
-            Logger.getLogger(ComboBoxFilter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComboBoxFilter.class.getName()).error(ex);
         } // catch
         if (isTableCellEditor()) {
             comboBoxModel.setReadyToFinish(false);
