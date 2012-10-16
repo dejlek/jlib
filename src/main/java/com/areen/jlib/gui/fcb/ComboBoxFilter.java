@@ -178,7 +178,7 @@ public class ComboBoxFilter extends PlainDocument {
                                             String eol = System.getProperty("line.separator");
                                             JOptionPane.showMessageDialog(comboBox, 
                                                     "Invalid option. Old value restored.");
-                                            ComboBoxFilter.this.setText(pickedKey.toString());
+                                            //ComboBoxFilter.this.setText(pickedKey.toString());
                                             comboBox.requestFocusInWindow();
                                         } // run() method
                                     }); // Runnable (anonymous) implementation
@@ -209,20 +209,32 @@ public class ComboBoxFilter extends PlainDocument {
                                  */
                                 comboBoxModel.setCancelled(true);
                             } else {
-                                pickedItem = comboBox.getSelectedItem();
-                                pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                                Object obj = comboBox.getSelectedItem();
+                                if (pickedItem.getClass().equals(obj.getClass())) {
+                                    /* we need this block in the case when user:
+                                     * 1) navigates items with CURSOR KEYS, and then
+                                     * 2) presses TAB
+                                     * 3) the last selected item should be the one that is picked.
+                                     * NOTE: getSelectedItem() may give us a String. That is why we compare
+                                     *       the classes, and only if they DO match we set the picked key.
+                                     */
+                                    pickedItem = comboBox.getSelectedItem();
+                                    pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                                }
                             } // else
                         } // if
                         
                         if (pickedItem != null) {
                             comboBoxModel.setPickedItem(pickedItem);
                             comboBoxModel.setPickedKey(pickedKey);
+                            
                         } // if
                         
                         if (!(pa || ma)) {
-                            // finally, we have to set the text to the picked key in case user types something
-                            setText(pickedKey.toString());
+                            finish = false;
+                            comboBox.setSelectedItem(pickedItem);
                         }
+                        // At this point, the selected item should match the picked item
                         
                         break;
 
