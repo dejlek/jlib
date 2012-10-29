@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 /**
@@ -93,17 +93,21 @@ public class GuiTools {
         JFrame result = null;
         Container container = argComponent.getParent();
         
+        if (container == null) {
+            return result;
+        }
+        
         while (!found) {
-            if (!(container instanceof JPanel)) {
-                if (container instanceof JFrame) {
-                    //PMDOnlyOneReturn: return (JFrame) container;
-                    result = (JFrame) container; //PMDOnlyOneReturn utilised local variable
-                    found = true; //PMDOnlyOneReturn ensure break point
-                } else {
-                    result = null; //PMDOnlyOneReturn utilised local variable
-                } // else
-            } // if
-            container = container.getParent();
+            if (container instanceof JFrame) {
+                result = (JFrame) container;
+                found = true;
+            } else if (container instanceof JDialog) {
+                JDialog dlg = (JDialog) container;
+                result = (JFrame) dlg.getOwner();
+                found = true;
+            } else {
+                container = container.getParent();
+            } // else
         } // while
         return result; // we should never reach this line
     } // getFrame() method

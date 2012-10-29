@@ -14,6 +14,7 @@ package com.areen.jlib.test;
 import com.areen.jlib.test.panels.BrowserTestPanel;
 import com.areen.jlib.test.panels.ImageLoaderPanel;
 import com.areen.jlib.test.panels.JXButtonPanel;
+import com.areen.jlib.test.panels.VerticalLayoutPanel;
 import java.awt.CardLayout;
 
 /**
@@ -33,6 +34,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         contentPanel.add(new BrowserTestPanel(), "browser_test");
         contentPanel.add(new ImageLoaderPanel(), "image_loader_panel");
         contentPanel.add(new JXButtonPanel(), "jxbutton_panel");
+        contentPanel.add(new VerticalLayoutPanel(), "vertical_layout_panel");
     }
 
     /**
@@ -53,6 +55,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         browserButton = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
         jButton2 = new javax.swing.JButton();
+        verticalLayoutButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,6 +112,16 @@ public class JlibTestFrame extends javax.swing.JFrame {
         });
         navigatorPanel.add(jButton2);
 
+        verticalLayoutButton.setText("VerticalLayout");
+        verticalLayoutButton.setMaximumSize(new java.awt.Dimension(159, 25));
+        verticalLayoutButton.setMinimumSize(new java.awt.Dimension(159, 25));
+        verticalLayoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verticalLayoutButtonActionPerformed(evt);
+            }
+        });
+        navigatorPanel.add(verticalLayoutButton);
+
         mainSplitPane.setLeftComponent(navigatorPanel);
 
         contentPanel.setLayout(new java.awt.CardLayout());
@@ -137,6 +150,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, "jxbutton_panel");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void verticalLayoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalLayoutButtonActionPerformed
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "vertical_layout_panel");
+    }//GEN-LAST:event_verticalLayoutButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,6 +206,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup navigatorButtonGroup;
     private javax.swing.JPanel navigatorPanel;
     private javax.swing.JPanel topPanel;
+    private javax.swing.JButton verticalLayoutButton;
     // End of variables declaration//GEN-END:variables
 }
 
