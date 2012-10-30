@@ -418,6 +418,7 @@ public class FcbTestFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox tableComboBox;
     private javax.swing.JTable testTable;
     // End of variables declaration//GEN-END:variables
-}
+
+} // FcbTestFrame class
 
 // $Id$
