@@ -12,7 +12,7 @@ package com.areen.jlib.util;
  * History:
  * I have used this notation long before I discovered s-expression notation. 
  * 
- * @author Dejan
+ * @author Dejan Lekic - http://dejan.lekic.org
  */
 public class SDN {
     
