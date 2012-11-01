@@ -5,14 +5,14 @@
 package com.areen.jlib.util;
 
 /**
- * SDN - Structured/Simple Data Notation
+ * NSD - Notation for Structured/Simple Data
  * 
  * History:
  * I have used this notation long before I discovered s-expression notation. 
  * 
  * @author Dejan
  */
-public class SDN {
+public class NSD {
     
     public static String indent(String argSDN) {
         StringBuilder sb = new StringBuilder();
@@ -71,7 +71,7 @@ public class SDN {
                 + "`Contains all available columns` `any_table_type` ((cg `default` "
                 + "`Default group - contains all available columns.` true ` ( ) )(cg `Important` "
                 + "`Columns we actually need` false ` ( ) )) )) )";
-        System.out.println(SDN.indent(sdn));
+        System.out.println(NSD.indent(sdn));
     } // main() method
 } // SDN class
 
