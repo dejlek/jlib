@@ -16,6 +16,8 @@ import java.util.Hashtable;
  * anchor components to the top or bottom of the display area or center them between the top and bottom.
  *
  * Revision date 12th July 2001
+ * 
+ * @deprecated Please the swingx.VerticalLayout if available.
  *
  * @author Colin Mummery e-mail: colin_mummery@yahoo.com Homepage:www.kagi.com/equitysoft - Based on
  * 'FlexLayout' in Java class libraries Vol 2 Chan/Lee Addison-Wesley 1998

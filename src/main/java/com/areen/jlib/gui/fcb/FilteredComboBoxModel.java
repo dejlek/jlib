@@ -167,7 +167,7 @@ public class FilteredComboBoxModel
         fcbObjects = new ArrayList();
         handleNewTableModel(tableModel);
     } // FilteredComboBoxModel constructor
-    
+
     /**
      * If we have an AtmRegistry object, then we use this constructor to find appropriate table-model to use
      * for value changes...
