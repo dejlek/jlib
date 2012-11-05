@@ -18,7 +18,8 @@ public class SDN {
     
     public static String indent(String argSDN) {
         StringBuilder sb = new StringBuilder();
-        String eol = System.lineSeparator();
+        //String eol = System.lineSeparator(); JDK 7..
+        String eol = System.getProperty("line.separator");
         int depth = 0;
         int start = 0;
         for (int i = 0; i < argSDN.length(); i++) {
