@@ -8,7 +8,7 @@
 
 	<groupId>com.areen</groupId>
 	<artifactId>jlib</artifactId>
-	<version>1.0_Beta5-SNAPSHOT</version>
+	<version>1.0_Beta5</version>
 	<packaging>jar</packaging>
 
 	<name>jlib</name>
@@ -160,9 +160,9 @@ The idea is to open-source this library.</description>
 	</organization>
 
 	<scm>
-		<connection>scm:svn:svn://srl009.adg.internal/jlib/trunk</connection>
-		<developerConnection>scm:svn:svn://srl009.adg.internal/jlib/trunk</developerConnection>
-		<url>http://srl009.adg.internal/websvn</url>
+		<connection>scm:svn:svn://srl009.adg.internal/jlib/tags/1.0_Beta5</connection>
+		<developerConnection>scm:svn:svn://srl009.adg.internal/jlib/tags/1.0_Beta5</developerConnection>
+		<url>scm:svn:svn://srl009.adg.internal/jlib/tags/1.0_Beta5</url>
 	</scm>
 
 	<repositories>
@@ -348,11 +348,11 @@ The idea is to open-source this library.</description>
 						<configuration>
 							<target name="create-version-properties">
 								<exec dir="${basedir}" executable="svnversion" outputproperty="svnRevision">
-									<arg line="."/>
+									<arg line="." />
 								</exec>
-								<echo message="prjVersion=${project.version}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}"/>
-								<echo message="patchNumber=${patchNumber}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true"/>
-								<echo message="svnRevision=${svnRevision}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true"/>
+								<echo message="prjVersion=${project.version}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" />
+								<echo message="patchNumber=${patchNumber}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true" />
+								<echo message="svnRevision=${svnRevision}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true" />
 							</target>
 						</configuration>
 						<goals>
