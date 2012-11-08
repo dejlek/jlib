@@ -215,7 +215,15 @@ public class ComboBoxFilter extends PlainDocument {
                                 comboBoxModel.setCancelled(true);
                             } else {
                                 Object obj = comboBox.getSelectedItem();
-                                if (pickedItem.getClass().equals(obj.getClass())) {
+                                
+                                boolean shouldUpdatePicked = false;
+                                if (pickedItem == null) {
+                                    shouldUpdatePicked = true;
+                                } else {
+                                    shouldUpdatePicked = pickedItem.getClass().equals(obj.getClass());
+                                }
+                                
+                                if (shouldUpdatePicked) {
                                     /* we need this block in the case when user:
                                      * 1) navigates items with CURSOR KEYS, and then
                                      * 2) presses TAB
