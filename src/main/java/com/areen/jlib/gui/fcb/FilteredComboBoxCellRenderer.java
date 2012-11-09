@@ -132,7 +132,7 @@ public class FilteredComboBoxCellRenderer extends DefaultListCellRenderer {
                         int[] cols = cbModel.getColumns();
                         String txt = row[cols[0]].toString();
                         for (int i = 1; i < cols.length; i++) {
-                            txt += " - " + row[i];
+                            txt += " - " + row[cols[i]];
                         }
                         setText(txt);
                     } else {
