@@ -19,8 +19,9 @@ package com.areen.jlib.util;
  * @author dejan
  */
 public class ApplicationInfo {
-    private String vendor; /// Name of the vendor
-    private String name; /// Name of the application
+    private String vendor = "areen"; /// Name of the vendor
+    private String name = "jlib"; /// Name of the application
+    private String data = ""; /// An optional additional data field
 
     public ApplicationInfo() {
     }
@@ -32,6 +33,19 @@ public class ApplicationInfo {
     public ApplicationInfo(final String argVendor, final String argName) {
         this(argVendor);
         name = argName;
+    }
+
+    public ApplicationInfo(final String argVendor, final String argName, final String argData) {
+        this(argVendor, argName);
+        data = argData;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(final String argData) {
+        this.data = argData;
     }
 
     public String getName() {
@@ -52,7 +66,7 @@ public class ApplicationInfo {
 
     @Override
     public String toString() {
-        return "(ApplicationInfo `" + vendor + "` `" + name + "`)";
+        return "(ApplicationInfo `" + vendor + "` `" + name + ((data != "") ? "` `" + data : "") + "`)";
     }
     
 } // ApplicationInfo class
