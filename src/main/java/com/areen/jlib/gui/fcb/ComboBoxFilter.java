@@ -117,11 +117,10 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxEditor.setDocument(this);
 
         /**
-         * TODO: ComboBoxFilter should implement KeyAdapter interface, and we should move this anonymous
+         * TODO: ComboBoxFilter should implement KeyListener interface, and we should move this anonymous
          *       class methods into ComboBoxFilter methods.
          */
         KeyAdapter keyAdapter = new KeyAdapter() {
-
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
@@ -160,97 +159,9 @@ public class ComboBoxFilter extends PlainDocument {
                 boolean ma = comboBoxModel.isMultiSelectionAllowed();
                             
                 switch (keyCode) {
+                    
                     case KeyEvent.VK_TAB:
-                        finish = true;
-                        comboBoxModel.setReadyToFinish(false);
-
-                        if (!isTableCellEditor()) {                           
-                            String txt = updateFcbEditor();
-                            String enteredText = "";
-                            try {
-                                enteredText = getText(0, getLength());
-                            } catch (BadLocationException ex) {
-                                Logger.getLogger(ComboBoxFilter.class.getName()).error(ex.toString());
-                            }
-                            if (pa || ma) {
-                                // TODO
-                            } else {
-                                if ((txt == null) && !enteredText.isEmpty()) {
-                                    // After all events are processed, alert the user
-                                    SwingUtilities.invokeLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            String eol = System.getProperty("line.separator");
-                                            JOptionPane.showMessageDialog(comboBox, 
-                                                    "Invalid option. Old value restored.");
-                                            //ComboBoxFilter.this.setText(pickedKey.toString());
-                                            comboBox.requestFocusInWindow();
-                                        } // run() method
-                                    }); // Runnable (anonymous) implementation
-                                } // if
-                            } // else
-                        } // if
-
-                        if ((comboBox.getSelectedItem() == null)) {
-                            /*
-                             * If TAB is pressed, but nothing is selected, and
-                             * the picked item is not null * that means the user
-                             * pressed tab when there was an empty list of
-                             * items. * (Typically when user typed something
-                             * that does not exist in the list of * items). In
-                             * this case we cancel the editing.
-                             */
-                            comboBoxModel.setCancelled(true);
-                        } // if
-
-                        if (comboBox.getSelectedItem() != null) {
-                            if (pickedItem == comboBox.getSelectedItem()) {
-                                /*
-                                 * We cancel the editing when the picked item is
-                                 * the same as the item that * is currently
-                                 * selected in the combo-box, because we do not
-                                 * want to * trigger database change (there is
-                                 * no need to update to the same value).
-                                 */
-                                comboBoxModel.setCancelled(true);
-                            } else {
-                                Object obj = comboBox.getSelectedItem();
-                                
-                                boolean shouldUpdatePicked = false;
-                                if (pickedItem == null) {
-                                    shouldUpdatePicked = true;
-                                } else {
-                                    shouldUpdatePicked = pickedItem.getClass().equals(obj.getClass());
-                                }
-                                
-                                if (shouldUpdatePicked) {
-                                    /* we need this block in the case when user:
-                                     * 1) navigates items with CURSOR KEYS, and then
-                                     * 2) presses TAB
-                                     * 3) the last selected item should be the one that is picked.
-                                     * NOTE: getSelectedItem() may give us a String. That is why we compare
-                                     *       the classes, and only if they DO match we set the picked key.
-                                     */
-                                    pickedItem = comboBox.getSelectedItem();
-                                    pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
-                                } else {
-                                    System.out.println(obj.toString());
-                                }
-                            } // else
-                        } // if
-                        
-                        if (pickedItem != null) {
-                            comboBoxModel.setPickedItem(pickedItem);
-                            comboBoxModel.setPickedKey(pickedKey);
-                            
-                        } // if
-                        
-                        if (!(pa || ma)) {
-                            finish = false;
-                            comboBox.setSelectedItem(pickedItem);
-                        }
-                        // At this point, the selected item should match the picked item
-                        
+                        handleTabKeyPress(pa, ma);
                         break;
 
                     case KeyEvent.VK_ESCAPE:
@@ -270,6 +181,14 @@ public class ComboBoxFilter extends PlainDocument {
                         handleEnter(pa, ma);
                         break;
 
+                    case KeyEvent.VK_PAGE_UP:
+                        // reserved for the future use
+                        break;
+                        
+                    case KeyEvent.VK_PAGE_DOWN:
+                        // reserved for the future use
+                        break;
+                        
                     case KeyEvent.VK_UP:
                         arrowKeyPressed = true;
 
@@ -359,6 +278,98 @@ public class ComboBoxFilter extends PlainDocument {
                     } // else
                 } // else
             } // handleEnter method
+
+            private void handleTabKeyPress(boolean pa, boolean ma) {
+                finish = true;
+                comboBoxModel.setReadyToFinish(false);
+
+                if (!isTableCellEditor()) {                           
+                    String txt = updateFcbEditor();
+                    String enteredText = "";
+                    try {
+                        enteredText = getText(0, getLength());
+                    } catch (BadLocationException ex) {
+                        Logger.getLogger(ComboBoxFilter.class.getName()).error(ex.toString());
+                    }
+                    if (pa || ma) {
+                        // TODO
+                    } else {
+                        if ((txt == null) && !enteredText.isEmpty()) {
+                            // After all events are processed, alert the user
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String eol = System.getProperty("line.separator");
+                                    JOptionPane.showMessageDialog(comboBox, 
+                                            "Invalid option. Old value restored.");
+                                    //ComboBoxFilter.this.setText(pickedKey.toString());
+                                    comboBox.requestFocusInWindow();
+                                } // run() method
+                            }); // Runnable (anonymous) implementation
+                        } // if
+                    } // else
+                } // if
+
+                if ((comboBox.getSelectedItem() == null)) {
+                    /*
+                     * If TAB is pressed, but nothing is selected, and
+                     * the picked item is not null * that means the user
+                     * pressed tab when there was an empty list of
+                     * items. * (Typically when user typed something
+                     * that does not exist in the list of * items). In
+                     * this case we cancel the editing.
+                     */
+                    comboBoxModel.setCancelled(true);
+                } // if
+
+                if (comboBox.getSelectedItem() != null) {
+                    if (pickedItem == comboBox.getSelectedItem()) {
+                        /*
+                         * We cancel the editing when the picked item is
+                         * the same as the item that * is currently
+                         * selected in the combo-box, because we do not
+                         * want to * trigger database change (there is
+                         * no need to update to the same value).
+                         */
+                        comboBoxModel.setCancelled(true);
+                    } else {
+                        Object obj = comboBox.getSelectedItem();
+                        
+                        boolean shouldUpdatePicked = false;
+                        if (pickedItem == null) {
+                            shouldUpdatePicked = true;
+                        } else {
+                            shouldUpdatePicked = pickedItem.getClass().equals(obj.getClass());
+                        }
+                        
+                        if (shouldUpdatePicked) {
+                            /* we need this block in the case when user:
+                             * 1) navigates items with CURSOR KEYS, and then
+                             * 2) presses TAB
+                             * 3) the last selected item should be the one that is picked.
+                             * NOTE: getSelectedItem() may give us a String. That is why we compare
+                             *       the classes, and only if they DO match we set the picked key.
+                             */
+                            pickedItem = comboBox.getSelectedItem();
+                            pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                        } else {
+                            System.out.println(obj.toString());
+                        }
+                    } // else
+                } // if
+                
+                if (pickedItem != null) {
+                    comboBoxModel.setPickedItem(pickedItem);
+                    comboBoxModel.setPickedKey(pickedKey);
+                    
+                } // if
+                
+                if (!(pa || ma)) {
+                    finish = false;
+                    comboBox.setSelectedItem(pickedItem);
+                }
+                // At this point, the selected item should match the picked item
+            }
 
         }; // KeyAdapter subclass (anonymous)
         
@@ -616,6 +627,13 @@ public class ComboBoxFilter extends PlainDocument {
         } // else
         boolean isPicked = (Boolean) comboBox.getClientProperty("item-picked");
         comboBox.putClientProperty("item-picked", itemPicked || isPicked);
+        
+        // TODO: FIXME, when user presses PgDn and PgUp Object[] is picked and insertString is
+        //       actually inserting String like "[Ljava.lang.Object;@1410770" 
+        //       This is a quick hack to not confuse users.
+        if (str.contains("[Ljava.lang.Object")) {
+            return;
+        }
         
         System.out.println("STR: " + str);
         // insert the string into the document
