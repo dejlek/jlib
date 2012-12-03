@@ -61,7 +61,7 @@ public class ComboBoxFilter extends PlainDocument {
      */
     boolean selecting = false;
     boolean hidePopupOnFocusLoss;
-    private boolean arrowKeyPressed = false;
+    private boolean navigationKeyPressed = false; // UP, DOWN, PGUP, PGDOWN
     private boolean keyPressed = false;
     private boolean finish = false;
     private boolean inPreparation;
@@ -151,13 +151,13 @@ public class ComboBoxFilter extends PlainDocument {
                     comboBox.setPopupVisible(true);
                 } // if
 
-                arrowKeyPressed = false;
+                navigationKeyPressed = false;
                 finish = false;
                 int currentIndex = comboBox.getSelectedIndex();
 
                 boolean pa = comboBoxModel.isAnyPatternAllowed();
                 boolean ma = comboBoxModel.isMultiSelectionAllowed();
-                            
+                int delta = 0;
                 switch (keyCode) {
                     
                     case KeyEvent.VK_TAB:
@@ -181,16 +181,84 @@ public class ComboBoxFilter extends PlainDocument {
                         handleEnter(pa, ma);
                         break;
 
+                    case KeyEvent.VK_HOME:
+                        navigationKeyPressed = true;
+                        if (isTableCellEditor) {
+                            if (comboBox.getItemCount() > 0) {
+                                selectedIndex = 0;
+                                comboBox.setSelectedIndex(selectedIndex);
+                            } // if
+                        } // if
+                        break;
+
+                    case KeyEvent.VK_END:
+                        navigationKeyPressed = true;
+                        if (isTableCellEditor) {
+                            if (comboBox.getItemCount() > 0) {
+                                selectedIndex = comboBox.getItemCount() - 1;
+                                comboBox.setSelectedIndex(selectedIndex);
+                            } // if
+                        } // if
+                        break;
+                        
                     case KeyEvent.VK_PAGE_UP:
-                        // reserved for the future use
+                        navigationKeyPressed = true;
+                        
+                        if (isTableCellEditor) {
+                            System.out.println(selectedIndex);
+                            System.out.println(comboBox.getSelectedIndex());
+                            selectedIndex = currentIndex;
+                            System.out.println(selectedIndex);
+                        }
+                        
+                        /*
+                        delta = -8;
+                        if (isTableCellEditor) {
+                            if ((selectedIndex == currentIndex) && (currentIndex > 0)) {
+                                if (currentIndex < 8) {
+                                    delta = -currentIndex;
+                                }
+                                comboBox.setSelectedIndex(currentIndex + delta);
+                                selectedIndex = currentIndex + delta;
+                            } else {
+                                selectedIndex = currentIndex;
+                            } // else
+                            //arrowKeyPressed = false;
+                        }
+                        */
                         break;
                         
                     case KeyEvent.VK_PAGE_DOWN:
-                        // reserved for the future use
+                        navigationKeyPressed = true;
+                        
+                        if (isTableCellEditor) {
+                            System.out.println(selectedIndex);
+                            System.out.println(comboBox.getSelectedIndex());
+                            selectedIndex = currentIndex;
+                            System.out.println(selectedIndex);
+                        }
+                        
+                        /*
+                        delta = 8;
+                        if (isTableCellEditor) {
+                            if ((selectedIndex == currentIndex)
+                                    && (currentIndex < comboBox.getItemCount() - 1)) {
+                                if (currentIndex > comboBox.getItemCount() - 8) {
+                                    delta = comboBox.getItemCount() - currentIndex - 1;
+                                }
+                                comboBox.setSelectedIndex(currentIndex + delta);
+                                selectedIndex = currentIndex + delta;
+                            } else {
+                                selectedIndex = currentIndex;
+                            } // else
+                            // we set this to false ONLY if the combo box is a cell editor!
+                            //arrowKeyPressed = false;
+                        } // if
+                        */
                         break;
                         
                     case KeyEvent.VK_UP:
-                        arrowKeyPressed = true;
+                        navigationKeyPressed = true;
 
                         if (isTableCellEditor) {
                             /*
@@ -208,12 +276,12 @@ public class ComboBoxFilter extends PlainDocument {
                             } // else
 
                             // we set this to false ONLY if the combo box is a cell editor!
-                            arrowKeyPressed = false;
+                            navigationKeyPressed = false;
                         } // if
                         break;
 
                     case KeyEvent.VK_DOWN:
-                        arrowKeyPressed = true;
+                        navigationKeyPressed = true;
                         if (isTableCellEditor && comboBox.isPopupVisible()) {
                             /*
                              * For some reason, the JTable is stealing keyboard
@@ -230,7 +298,7 @@ public class ComboBoxFilter extends PlainDocument {
                                 selectedIndex = currentIndex;
                             } // else
                             // we set this to false ONLY if the combo box is a cell editor!
-                            arrowKeyPressed = false;
+                            navigationKeyPressed = false;
                         } // if
                         break;
 
@@ -610,8 +678,8 @@ public class ComboBoxFilter extends PlainDocument {
             return;
         } // if
 
-        if (arrowKeyPressed) {
-            arrowKeyPressed = false;
+        if (navigationKeyPressed) {
+            navigationKeyPressed = false;
             comboBox.putClientProperty("item-picked", Boolean.FALSE);
             return;
         } // if
@@ -638,7 +706,7 @@ public class ComboBoxFilter extends PlainDocument {
         System.out.println("STR: " + str);
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
-            
+            System.out.println("blah!");
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);
@@ -701,7 +769,7 @@ public class ComboBoxFilter extends PlainDocument {
             return;
         } // if
 
-        if (arrowKeyPressed) {
+        if (navigationKeyPressed) {
             if (isTableCellEditor()) {
                 // if the remove() has been called while user navigates through the combobox list, we do not
                 // filter. when user navigates via arrow keys, remove() is always called first, followed by
