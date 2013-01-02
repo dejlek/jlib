@@ -1,7 +1,7 @@
 /**
  * $Id: CodePair.java 76 2011-08-11 12:10:31Z dejan $
  *
- * Copyright (c) 2009-2012 Areen Design Services Ltd
+ * Copyright (c) 2009-2013 Areen Design Services Ltd
  * 23 Eyot Gardens; London; W6 9TR
  * http://www.areen.com
  * All rights reserved.

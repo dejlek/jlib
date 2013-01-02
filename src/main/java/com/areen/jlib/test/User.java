@@ -1,7 +1,7 @@
 /**
  * $Id: AreenTableModel.java 825 2012-08-13 16:37:23Z dejan $
  *
- * Copyright (c) 2009-2012 Areen Design Services Ltd
+ * Copyright (c) 2009-2013 Areen Design Services Ltd
  * 23 Eyot Gardens; London; W6 9TR
  * http://www.areen.com
  * All rights reserved.
