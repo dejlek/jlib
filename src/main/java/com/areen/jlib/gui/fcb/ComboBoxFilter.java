@@ -700,8 +700,41 @@ public class ComboBoxFilter extends PlainDocument {
         //       actually inserting String like "[Ljava.lang.Object;@1410770" 
         //       This is a quick hack to not confuse users.
         if (str.contains("[Ljava.lang.Object")) {
+            int idx = comboBoxModel.getKeyIndex();
+            if (isTableCellEditor()) {
+                comboBoxModel.setReadyToFinish(true);
+            } // if
+            pickedItem = comboBox.getSelectedItem();
+            boolean isObjectArr = (pickedItem instanceof Object[]);
+            if (pickedItem != null) {
+                if (isObjectArr) {
+                    Object[] pickedItemObjArr = (Object[]) pickedItem;
+                    if (pickedItemObjArr != null) {
+                        if (pickedItemObjArr.length >= idx) {
+                            Object keyOfPickedItem = pickedItemObjArr[idx];
+                            if (keyOfPickedItem != null) {
+                                str = keyOfPickedItem.toString();
+                            } // if
+                        } // if
+                    } // if
+                } // if
+            } // if
+            super.insertString(offs, str, a);
+            
+            filterTheModel();
+
+            if (itemPicked) {
+                Object tmp = comboBoxModel.getKeyOfTheSelectedItem();
+                if (itemPicked && isObjectArr) {
+                    pickedKey = tmp.toString();
+                    
+                } // if
+            } // if
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
+            comboBoxModel.setPickedItem(pickedItem);
+            comboBoxModel.setPickedKey(pickedKey);
             return;
-        }
+        } // if
         
         System.out.println("STR: " + str);
         // insert the string into the document
