@@ -20,7 +20,7 @@ The idea is to open-source this library.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compilerSource>1.6</compilerSource>
-		<patchNumber>0</patchNumber>
+		<sprintNumber>24</sprintNumber>
 		<jlibPropsFile>jlibversion.properties</jlibPropsFile>
 		<dependencyReport /> <!-- disabled by default (empty) -->
 	</properties>
@@ -351,7 +351,7 @@ The idea is to open-source this library.</description>
 									<arg line="." />
 								</exec>
 								<echo message="prjVersion=${project.version}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" />
-								<echo message="patchNumber=${patchNumber}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true" />
+								<echo message="sprintNumber=${sprintNumber}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true" />
 								<echo message="svnRevision=${svnRevision}${line.separator}" file="${basedir}/target/classes/${jlibPropsFile}" append="true" />
 							</target>
 						</configuration>

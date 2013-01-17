@@ -35,7 +35,7 @@ public class JlibInfo {
      * Versioning Nomenclature
      ************************************************************************/
     private static String prjVersion = "";
-    private static String patchNumber = "";
+    private static String sprintNumber = "";
     private static String svnRevision = "";
     private static String verMajor = "";
     private static String verMinor = "";
@@ -50,11 +50,11 @@ public class JlibInfo {
 
                                     // Initialise parameters from Properties file
                 prjVersion = versionInfo.getProperty("prjVersion");
-                patchNumber = versionInfo.getProperty("patchNumber");
+                sprintNumber = versionInfo.getProperty("sprintNumber");
                 svnRevision = versionInfo.getProperty("svnRevision");
                 verMajor = prjVersion.split("\\.")[0];
                 verMinor = prjVersion.split("\\.")[1];
-                jlibVersion = verMajor + "." + verMinor + "." + patchNumber + "." + svnRevision;
+                jlibVersion = verMajor + "." + verMinor + "." + sprintNumber + "." + svnRevision;
             } catch (IOException e) {
                 System.err.println("Error loading Jlib Properties file.");
             }
@@ -72,8 +72,8 @@ public class JlibInfo {
         return verMinor;
     }
 
-    public static String getPatchNumber() {
-        return patchNumber;
+    public static String getSprintNumber() {
+        return sprintNumber;
     }
 
     public static String getSVNRevision() {
