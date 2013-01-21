@@ -81,4 +81,7 @@ public class ImageLoaderPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imageLabel;
     // End of variables declaration//GEN-END:variables
-}
+
+} // ImageLoaderPanel class
+
+// $Id$
