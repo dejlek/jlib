@@ -25,7 +25,7 @@ public class ImageLoaderPanel extends javax.swing.JPanel {
         initComponents();
         try {
             ImageLoaderSW ilsw = new ImageLoaderSW(imageLabel,
-                    new URL("http://www.areen-online.co.uk/staffnet/prj/3026/129555-t.jpg"));
+                    new URL("http://www.areen-online.co.uk/staffnet/prj/9999/1234-t.jpg"));
             ilsw.execute();
         } catch (MalformedURLException ex) {
             Logger.getLogger(ImageLoaderPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,7 +74,7 @@ public class ImageLoaderPanel extends javax.swing.JPanel {
 
     private void imageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageLabelMouseClicked
         PictureDialog pd = new PictureDialog(null, true);
-        pd.setURL("http://www.areen-online.co.uk/staffnet/prj/3026/129555-p.jpg");
+        pd.setURL("http://www.areen-online.co.uk/staffnet/prj/9999/1234-p.jpg");
         pd.setVisible(true);
     }//GEN-LAST:event_imageLabelMouseClicked
 
