@@ -1,6 +1,6 @@
 /**
  * Project: jlib
- * Version: $Id: JlibTestFrame.java 463 2012-09-17 10:58:04Z dejan $
+ * Version: $Id$
  * License: SPL
  * 
  * Authors (in chronological order):
@@ -185,7 +185,7 @@ public class HttpPost {
     }
     
     public static void main(String[] args) {
-
+        // Simple test, let's upload a picture
         try {
             HttpPost httpPost = new HttpPost(new URL("http://srl009.adg.internal/dejan/file.php"));
             httpPost.setFileNames(new String[]{ "/home/dejan/work/ddn-100x46.png" });
@@ -195,8 +195,7 @@ public class HttpPost {
         } catch (MalformedURLException ex) {
             Logger.getLogger(HttpPost.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }
+    } // main() method
     
 } // HttpPost class
 
