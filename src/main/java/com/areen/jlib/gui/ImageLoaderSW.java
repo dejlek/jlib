@@ -1,7 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
+
 package com.areen.jlib.gui;
 
 import java.awt.Image;
@@ -20,10 +27,12 @@ import javax.swing.SwingWorker;
 public class ImageLoaderSW extends SwingWorker<Image, Void> {
     JLabel imageLabel;
     URL webAddress;
+    private boolean pictureAvailable; /// Indicates whether picture exists on remote server or not.
     
     public ImageLoaderSW(JLabel argLabel, URL argURL) {
         imageLabel = argLabel;
         webAddress = argURL;
+        pictureAvailable = false;
     }
     
     @Override
@@ -48,10 +57,12 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
                 imageLabel.setText("");
                 // we use this value to check whether we may show picture dialog or not
                 imageLabel.setName("imageLabel(na)"); 
+                pictureAvailable = false;
             } else {
                 imageLabel.setIcon(new ImageIcon(image));
                 imageLabel.setText("");
                 imageLabel.setName("imageLabel(ok)");
+                pictureAvailable = true;
             }
         } catch (InterruptedException ex) {
             System.out.println(ex);
@@ -61,6 +72,10 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
             //Logger.getLogger(ImageLoaderSW.class.getName()).log(Level.SEVERE, null, ex);
         } // catch
     } // done() method
+
+    public boolean isPictureAvailable() {
+        return pictureAvailable;
+    }
     
 } // ImageLoaderSW class
 
