@@ -136,7 +136,8 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         } // if
 
         if (comboBoxModel.isCancelled() && "comboBoxChanged".equals(e.getActionCommand())) {
-            stopCellEditing();
+            cancelCellEditing();
+            //stopCellEditing();
             return;
         } // if
 
