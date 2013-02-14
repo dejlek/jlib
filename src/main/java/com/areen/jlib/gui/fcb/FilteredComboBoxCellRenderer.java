@@ -55,7 +55,7 @@ public class FilteredComboBoxCellRenderer
      */
     public FilteredComboBoxCellRenderer() {
         super();
-        delimiter = delimiter;
+        delimiter = " - ";
         config = Configuration.CodeAndValue;
     } // FilteredComboBoxCell constructor (default)
     
@@ -65,7 +65,7 @@ public class FilteredComboBoxCellRenderer
      */
     public FilteredComboBoxCellRenderer(FilteredComboBoxModel argCBModel) {
         this();
-        delimiter = delimiter;
+        delimiter = " - ";
         cbModel = argCBModel;
     } // FilteredComboBoxCell constructor
     
