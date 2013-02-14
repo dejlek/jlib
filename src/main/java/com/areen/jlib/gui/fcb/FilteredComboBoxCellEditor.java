@@ -69,6 +69,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     
     private AncestorListener ancestorListener;
     private PropertyChangeListener focusPropertyListener;
+    private FilteredComboBoxCellRenderer listCellRenderer;
     
     /**
      * 
@@ -83,7 +84,8 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
         // TODO: check if we actually do have this kind of model
         comboBoxModel = (FilteredComboBoxModel) comboBox.getModel();
-        comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
+        listCellRenderer = new FilteredComboBoxCellRenderer(comboBoxModel);
+        comboBox.setRenderer(listCellRenderer);
         cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
         comboBox.addActionListener(this);
         comboBox.setName("Table.editor");
@@ -101,7 +103,8 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
         // remove the editor's border - the cell itself already has one
         ((JComponent) comboBox.getEditor().getEditorComponent()).setBorder(null);
         comboBoxModel = argModel;
-        comboBox.setRenderer(new FilteredComboBoxCellRenderer(comboBoxModel));
+        listCellRenderer = new FilteredComboBoxCellRenderer(comboBoxModel);
+        comboBox.setRenderer(listCellRenderer);
         cbFilter = new ComboBoxFilter(comboBox, comboBoxModel);
         // hitting enter in the combo box should stop cellediting (see below)
         comboBox.addActionListener(this);
@@ -212,6 +215,10 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     public int getClickCountToStart() {
         return clickCountToStart;
     } // getClickCountToStart() method
+
+    public FilteredComboBoxCellRenderer getListCellRenderer() {
+        return listCellRenderer;
+    }
 
     @Override
     public boolean isCellEditable(EventObject eo) {
