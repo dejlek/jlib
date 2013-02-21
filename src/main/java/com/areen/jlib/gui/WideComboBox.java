@@ -16,6 +16,7 @@ package com.areen.jlib.gui;
 
 import java.awt.Dimension;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -31,6 +32,8 @@ import javax.swing.JComboBox;
  * it further.
  */
 public class WideComboBox extends JComboBox {
+    private static final Logger LOGGER = Logger.getLogger(WideComboBox.class.getName());
+    
     private boolean layingOut = false;
     private int ww;
     private boolean popupOnEditEnabled = true;
@@ -115,10 +118,21 @@ public class WideComboBox extends JComboBox {
      */
     @Override
     public Dimension getSize() {
-        if ((maxWidth == -1) && (getTopLevelAncestor() != null)) {
-            maxWidth = getTopLevelAncestor().getPreferredSize().width;
-            maxWidth = 3 * maxWidth / 4; // We do not allow more than 3/4 of the max width for the combo box
-        } // if
+        // what is the bigger pref. size? the top-level ancestor's, or mine?
+        int tlaorme = Math.max(getTopLevelAncestor().getPreferredSize().width, 
+                getPreferredSize().width);
+        
+        // it must not be bigger than this:
+        int tlaormemax = 3 * getTopLevelAncestor().getSize().width / 4;
+        
+        // if it is, we limit it
+        if (tlaorme > tlaormemax) {
+            tlaorme = tlaormemax; 
+        }
+        
+        // maxWidth grows until tlaormemax
+        maxWidth = Math.max(tlaorme, maxWidth);
+        
         Dimension dim = super.getSize(); 
         if (!layingOut) {
             ww = Math.max(ww, dim.width); 
@@ -129,7 +143,9 @@ public class WideComboBox extends JComboBox {
             } // if
             dim.width = ww;
         } // if
-        return new Dimension(ww, dim.height);
+        Dimension ret = new Dimension(ww, dim.height);
+        
+        return ret;
     } //  getSize() method
 
     /**
@@ -174,11 +190,10 @@ public class WideComboBox extends JComboBox {
      * @param argMaxWidth
      */
     public void setMaxWidth(int argMaxWidth) {
+        System.out.println(">>>> " + argMaxWidth);
         maxWidth = argMaxWidth;
     } // setMaxWidth() method
-    
 
-    
 } // WideComboBox class
 
 // $Id$

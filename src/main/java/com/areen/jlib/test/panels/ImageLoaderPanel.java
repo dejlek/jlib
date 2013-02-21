@@ -1,7 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ *
+ * This file is best viewed with 110 columns.
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ *
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order):
+ *   -
  */
+
 package com.areen.jlib.test.panels;
 
 import com.areen.jlib.gui.ImageLoaderSW;
@@ -17,7 +27,8 @@ import javax.swing.JLabel;
  * @author Dejan
  */
 public class ImageLoaderPanel extends javax.swing.JPanel {
-
+    private static final Logger LOGGER = Logger.getLogger(ImageLoaderPanel.class.getName());
+    
     /**
      * Creates new form ImageLoaderPanel
      */
@@ -28,7 +39,7 @@ public class ImageLoaderPanel extends javax.swing.JPanel {
                     new URL("http://www.areen-online.co.uk/staffnet/prj/9999/1234-t.jpg"));
             ilsw.execute();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(ImageLoaderPanel.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
