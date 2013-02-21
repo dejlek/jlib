@@ -70,6 +70,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     private AncestorListener ancestorListener;
     private PropertyChangeListener focusPropertyListener;
     private FilteredComboBoxCellRenderer listCellRenderer;
+    private int config;
     
     /**
      * 
@@ -215,6 +216,14 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     public int getClickCountToStart() {
         return clickCountToStart;
     } // getClickCountToStart() method
+
+    public int getConfig() {
+        return config;
+    }
+
+    public void setConfig(int argConfig) {
+        config = argConfig;
+    }
 
     public FilteredComboBoxCellRenderer getListCellRenderer() {
         return listCellRenderer;
