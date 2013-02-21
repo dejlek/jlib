@@ -38,7 +38,6 @@ public class WideComboBox extends JComboBox {
     private int ww;
     private boolean popupOnEditEnabled = true;
     private int maxWidth = -1; /// -1 indicates that it is not set
-    
 
     /**
      * 
