@@ -85,6 +85,14 @@ public class ComboBoxFilter extends PlainDocument {
     static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     
     /**
+     * A simple configuration flag to inform ComboBoxFilter what text should initially be shown to the
+     * user in the text editor component.
+     */
+    private int config = 0;
+    
+    private String delimiter = " - ";
+    
+    /**
      * This constructor adds filtering capability to the given JComboBox object
      * argComboBox. It will also assign appropriate model to the combo-box, one
      * that has setPattern() method. It will also set the argComboBox to be
@@ -558,7 +566,9 @@ public class ComboBoxFilter extends PlainDocument {
     /**
      * User typically will call this method from a table cell editor when we
      * want to "inform" filtered combo-box that we want to re-filter before we
-     * actually start editing. The reason for this is when user goes to another
+     * actually start editing. 
+     * 
+     * The reason for this is when user goes to another
      * cell, the filtered set of entries from the previous cell will not apply.
      *
      * @param argPattern
@@ -628,7 +638,17 @@ public class ComboBoxFilter extends PlainDocument {
             if (isTriggeredByKeyPress()) {
                 setText(key);
                 filterTheModel();
-            } // if
+            } else {
+                // depending on the configuration, we set text...
+                if (pickedItem instanceof Pair) {
+                    Pair pair = (Pair) pickedItem;
+                    if (getConfig() == 2) {
+                        setText(pair.getSecond().toString());
+                    } else if (getConfig() == 3) {
+                        setText(pair.getFirst().toString() + getDelimiter() + pair.getSecond().toString());
+                    } // else if
+                } // if
+            } // else
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).error(ex);
         } // catch
@@ -637,39 +657,6 @@ public class ComboBoxFilter extends PlainDocument {
         } // if
         inPreparation = false;
     } // prepare() method
-
-    // ======================================================================================================
-    // ===== Private methods ================================================================================
-    // ======================================================================================================
-    
-    private void clearTextSelection() {
-        if (comboBoxEditor.getSelectedText() != null) {
-            // we have a selected text, removing the selection. On Windows text may become selected by default
-            int pos = comboBoxEditor.getCaretPosition();
-            comboBoxEditor.select(0, 0);
-            // return caret position to the original place
-            comboBoxEditor.setCaretPosition(pos);
-        } // if
-    } // clearTextSelection() method
-
-    private void setText(String text) {
-        try {
-            // remove all text and insert the completed string
-            super.remove(0, getLength());
-            super.insertString(0, text, null);
-        } catch (BadLocationException e) {
-            throw new RuntimeException(e.toString());
-        } // catch
-    } // setText() method
-
-    /**
-     * This method is a leftover from the previous version of the
-     * ComboBoxFilter. Should be removed after the testing phase.
-     */
-    private void highlightCompletedText(int start) {
-        comboBoxEditor.setCaretPosition(getLength());
-        comboBoxEditor.moveCaretPosition(start);
-    } // highlightCompletedText() method
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -843,6 +830,96 @@ public class ComboBoxFilter extends PlainDocument {
         pickedKey = obj.toString();
     } // pickItem() method
 
+    // ====================================================================================================
+    // ==== Accessors =====================================================================================
+    // ====================================================================================================
+
+    public int getConfig() {
+        return config;
+    }
+
+    public void setConfig(int argConfig) {
+        config = argConfig;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public boolean isTriggeredByKeyPress() {
+        return triggeredByKeyPress;
+    } // isTriggeredByKeyPress() method
+
+    /**
+     * 
+     * @param argTriggeredByKeyPress
+     */
+    public void setTriggeredByKeyPress(boolean argTriggeredByKeyPress) {
+        triggeredByKeyPress = argTriggeredByKeyPress;
+    } // setTriggeredByKeyPress() method
+
+    /**
+     * 
+     * @return
+     */
+    public Object getPickedItem() {
+        return pickedItem;
+    } // getPickedItem() method
+
+    /**
+     * 
+     * @return
+     */
+    public Object getPickedKey() {
+        return pickedKey;
+    } // getPickedKey() method
+    
+    public void setModel(FilteredComboBoxModel argModel) {
+        // TODO: we must add more stuff here, update the stuff, etc.
+        comboBoxModel = argModel;
+    }
+
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(String argDelimiter) {
+        delimiter = argDelimiter;
+    }
+
+    // ====================================================================================================
+    // ==== Private/Protected/Package Methods =============================================================
+    // ====================================================================================================
+    
+    private void clearTextSelection() {
+        if (comboBoxEditor.getSelectedText() != null) {
+            // we have a selected text, removing the selection. On Windows text may become selected by default
+            int pos = comboBoxEditor.getCaretPosition();
+            comboBoxEditor.select(0, 0);
+            // return caret position to the original place
+            comboBoxEditor.setCaretPosition(pos);
+        } // if
+    } // clearTextSelection() method
+
+    private void setText(String text) {
+        try {
+            // remove all text and insert the completed string
+            super.remove(0, getLength());
+            super.insertString(0, text, null);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e.toString());
+        } // catch
+    } // setText() method
+
+    /**
+     * This method is a leftover from the previous version of the
+     * ComboBoxFilter. Should be removed after the testing phase.
+     */
+    private void highlightCompletedText(int start) {
+        comboBoxEditor.setCaretPosition(getLength());
+        comboBoxEditor.moveCaretPosition(start);
+    } // highlightCompletedText() method
+
     /**
      * This method calls the setPatter() method, and starts the filtering.
      *
@@ -943,9 +1020,12 @@ public class ComboBoxFilter extends PlainDocument {
     /**
      * This method is used internally to insert the ComboBoxFilter's internal KeyAdapter object as
      * *the first* key listener of the combo box editor component. 
+     * 
      * Other key listeners will come after.
+     * 
      * When ComboBoxFilter is instantiated some key listeners may already be installed in the comboBoxEditor.
      * This method fixes that.
+     * 
      * @param argKeyAdapter 
      */
     private void addAsTheFirstKeyListener(KeyAdapter argKeyAdapter) {
@@ -971,44 +1051,7 @@ public class ComboBoxFilter extends PlainDocument {
                 comboBoxEditor.addKeyListener(kl);
             }
         } // else
-    } // makeFirstKeyListener() method
-
-    /**
-     * 
-     * @return
-     */
-    public boolean isTriggeredByKeyPress() {
-        return triggeredByKeyPress;
-    } // isTriggeredByKeyPress() method
-
-    /**
-     * 
-     * @param argTriggeredByKeyPress
-     */
-    public void setTriggeredByKeyPress(boolean argTriggeredByKeyPress) {
-        triggeredByKeyPress = argTriggeredByKeyPress;
-    } // setTriggeredByKeyPress() method
-
-    /**
-     * 
-     * @return
-     */
-    public Object getPickedItem() {
-        return pickedItem;
-    } // getPickedItem() method
-
-    /**
-     * 
-     * @return
-     */
-    public Object getPickedKey() {
-        return pickedKey;
-    } // getPickedKey() method
-    
-    public void setModel(FilteredComboBoxModel argModel) {
-        // TODO: we must add more stuff here, update the stuff, etc.
-        comboBoxModel = argModel;
-    }
+    } // addAsTheFirstKeyListener() method
     
 } // ComboBoxFilter class
 

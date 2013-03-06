@@ -113,6 +113,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     } // FilteredComboBoxCellEditor constructor
     
     private void setValue(Object value) {
+        cbFilter.setConfig(config);
         cbFilter.prepare(value);
     } // setValue() method
     
@@ -227,6 +228,14 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
 
     public FilteredComboBoxCellRenderer getListCellRenderer() {
         return listCellRenderer;
+    }
+    
+    public String getDelimiter() {
+        return cbFilter.getDelimiter();
+    }
+    
+    public void setDelimiter(String arg) {
+        cbFilter.setDelimiter(arg);
     }
 
     @Override

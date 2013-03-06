@@ -97,7 +97,9 @@ public class FcbTestFrame extends javax.swing.JFrame {
         
         // add it to the table too
         FilteredComboBoxModel fcbModel = new FilteredComboBoxModel(codeAndValues);
-        testTable.getColumnModel().getColumn(2).setCellEditor(new FilteredComboBoxCellEditor(fcbModel));
+        FilteredComboBoxCellEditor fcbce = new FilteredComboBoxCellEditor(fcbModel);
+        fcbce.setConfig(2);
+        testTable.getColumnModel().getColumn(2).setCellEditor(fcbce);
         
         // FILTERED COMBO BOX (TEST)
         //normalComboBox.setModel(new DefaultComboBoxModel(argCodeAndValues));
