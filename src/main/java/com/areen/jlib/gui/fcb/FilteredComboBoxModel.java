@@ -105,6 +105,12 @@ public class FilteredComboBoxModel
     private String[] patternParts;
     private int tableModelIndex;
     
+    /**
+     * A simple configuration flag to inform ComboBoxFilter what text should initially be shown to the
+     * user in the text editor component.
+     */
+    private int config = 0;
+    
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -699,6 +705,23 @@ public class FilteredComboBoxModel
     // ==== Accessors =====================================================================================
     // ====================================================================================================
 
+    /**
+     * 
+     * @see config
+     */
+    public int getConfig() {
+        return config;
+    }
+
+    /**
+     * 
+     * @see config
+     * @param argConfig 
+     */
+    public void setConfig(int argConfig) {
+        config = argConfig;
+    }
+    
     /**
      * Use this method to obtain the array of all items (the original list of items).
      * 

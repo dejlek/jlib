@@ -84,12 +84,6 @@ public class ComboBoxFilter extends PlainDocument {
 
     static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     
-    /**
-     * A simple configuration flag to inform ComboBoxFilter what text should initially be shown to the
-     * user in the text editor component.
-     */
-    private int config = 0;
-    
     private String delimiter = " - ";
     
     /**
@@ -639,15 +633,32 @@ public class ComboBoxFilter extends PlainDocument {
                 setText(key);
                 filterTheModel();
             } else {
-                // depending on the configuration, we set text...
-                if (pickedItem instanceof Pair) {
-                    Pair pair = (Pair) pickedItem;
+                if (!pat.isEmpty()) {
+                    // depending on the configuration, we set text...
+                    LOGGER.info(pickedItem.toString());
+                    LOGGER.info(pickedItem.getClass().getCanonicalName());
+                    LOGGER.info(getConfig());
+                    LOGGER.info("-----");
+
+                    // Do not worry, this reference will change below.
+                    // I just want to make it sure that in the case we got a null, we still have an 
+                    // "useful" Pair
+                    Pair pair = new Pair(pickedKey, pickedKey); 
+
+                    if (pickedItem instanceof Pair) {
+                        pair = (Pair) pickedItem;
+                    } else if (pickedItem instanceof Object[]) {
+                        // In the case we got Object[], not Pair, we have to use the model to get the Pair
+                        pair = comboBoxModel.getKeyValuePairForElementAt(selectedIndex);
+                    }
+
+                    // Now we should have Pair object, we can set the text
                     if (getConfig() == 2) {
                         setText(pair.getSecond().toString());
                     } else if (getConfig() == 3) {
                         setText(pair.getFirst().toString() + getDelimiter() + pair.getSecond().toString());
                     } // else if
-                } // if
+                }
             } // else
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).error(ex);
@@ -835,11 +846,11 @@ public class ComboBoxFilter extends PlainDocument {
     // ====================================================================================================
 
     public int getConfig() {
-        return config;
+        return comboBoxModel.getConfig();
     }
 
     public void setConfig(int argConfig) {
-        config = argConfig;
+        comboBoxModel.setConfig(argConfig);
     }
     
     /**
