@@ -14,6 +14,7 @@
 package com.areen.jlib.util;
 
 import com.areen.jlib.model.SimpleObject;
+import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -300,6 +301,28 @@ public class Utility {
         }
         return ret;
     } // toDouble() method
+
+    /**
+     * This method is useful when you want to convert an array of Objects into a Pair. argColumns array 
+     * contains indexes of those elements we want concatenated in the pair's second element.
+     * @param argArray
+     * @param argColumns
+     * @param argDelim String delimiter.
+     * @return 
+     */
+    public static Pair<String, String> pairOfStrings(Object[] argArray, int[] argColumns, String argDelim) {
+        Pair<String, String> pair = new Pair<String, String>(argArray[argColumns[0]].toString(), 
+                argArray[argColumns[1]].toString());
+        
+        StringBuilder sb = new StringBuilder(argArray[argColumns[1]].toString());
+        for (int i = 2; i < argColumns.length; i++) {
+            sb.append(argDelim);
+            sb.append(argArray[argColumns[i]]);
+        } // foreach
+        pair.setSecond(sb.toString());
+
+        return pair;
+    } // pairOfString() method
     
 } // Utility class
 

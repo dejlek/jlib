@@ -16,6 +16,7 @@ package com.areen.jlib.gui.fcb;
 import com.areen.jlib.gui.ColorArrowUI;
 import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.Sise;
+import com.areen.jlib.util.Utility;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -637,7 +638,8 @@ public class ComboBoxFilter extends PlainDocument {
                     // depending on the configuration, we set text...
                     LOGGER.info(pickedItem.toString());
                     LOGGER.info(pickedItem.getClass().getCanonicalName());
-                    LOGGER.info(getConfig());
+                    LOGGER.info(selectedIndex);
+                    LOGGER.info(comboBox.getSelectedIndex());
                     LOGGER.info("-----");
 
                     // Do not worry, this reference will change below.
@@ -649,8 +651,9 @@ public class ComboBoxFilter extends PlainDocument {
                         pair = (Pair) pickedItem;
                     } else if (pickedItem instanceof Object[]) {
                         // In the case we got Object[], not Pair, we have to use the model to get the Pair
-                        pair = comboBoxModel.getKeyValuePairForElementAt(selectedIndex);
-                    }
+                        Object[] pvalue = (Object[]) pickedItem;
+                        pair = Utility.pairOfStrings(pvalue, comboBoxModel.getColumns(), delimiter);
+                    } // elseif
 
                     // Now we should have Pair object, we can set the text
                     if (getConfig() == 2) {
@@ -658,6 +661,8 @@ public class ComboBoxFilter extends PlainDocument {
                     } else if (getConfig() == 3) {
                         setText(pair.getFirst().toString() + getDelimiter() + pair.getSecond().toString());
                     } // else if
+                    
+                    LOGGER.info("-----");
                 }
             } // else
         } catch (BadLocationException ex) {
