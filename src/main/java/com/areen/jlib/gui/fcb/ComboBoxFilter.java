@@ -636,8 +636,10 @@ public class ComboBoxFilter extends PlainDocument {
             } else {
                 if (!pat.isEmpty()) {
                     // depending on the configuration, we set text...
-                    LOGGER.info(pickedItem.toString());
-                    LOGGER.info(pickedItem.getClass().getCanonicalName());
+                    if (pickedItem != null) {
+                        LOGGER.info(pickedItem.toString());
+                        LOGGER.info(pickedItem.getClass().getCanonicalName());
+                    }
                     LOGGER.info(selectedIndex);
                     LOGGER.info(comboBox.getSelectedIndex());
                     LOGGER.info("-----");

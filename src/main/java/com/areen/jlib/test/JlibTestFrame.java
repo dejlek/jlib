@@ -194,6 +194,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToggleButton browserButton;
