@@ -35,6 +35,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         contentPanel.add(new ImageLoaderPanel(), "image_loader_panel");
         contentPanel.add(new JXButtonPanel(), "jxbutton_panel");
         contentPanel.add(new VerticalLayoutPanel(), "vertical_layout_panel");
+        contentPanel.add(new AccordionTestPanel(), "accordion_test_panel");
     }
 
     /**
@@ -56,6 +57,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         jToggleButton2 = new javax.swing.JToggleButton();
         jButton2 = new javax.swing.JButton();
         verticalLayoutButton = new javax.swing.JButton();
+        accordionButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -122,6 +124,16 @@ public class JlibTestFrame extends javax.swing.JFrame {
         });
         navigatorPanel.add(verticalLayoutButton);
 
+        accordionButton.setText("Accordion");
+        accordionButton.setMaximumSize(new java.awt.Dimension(159, 25));
+        accordionButton.setMinimumSize(new java.awt.Dimension(159, 25));
+        accordionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accordionButtonActionPerformed(evt);
+            }
+        });
+        navigatorPanel.add(accordionButton);
+
         mainSplitPane.setLeftComponent(navigatorPanel);
 
         contentPanel.setLayout(new java.awt.CardLayout());
@@ -155,6 +167,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, "vertical_layout_panel");
     }//GEN-LAST:event_verticalLayoutButtonActionPerformed
+
+    private void accordionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accordionButtonActionPerformed
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "accordion_test_panel");
+    }//GEN-LAST:event_accordionButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +213,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton accordionButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToggleButton browserButton;
     private javax.swing.JPanel contentPanel;
