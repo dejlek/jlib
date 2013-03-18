@@ -82,20 +82,38 @@ public class AccordionUI extends ComponentUI {
 		accordion.addMouseListener(mouseListener);
 
 		mouseListener = new MouseListener() {
-
+			Component component;
+			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO Auto-generated method stub	
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+			public void mouseEntered(MouseEvent e) {
+				// get component at point
+				component = c.getComponentAt(e.getPoint());
+			
+				//if separator set change mouse cursor
+				if (component instanceof JSeparator) {
+					// set moving cursor
+					if (accordion.getModel().isHorizontal()) {
+						component.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+					} else {
+						component.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));
+					}
+				}
 			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+			public void mouseExited(MouseEvent e) {
+				// get component at point
+				component = c.getComponentAt(e.getPoint());
+				
+				//if separator change cursor back to normal
+				if (component instanceof JSeparator) {
+					component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
 			}
 
 			@Override
@@ -103,7 +121,7 @@ public class AccordionUI extends ComponentUI {
 				Point point = e.getPoint();
 				
 				// get component at point
-				Component component = e.getComponent().getComponentAt(point);
+				component = e.getComponent().getComponentAt(point);
 				
 				// we are concerned about JSeparator
 				if (component instanceof JSeparator) {
@@ -112,14 +130,7 @@ public class AccordionUI extends ComponentUI {
 					
 					// mark it as drag started
 					dragHappening = true;
-					
-					// set moving cursor
-					if (accordion.getModel().isHorizontal()) {
-						component.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
-                                        } else {
-						component.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));
-                                        }
-                                        
+					 
 					// set source
 					dragSource = (JSeparator) component;
 				}
@@ -133,18 +144,14 @@ public class AccordionUI extends ComponentUI {
 				//if no drag happened cleanup and return;
 				if (lastDragPoint == null) {
 					dragDone();
-					
+
 					return;
 				} //if
-				
-				//reset the cursor
-                                Component c = ((Component) e.getSource()).getComponentAt(clickPoint);
-				c.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-								
+
 				//calculate change due to drag
 				int dx = lastDragPoint.x - clickPoint.x; // +ve is right, -ve left
 				int dy = lastDragPoint.y - clickPoint.y; // +ve is up, -ve down
-				
+
 				//resize components
 				accordion.resizeBySeparator(dragSource, dx, dy);
 				// clean up the drag 
@@ -165,8 +172,7 @@ public class AccordionUI extends ComponentUI {
 			}
 
 			@Override
-			public void mouseMoved(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+			public void mouseMoved(MouseEvent e) {
 
 			}
 		};

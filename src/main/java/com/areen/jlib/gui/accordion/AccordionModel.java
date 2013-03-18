@@ -113,7 +113,7 @@ public class AccordionModel {
 		//increase the size of the model
 		paneCount++;
 	}
-	
+
 	/**
 	 * Collapses all panes
 	 */
@@ -188,7 +188,7 @@ public class AccordionModel {
                                //they will be calculated using this method later
 					space += pane.getDimension().getWidth();
 				}
-			}else {
+			} else {
 				space += titleSize;
 			}
 		} // for
@@ -237,7 +237,7 @@ public class AccordionModel {
 	/**
 	 * Get index of an AccordionPane
 	 */
-	public int indexOf(AccordionPane pane) {
+	public int indexOf (AccordionPane pane) {
 		return panes.indexOf(pane);
 	}
 	
@@ -330,6 +330,34 @@ public class AccordionModel {
     public int getSeparatorIndex(JSeparator separator) {
     	return separators.indexOf(separator);
     } // getSeparatorIndex
+    
+    /**
+	 * @return the titleSize
+	 */
+	public int getTitleSize() {
+		return titleSize;
+	}
+
+	/**
+	 * @param titleSize the titleSize to set
+	 */
+	public void setTitleSize(int argTitleSize) {
+		this.titleSize = argTitleSize;
+	}
+
+	/**
+	 * @return the separatorSize
+	 */
+	public int getSeparatorSize() {
+		return separatorSize;
+	}
+
+	/**
+	 * @param separatorSize the separatorSize to set
+	 */
+	public void setSeparatorSize(int argSeparatorSize) {
+		this.separatorSize = argSeparatorSize;
+	}
     
     // ====================================================================================================
     // ==== Private/Protected/Package Methods =============================================================
