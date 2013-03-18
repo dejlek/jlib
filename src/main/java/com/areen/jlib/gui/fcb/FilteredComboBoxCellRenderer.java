@@ -151,6 +151,8 @@ public class FilteredComboBoxCellRenderer
             setForeground(list.getForeground());
         } // else
         
+        setConfig(cbModel.getConfig());
+        
         if (value instanceof Icon) {
             setIcon((Icon) value);
             setText("");
@@ -160,7 +162,8 @@ public class FilteredComboBoxCellRenderer
                 setText("");
             } else {
                 Object[] row = (Object[]) value;
-                setText(getText(row));
+                String newText = getText(row);
+                setText(newText);
             } // else
         } else if (value instanceof Pair) {
             setIcon(null);

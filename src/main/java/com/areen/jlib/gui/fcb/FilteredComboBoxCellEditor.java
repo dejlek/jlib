@@ -223,6 +223,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
     }
 
     public void setConfig(int argConfig) {
+        cbFilter.setConfig(argConfig);
         config = argConfig;
     }
 

@@ -189,7 +189,6 @@ public class WideComboBox extends JComboBox {
      * @param argMaxWidth
      */
     public void setMaxWidth(int argMaxWidth) {
-        System.out.println(">>>> " + argMaxWidth);
         maxWidth = argMaxWidth;
     } // setMaxWidth() method
 
