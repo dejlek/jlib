@@ -113,8 +113,8 @@ public class RotatableTitle extends JPanel {
 	// ==== Public Methods ================================================================================
 	// ====================================================================================================
 
-	public void rotate() {
-		expanded = !expanded;
+	public void rotate(boolean argExpanded) {
+		expanded = argExpanded;
 
 		repaint();
 	} //rotate

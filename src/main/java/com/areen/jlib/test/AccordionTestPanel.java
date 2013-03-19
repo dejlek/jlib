@@ -3,19 +3,34 @@ package com.areen.jlib.test;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.areen.jlib.gui.accordion.*;
 
 
-public class AccordionTestPanel extends JPanel {
-
+public class AccordionTestPanel extends JPanel implements ActionListener {
+	AccordionPrefs ap;
+	Accordion a;
+	
 	public AccordionTestPanel() {
 		super();
 		
 		JPanel p1 = new JPanel();
 		p1.setBackground(Color.YELLOW);
+		JButton button = new JButton("SAVE prefs");
+		button.addActionListener(this);
+		button.setActionCommand("save");
+		p1.add(button);
+		
+		JButton button2 = new JButton("LOAD prefs");
+		button2.addActionListener(this);
+		button2.setActionCommand("load");
+		p1.add(button2);
 		
 		JPanel p2 = new JPanel();
 		p2.setBackground(Color.GREEN);
@@ -33,6 +48,7 @@ public class AccordionTestPanel extends JPanel {
 		boolean horizontal = false;
 		
 		TitledPane t1 = new TitledPane("bla", p1, horizontal);
+		
 		t1.setMinimumSize(new Dimension(35, 35));
 		
 		TitledPane t2 = new TitledPane("sra", p2, horizontal);
@@ -47,10 +63,22 @@ public class AccordionTestPanel extends JPanel {
 		TitledPane t5 = new TitledPane("bnmbnmdf", p5, horizontal);
 		t5.setMinimumSize(new Dimension(35, 35));
 		
-		Accordion acc = new Accordion(horizontal, t1, t2, t3, t4, t5);
+		a = new Accordion(horizontal, t1, t2, t3, t4, t5);
+		
+		ap = new AccordionPrefs(a, new HashMap<String, String>());
 		
 	//	JScrollPane pane = new JScrollPane(acc);
 		setLayout(new BorderLayout());
-		add(acc, BorderLayout.CENTER);
+		add(a, BorderLayout.CENTER);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	
+		if (e.getActionCommand().equals("save")) {
+			ap.updatePrefs();
+		} else if (e.getActionCommand().equals("load")) {
+			ap.loadPrefs();
+		}
 	}
 }

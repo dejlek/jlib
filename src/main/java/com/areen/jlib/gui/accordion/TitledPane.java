@@ -114,7 +114,7 @@ public class TitledPane extends JPanel {
     	}
 
     	// rotate 
-		title.rotate();
+		title.rotate(expanded);
     }
 
     

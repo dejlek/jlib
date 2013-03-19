@@ -556,12 +556,9 @@ public class AccordionModel {
 			boolean oldExampleProperty = expanded;
 	       
 			this.expanded = argExpanded;
-			
-                        // if we have horizontal we need to flip the title pane to west panel 
-                        // and rotate it 90* anticlockwise
+
 			titledPane.setExpanded(expanded);
 					
-
 			propertyChangeSupport.firePropertyChange(PROP_EXPANDED, oldExampleProperty, expanded);
 		}
 		
@@ -577,7 +574,6 @@ public class AccordionModel {
 		 */
 		public void setDimension(Dimension argDimension) {
 			this.dimension = argDimension;
-		//	fireDataChanged(this);
 		}
 		
 		/**

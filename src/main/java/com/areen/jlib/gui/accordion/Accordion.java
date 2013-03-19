@@ -272,6 +272,15 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     } // collapse()
     
     /**
+     * Set size of a pane at index
+     * @param index
+     * @param d
+     */
+    public void setPaneSize(int index, Dimension d) {
+    	model.setPaneDimension(index, d);
+    }
+    
+    /**
      * Set TitlePanes dimensions
      * @param dimensions
      */
