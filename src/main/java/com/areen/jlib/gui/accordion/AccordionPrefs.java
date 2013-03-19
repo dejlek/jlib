@@ -51,15 +51,22 @@ public class AccordionPrefs {
 	
 	private Accordion accordion;
 	private HashMap<String, String> prefsMap;
+    private String key;
+    private String expandedKey;
+    private String sizesKey;
 
 	// ====================================================================================================
 	// ==== Constructors ==================================================================================
 	// ====================================================================================================
 
-	public AccordionPrefs(Accordion argAccordion, HashMap<String, String> argPrefsMap) {
+	public AccordionPrefs(Accordion argAccordion, HashMap<String, String> argPrefsMap, String argKey) {
 		accordion = argAccordion;
 		prefsMap = argPrefsMap;
-	} // Template constructor (default)
+        key = argKey;
+        
+        expandedKey = key + "/" + accordion.getName() + "_expanded";
+        sizesKey = key + "/" + accordion.getName() + "_sizes";
+	} // AccordionPrefs constructor (default)
 
 	// ====================================================================================================
 	// ==== Public Methods ================================================================================
@@ -70,7 +77,8 @@ public class AccordionPrefs {
 	 */
 	public void loadPrefs() {
 		// load expanded states
-		String expandedString = prefsMap.get(PREF_ACCORDION_EXPANDED);
+		//String expandedString = prefsMap.get(PREF_ACCORDION_EXPANDED);
+        String expandedString = prefsMap.get(expandedKey);
 
 		// if the string is not stored give error message  
 		if (expandedString == null) {
@@ -80,7 +88,8 @@ public class AccordionPrefs {
 		}
 
 		// load AccordionPane sizes
-		String sizesString = prefsMap.get(PREF_ACCORDION_SIZE);
+		//String sizesString = prefsMap.get(PREF_ACCORDION_SIZE);
+        String sizesString = prefsMap.get(sizesKey);
 
 		// if the string is not stored give error message  
 		if (sizesString == null) {
@@ -95,10 +104,10 @@ public class AccordionPrefs {
 	 */
 	public void updatePrefs() {
 		// update expanded states
-		prefsMap.put(PREF_ACCORDION_EXPANDED, getExpanded());
+		prefsMap.put(expandedKey, getExpanded());
 
 		// load AccordionPane sizes
-		prefsMap.put(PREF_ACCORDION_SIZE, getSizes());
+		prefsMap.put(sizesKey, getSizes());
 
 		System.out.println(prefsMap.size());
 	}
@@ -112,32 +121,32 @@ public class AccordionPrefs {
 	 * String "expanded" looks like this : "0,0,1,1" where 1 is expanded and 0 is collapsed 
 	 * @param expanded
 	 */
-	private void loadExpanded(String expanded) {
-		// get individual states
-		String[] states = expanded.split(",");
+    private void loadExpanded(String expanded) {
+        // get individual states
+        String[] states = expanded.split(",");
 
-		// iterate through and set the states
-		for (int i = 0; i < states.length; i++) {
-			// parse the string
-			int state = Integer.parseInt(states[i]);
+        // iterate through and set the states
+        for (int i = 0; i < states.length; i++) {
+            // parse the string
+            int state = Integer.parseInt(states[i]);
 
-			//expand when 1 and collapse when 0
-			switch (state) {
-			case 1:
-				// expand
-				accordion.expand(i);
-				break;
+            //expand when 1 and collapse when 0
+            switch (state) {
+                case 1:
+                    // expand
+                    accordion.expand(i);
+                    break;
 
-			case 0:
-				// collapse
-				accordion.collapse(i);
-				break;    		
-			
-                        default:
-                            break;
-                        }
-		}
-	} // loadExpanded()
+                case 0:
+                    // collapse
+                    accordion.collapse(i);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    } // loadExpanded()
 
 	/**
 	 * Get the states of each pane
@@ -217,46 +226,46 @@ public class AccordionPrefs {
 	 * Return will looks like this : "233, 123, 0" where 0 = null
 	 * @param expanded
 	 */
-	private String getSizes() {
-		StringBuilder buffer = new StringBuilder();
+    private String getSizes() {
+        StringBuilder buffer = new StringBuilder();
 
-		//if horizontal we store width, height otherwise
-		boolean horizontal = accordion.getModel().isHorizontal();
+        //if horizontal we store width, height otherwise
+        boolean horizontal = accordion.getModel().isHorizontal();
 
-		// get the sizes
-		Dimension[] dimensions = accordion.getDimensions();
+        // get the sizes
+        Dimension[] dimensions = accordion.getDimensions();
 
-		//temporary variables
-		int size;
-		Dimension d;
+        //temporary variables
+        int size;
+        Dimension d;
 
-		// iterate through states and generate the string
-		for (int i = 0; i < dimensions.length; i++) {
-			//get dimensions
-			d = dimensions[i];
+        // iterate through states and generate the string
+        for (int i = 0; i < dimensions.length; i++) {
+            //get dimensions
+            d = dimensions[i];
 
-			//sometimes there is no size set when the pane hasn't been resized
-			if (d != null) {
-				if (horizontal) {
-					size = (int) dimensions[i].getWidth();
-				} else {
-					size = (int) dimensions[i].getHeight();
-				} 
-			} else {
-				size = 0;
-                        }
-                        
-			//append the size
-			buffer.append(size);
+            //sometimes there is no size set when the pane hasn't been resized
+            if (d != null) {
+                if (horizontal) {
+                    size = (int) dimensions[i].getWidth();
+                } else {
+                    size = (int) dimensions[i].getHeight();
+                }
+            } else {
+                size = 0;
+            }
 
-			//if not the last add ','
-			if (i != dimensions.length - 1) {
-				buffer.append(",");
-			}
-		}
+            //append the size
+            buffer.append(size);
 
-		return buffer.toString();
-	} // getExpanded()
+            //if not the last add ','
+            if (i != dimensions.length - 1) {
+                buffer.append(",");
+            }
+        }
+
+        return buffer.toString();
+    } // getExpanded()
 
 } // AccordionPrefs class
 

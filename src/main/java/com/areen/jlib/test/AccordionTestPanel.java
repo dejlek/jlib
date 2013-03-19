@@ -65,7 +65,7 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		
 		a = new Accordion(horizontal, t1, t2, t3, t4, t5);
 		
-		ap = new AccordionPrefs(a, new HashMap<String, String>());
+		ap = new AccordionPrefs(a, new HashMap<String, String>(), "/test_dialog");
 		
 	//	JScrollPane pane = new JScrollPane(acc);
 		setLayout(new BorderLayout());
