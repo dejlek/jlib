@@ -100,7 +100,7 @@ public class RotatableTitle extends JPanel {
 
 		} else {
 			if (expanded) {
-				currentText += " \u25B6";
+				currentText += " \u25B2";
 			} else {
 				currentText += " \u25BC";
 			}

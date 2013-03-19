@@ -161,10 +161,14 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 		int height = 0;
 
 		Component[] cs = container.getComponents();
+	
 		for (Component c : cs) {
+		//	System.out.println(i + " " + c.getSize());
 			width += c.getWidth();
 			height += c.getHeight();
 		} // for
+		
+		//System.out.println("=============================================");
 		
 		//FIXME: JScrollPane fires layoutCotainer all the time when this is variable
 		return new Dimension(width, height);

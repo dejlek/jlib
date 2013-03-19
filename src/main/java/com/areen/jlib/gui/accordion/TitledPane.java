@@ -92,7 +92,7 @@ public class TitledPane extends JPanel {
     // ====================================================================================================
     
     /**
-     * Switch and rotate the component
+     * Switch and rotate the component - it only does rotate if different state is set.
      */
     public void setExpanded(boolean expanded) {
     	RotatableTitle title = (RotatableTitle) ((BorderLayout) getLayout())
@@ -100,21 +100,31 @@ public class TitledPane extends JPanel {
   
     	//we only need to trigger a change when pane in horizontal accordion is detected
     	if (horizontal) {
-      		if (expanded) { //collapsed -> expanded
+      		if (expanded) { 
     			//check if there is anything in the north panel
     			title = (RotatableTitle) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.WEST);
-    			this.remove(title);
-    			add(title, BorderLayout.NORTH);
 
+    			//only if we have to move the panel from WEST to NORTH (not previously expanded),
+    			if (title != null) {
+    				this.remove(title);
+    				add(title, BorderLayout.NORTH);
+    			}
     		} else {
     			title = (RotatableTitle) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.NORTH);
-    			this.remove(title);
-    			add(title, BorderLayout.WEST);
+    			
+    			//only if the panel wasn't collapsed already move the title to the west pane
+    			if (title != null) {
+    				this.remove(title);
+    				add(title, BorderLayout.WEST);
+    			}
     		}		
     	}
 
-    	// rotate 
-		title.rotate(expanded);
+    	// rotate only if we have changed the state we want to rotate. If the same state is set
+        // title will be null! 
+    	if (title != null) {
+    		title.rotate(expanded);
+    	}
     }
 
     

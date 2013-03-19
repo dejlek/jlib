@@ -63,6 +63,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
                                          // moving a separator
 	private AccordionPane secondPane; // right/bottom pane to resize
 		
+	private boolean insideViewport; 
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -70,10 +71,9 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     public Accordion(boolean horizontal) {
     	model = new AccordionModel(horizontal);
     	
-    	//register to listen for property changes
+    	// register to listen for property changes
     	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
-    	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);
-    	
+    	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);    	
     } // Accordion constructor (default)
 
     public Accordion(boolean horizontal, TitledPane... panes) {
@@ -140,7 +140,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
-    
+	
 	/**
 	 * Resize components 
 	 * @param dragSource
@@ -313,6 +313,27 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
+
+    /**
+     * Set the type of the parent - is it JViewport or not?
+     */
+    public void setParentType() {
+    	// check the parent of the Accordion, if it is in JViewPane then set insideViewport to true
+    
+    	if (getParent() instanceof JViewport) {
+    		insideViewport = true;
+    	} else {
+    		insideViewport = false;
+        }
+    }
+    
+    /**
+     * Returns if the Accordion is inside a JViewPort 
+     * @return
+     */
+    public boolean isInsideViewport() {
+    	return insideViewport;
+    }
 
     /**
      * Get model
