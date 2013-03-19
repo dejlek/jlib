@@ -107,12 +107,15 @@ public class AccordionUI extends ComponentUI {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// get component at point
-				component = c.getComponentAt(e.getPoint());
-				
-				//if separator change cursor back to normal
-				if (component instanceof JSeparator) {
-					component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				// if dragging do not change the cursor even though we have exited the JSeparator
+				if (!dragHappening) {
+					// get component at point
+					component = c.getComponentAt(e.getPoint());
+
+					//if separator change cursor back to normal
+					if (component instanceof JSeparator) {
+						component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					}
 				}
 			}
 
@@ -154,6 +157,7 @@ public class AccordionUI extends ComponentUI {
 
 				//resize components
 				accordion.resizeBySeparator(dragSource, dx, dy);
+								
 				// clean up the drag 
 				dragDone();
 			}

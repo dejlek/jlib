@@ -37,25 +37,25 @@ import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
  */
 public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 
-    // ====================================================================================================
-    // ==== Variables =====================================================================================
-    // ====================================================================================================
-    
-    // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    private AccordionModel model;
-    
-    // ====================================================================================================
-    // ==== Constructors ==================================================================================
-    // ====================================================================================================
-    
-    public AccordionLayout(AccordionModel argModel) {
-    	this.model = argModel;
-    } // AccordionLayoutManager constructor (default)
-    
-    // ====================================================================================================
-    // ==== Interface/Superclass Methods ==================================================================
-    // ====================================================================================================
-    
+	// ====================================================================================================
+	// ==== Variables =====================================================================================
+	// ====================================================================================================
+
+	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	private AccordionModel model;
+
+	// ====================================================================================================
+	// ==== Constructors ==================================================================================
+	// ====================================================================================================
+
+	public AccordionLayout(AccordionModel argModel) {
+		this.model = argModel;
+	} // AccordionLayoutManager constructor (default)
+
+	// ====================================================================================================
+	// ==== Interface/Superclass Methods ==================================================================
+	// ====================================================================================================
+
 	@Override
 	public void addLayoutComponent(String string, Component container) {
 		// TODO Auto-generated method stub
@@ -65,31 +65,31 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 	public void layoutContainer(Container container) {
 		int currentX = 0;
 		int currentY = 0;
-                int width = 0;
-                int height = 0;
+		int width = 0;
+		int height = 0;
 		int paneNumber = 0; // number of the pane = index in the model! 
-							// Separators do not count to it.
-	
+		// Separators do not count to it.
+
 		Dimension dimensions; 
 		AccordionPane pane;
-		
+
 		boolean horizontal = model.isHorizontal();
-		
+
 		// get components
 		Component[] components = container.getComponents();
-		
-                // compute empty space - total space to be divided among panels which work 
-                // by weights - no width/height specified 
+
+		// compute empty space - total space to be divided among panels which work 
+		// by weights - no width/height specified 
 		int emptySpace = getAvailableSpace(container);
-		
+
 		//lay out each component
 		for (Component c : components) {
-		
+
 			//if we are dealing with title pane
 			if (c instanceof TitledPane) {
 				pane = model.getPaneAt(paneNumber);
 				dimensions = model.getPaneAt(paneNumber).getDimension();
-				
+
 				//if in a row keep height the same and increment X
 				if (horizontal) {
 					//titled pane expanded
@@ -98,32 +98,32 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 							width = dimensions.width;
 						} else {
 							width = (int) (model.getWeightShare(paneNumber) * emptySpace);
-                                                }
+						}
 					} else { // collapsed
 						width = model.titleSize;
 					} //else
-					
+
 					c.setBounds(currentX, 0, width, container.getHeight());
-					
+
 					//update the next X position
 					currentX += width;
 				} else { // column - height differs, X stays the same (Y increases)
 					if (pane.isExpanded()) { //expanded titled pane
 						if (dimensions != null) {
 							height = dimensions.height;
-                                                } else {
+						} else {
 							height = (int) (model.getWeightShare(paneNumber) * emptySpace);
-                                                }
+						}
 					} else { // collapsed
 						height = model.titleSize;
 					} //else
-					
+
 					c.setBounds(0, currentY, container.getWidth(), height);
-					
+
 					//update the next Y position
 					currentY += height;
 				} //else
-				
+
 				// increment pane number
 				paneNumber++;
 			} else { //dealing with separators
@@ -131,15 +131,15 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 				if (horizontal) {
 					width = model.separatorSize;
 					height = container.getHeight(); // as high as the whole container
-					
+
 					c.setBounds(currentX, 0, width, height);
-					
+
 					//update the next X position
 					currentX += width;
 				} else { //all components in a column
 					width = container.getWidth();
 					height = model.separatorSize;
-					
+
 					c.setBounds(0, currentY, width, height);
 
 					//update the next Y position
@@ -159,13 +159,14 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 	public Dimension preferredLayoutSize(Container container) {
 		int width = 0;
 		int height = 0;
-		
+
 		Component[] cs = container.getComponents();
 		for (Component c : cs) {
 			width += c.getWidth();
 			height += c.getHeight();
 		} // for
 		
+		//FIXME: JScrollPane fires layoutCotainer all the time when this is variable
 		return new Dimension(width, height);
 	}
 
@@ -173,10 +174,10 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 	public void removeLayoutComponent(Component c) {
 		// TODO Auto-generated method stub
 	}
-    
-    // ====================================================================================================
-    // ==== Private/Protected/Package Methods =============================================================
-    // ====================================================================================================
+
+	// ====================================================================================================
+	// ==== Private/Protected/Package Methods =============================================================
+	// ====================================================================================================
 
 	/**
 	 * Calculates available space in the container. It takes total height or width depending on 

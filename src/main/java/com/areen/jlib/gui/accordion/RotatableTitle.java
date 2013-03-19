@@ -93,14 +93,14 @@ public class RotatableTitle extends JPanel {
 		//add arrows
 		if (horizontal) {
 			if (expanded) {
-				currentText += " \u25E3"; 
+				currentText += " \u25B2"; 
 			} else {
 				currentText += " \u25BC";
 			} //if
 
 		} else {
 			if (expanded) {
-				currentText += " \u25E4";
+				currentText += " \u25B6";
 			} else {
 				currentText += " \u25BC";
 			}
