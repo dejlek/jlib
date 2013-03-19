@@ -76,7 +76,13 @@ public class AccordionPrefs {
 	 * Load user preferences
 	 */
 	public void loadPrefs() {
-		// load expanded states
+        /* TODO: remove after fixing
+        System.out.println("loadPrefs()");
+        System.out.println(expandedKey);
+        System.out.println(sizesKey);
+        */
+        
+        // load expanded states
 		//String expandedString = prefsMap.get(PREF_ACCORDION_EXPANDED);
         String expandedString = prefsMap.get(expandedKey);
 
@@ -108,8 +114,6 @@ public class AccordionPrefs {
 
 		// load AccordionPane sizes
 		prefsMap.put(sizesKey, getSizes());
-
-		System.out.println(prefsMap.size());
 	}
 
 	// ====================================================================================================
