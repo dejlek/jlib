@@ -46,7 +46,7 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		JPanel p5 = new JPanel();
 		p5.setBackground(Color.BLUE);
 
-		boolean horizontal = false;
+		boolean horizontal = true;
 		
 		TitledPane t1 = new TitledPane("bla", p1, horizontal);
 		t1.setMinimumSize(new Dimension(100, 100));
@@ -74,10 +74,21 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		a.addPane(t4);
 		a.addPane(t5);
 		ap = new AccordionPrefs(a, new HashMap<String, String>(), "/test_dialog");
-	
-		JScrollPane pane = new JScrollPane(a);
+		
+
+		TitledPane t6 = new TitledPane("Horizontal", a, false);
+		t6.setPreferredSize(new Dimension(35, 35));
+		t6.setMinimumSize(new Dimension(100, 100));
+
+		JPanel p7 = new JPanel();
+		p7.setBackground(Color.PINK);
+		TitledPane t7 = new TitledPane("other corizontal", p7, false);
+		
+		Accordion a2 = new Accordion(false, t6, t7);
+		a2.setFixedSize(t6, true);
+		JScrollPane pane = new JScrollPane(a2);
 		setLayout(new BorderLayout());
-		add(pane, BorderLayout.WEST);
+		add(pane, BorderLayout.CENTER);
 		
 	//	System.out.println(a.getMinimumSize());
 	}

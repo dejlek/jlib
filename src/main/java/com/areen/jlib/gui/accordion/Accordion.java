@@ -92,7 +92,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private String uiClassID = "AccordionUI"; //UI Class
 	private AccordionModel model;
-	private Dimension accordionSize;
 	private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
                                      // moving a separator
 	private AccordionPane secondPane; // right/bottom pane to resize
@@ -386,6 +385,25 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	} // getModel()
 	
     /**
+     * Set resizable property of a TitledPane
+     * @param argIndex
+     * @param argFixedSize
+     */
+    public void setFixedSize(int argIndex, boolean argFixedSize) {
+    	model.getPaneAt(argIndex).setFixedSize(argFixedSize);
+    }
+    
+    /**
+     * Set resizable property of a TitledPane
+     * @param argIndex
+     * @param argFixedSize
+     */
+    public void setFixedSize(TitledPane pane, boolean argFixedSize) {
+    	model.getByTitledPane(pane).setFixedSize(argFixedSize);
+    }
+    
+	
+    /**
      * Sets pane selected at index idx
      * @param idx
      */
@@ -432,8 +450,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	for (int i = separatorIndex; i >= 0; i--) {
     		current = model.getPaneAt(i); 
     	
-    		//if found expanded return it!
-    		if (current.isExpanded()) {
+    		//if found expanded and has no fixed size sized return it!
+    		if (current.isExpanded() && !current.isFixedSize()) {
     			return current;
                 }
     	} //for
@@ -453,8 +471,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	for (int i = separatorIndex + 1; i < model.getPaneCount(); i++) {
     		current = model.getPaneAt(i); 
     	
-    		//if found expanded return it!
-    		if (current.isExpanded()) {
+    		//if found expanded and has no fixed size return it!
+    		if (current.isExpanded() && !current.isFixedSize()) {
     			return current;
                 }
     	} //for
