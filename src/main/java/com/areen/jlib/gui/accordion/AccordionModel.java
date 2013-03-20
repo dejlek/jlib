@@ -488,9 +488,10 @@ public class AccordionModel {
 	 * Sets titled pane to be non resizable 
 	 * @param argIndex
 	 * @param argFixedSize
+	 * @param argDimension
 	 */
-	public void setFixedSize(int argIndex, boolean argFixedSize) {
-		panes.get(argIndex).setFixedSize(argFixedSize);
+	public void setFixedSize(int argIndex, boolean argFixedSize, Dimension argDimension) {
+		panes.get(argIndex).setFixedSize(argFixedSize, argDimension);
 	}
     
     // ====================================================================================================
@@ -733,17 +734,27 @@ public class AccordionModel {
 		}
 
 		/**
-		 * @return the fixedSize
+		 * @return the fixedSize (resizable)
 		 */
-		public boolean isFixedSize() {
+		public boolean isResizable() {
 			return fixedSize;
 		}
 
 		/**
+		 * @param dimension 
 		 * @param fixedSize the fixedSize to set
 		 */
-		public void setFixedSize(boolean argFixedSize) {
+		public void setFixedSize(boolean argFixedSize, Dimension argDimension) {
 			this.fixedSize = argFixedSize;
+			this.dimension = argDimension;
+		}
+
+		/**
+		 * Set resizable
+		 * @param argResizable
+		 */
+		public void setResizable(boolean argResizable) {
+			this.fixedSize = argResizable;
 		}
     }
 } // AccordionModel class

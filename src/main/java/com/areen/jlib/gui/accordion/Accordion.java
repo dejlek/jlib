@@ -41,7 +41,11 @@ import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
  * collapsed at startup as default. Each TitledPane is separated by JSeparator which can be moved to resize
  * adjacent expanded panes. Weights should be specified at startup, each panel will take a proportional 
  * share of the screen when expanded. Once a panel is resized then its weight is not taken into layout 
- * calculation.
+ * calculation. The TitledPanes inside Accordion can have fixed dimension (width or height 
+ * depending on orientation); use setFixedSize(index, fixed(boolean=true), requiredDimension). 
+ * If we use that function with fixed=false then the accordion will be resized using weight value but 
+ * resizing will not be allowed. setResizable(int, true) has the same behaviour as 
+ * setFixedSize(index, true, null)
  * 
  * @author Matthew
  */
@@ -385,23 +389,32 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	} // getModel()
 	
     /**
-     * Set resizable property of a TitledPane
+     * Set fixed size of a TitledPane
      * @param argIndex
      * @param argFixedSize
      */
-    public void setFixedSize(int argIndex, boolean argFixedSize) {
-    	model.getPaneAt(argIndex).setFixedSize(argFixedSize);
+    public void setFixedSize(int argIndex, boolean argFixedSize, Dimension argDimension) {
+    	model.getPaneAt(argIndex).setFixedSize(argFixedSize, argDimension);
     }
     
     /**
-     * Set resizable property of a TitledPane
+     * Set fixed size property of a TitledPane
+     * @param dimension 
      * @param argIndex
      * @param argFixedSize
      */
-    public void setFixedSize(TitledPane pane, boolean argFixedSize) {
-    	model.getByTitledPane(pane).setFixedSize(argFixedSize);
+    public void setFixedSize(TitledPane pane, boolean argFixedSize, Dimension argDimension) {
+    	model.getByTitledPane(pane).setFixedSize(argFixedSize, argDimension);
     }
     
+    /**
+     * Set titled pane not to be resizable
+     * @param argIndex
+     * @param argResizable
+     */
+    public void setResizable(int argIndex, boolean argResizable) {
+    	model.getPaneAt(argIndex).setResizable(argResizable);
+    }
 	
     /**
      * Sets pane selected at index idx
@@ -451,7 +464,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		current = model.getPaneAt(i); 
     	
     		//if found expanded and has no fixed size sized return it!
-    		if (current.isExpanded() && !current.isFixedSize()) {
+    		if (current.isExpanded() && !current.isResizable()) {
     			return current;
                 }
     	} //for
@@ -472,7 +485,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		current = model.getPaneAt(i); 
     	
     		//if found expanded and has no fixed size return it!
-    		if (current.isExpanded() && !current.isFixedSize()) {
+    		if (current.isExpanded() && !current.isResizable()) {
     			return current;
                 }
     	} //for
