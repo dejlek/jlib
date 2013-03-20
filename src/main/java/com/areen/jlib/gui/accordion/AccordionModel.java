@@ -257,6 +257,157 @@ public class AccordionModel {
 		return list;
 	}	
 	
+	/**
+	 * Calculate highest titled pane
+	 * @return
+	 */
+	public int calculateHighestTitledPane() {
+		int highest = 0;
+		int height;
+		
+		// iterate through all panes
+		for (AccordionPane pane : panes) {
+			//get preferred height
+			height = (int) pane.getTitledPane().getPreferredSize().getHeight();
+			
+			// if it's bigger set highest
+			if (height > highest) {
+				highest = height;
+			}
+		}
+		
+		return highest;
+	}
+	
+	/**
+	 * Calculate widest titled pane
+	 * @return
+	 */
+	public int calculateWidestTitledPane() {
+		int widest = 0;
+		int width;
+		
+		// iterate through all panes
+		for (AccordionPane pane : panes) {
+			//get preferred width
+			width = (int) pane.getTitledPane().getPreferredSize().getWidth();
+			
+			// if wider set it so
+			if (width > widest) {
+				widest = width;
+			}
+		}
+		return widest;
+	}
+	
+	/**
+	 * Get the greatest minimum width of all panes
+	 * @return
+	 */
+	public int calculateGreatestMinimumWidth() {
+		int greatest = 0;
+		int width;
+		
+		// iterate and find the greatest
+		for (AccordionPane pane : panes) {
+			width = pane.getTitledPane().getMinimumSize().width;
+			
+			//if it's the greatest so far.. store it
+			if (width > greatest) {
+				greatest = width;
+			}
+		}
+		
+		return greatest;
+	}
+	
+	/**
+	 * Calculate greatest minimum height from all panes
+	 * @return
+	 */
+	public int calculateGreatestMinimumHeight() {
+		int greatest = 0;
+		int height;
+		
+		// iterate and find the greatest
+		for (AccordionPane pane : panes) {
+			height = pane.getTitledPane().getMinimumSize().height;
+			
+			//if it's the greatest so far.. store it
+			if (height > greatest) {
+				greatest = height;
+			}
+		}
+		
+		return greatest;
+	}
+	
+	/**
+	 * Calculate the total minimum height from all panes and separators
+	 * @return
+	 */
+	public int calculateTotalMinimumHeight() {
+		int height = 0;
+		
+		// iterate and find the greatest
+		for (AccordionPane pane : panes) {
+			//if collapsed use title size
+			if (pane.isExpanded()) {
+				height += pane.getTitledPane().getMinimumSize().height;
+			} else {
+				height += titleSize;
+			}
+		}
+		
+		// add space taken up by separators
+		height += separatorSize * panes.size() - 1;
+		
+		return height;
+	}
+	
+	/**
+	 * Calculate total minimum width from all expanded panes, separators
+	 * @return
+	 */
+	public int calculateTotalMinimumWidth() {
+		int width = 0;
+		
+		// iterate and find the greatest
+		for (AccordionPane pane : panes) {
+			//if collapsed use title size
+			if (pane.isExpanded()) {
+				width += pane.getTitledPane().getMinimumSize().width;
+			} else {
+				width += titleSize;
+			}
+
+		}
+		
+		// add space taken up by separators
+		width += separatorSize * panes.size() - 1;
+		
+		return width;
+	}
+	
+	/**
+	 * Calculate the minimum size of the accordion = minimum size of all opened + separators + collapsed 
+	 * @return
+	 */
+	public Dimension calculateMinimumSize() {
+		int height = 0;
+		int width = 0;
+		
+		//horizontal accordion
+		if (horizontal) {
+			height = calculateGreatestMinimumHeight();
+			width = calculateTotalMinimumWidth();
+		} else { //vertical
+			height = calculateTotalMinimumHeight();
+			width = calculateGreatestMinimumWidth();
+		} //else
+		
+		return new Dimension(width, height);
+	} // calculateMinimumSize()
 // ====================================================================================================
 // ==== Accessors =====================================================================================
 // ====================================================================================================

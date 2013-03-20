@@ -26,8 +26,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
-import org.jdesktop.swingx.MultiSplitLayout;
-
 import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
 
 /**
@@ -35,7 +33,7 @@ import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
  * 
  * @author Matthew
  */
-public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
+public class AccordionLayout implements LayoutManager {
 
 	// ====================================================================================================
 	// ==== Variables =====================================================================================
@@ -82,6 +80,8 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 		// by weights - no width/height specified 
 		int emptySpace = getAvailableSpace(container);
 
+		int expandedCount = model.getExpanded().size();
+		
 		//lay out each component
 		for (Component c : components) {
 
@@ -92,9 +92,10 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 
 				//if in a row keep height the same and increment X
 				if (horizontal) {
-					//titled pane expanded
+					// titled pane expanded and there are more than one pane expanded
+					// set the width otherwise it's set size will be ignored!
 					if (pane.isExpanded()) {
-						if (dimensions != null) {
+						if (dimensions != null && expandedCount > 1) {
 							width = dimensions.width;
 						} else {
 							width = (int) (model.getWeightShare(paneNumber) * emptySpace);
@@ -108,9 +109,13 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 					//update the next X position
 					currentX += width;
 				} else { // column - height differs, X stays the same (Y increases)
-					if (pane.isExpanded()) { //expanded titled pane
+					if (pane.isExpanded()) { //expanded titled pane  and there is more than one expanded
 						if (dimensions != null) {
 							height = dimensions.height;
+							
+							if (expandedCount > 1) {
+								height = (int) (model.getWeightShare(paneNumber) * (emptySpace + height));
+							}
 						} else {
 							height = (int) (model.getWeightShare(paneNumber) * emptySpace);
 						}
@@ -151,8 +156,7 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 
 	@Override
 	public Dimension minimumLayoutSize(Container c) {
-		// TODO:
-		return new Dimension(100, 100);
+		return model.calculateMinimumSize();
 	}
 
 	@Override
@@ -162,15 +166,22 @@ public class AccordionLayout extends MultiSplitLayout implements LayoutManager {
 
 		Component[] cs = container.getComponents();
 	
+		//calculate sizes
 		for (Component c : cs) {
-		//	System.out.println(i + " " + c.getSize());
-			width += c.getWidth();
-			height += c.getHeight();
+			if (model.isHorizontal()) {
+				width += c.getPreferredSize().getWidth();
+			} else {
+				height += c.getPreferredSize().getHeight();
+			}
 		} // for
-		
-		//System.out.println("=============================================");
-		
-		//FIXME: JScrollPane fires layoutCotainer all the time when this is variable
+
+		//calculate remaining dimension
+		if (model.isHorizontal()) {
+			height = model.calculateHighestTitledPane();
+		} else {
+			width = model.calculateWidestTitledPane();
+		}
+
 		return new Dimension(width, height);
 	}
 

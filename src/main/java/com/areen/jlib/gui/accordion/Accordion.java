@@ -24,6 +24,7 @@ package com.areen.jlib.gui.accordion;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -58,12 +59,11 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private String uiClassID = "AccordionUI"; //UI Class
 	private AccordionModel model;
-
+	private Dimension accordionSize;
 	private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
-                                         // moving a separator
+                                     // moving a separator
 	private AccordionPane secondPane; // right/bottom pane to resize
-		
-	private boolean insideViewport; 
+
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -128,6 +128,21 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         return (AccordionUI) ui;
     }
 
+    @Override
+    public void setBounds(Rectangle r) {
+    	super.setBounds(r);
+    }
+    
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+    	super.setBounds(x, y, width, height);
+    }
+    
+    @Override
+    public void setPreferredSize(Dimension dim) {
+    	super.setPreferredSize(dim);
+    }
+    
     // :::: Interface/Superclass 1 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     
 	@Override
@@ -216,16 +231,16 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	private boolean checkMinimumDimension(Dimension dimension, int w1, int h1) {
 		if (dimension.width < w1 && dimension.height < h1) {
 			return true;
-                } 
-		
-                return false;
+		} 
+
+		return false;
 	} // checkMinimumDimension
 
 	/**
-     * Adds an expandable pane to the Accordion
-     * @param titledPane
-     */
-    public void addPane(TitledPane titledPane) {
+	 * Adds an expandable pane to the Accordion
+	 * @param titledPane
+	 */
+	public void addPane(TitledPane titledPane) {
     	model.addPane(titledPane);
     } // add 
     
@@ -313,27 +328,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
-
-    /**
-     * Set the type of the parent - is it JViewport or not?
-     */
-    public void setParentType() {
-    	// check the parent of the Accordion, if it is in JViewPane then set insideViewport to true
-    
-    	if (getParent() instanceof JViewport) {
-    		insideViewport = true;
-    	} else {
-    		insideViewport = false;
-        }
-    }
-    
-    /**
-     * Returns if the Accordion is inside a JViewPort 
-     * @return
-     */
-    public boolean isInsideViewport() {
-    	return insideViewport;
-    }
 
     /**
      * Get model
