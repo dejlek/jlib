@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.areen.jlib.gui.accordion.*;
+import javax.swing.JScrollPane;
 
 
 public class AccordionTestPanel extends JPanel implements ActionListener {
@@ -48,28 +49,37 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		boolean horizontal = false;
 		
 		TitledPane t1 = new TitledPane("bla", p1, horizontal);
-		
-		t1.setMinimumSize(new Dimension(35, 35));
+		t1.setMinimumSize(new Dimension(100, 100));
+		t1.setPreferredSize(new Dimension(35, 35));
 		
 		TitledPane t2 = new TitledPane("sra", p2, horizontal);
-		t2.setMinimumSize(new Dimension(35, 35));
+		t2.setMinimumSize(new Dimension(100, 100));
+		t2.setPreferredSize(new Dimension(35, 35));
 		
 		TitledPane t3 = new TitledPane("3432", p3, horizontal);
-		t3.setMinimumSize(new Dimension(35, 35));
+		t3.setPreferredSize(new Dimension(230, 100));
+		t3.setMinimumSize(new Dimension(100, 100));
 		
 		TitledPane t4 = new TitledPane("gfhgh", p4, horizontal);
-		t4.setMinimumSize(new Dimension(35, 35));
+		t4.setPreferredSize(new Dimension(210, 35));
+		t4.setMinimumSize(new Dimension(100, 100));
 		
 		TitledPane t5 = new TitledPane("bnmbnmdf", p5, horizontal);
-		t5.setMinimumSize(new Dimension(35, 35));
+		t5.setPreferredSize(new Dimension(35, 35));
+		t5.setMinimumSize(new Dimension(100, 100));
 		
-		a = new Accordion(horizontal, t1, t2, t3, t4, t5);
-		
+		a = new Accordion(horizontal, t1);
+		a.addPane(t2);
+		a.addPane(t3);
+		a.addPane(t4);
+		a.addPane(t5);
 		ap = new AccordionPrefs(a, new HashMap<String, String>(), "/test_dialog");
-		
-	//	JScrollPane pane = new JScrollPane(acc);
+	
+		JScrollPane pane = new JScrollPane(a);
 		setLayout(new BorderLayout());
-		add(a, BorderLayout.CENTER);
+		add(pane, BorderLayout.WEST);
+		
+	//	System.out.println(a.getMinimumSize());
 	}
 
 	@Override

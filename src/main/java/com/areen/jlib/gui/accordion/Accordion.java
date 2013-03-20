@@ -50,6 +50,39 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     /* 
      * Accordion ignores insets, maximum and preferred sizes. Only minimum sizes are supported in 
      * one dimension
+     *   
+     *   Horizontal accordion looks like this:
+          ___________________________________________________________________
+         |ACCORDION                                                          |
+         |                EXPANDED TITLED PANE                               |
+         | O----O  /-\  O--------------------------------------------------O |
+         | | C  |  |J|  |+------------------------------------------------+| |
+         | | O  |  |S|  ||                                                || |
+         | | L  |  |E|  ||      TITLE                                     || |
+         | | L  |  |P|  ||                                                || |
+         | | A  |  |A|  ||                                                || |
+         | | P  |  |R|  |+------------------------------------------------+| |
+         | | S  |  |A|  |+------------------------------------------------+| |
+         | | E  |  |T|  ||                                                || |
+         | | D  |  |O|  ||      MAIN COMPONENT                            || |
+         | |    |  |R|  ||                                                || |
+         | | T  |  | |  ||                                                || |
+         | | I  |  | |  ||                                                || |
+         | | T  |  | |  ||                                                || |
+         | | L  |  | |  ||                                                || |
+         | | E  |  | |  ||                                                || |
+         | | D  |  | |  ||                                                || |
+         | |    |  | |  ||                                                || |
+         | | P  |  | |  ||                                                || |
+         | | A  |  | |  ||                                                || |
+         | | N  |  | |  ||                                                || |
+         | | E  |  | |  ||                                                || |
+         | |    |  | |  ||                                                || |
+         | |    |  | |  ||                                                || |
+         | |    |  | |  |+------------------------------------------------+| |
+         | O----O  \-/  O--------------------------------------------------O |
+         |___________________________________________________________________|
+
      */
     
     // ====================================================================================================
@@ -63,7 +96,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
                                      // moving a separator
 	private AccordionPane secondPane; // right/bottom pane to resize
-
+	private MouseListener titleMouseListener; //mouse listener for title component in titledpane
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -78,7 +111,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
     public Accordion(boolean horizontal, TitledPane... panes) {
     	this(horizontal);
-    	MouseListener titleMouseListener = new TitleMouseListener();
+    	titleMouseListener = new TitleMouseListener();
     	
     	//if we have horizontal orientation then make separator vertical
     	int orientation = !horizontal ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
@@ -240,8 +273,23 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	 * Adds an expandable pane to the Accordion
 	 * @param titledPane
 	 */
-	public void addPane(TitledPane titledPane) {
-    	model.addPane(titledPane);
+	public void addPane(TitledPane titledPane) {   	   	
+    	//if we have horizontal orientation then make separator vertical
+    	int orientation = !model.isHorizontal() ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
+    	
+    	//add separator
+		JSeparator separator = new JSeparator(orientation);
+		model.addSeparator(separator);
+		add(separator);   		
+    	
+    	//add component
+   		titledPane.getTitle().addMouseListener(titleMouseListener);
+    		
+   		model.addPane(titledPane);
+    	add(titledPane);
+    	 
+    	//revalidate
+    	revalidate();
     } // add 
     
 	/**
@@ -249,7 +297,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
      * @param title
      */
     public void addPane(String title) {
-    	model.addPane(title);
+    	model.addPane(new TitledPane(title, model.isHorizontal()));
     } //add
     
     /**

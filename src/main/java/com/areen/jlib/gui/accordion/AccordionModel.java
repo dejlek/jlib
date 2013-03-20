@@ -29,10 +29,10 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
-import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
-
 /**
- * Data model for Accordion. TitledPane and its eights, set size and state are stored in AccordionPane object.
+ * Data model for Accordion. TitledPane and its weights, set size and state are stored in 
+ * AccordionPane object. There are two lists, one for AccordionPanes, and the other for JSeparators.
+ * 
  * Title size and separator size are set here.
  * 
  * @author Matthew
@@ -68,14 +68,6 @@ public class AccordionModel {
     } // Template constructor (default)
     
     // ====================================================================================================
-    // ==== Interface/Superclass Methods ==================================================================
-    // ====================================================================================================
-
-    // :::: Interface/Superclass 1 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    
-    // :::: Interface/Superclass 2 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    
-    // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
     
@@ -91,25 +83,7 @@ public class AccordionModel {
 		
 		//add it to the list
 		panes.add(accordionPane);
-		
-		//increase the size of the model
-		paneCount++;
-	}
-	
-	/**
-	 * Adds a titled pane with specified title
-	 * @param title
-	 */
-	public void addPane(String title) {
-		TitledPane pane = new TitledPane(title, horizontal);
-		AccordionPane accordionPane = new AccordionPane(pane, false); // collapsed by default
-		// by default we don't set the dimensions - if they are set then layout manager will 
-		// ignore the weights
-		accordionPane.setWeight(0.2); // default weight
-		
-		//add it to the list
-		panes.add(accordionPane);
-		
+
 		//increase the size of the model
 		paneCount++;
 	}

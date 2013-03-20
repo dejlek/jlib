@@ -56,7 +56,9 @@ public class AccordionLayout implements LayoutManager {
 
 	@Override
 	public void addLayoutComponent(String string, Component container) {
-		// TODO Auto-generated method stub
+		
+		System.out.println("added new :D");
+	//	TODO Auto-generated method stub
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class AccordionLayout implements LayoutManager {
 		// by weights - no width/height specified 
 		int emptySpace = getAvailableSpace(container);
 
-		int expandedCount = model.getExpanded().size();
+	//	int expandedCount = model.getExpanded().size();
 		
 		//lay out each component
 		for (Component c : components) {
@@ -95,7 +97,7 @@ public class AccordionLayout implements LayoutManager {
 					// titled pane expanded and there are more than one pane expanded
 					// set the width otherwise it's set size will be ignored!
 					if (pane.isExpanded()) {
-						if (dimensions != null && expandedCount > 1) {
+						if (dimensions != null) {
 							width = dimensions.width;
 						} else {
 							width = (int) (model.getWeightShare(paneNumber) * emptySpace);
@@ -112,10 +114,6 @@ public class AccordionLayout implements LayoutManager {
 					if (pane.isExpanded()) { //expanded titled pane  and there is more than one expanded
 						if (dimensions != null) {
 							height = dimensions.height;
-							
-							if (expandedCount > 1) {
-								height = (int) (model.getWeightShare(paneNumber) * (emptySpace + height));
-							}
 						} else {
 							height = (int) (model.getWeightShare(paneNumber) * emptySpace);
 						}
