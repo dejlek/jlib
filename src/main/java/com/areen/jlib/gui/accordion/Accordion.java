@@ -390,6 +390,24 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     public LinkedList<Integer> getExpandedPanes() {
     	return model.getExpanded();
     } //getExpandedPanes
+
+    /**
+     * Get index of titled pane
+     * @param pane
+     * @return
+     */
+    public int indexOf(TitledPane pane) {
+    	return model.indexOf(pane);
+    }
+
+    /**
+     * Get index of an accordion pane
+     * @param pane
+     * @return
+     */
+    public int indexOf(AccordionPane pane) {
+    	return model.indexOf(pane);
+    }
     
     // ====================================================================================================
     // ==== Accessors =====================================================================================

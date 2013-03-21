@@ -213,6 +213,20 @@ public class AccordionModel {
 	}
 	
 	/**
+	 * Get index of a TitledPane
+	 * @param pane
+	 */
+	public int indexOf(TitledPane pane) {
+		for (int i = 0; i < paneCount; i++) {
+			if (panes.get(i).getTitledPane().equals(pane)) {
+				return i;
+			}
+		}
+		
+		return -1; //not found
+	}
+	
+	/**
 	 * Get indexes of expanded panes
 	 * @return
 	 */
