@@ -528,6 +528,11 @@ public class AccordionModel {
     public void setExpanded(int index, boolean expanded) {
     	AccordionPane pane = panes.get(index);
 
+    	// if we have lock on expanded state don't do anything...
+    	if (pane.isLocked()) {
+    		return;
+    	}
+    	
     	boolean oldExampleProperty = pane.isExpanded();
     	pane.setExpanded(expanded);
     	
@@ -614,6 +619,34 @@ public class AccordionModel {
     	propertyChangeSupport.firePropertyChange(PROP_WEIGHT, oldExampleProperty, weight);
     }
     
+ // ::::: Locked property ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    public static final String PROP_LOCKED = "lockedProperty";
+
+    /**
+     * Get the lock state of the pane at index
+     * @param index
+     * @return
+     */
+    public boolean isLocked(int index) {
+    	return panes.get(index).isLocked();
+    } // isLocked()
+    
+    /**
+     * Locks expanded state of a pane at index
+     * @param index
+     * @param expanded
+     */
+    public void setPaneLocked(int index, boolean argLock) {
+    	AccordionPane pane = panes.get(index);
+
+    	boolean oldProperty = pane.isLocked();
+    	pane.setLock(oldProperty);
+    	
+    	//fire property change
+    	propertyChangeSupport.firePropertyChange(PROP_DIMENSION, oldProperty, argLock);
+    }
+    
     // ====================================================================================================
     // ==== Classes =======================================================================================
     // ====================================================================================================
@@ -626,10 +659,11 @@ public class AccordionModel {
     class AccordionPane {
     	private TitledPane titledPane;
     	private boolean expanded;
-    	private Dimension dimension; // in expanded state!
+    	private Dimension dimension;    // in expanded state!
     	private double weight;
-    	private boolean fixedSize; // do not allow resizing
-
+    	private boolean fixedSize;      // do not allow resizing
+    	private boolean lock; 		    // locks expanded state - setExpanded() will not work if lock=true
+    	
 		AccordionPane(TitledPane argTitledPane, boolean argExpanded) {
     		this.titledPane = argTitledPane;
     		this.expanded = argExpanded;
@@ -668,6 +702,11 @@ public class AccordionModel {
 		 * @param orientation of the accordion
 		 */
 		public void setExpanded(boolean argExpanded) {
+			// if we have lock on expanded just return - we don't want to expand or collapse!
+			if (lock) {
+				return;
+			}
+			
 			boolean oldExampleProperty = expanded;
 	       
 			this.expanded = argExpanded;
@@ -734,6 +773,30 @@ public class AccordionModel {
 		 */
 		public void setResizable(boolean argResizable) {
 			this.fixedSize = argResizable;
+		}
+
+		/**
+		 * @return the lock
+		 */
+		public boolean isLocked() {
+			return lock;
+		}
+
+		/**
+		 * @param lock the lock to set
+		 */
+		public void setLock(boolean argLock) {
+			this.lock = argLock;
+			titledPane.getTitle().setEnabled(!lock);
+			
+			// if locked we want to show 'disabled' background
+			if (lock) {
+				titledPane.getTitle().setForeground(UIManager.getColor("Label.disabledText"));
+			} else {
+				titledPane.getTitle().setForeground(UIManager.getColor("Label.text"));
+			}
+			
+			titledPane.repaint();
 		}
     }
 } // AccordionModel class

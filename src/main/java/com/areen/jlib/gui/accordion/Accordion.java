@@ -403,6 +403,24 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 		return model;
 	} // getModel()
 	
+	/**
+	 * Lock expanded state of a pane at index
+	 * @param argIndex
+	 * @param argLocked
+	 */
+	public void setPaneLocked(int argIndex, boolean argLocked) {
+		model.getPaneAt(argIndex).setLock(argLocked);
+	}
+	
+	/**
+	 * Lock expanded state of a pane 
+	 * @param argIndex
+	 * @param argLocked
+	 */
+	public void setPaneLocked(TitledPane argPane, boolean argLocked) {
+		model.getByTitledPane(argPane).setLock(argLocked);
+	}
+	
     /**
      * Set fixed size of a TitledPane
      * @param argIndex
