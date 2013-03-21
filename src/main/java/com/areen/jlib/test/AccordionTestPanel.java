@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import com.areen.jlib.gui.accordion.*;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 public class AccordionTestPanel extends JPanel implements ActionListener {

@@ -141,6 +141,7 @@ public class AccordionUI extends ComponentUI {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+                System.out.println("BLAH!");
 				//stop dragging
 				dragHappening = false;
 				
