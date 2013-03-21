@@ -22,6 +22,7 @@
 package com.areen.jlib.gui.accordion;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JComponent;
@@ -56,7 +57,7 @@ public class TitledPane extends JPanel {
 		
 		setLayout(new BorderLayout());
     	
-    	RotatableTitle title = new RotatableTitle(string, horizontal);
+    	RotatableTitle title = new RotatableTitle(string, horizontal, Accordion.getFontSize());
     	JPanel panel = new JPanel();
 
     	if (horizontal) {
@@ -73,7 +74,7 @@ public class TitledPane extends JPanel {
     public TitledPane(String titleString, JComponent component, boolean argHorizontal) {
     	this.horizontal = argHorizontal;
     	
-    	RotatableTitle title = new RotatableTitle(titleString, horizontal);
+    	RotatableTitle title = new RotatableTitle(titleString, horizontal, Accordion.getFontSize());
     	
     	setLayout(new BorderLayout());
     	
@@ -127,7 +128,13 @@ public class TitledPane extends JPanel {
     	}
     }
 
-    
+    /**
+     * Set colour to the title component
+     */
+    public void setTitleBackground(Color colour) {
+    	getTitle().setBackground(colour);
+    }
+       
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
@@ -135,13 +142,13 @@ public class TitledPane extends JPanel {
     /* Get title of the pane
      * @return
      */
-    public Component getTitle() {
+    public JComponent getTitle() {
     	//check if there is anything in the north panel
-    	Component c = ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.NORTH);
+    	JComponent c = (JComponent) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.NORTH);
     	
     	//if no component is found in the north placement
     	if (c == null) {
-    		return ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.WEST);
+    		return (JComponent) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.WEST);
     	} else {
     		return c;
         }

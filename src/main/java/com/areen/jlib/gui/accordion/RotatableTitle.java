@@ -45,11 +45,11 @@ public class RotatableTitle extends JPanel {
 
 	// :::::: CONFIGURATION VARIABLES :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	int fontSize = 15;
-
-	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+	private int fontSize;
 	private boolean horizontal; // if the row is horizontal 
+	
+	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
 	private boolean expanded;   // state of the title
 	private String text;
 
@@ -57,13 +57,13 @@ public class RotatableTitle extends JPanel {
 	// ==== Constructors ==================================================================================
 	// ====================================================================================================
 
-	public RotatableTitle(String argText, boolean argHorizontal) {
+	public RotatableTitle(String argText, boolean argHorizontal, int argFontSize) {
 		this.horizontal = argHorizontal;
 		this.text = argText;
-
+		this.fontSize = argFontSize;
 		expanded = false;
 
-		setSize(35, 35);
+		setSize(Accordion.getTitleSize(), Accordion.getTitleSize());
 		setPreferredSize(getSize());
 	} //RotatableTitle
 
@@ -135,6 +135,21 @@ public class RotatableTitle extends JPanel {
 	 */
 	public void setExpanded(boolean argExpanded) {
 		this.expanded = argExpanded;
+	}
+	
+
+	/**
+	 * @return the fontSize
+	 */
+	public int getFontSize() {
+		return fontSize;
+	}
+
+	/**
+	 * @param fontSize the fontSize to set
+	 */
+	public void setFontSize(int argFontSize) {
+		this.fontSize = argFontSize;
 	}
 
 

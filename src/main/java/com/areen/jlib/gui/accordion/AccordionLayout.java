@@ -103,7 +103,7 @@ public class AccordionLayout implements LayoutManager {
 							width = (int) (model.getWeightShare(paneNumber) * emptySpace);
 						}
 					} else { // collapsed
-						width = model.titleSize;
+						width = Accordion.getTitleSize();
 					} //else
 
 					c.setBounds(currentX, 0, width, container.getHeight());
@@ -118,7 +118,7 @@ public class AccordionLayout implements LayoutManager {
 							height = (int) (model.getWeightShare(paneNumber) * emptySpace);
 						}
 					} else { // collapsed
-						height = model.titleSize;
+						height =  Accordion.getTitleSize();;
 					} //else
 
 					c.setBounds(0, currentY, container.getWidth(), height);
@@ -132,7 +132,7 @@ public class AccordionLayout implements LayoutManager {
 			} else { //dealing with separators
 				//horizontal row
 				if (horizontal) {
-					width = model.separatorSize;
+					width = Accordion.getSeparatorSize();
 					height = container.getHeight(); // as high as the whole container
 
 					c.setBounds(currentX, 0, width, height);
@@ -141,7 +141,7 @@ public class AccordionLayout implements LayoutManager {
 					currentX += width;
 				} else { //all components in a column
 					width = container.getWidth();
-					height = model.separatorSize;
+					height = Accordion.getSeparatorSize();
 
 					c.setBounds(0, currentY, width, height);
 

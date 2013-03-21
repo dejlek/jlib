@@ -7,12 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.areen.jlib.gui.accordion.*;
 import javax.swing.JScrollPane;
-
 
 public class AccordionTestPanel extends JPanel implements ActionListener {
 	AccordionPrefs ap;
@@ -73,6 +71,8 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		a.addPane(t3);
 		a.addPane(t4);
 		a.addPane(t5);
+		a.setTitleBackground(Color.PINK);
+	
 		ap = new AccordionPrefs(a, new HashMap<String, String>(), "/test_dialog");
 		
 

@@ -21,6 +21,7 @@
 
 package com.areen.jlib.gui.accordion;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -43,10 +44,6 @@ public class AccordionModel {
     // ==== Variables =====================================================================================
     // ====================================================================================================
     
-    // :::::: CONFIGURATION VARIABLES :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	int titleSize = 25; //size of the title (width if horizontal, height if vertical)
-	int separatorSize = 5;
-	
     // :::::: PUBLIC ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -163,12 +160,12 @@ public class AccordionModel {
 					space += pane.getDimension().getWidth();
 				}
 			} else {
-				space += titleSize;
+				space += Accordion.getTitleSize();
 			}
 		} // for
 		
 		//add space taken up by dividers
-		space += separators.size() * separatorSize; 
+		space += separators.size() * Accordion.getSeparatorSize(); 
 		
 		return space;
 	} // getOccupiedHorizontalSpace()
@@ -190,12 +187,12 @@ public class AccordionModel {
 					space += pane.getDimension().getHeight();
 				} 
 			} else {
-				space += titleSize;
+				space += Accordion.getTitleSize();
 			}
 		} // for
 		
 		//add space taken up by dividers
-		space += panes.size() * separatorSize; 
+		space += panes.size() * Accordion.getSeparatorSize(); 
 		
 		return space;
 	} // getOccupiedVerticalSpace()
@@ -211,7 +208,7 @@ public class AccordionModel {
 	/**
 	 * Get index of an AccordionPane
 	 */
-	public int indexOf (AccordionPane pane) {
+	public int indexOf(AccordionPane pane) {
 		return panes.indexOf(pane);
 	}
 	
@@ -329,12 +326,12 @@ public class AccordionModel {
 			if (pane.isExpanded()) {
 				height += pane.getTitledPane().getMinimumSize().height;
 			} else {
-				height += titleSize;
+				height += Accordion.getTitleSize();
 			}
 		}
 		
 		// add space taken up by separators
-		height += separatorSize * panes.size() - 1;
+		height += Accordion.getSeparatorSize() * panes.size() - 1;
 		
 		return height;
 	}
@@ -352,13 +349,13 @@ public class AccordionModel {
 			if (pane.isExpanded()) {
 				width += pane.getTitledPane().getMinimumSize().width;
 			} else {
-				width += titleSize;
+				width += Accordion.getTitleSize();
 			}
 
 		}
 		
 		// add space taken up by separators
-		width += separatorSize * panes.size() - 1;
+		width += Accordion.getSeparatorSize() * panes.size() - 1;
 		
 		return width;
 	}
@@ -382,6 +379,16 @@ public class AccordionModel {
 		
 		return new Dimension(width, height);
 	} // calculateMinimumSize()
+	
+	/**
+	 * Set background colour to the title component
+	 * @param colour
+	 */
+	public void setTitleBackground(Color colour) {
+		for (AccordionPane pane : panes) {
+			pane.getTitledPane().setTitleBackground(colour);
+		}
+	}
 // ====================================================================================================
 // ==== Accessors =====================================================================================
 // ====================================================================================================
@@ -455,34 +462,6 @@ public class AccordionModel {
     public int getSeparatorIndex(JSeparator separator) {
     	return separators.indexOf(separator);
     } // getSeparatorIndex
-    
-    /**
-	 * @return the titleSize
-	 */
-	public int getTitleSize() {
-		return titleSize;
-	}
-
-	/**
-	 * @param titleSize the titleSize to set
-	 */
-	public void setTitleSize(int argTitleSize) {
-		this.titleSize = argTitleSize;
-	}
-
-	/**
-	 * @return the separatorSize
-	 */
-	public int getSeparatorSize() {
-		return separatorSize;
-	}
-
-	/**
-	 * @param separatorSize the separatorSize to set
-	 */
-	public void setSeparatorSize(int argSeparatorSize) {
-		this.separatorSize = argSeparatorSize;
-	}
 	
 	/**
 	 * Sets titled pane to be non resizable 

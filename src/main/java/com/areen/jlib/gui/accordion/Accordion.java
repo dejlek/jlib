@@ -22,6 +22,7 @@
 package com.areen.jlib.gui.accordion;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -92,8 +93,14 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Variables =====================================================================================
     // ====================================================================================================
-    
-    // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	// :::::: CONFIGURATION VARIABLES :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    private static int fontSize = 15;
+	private static int titleSize = 25;
+	private static int separatorSize = 5;
+
+	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private String uiClassID = "AccordionUI"; //UI Class
 	private AccordionModel model;
 	private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
@@ -192,6 +199,14 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ==== Public Methods ================================================================================
     // ====================================================================================================
 	
+	/**
+	 * Set background colour of titled panes
+	 * @param colour
+	 */
+	public void setTitleBackground(Color colour) {
+		model.setTitleBackground(colour);
+	}
+		
 	/**
 	 * Resize components 
 	 * @param dragSource
@@ -424,11 +439,57 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	model.getPaneAt(idx).requestFocus();
     } // setSelected ()
 
+    /**
+     * Get default font size for titled panes
+     * @return
+     */
+	public static int getFontSize() {
+		return fontSize;
+	}
+
+	/**
+	 * Set font size
+	 * @param size
+	 */
+	public static void setFontSize(int argFontSize) {
+		fontSize = argFontSize;
+	} 
+	
+	/**
+	 * Get the size of a title
+	 * @return
+	 */
+	public static int getTitleSize() {
+		return titleSize;
+	}
+
+	/**
+	 * Set title size
+	 * @param size
+	 */
+	public static void setTitleSize(int argSize) {
+		titleSize = argSize;
+	} 
+	
+	/**
+	 * @return the separatorSize
+	 */
+	public static int getSeparatorSize() {
+		return separatorSize;
+	}
+
+	/**
+	 * @param separatorSize the separatorSize to set
+	 */
+	public static void setSeparatorSize(int argSeparatorSize) {
+		Accordion.separatorSize = argSeparatorSize;
+	}
+
     // ====================================================================================================
     // ==== Private/Protected/Package Methods =============================================================
     // ====================================================================================================
-
-    /**
+   
+	/**
      * Function to determine if resizing action can take place.
      * Currently, the algorithm checks if there are two expanded neighbouring panes 
      * (Separators are disregarded for neighbour calculation).
