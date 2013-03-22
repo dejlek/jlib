@@ -115,17 +115,21 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     public Accordion(boolean horizontal) {
     	model = new AccordionModel(horizontal);
     	
+    	updateUI();
+    	
     	titleMouseListener = new TitleMouseListener();
     	
     	// register to listen for property changes
     	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
     	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);  
     	
-    	updateUI();
+
     } // Accordion constructor (default)
 
     public Accordion(boolean horizontal, TitledPane... panes) {
     	model = new AccordionModel(horizontal);
+
+    	updateUI();
     	
     	titleMouseListener = new TitleMouseListener();
     	
@@ -147,8 +151,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     			super.add(separator);   		
     		}
      	}
-    	
-    	updateUI();
     }
     
     // ====================================================================================================
@@ -343,10 +345,12 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	//if we have horizontal orientation then make separator vertical
     	int orientation = !model.isHorizontal() ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
     	
-    	//add separator
-		JSeparator separator = new JSeparator(orientation);
-		model.addSeparator(separator);
-		super.add(separator);
+    	//add separator only if it's not the first one in the accordion
+    	if (model.getPaneCount() > 0) {
+    		JSeparator separator = new JSeparator(orientation);
+    		model.addSeparator(separator);
+    		super.add(separator);
+    	}
     	
 		Component component = titledPane.getTitle();
 		component.addMouseListener(titleMouseListener);
@@ -524,8 +528,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
      * @param argIndex
      * @param argFixedSize
      */
-    public void setFixedSize(int argIndex, boolean argFixedSize, Dimension argDimension) {
-    	model.getPaneAt(argIndex).setFixedSize(argFixedSize, argDimension);
+    public void setFixedSize(int argIndex, Dimension argDimension) {
+    	model.getPaneAt(argIndex).setFixedSize(argDimension);
     }
     
     /**
@@ -534,8 +538,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
      * @param argIndex
      * @param argFixedSize
      */
-    public void setFixedSize(TitledPane pane, boolean argFixedSize, Dimension argDimension) {
-    	model.getByTitledPane(pane).setFixedSize(argFixedSize, argDimension);
+    public void setFixedSize(TitledPane pane, Dimension argDimension) {
+    	model.getByTitledPane(pane).setFixedSize(argDimension);
     }
     
     /**
@@ -612,7 +616,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
      * @param separatorIndex
      * @return
      */
-    private boolean canResize(int separatorIndex) {
+    boolean canResize(int separatorIndex) {
+    //	System.out.println(separatorIndex);
     	// find a pane to the top/left of the separator
     	firstPane = getPreviousExpandedPane(separatorIndex);
     	
@@ -625,6 +630,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		return true;
         }
         
+    	System.out.println("Can't resize!");
+    	
     	return false;
 	} // can resize
 

@@ -483,8 +483,8 @@ public class AccordionModel {
 	 * @param argFixedSize
 	 * @param argDimension
 	 */
-	public void setFixedSize(int argIndex, boolean argFixedSize, Dimension argDimension) {
-		panes.get(argIndex).setFixedSize(argFixedSize, argDimension);
+	public void setFixedSize(int argIndex, Dimension argDimension) {
+		panes.get(argIndex).setFixedSize(argDimension);
 	}
     
     // ====================================================================================================
@@ -675,7 +675,7 @@ public class AccordionModel {
     	private boolean expanded;
     	private Dimension dimension;    // in expanded state!
     	private double weight;
-    	private boolean fixedSize;      // do not allow resizing
+    	private boolean resizable;      // do not allow resizing
     	private boolean lock; 		    // locks expanded state - setExpanded() will not work if lock=true
     	
 		AccordionPane(TitledPane argTitledPane, boolean argExpanded) {
@@ -769,15 +769,15 @@ public class AccordionModel {
 		 * @return the fixedSize (resizable)
 		 */
 		public boolean isResizable() {
-			return fixedSize;
+			return resizable;
 		}
 
 		/**
 		 * @param dimension 
 		 * @param fixedSize the fixedSize to set
 		 */
-		public void setFixedSize(boolean argFixedSize, Dimension argDimension) {
-			this.fixedSize = argFixedSize;
+		public void setFixedSize(Dimension argDimension) {
+			this.resizable = false;
 			this.dimension = argDimension;
 		}
 
@@ -786,7 +786,7 @@ public class AccordionModel {
 		 * @param argResizable
 		 */
 		public void setResizable(boolean argResizable) {
-			this.fixedSize = argResizable;
+			this.resizable = argResizable;
 		}
 
 		/**

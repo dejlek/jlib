@@ -2,7 +2,6 @@ package com.areen.jlib.test;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -48,51 +47,33 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		boolean horizontal = true;
 		
 		TitledPane t1 = new TitledPane("bla", p1, horizontal);
-		t1.setMinimumSize(new Dimension(100, 100));
-		t1.setPreferredSize(new Dimension(35, 35));
 		
 		TitledPane t2 = new TitledPane("sra", p2, horizontal);
-		t2.setMinimumSize(new Dimension(100, 100));
-		t2.setPreferredSize(new Dimension(35, 35));
 		
 		TitledPane t3 = new TitledPane("3432", p3, horizontal);
-		t3.setPreferredSize(new Dimension(230, 100));
-		t3.setMinimumSize(new Dimension(100, 100));
 		
 		TitledPane t4 = new TitledPane("gfhgh", p4, horizontal);
-		t4.setPreferredSize(new Dimension(210, 35));
-		t4.setMinimumSize(new Dimension(100, 100));
 		
 		TitledPane t5 = new TitledPane("bnmbnmdf", p5, horizontal);
-		t5.setPreferredSize(new Dimension(35, 35));
-		t5.setMinimumSize(new Dimension(100, 100));
+
 		
-		a = new Accordion(horizontal, t1);
-		a.addPane(t2);
-		a.addPane(t3);
-		a.addPane(t4);
-		a.addPane(t5);
+		a = new Accordion(horizontal);
+		a.add(t1);
+		a.add(t2);
+		a.add(t3);
+		a.add(t4);
+		a.add(t5);
 	//	a.setTitleBackground(Color.PINK);
 	
 		ap = new AccordionPrefs(a, new HashMap<String, String>(), "/test_dialog");
 		
-		TitledPane t6 = new TitledPane("Horizontal", a, false);
-		t6.setPreferredSize(new Dimension(35, 35));
-		t6.setMinimumSize(new Dimension(100, 100));
-
-		JPanel p7 = new JPanel();
-		p7.setBackground(Color.PINK);
-		TitledPane t7 = new TitledPane("other corizontal", p7, false);
-		a.setPreferredSize(new Dimension(a.getModel().calculateTotalMinimumWidth(), 
-                        a.getModel().calculateGreatestMinimumHeight()));
-		Accordion a2 = new Accordion(false, t6, t7);
-		a.setFixedSize(t2, true, null);
-		a.expand(1);
-		a.setPaneLocked(t2, true);
-		JScrollPane pane = new JScrollPane(a2);
+		
+		Accordion verticalAccordion = new Accordion(false);
+		verticalAccordion.add(a, "Horizontal");
+		JScrollPane pane = new JScrollPane(verticalAccordion);
 		setLayout(new BorderLayout());
 		add(pane, BorderLayout.CENTER);
-		
+	
 	//	System.out.println(a.getMinimumSize());
 	}
 

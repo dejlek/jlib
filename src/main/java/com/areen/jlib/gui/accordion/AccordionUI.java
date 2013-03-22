@@ -94,7 +94,7 @@ public class AccordionUI extends ComponentUI {
 				// get component at point
 				component = c.getComponentAt(e.getPoint());
 			
-				//if separator set change mouse cursor
+				//if separator and can resize set change mouse cursor
 				if (component instanceof JSeparator) {
 					// set moving cursor
 					if (accordion.getModel().isHorizontal()) {
@@ -141,7 +141,7 @@ public class AccordionUI extends ComponentUI {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-                System.out.println("BLAH!");
+                
 				//stop dragging
 				dragHappening = false;
 				
