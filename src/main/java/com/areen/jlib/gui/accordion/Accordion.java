@@ -99,6 +99,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     private static int fontSize = 15;
 	private static int titleSize = 25;
 	private static int separatorSize = 5;
+	protected static Color titleBackgroundColor; // background colour for titles, if set
 
 	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private String uiClassID = "AccordionUI"; //UI Class
@@ -210,6 +211,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	 */
 	public void setTitleBackground(Color colour) {
 		model.setTitleBackground(colour);
+		titleBackgroundColor = colour;
 	}
 		
 	/**
@@ -346,7 +348,9 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 		model.addSeparator(separator);
 		super.add(separator);
     	
-		titledPane.getTitle().addMouseListener(titleMouseListener);
+		Component component = titledPane.getTitle();
+		component.addMouseListener(titleMouseListener);
+		component.setBackground(titleBackgroundColor);
 		
     	//add component
    		model.addPane(titledPane);
@@ -488,7 +492,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
-
+    
     /**
      * Get model
      * @return
