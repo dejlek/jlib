@@ -132,13 +132,13 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		panes[i].getTitle().addMouseListener(titleMouseListener);
     		
     		model.addPane(panes[i]);
-    		add(panes[i]);
+    		super.add(panes[i]);
     	
     		//skip adding separator 
     		if (i != panes.length - 1) {
     			JSeparator separator = new JSeparator(orientation);
     			model.addSeparator(separator);
-    			add(separator);   		
+    			super.add(separator);   		
     		}
      	}
     	
@@ -288,34 +288,83 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	} // checkMinimumDimension
 
 	/**
+	 * DO NOT USE
+	 */
+	@Override
+	@Deprecated
+	public Component add(Component arg0, int arg1) {
+		return arg0;
+	}
+
+	/**
+	 * DO NOT USE
+	 */
+	@Override
+	@Deprecated
+	public void add(Component arg0, Object arg1, int arg2) { }
+
+	/**
+	 * DO NOT USE
+	 */
+	@Override
+	@Deprecated
+	public Component add(String arg0, Component arg1) {
+		return arg1;
+	}
+
+
+	@Override
+	@Deprecated
+	public Component add(Component c) {
+		return c;
+	}
+	
+	@Override
+	@Deprecated
+	public void add(Component c, Object bla) { }
+	
+	/**
 	 * Adds an expandable pane to the Accordion
 	 * @param titledPane
 	 */
-	public void addPane(TitledPane titledPane) {   	   	
+	public void add(TitledPane titledPane) {   	   	
     	//if we have horizontal orientation then make separator vertical
     	int orientation = !model.isHorizontal() ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
     	
     	//add separator
 		JSeparator separator = new JSeparator(orientation);
 		model.addSeparator(separator);
-		add(separator);   		
+		super.add(separator);
     	
+		titledPane.getTitle().addMouseListener(titleMouseListener);
+		
     	//add component
-   		titledPane.getTitle().addMouseListener(titleMouseListener);
-    		
    		model.addPane(titledPane);
-    	add(titledPane);
+    	super.add(titledPane);
     	 
     	//revalidate
     	revalidate();
     } // add 
     
 	/**
-     * Adds new expandable pane with specified title, JLabel and JPanel by default
+	 * Create new titled pane with title and component inside
+	 * @param component
+	 * @param title
+	 */
+	public void add(JComponent component, String title) {
+    	//add component
+		TitledPane pane = new TitledPane(title, component, model.isHorizontal());
+		
+		//add pane
+		add(pane);
+	}
+	
+	/**
+     * Adds new expandable pane with specified title, RotatablePane and JPanel by default
      * @param title
      */
-    public void addPane(String title) {
-    	model.addPane(new TitledPane(title, model.isHorizontal()));
+    public void add(String title) {
+    	add(new TitledPane(title, model.isHorizontal()));
     } //add
     
     /**
@@ -407,6 +456,23 @@ public class Accordion extends JComponent implements PropertyChangeListener {
      */
     public int indexOf(AccordionPane pane) {
     	return model.indexOf(pane);
+    }
+    
+    /**
+     * Sets title at index
+     * @param index
+     * @param title
+     */
+    public void setTitleAt(int index, String title) {
+    	((RotatableTitle) model.getPaneAt(index).getTitledPane().getTitle()).setText(title);
+    }
+    
+    /**
+     * Get title at index
+     * @param index
+     */
+    public void getTitleAt(int index) {
+    	((RotatableTitle) model.getPaneAt(index).getTitledPane().getTitle()).getText();
     }
     
     // ====================================================================================================
@@ -599,6 +665,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			//double left click
+
 			if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
 				Component c = (Component) e.getSource();
 				TitledPane titledPane = (TitledPane) c.getParent();

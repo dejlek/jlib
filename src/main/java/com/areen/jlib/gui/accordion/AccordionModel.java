@@ -433,7 +433,7 @@ public class AccordionModel {
      * @param index
      * @return
      */
-    AccordionPane getPaneAt(int index) {
+    public AccordionPane getPaneAt(int index) {
     	//index check
     	if (index < 0 || index >= panes.size()) {
     		return null;

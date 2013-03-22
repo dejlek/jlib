@@ -56,7 +56,7 @@ public class RotatableTitle extends JPanel {
 	// ====================================================================================================
 	// ==== Constructors ==================================================================================
 	// ====================================================================================================
-
+	
 	public RotatableTitle(String argText, boolean argHorizontal, int argFontSize) {
 		this.horizontal = argHorizontal;
 		this.text = argText;
@@ -152,6 +152,22 @@ public class RotatableTitle extends JPanel {
 		this.fontSize = argFontSize;
 	}
 
+	/**
+	 * Get the title
+	 * @return
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * Set the title
+	 * @param text
+	 */
+	public void setText(String argText) {
+		this.text = argText;
+	}
+	
 
 	// ====================================================================================================
 	// ==== Private/Protected/Package Methods =============================================================
