@@ -99,7 +99,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     private static int fontSize = 15;
 	private static int titleSize = 25;
 	private static int separatorSize = 5;
-	protected static Color titleBackgroundColor; // background colour for titles, if set
+	protected Color titleBackgroundColor; // background colour for titles, if set
 
 	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private String uiClassID = "AccordionUI"; //UI Class
