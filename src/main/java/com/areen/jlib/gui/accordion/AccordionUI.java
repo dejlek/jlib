@@ -130,7 +130,7 @@ public class AccordionUI extends ComponentUI {
 				if (component instanceof JSeparator) {
 					// store initial point
 					clickPoint = point;
-					
+					System.out.println("StartedDragging");
 					// mark it as drag started
 					dragHappening = true;
 					 
@@ -170,8 +170,10 @@ public class AccordionUI extends ComponentUI {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				
 				// while drag is active update the last point
 				if (dragHappening) {
+					System.out.println("MouseDragged");	
 					lastDragPoint = e.getPoint();
 				}
 			}
@@ -217,7 +219,12 @@ public class AccordionUI extends ComponentUI {
 		//important - after dragging 
 		lastDragPoint = null;
 		dragSource = null;
+		System.out.println("DragDone");
 	} // dragDone()
+
+	public MouseListener mouseListener() {
+		return mouseListener;
+	}
 			
 	// ====================================================================================================
 	// ==== Bean variables and methods ====================================================================

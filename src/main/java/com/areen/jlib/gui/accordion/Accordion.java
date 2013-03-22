@@ -98,7 +98,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
     private static int fontSize = 15;
 	private static int titleSize = 25;
-	private static int separatorSize = 5;
+	private static int separatorSize = 6;
 	protected Color titleBackgroundColor; // background colour for titles, if set
 
 	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -107,7 +107,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
                                      // moving a separator
 	private AccordionPane secondPane; // right/bottom pane to resize
-	private MouseListener titleMouseListener; //mouse listener for title component in titledpane
+	private MouseListener titleMouseListener; //mouse listener for title component in TitledPane
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -122,13 +122,15 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	// register to listen for property changes
     	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
     	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);  
-    	
-
     } // Accordion constructor (default)
 
     public Accordion(boolean horizontal, TitledPane... panes) {
     	model = new AccordionModel(horizontal);
-
+    	
+    	// register to listen for property changes
+    	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
+    	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);  
+    	
     	updateUI();
     	
     	titleMouseListener = new TitleMouseListener();
@@ -228,6 +230,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
 		// resize if it's allowed - 2 panes opened
 		if (canResize(separatorIndex)) {
+			System.out.println("YEY = can resize!");
 			Dimension firstDimension;
 			Dimension secondDimension;
 			
@@ -407,6 +410,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	for (int i : index) {
     		model.getPaneAt(i).setExpanded(true);
     	} //for
+    	validate();
     } // expand()
     
     /**

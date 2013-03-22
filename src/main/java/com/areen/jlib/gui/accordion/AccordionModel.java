@@ -716,6 +716,7 @@ public class AccordionModel {
 		 * @param orientation of the accordion
 		 */
 		public void setExpanded(boolean argExpanded) {
+			//System.out.println("setExpand(" + argExpanded + "); Locked: " + lock);
 			// if we have lock on expanded just return - we don't want to expand or collapse!
 			if (lock) {
 				return;
