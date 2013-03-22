@@ -114,13 +114,18 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     public Accordion(boolean horizontal) {
     	model = new AccordionModel(horizontal);
     	
+    	titleMouseListener = new TitleMouseListener();
+    	
     	// register to listen for property changes
     	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
-    	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);    	
+    	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);  
+    	
+    	updateUI();
     } // Accordion constructor (default)
 
     public Accordion(boolean horizontal, TitledPane... panes) {
-    	this(horizontal);
+    	model = new AccordionModel(horizontal);
+    	
     	titleMouseListener = new TitleMouseListener();
     	
     	//if we have horizontal orientation then make separator vertical
@@ -313,6 +318,11 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	}
 
 
+	/**
+	 * DO NOT USE!!!
+	 * @param c
+	 * @return
+	 */
 	@Override
 	@Deprecated
 	public Component add(Component c) {
@@ -341,7 +351,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	//add component
    		model.addPane(titledPane);
     	super.add(titledPane);
-    	 
+
     	//revalidate
     	revalidate();
     } // add 
