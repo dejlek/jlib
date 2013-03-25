@@ -24,10 +24,13 @@ package com.areen.jlib.gui.accordion;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
@@ -108,6 +111,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
                                      // moving a separator
 	private AccordionPane secondPane; // right/bottom pane to resize
 	private MouseListener titleMouseListener; //mouse listener for title component in TitledPane
+	private SeparatorMouseListener separatorMouseListener;
+	
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -118,6 +123,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	updateUI();
     	
     	titleMouseListener = new TitleMouseListener();
+    	separatorMouseListener = new SeparatorMouseListener();
     	
     	// register to listen for property changes
     	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
@@ -134,6 +140,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	updateUI();
     	
     	titleMouseListener = new TitleMouseListener();
+    	separatorMouseListener = new SeparatorMouseListener();
     	
     	//if we have horizontal orientation then make separator vertical
     	int orientation = !horizontal ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
@@ -149,6 +156,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		//skip adding separator 
     		if (i != panes.length - 1) {
     			JSeparator separator = new JSeparator(orientation);
+    			separator.addMouseListener(separatorMouseListener);
+    			separator.addMouseMotionListener(separatorMouseListener);
     			model.addSeparator(separator);
     			super.add(separator);   		
     		}
@@ -274,7 +283,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 			//check minimum dimensions - check if the new dimension won't be smaller than minimum size
 			if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1) 
 					|| !checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w2, h2)) {
-				//System.out.println("Can't resize - minimum size ");
 				return;
 			}
 			
@@ -292,12 +300,11 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	 * @return true if minimum dimension is smaller than Dimension(w1, h1)
 	 */
 	private boolean checkMinimumDimension(Dimension dimension, int w1, int h1) {
-		//horizontal -> check minimum width; horizontal check minimum height
 		if ((model.isHorizontal() && dimension.width < w1) 
-                        || (!model.isHorizontal() && dimension.height < h1)) {
-				return true;
-			} 
-		
+				|| (!model.isHorizontal() && dimension.height < h1)) {
+			return true;
+		} 
+
 		return false;
 	} // checkMinimumDimension
 
@@ -353,6 +360,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	//add separator only if it's not the first one in the accordion
     	if (model.getPaneCount() > 0) {
     		JSeparator separator = new JSeparator(orientation);
+    		separator.addMouseListener(separatorMouseListener);
+			separator.addMouseMotionListener(separatorMouseListener);
     		model.addSeparator(separator);
     		super.add(separator);
     	}
@@ -630,8 +639,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	// find the other pane to resize
     	secondPane = getNextExpandedPane(separatorIndex);
 
-    	// if two expanded panes are found then we can resize, and if the pane won't be 
-        // smaller than 2xtitle size
+    	// if two expanded panes are found then we can resize
     	if (firstPane != null && secondPane != null) {
     		return true;
         }
@@ -654,7 +662,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		current = model.getPaneAt(i); 
     	
     		//if found expanded and has no fixed size sized return it!
-    		if (current.isExpanded() && !current.isResizable()) {
+    		if (current.isExpanded() && current.isResizable()) {
     			return current;
                 }
     	} //for
@@ -675,7 +683,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     		current = model.getPaneAt(i); 
     	
     		//if found expanded and has no fixed size return it!
-    		if (current.isExpanded() && !current.isResizable()) {
+    		if (current.isExpanded() && current.isResizable()) {
     			return current;
                 }
     	} //for
@@ -713,7 +721,137 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
 		@Override
 		public void mouseReleased(MouseEvent e) { }
-	}
-} // Accordion class
+	} // TitleMouseListener Class
 
+	/**
+	 * Mouse Listener and Mouse Motion listener for Separator
+	 * @author Matthew
+	 *
+	 */
+	class SeparatorMouseListener implements MouseListener,
+											MouseMotionListener {
+		// separator drag related variables
+		private boolean dragHappening;
+		private Point clickPoint;
+		private Point lastDragPoint;
+		private JSeparator dragSource;
+		private Component component;
+		
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseDragged(MouseEvent e) { 
+			// while drag is active update the last point
+			if (dragHappening) {
+				//		System.out.println("MouseDragged");	
+				lastDragPoint = e.getPoint();
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseMoved(MouseEvent e) { }
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseClicked(MouseEvent e) { }
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// get component at point
+			component = e.getComponent();
+		
+			//if separator and can resize set change mouse cursor
+			if (component instanceof JSeparator) {
+				// set moving cursor
+				if (model.isHorizontal()) {
+					component.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+				} else {
+					component.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));
+				}
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// if dragging do not change the cursor even though we have exited the JSeparator
+			if (!dragHappening) {
+				// get component at point
+				component = e.getComponent();
+
+				//if separator change cursor back to normal
+				if (component instanceof JSeparator) {
+					component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mousePressed(MouseEvent e) {
+			Point point = e.getPoint();
+			
+			// get component at point
+			component = e.getComponent().getComponentAt(point);
+			
+			// we are concerned about JSeparator
+			if (component instanceof JSeparator) {
+				// store initial point
+				clickPoint = point;
+			//	System.out.println("StartedDragging");
+				// mark it as drag started
+				dragHappening = true;
+				 
+				// set source
+				dragSource = (JSeparator) component;
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			//stop dragging
+			dragHappening = false;
+			
+			//if no drag happened cleanup and return;
+			if (lastDragPoint == null) {
+				dragDone();
+
+				return;
+			} //if
+
+			//calculate change due to drag
+			int dx = lastDragPoint.x - clickPoint.x; // +ve is right, -ve left
+			int dy = lastDragPoint.y - clickPoint.y; // +ve is up, -ve down
+
+			//resize components
+			resizeBySeparator(dragSource, dx, dy);
+							
+			// clean up the drag 
+			dragDone();
+		} // SeparatorMouseListener
+		
+		protected void dragDone() {
+			//important - after dragging 
+			lastDragPoint = null;
+			dragSource = null;
+		//	System.out.println("DragDone");
+		} // dragDone()
+	} // SeparatorMouseListener class
+} // Accordion class
 // $Id$

@@ -675,7 +675,7 @@ public class AccordionModel {
     	private boolean expanded;
     	private Dimension dimension;    // in expanded state!
     	private double weight;
-    	private boolean resizable;      // do not allow resizing
+    	private boolean resizable = true;      // resizable by default 
     	private boolean lock; 		    // locks expanded state - setExpanded() will not work if lock=true
     	
 		AccordionPane(TitledPane argTitledPane, boolean argExpanded) {
@@ -767,7 +767,7 @@ public class AccordionModel {
 		}
 
 		/**
-		 * @return the fixedSize (resizable)
+		 * @return the resizable
 		 */
 		public boolean isResizable() {
 			return resizable;

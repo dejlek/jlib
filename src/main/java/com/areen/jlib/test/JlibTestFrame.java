@@ -58,6 +58,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         verticalLayoutButton = new javax.swing.JButton();
         accordionButton = new javax.swing.JButton();
+        accordionDialogButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -134,6 +135,16 @@ public class JlibTestFrame extends javax.swing.JFrame {
         });
         navigatorPanel.add(accordionButton);
 
+        accordionDialogButton.setText("Accordion in a Dialog");
+        accordionDialogButton.setMaximumSize(new java.awt.Dimension(159, 25));
+        accordionDialogButton.setMinimumSize(new java.awt.Dimension(159, 25));
+        accordionDialogButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accordionDialogButtonActionPerformed(evt);
+            }
+        });
+        navigatorPanel.add(accordionDialogButton);
+
         mainSplitPane.setLeftComponent(navigatorPanel);
 
         contentPanel.setLayout(new java.awt.CardLayout());
@@ -172,6 +183,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, "accordion_test_panel");
     }//GEN-LAST:event_accordionButtonActionPerformed
+
+    private void accordionDialogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accordionDialogButtonActionPerformed
+       AccordionTestDialog atd = new AccordionTestDialog(this, false);
+       atd.setVisible(true);
+    }//GEN-LAST:event_accordionDialogButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,6 +230,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accordionButton;
+    private javax.swing.JButton accordionDialogButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToggleButton browserButton;
     private javax.swing.JPanel contentPanel;
