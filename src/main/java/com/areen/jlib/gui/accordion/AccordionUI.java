@@ -130,7 +130,7 @@ public class AccordionUI extends ComponentUI {
 				if (component instanceof JSeparator) {
 					// store initial point
 					clickPoint = point;
-					System.out.println("StartedDragging");
+				//	System.out.println("StartedDragging");
 					// mark it as drag started
 					dragHappening = true;
 					 
@@ -173,7 +173,7 @@ public class AccordionUI extends ComponentUI {
 				
 				// while drag is active update the last point
 				if (dragHappening) {
-					System.out.println("MouseDragged");	
+			//		System.out.println("MouseDragged");	
 					lastDragPoint = e.getPoint();
 				}
 			}

@@ -110,6 +110,7 @@ public class AccordionPrefs {
 	 */
 	public void updatePrefs() {
 		// update expanded states
+       //     System.out.println("EXPANDED KEY: ...... " + expandedKey);
 		prefsMap.put(expandedKey, getExpanded());
 
 		// load AccordionPane sizes

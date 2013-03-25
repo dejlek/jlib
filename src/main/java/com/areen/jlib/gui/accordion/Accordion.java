@@ -230,7 +230,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
 		// resize if it's allowed - 2 panes opened
 		if (canResize(separatorIndex)) {
-			System.out.println("YEY = can resize!");
 			Dimension firstDimension;
 			Dimension secondDimension;
 			
@@ -275,6 +274,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 			//check minimum dimensions - check if the new dimension won't be smaller than minimum size
 			if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1) 
 					|| !checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w2, h2)) {
+				//System.out.println("Can't resize - minimum size ");
 				return;
 			}
 			
@@ -292,10 +292,12 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	 * @return true if minimum dimension is smaller than Dimension(w1, h1)
 	 */
 	private boolean checkMinimumDimension(Dimension dimension, int w1, int h1) {
-		if (dimension.width < w1 && dimension.height < h1) {
-			return true;
-		} 
-
+		//horizontal -> check minimum width; horizontal check minimum height
+		if ((model.isHorizontal() && dimension.width < w1) 
+                        || (!model.isHorizontal() && dimension.height < h1)) {
+				return true;
+			} 
+		
 		return false;
 	} // checkMinimumDimension
 
