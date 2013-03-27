@@ -44,6 +44,10 @@ public class AccordionModel {
     // ==== Variables =====================================================================================
     // ====================================================================================================
     
+	private int fontSize = 15;
+	private int titleSize = 22;
+	private int separatorSize = 6;
+	
     // :::::: PUBLIC ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -77,6 +81,11 @@ public class AccordionModel {
 		// by default we don't set the dimensions - if they are set then layout manager will 
 		// ignore the weights
 		accordionPane.setWeight(0.2); // default weight
+		
+		//set up rotatable pane
+		RotatableTitle rt = ((RotatableTitle) titledPane.getTitle()); 
+		rt.setFontSize(fontSize);
+		rt.setDimension(new Dimension(titleSize, titleSize));
 		
 		//add it to the list
 		panes.add(accordionPane);
@@ -160,12 +169,12 @@ public class AccordionModel {
 					space += pane.getDimension().getWidth();
 				}
 			} else {
-				space += Accordion.getTitleSize();
+				space += titleSize;
 			}
 		} // for
 		
 		//add space taken up by dividers
-		space += separators.size() * Accordion.getSeparatorSize(); 
+		space += separators.size() * separatorSize; 
 		
 		return space;
 	} // getOccupiedHorizontalSpace()
@@ -187,12 +196,12 @@ public class AccordionModel {
 					space += pane.getDimension().getHeight();
 				} 
 			} else {
-				space += Accordion.getTitleSize();
+				space += titleSize;
 			}
 		} // for
 		
 		//add space taken up by dividers
-		space += panes.size() * Accordion.getSeparatorSize(); 
+		space += panes.size() * separatorSize; 
 		
 		return space;
 	} // getOccupiedVerticalSpace()
@@ -340,12 +349,12 @@ public class AccordionModel {
 			if (pane.isExpanded()) {
 				height += pane.getTitledPane().getMinimumSize().height;
 			} else {
-				height += Accordion.getTitleSize();
+				height += titleSize;
 			}
 		}
 		
 		// add space taken up by separators
-		height += Accordion.getSeparatorSize() * panes.size() - 1;
+		height += separatorSize * panes.size() - 1;
 		
 		return height;
 	}
@@ -363,13 +372,13 @@ public class AccordionModel {
 			if (pane.isExpanded()) {
 				width += pane.getTitledPane().getMinimumSize().width;
 			} else {
-				width += Accordion.getTitleSize();
+				width += titleSize;
 			}
 
 		}
 		
 		// add space taken up by separators
-		width += Accordion.getSeparatorSize() * panes.size() - 1;
+		width += separatorSize * panes.size() - 1;
 		
 		return width;
 	}
@@ -407,6 +416,57 @@ public class AccordionModel {
 // ==== Accessors =====================================================================================
 // ====================================================================================================
 
+	 /**
+     * Get default font size for titled panes
+     * @return
+     */
+	public int getFontSize() {
+		return fontSize;
+	}
+
+	/**
+	 * Set font size and update set it to all titles in titled panes
+	 * @param size
+	 */
+	public void setFontSize(int argFontSize) {
+		fontSize = argFontSize;
+		
+		// iterate thorugh all
+		for (AccordionPane ap : panes) {
+			ap.getTitledPane().setTitleFontSize(fontSize);
+		}
+	} 
+	
+	/**
+	 * Get the size of a title
+	 * @return
+	 */
+	public int getTitleSize() {
+		return titleSize;
+	}
+
+	/**
+	 * Set title size
+	 * @param size
+	 */
+	public void setTitleSize(int argSize) {
+		titleSize = argSize;
+	} 
+	
+	/**
+	 * @return the separatorSize
+	 */
+	public int getSeparatorSize() {
+		return separatorSize;
+	}
+
+	/**
+	 * @param separatorSize the separatorSize to set
+	 */
+	public void setSeparatorSize(int argSeparatorSize) {
+		separatorSize = argSeparatorSize;
+	}
+	
 	/**
 	 * @return the number of panes
 	 */

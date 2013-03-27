@@ -57,7 +57,7 @@ public class TitledPane extends JPanel {
 		
 		setLayout(new BorderLayout());
     	
-    	RotatableTitle title = new RotatableTitle(string, horizontal, Accordion.getFontSize());
+    	RotatableTitle title = new RotatableTitle(string, horizontal, 12);
     	JPanel panel = new JPanel();
 
     	if (horizontal) {
@@ -74,7 +74,7 @@ public class TitledPane extends JPanel {
     public TitledPane(String titleString, JComponent component, boolean argHorizontal) {
     	this.horizontal = argHorizontal;
     	
-    	RotatableTitle title = new RotatableTitle(titleString, horizontal, Accordion.getFontSize());
+    	RotatableTitle title = new RotatableTitle(titleString, horizontal, 12);
     	
     	setLayout(new BorderLayout());
     	
@@ -135,6 +135,15 @@ public class TitledPane extends JPanel {
     	getTitle().setBackground(colour);
     }
        
+    /**
+     * Set title font size
+     * @param fontSize
+     */
+    public void setTitleFontSize(int fontSize) {
+    	((RotatableTitle) getTitle()).setFontSize(fontSize);
+		
+	}
+    
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================

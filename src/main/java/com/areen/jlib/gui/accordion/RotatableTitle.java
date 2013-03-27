@@ -22,6 +22,7 @@
 
 package com.areen.jlib.gui.accordion;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -62,9 +63,6 @@ public class RotatableTitle extends JPanel {
 		this.text = argText;
 		this.fontSize = argFontSize;
 		expanded = false;
-
-		setSize(Accordion.getTitleSize(), Accordion.getTitleSize());
-		setPreferredSize(getSize());
 	} //RotatableTitle
 
 	// ====================================================================================================
@@ -77,7 +75,7 @@ public class RotatableTitle extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    
-		g2d.setFont(new Font("Microsoft JhengHei", Font.BOLD, fontSize));
+		g2d.setFont(new Font("Microsoft JhengHei", Font.PLAIN, fontSize));
 		FontMetrics metrics = g2d.getFontMetrics();
 
 		//if horizontal and collapsed we need to show the title in 
@@ -119,6 +117,14 @@ public class RotatableTitle extends JPanel {
 		repaint();
 	} //rotate
 
+	/**
+	 * Set size and preferred size
+	 */
+	public void setDimension(Dimension argDimension) {
+		setSize(argDimension);
+		setPreferredSize(getSize());
+	}
+	
 	// ====================================================================================================
 	// ==== Accessors =====================================================================================
 	// ====================================================================================================

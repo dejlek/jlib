@@ -98,10 +98,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
 
 	// :::::: CONFIGURATION VARIABLES :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    private static int fontSize = 15;
-	private static int titleSize = 25;
-	private static int separatorSize = 6;
+	
 	protected Color titleBackgroundColor; // background colour for titles, if set
 
 	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -369,7 +366,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 		Component component = titledPane.getTitle();
 		component.addMouseListener(titleMouseListener);
 		component.setBackground(titleBackgroundColor);
-		
+				
     	//add component
    		model.addPane(titledPane);
     	super.add(titledPane);
@@ -574,51 +571,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	model.getPaneAt(idx).requestFocus();
     } // setSelected ()
 
-    /**
-     * Get default font size for titled panes
-     * @return
-     */
-	public static int getFontSize() {
-		return fontSize;
-	}
-
-	/**
-	 * Set font size
-	 * @param size
-	 */
-	public static void setFontSize(int argFontSize) {
-		fontSize = argFontSize;
-	} 
-	
-	/**
-	 * Get the size of a title
-	 * @return
-	 */
-	public static int getTitleSize() {
-		return titleSize;
-	}
-
-	/**
-	 * Set title size
-	 * @param size
-	 */
-	public static void setTitleSize(int argSize) {
-		titleSize = argSize;
-	} 
-	
-	/**
-	 * @return the separatorSize
-	 */
-	public static int getSeparatorSize() {
-		return separatorSize;
-	}
-
-	/**
-	 * @param separatorSize the separatorSize to set
-	 */
-	public static void setSeparatorSize(int argSeparatorSize) {
-		Accordion.separatorSize = argSeparatorSize;
-	}
 
     // ====================================================================================================
     // ==== Private/Protected/Package Methods =============================================================

@@ -74,10 +74,10 @@ public class AccordionLayout implements LayoutManager {
 		AccordionPane pane;
 
 		boolean horizontal = model.isHorizontal();
-
+		
 		// get components
 		Component[] components = container.getComponents();
-
+		
 		// compute empty space - total space to be divided among panels which work 
 		// by weights - no width/height specified 
 		int emptySpace = getAvailableSpace(container);
@@ -103,7 +103,7 @@ public class AccordionLayout implements LayoutManager {
 							width = (int) (model.getWeightShare(paneNumber) * emptySpace);
 						}
 					} else { // collapsed
-						width = Accordion.getTitleSize();
+						width = model.getTitleSize();
 					} //else
 
 					c.setBounds(currentX, 0, width, container.getHeight());
@@ -118,7 +118,7 @@ public class AccordionLayout implements LayoutManager {
 							height = (int) (model.getWeightShare(paneNumber) * emptySpace);
 						}
 					} else { // collapsed
-						height =  Accordion.getTitleSize();;
+						height = model.getTitleSize();
 					} //else
 
 					c.setBounds(0, currentY, container.getWidth(), height);
@@ -132,7 +132,7 @@ public class AccordionLayout implements LayoutManager {
 			} else { //dealing with separators
 				//horizontal row
 				if (horizontal) {
-					width = Accordion.getSeparatorSize();
+					width = model.getSeparatorSize();
 					height = container.getHeight(); // as high as the whole container
 
 					c.setBounds(currentX, 0, width, height);
@@ -141,7 +141,7 @@ public class AccordionLayout implements LayoutManager {
 					currentX += width;
 				} else { //all components in a column
 					width = container.getWidth();
-					height = Accordion.getSeparatorSize();
+					height = model.getSeparatorSize();
 
 					c.setBounds(0, currentY, width, height);
 
