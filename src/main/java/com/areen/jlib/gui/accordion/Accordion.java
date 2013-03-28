@@ -285,7 +285,12 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 			
 			// in horizontal state do not change Y coordinate
 			model.setPaneDimension(model.indexOf(firstPane), new Dimension(w1, h1));
-			model.setPaneDimension(model.indexOf(secondPane), new Dimension(w2, h2));
+			
+			//we don't update second pane's dimension if it's not set. This fixes the bug which causes
+			//generating total dimension greater than container.
+			if (secondPane.getDimension() != null) {
+				model.setPaneDimension(model.indexOf(secondPane), new Dimension(w2, h2));
+			}
 		} //if
 	}	
 	
