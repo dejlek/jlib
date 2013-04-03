@@ -16,7 +16,7 @@
  * Author(s) in chronological order:
  *   Mateusz Dykiert , http://dykiert.org
  * Contributor(s):
- *   -
+ *   Dejan Lekic , http://dejan.lekic.org
  */
 
 package com.areen.jlib.gui.accordion;
@@ -109,6 +109,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	private AccordionPane secondPane; // right/bottom pane to resize
 	private MouseListener titleMouseListener; //mouse listener for title component in TitledPane
 	private SeparatorMouseListener separatorMouseListener;
+    private int clicksRequired = 1; /// Number of clicks required to expand/collapse.
 	
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -125,8 +126,15 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	// register to listen for property changes
     	model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
     	model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);  
+    } // Accordion constructor
+    
+    /**
+     * Creates a vertical Accordion.
+     */
+    public Accordion() {
+        this(false);
     } // Accordion constructor (default)
-
+    
     public Accordion(boolean horizontal, TitledPane... panes) {
     	model = new AccordionModel(horizontal);
     	
@@ -158,8 +166,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     			model.addSeparator(separator);
     			super.add(separator);   		
     		}
-     	}
-    }
+     	} // for
+    } // Accordion constructor
     
     // ====================================================================================================
     // ==== Interface/Superclass Methods ==================================================================
@@ -214,7 +222,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
-	
+    
 	/**
 	 * Set background colour of titled panes
 	 * @param colour
@@ -514,6 +522,14 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ==== Accessors =====================================================================================
     // ====================================================================================================
     
+    public int getClicksRequired() {
+        return clicksRequired;
+    }
+
+    public void setClicksRequired(int argClicksRequired) {
+        clicksRequired = argClicksRequired;
+    }
+    
     /**
      * Get model
      * @return
@@ -652,13 +668,17 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ==== Classes =======================================================================================
     // ====================================================================================================
 
+    /**
+     * Simple implementation of the MouseListener interface needed for listening to the clicks on the
+     * Accordion titles.
+     */
 	class TitleMouseListener implements MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			//double left click
 
-			if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+			if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == getClicksRequired()) {
 				Component c = (Component) e.getSource();
 				TitledPane titledPane = (TitledPane) c.getParent();
 
@@ -810,5 +830,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 		//	System.out.println("DragDone");
 		} // dragDone()
 	} // SeparatorMouseListener class
+    
 } // Accordion class
+
 // $Id$
