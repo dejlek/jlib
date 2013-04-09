@@ -18,7 +18,9 @@ import com.areen.jlib.gui.fcb.ComboBoxFilter;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -121,16 +123,56 @@ public class GuiTools {
     public static File makeScreenshot(String argPrefix, JFrame argFrame) {
         String prefix = (argPrefix == null) ? "screenshot" : argPrefix;
         Rectangle rec = argFrame.getBounds();
-        BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
-        argFrame.paint(bufferedImage.getGraphics());
-
+        BufferedImage frameImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
+        argFrame.paint(frameImage.getGraphics());
+        int x = argFrame.getX();
+        int y = argFrame.getY();
+        int screenShotWidth = rec.width;
+        int screenShotHeight = rec.height;
+        Window[] frames = argFrame.getWindows();
+        for (Window frame : frames) {
+            if (frame.isVisible()) {
+                int frameX = frame.getX();
+                if (x > frameX) {
+                    x = frameX;
+                } // if
+                int frameY = frame.getY();
+                if (y > frameY) {
+                    y = frameY;
+                } // if
+            } // if
+        } // for
+        for (Window frame : frames) {
+            if (frame.isVisible()) {
+                int frameX = frame.getX();
+                if (screenShotWidth < (frameX + frame.getWidth())) {
+                    screenShotWidth = frameX + frame.getWidth();
+                } // if
+                int frameY = frame.getY();
+                if (screenShotHeight < (frameY + frame.getHeight())) {
+                    screenShotHeight = frameY + frame.getHeight();
+                } // if
+            } // if
+        } // for
+        screenShotWidth = screenShotWidth - x;
+        screenShotHeight = screenShotHeight - y;
+        BufferedImage screenShotImage = new BufferedImage(screenShotWidth, screenShotHeight, 
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = screenShotImage.getGraphics();
+        graphics.drawImage(frameImage, rec.x - x, rec.y - y, argFrame);
+        for (Window frame : frames) {
+            BufferedImage currentFrameImage = new BufferedImage(frame.getWidth(), frame.getHeight(), 
+                    BufferedImage.TYPE_INT_ARGB);
+            frame.paint(currentFrameImage.getGraphics());
+            graphics.drawImage(currentFrameImage, frame.getX() - x, frame.getY() - y, argFrame);
+        } // for
         File temp = null;
         try {
             // Create temp file.
             temp = File.createTempFile(prefix, ".png");
             
             // Use the ImageIO API to write the bufferedImage to a temporary file
-            ImageIO.write(bufferedImage, "png", temp);
+            ImageIO.write(screenShotImage, "png", temp);
 
             // Delete temp file when program exits.
             temp.deleteOnExit();
