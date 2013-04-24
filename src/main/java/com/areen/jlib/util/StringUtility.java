@@ -31,8 +31,12 @@ public class StringUtility {
      * @return 
      */
     public static String toEmailString(String argData) {
-        String[] parts = argData.split(",");
-        return toEmailString(parts[0].trim(), parts[1].trim());
+        if (argData.contains(",")) {
+            String[] parts = argData.split(",");
+            return toEmailString(parts[0].trim(), parts[1].trim());
+        } else {
+            return argData;
+        }
     } // toEmailString() method
     
 } // StringUtility class
