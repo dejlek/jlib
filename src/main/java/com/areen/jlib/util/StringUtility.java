@@ -20,7 +20,7 @@ public class StringUtility {
      * @return 
      */
     public static String toEmailString(String argFullName, String argEmail) {
-        return argFullName + "<" + argEmail + ">";
+        return argFullName + " <" + argEmail + ">";
     } // toEmailString() method
     
     /**
