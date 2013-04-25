@@ -1,5 +1,6 @@
 package com.areen.jlib.tuple;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Map;
  *
  * @author Dejan Lekic - http://dejan.lekic.org
  */
-public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT> {
+public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT>, Serializable {
 
     protected KeyT first;
     protected ValueT second;
