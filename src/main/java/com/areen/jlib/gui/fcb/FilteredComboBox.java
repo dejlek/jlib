@@ -59,6 +59,13 @@ public class FilteredComboBox extends WideComboBox {
     // ==== Interface/Superclass ==========================================================================
     // ====================================================================================================
 
+    public void pickItemByKey(Object argKey) {
+        if (comboBoxModel.isReadyToPick()) {
+            comboBoxModel.pickItemByKey(argKey);
+            comboBoxModel.setReadyToPick(false);
+        } // if
+    } // setSelectedItemByKey() method
+    
     /**
      * Use this method to specify (programmatically) what Item is going to be the picked item.
      * @param argObject 
@@ -89,18 +96,6 @@ public class FilteredComboBox extends WideComboBox {
         } // if
     } // setSelectedItem() method
     
-    // Throws null pointer exception, comboboxfilter is  NULL.
-    // DL && SN discussed and commented.
-    /**
-    @Override
-    public void setModel(ComboBoxModel argModel) {
-        super.setModel(argModel);
-        if (argModel instanceof FilteredComboBoxModel) {
-            comboBoxFilter.setModel((FilteredComboBoxModel) argModel);
-            System.out.println("sdsdsdsd");
-        }
-    }
-    **/
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================

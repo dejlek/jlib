@@ -621,6 +621,34 @@ public class FilteredComboBoxModel
         } // else
     } // getMatchingItems() method    
     
+    /**
+     * Use this method when you want to explicitly select the item by its key.
+     * 
+     * TODO: I hate nested elseifs, make it into some sort of private methods that deal with specific type.
+     * 
+     * @param argKey 
+     */
+    public void pickItemByKey(Object argKey) {
+        Object foundItem = null;
+        for (Object item : fcbObjects) {
+            Object itemKey = null;
+            if (item instanceof Pair) {
+                Pair pair = (Pair) item;
+                itemKey = pair.getKey();
+            } else if (item instanceof Object[]) {
+                Object[] arr = (Object[]) item;
+                itemKey = arr[0];
+            } else if (argKey.equals(itemKey)) {
+                foundItem = item;
+            }
+        } // foreach
+        
+        if (foundItem != null) {
+            setSelectedItem(foundItem);
+            setPickedItem(foundItem);
+        } // if
+    } // setSelectedItemByKey() method
+    
     public void printDebugInfo() {
         System.out.println("++++ types ++++++++++++++++++++++++++++++++++++++++++++++++");
         Object[] objs = (Object[]) fcbObjects.get(0);
