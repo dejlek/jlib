@@ -59,11 +59,13 @@ public class FilteredComboBox extends WideComboBox {
     // ==== Interface/Superclass ==========================================================================
     // ====================================================================================================
 
+    /**
+     * Use this method to programmatically pick and select an item with key equal to argKey.
+     * 
+     * @param argKey 
+     */
     public void pickItemByKey(Object argKey) {
-        if (comboBoxModel.isReadyToPick()) {
-            comboBoxModel.pickItemByKey(argKey);
-            comboBoxModel.setReadyToPick(false);
-        } // if
+        comboBoxModel.pickItemByKey(argKey);
     } // setSelectedItemByKey() method
     
     /**

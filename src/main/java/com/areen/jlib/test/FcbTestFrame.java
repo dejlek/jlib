@@ -90,6 +90,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
         //fcb.setSelectedItem(null);
         new ComboBoxLink(fcb, jLabel1);
         // filteredComboBox.setSelectedIndex(5); <-- does not make ComboBoxLink change the label! (BUG)
+        fcb.pickItemByKey("ba");
+        System.out.println(fcb.getSelectedItem());
         
         // Second FCB
         secondFcb.setSelectedItem(null);

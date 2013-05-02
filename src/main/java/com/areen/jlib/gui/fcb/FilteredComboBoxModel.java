@@ -638,7 +638,11 @@ public class FilteredComboBoxModel
             } else if (item instanceof Object[]) {
                 Object[] arr = (Object[]) item;
                 itemKey = arr[0];
-            } else if (argKey.equals(itemKey)) {
+            } else {
+                itemKey = item;
+            }
+            
+            if (argKey.equals(itemKey)) {
                 foundItem = item;
             }
         } // foreach
