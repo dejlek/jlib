@@ -630,6 +630,13 @@ public class FilteredComboBoxModel
      */
     public void pickItemByKey(Object argKey) {
         Object foundItem = null;
+        
+        if (argKey == null) {
+            setSelectedItem(null);
+            setPickedItem(null);
+            return;
+        } // if
+        
         for (Object item : fcbObjects) {
             Object itemKey = null;
             if (item instanceof Pair) {
