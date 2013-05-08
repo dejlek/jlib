@@ -1,11 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib 
+ * Version: $Id$ 
+ * License: SPL
+ *
+ * This file is best viewed with 110 columns.
+ * 34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ * 
+ * Authors (in chronological order): 
+ *   Dejan Lekic - http://dejan.lekic.org
+ * Contributors (in chronological order): 
+ *   -
  */
 package com.areen.jlib.test;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 
 /**
  * The model for the RemoteFileButton JComponent implementation.
