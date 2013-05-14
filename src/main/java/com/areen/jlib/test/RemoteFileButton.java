@@ -199,7 +199,7 @@ public class RemoteFileButton
         
         FileDialog fd = new FileDialog(GuiTools.getFrame(RemoteFileButton.this));
         fd.setMode(FileDialog.LOAD);
-        fd.setMultipleMode(false);
+        // fd.setMultipleMode(false); Java 1.7 feature...
         fd.setTitle("Select file");
         fd.setVisible(true);
         model.setLocalPath(fd.getFile());
