@@ -111,6 +111,7 @@ public class RemoteFileButton
         
         // ::::: Delete button ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         deleteButton = new JButton("X");
+        deleteButton.setMargin(new java.awt.Insets(2, 2, 2, 2)); // we do not want those big margins...
         add(deleteButton, BorderLayout.EAST);
         
         this.addMouseListener(new MouseAdapter() {
