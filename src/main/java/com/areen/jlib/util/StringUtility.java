@@ -39,6 +39,62 @@ public class StringUtility {
         }
     } // toEmailString() method
     
+    /**
+     * This utility method is used to replace any character from the input string argText that is 
+     * *not allowed* in URI with a tilde. Such resulting string may be used for building safe URIs, and/or
+     * safe file-names that are human readable.
+     * 
+     * I've chosen tilde as replacement for any special character simply because we can easily detect that
+     * there was some special character, and possibly fix it manually, if there is really the need for that.
+     * 
+     * The only exception is the space character that I decided to replace with an underscore. (Makes more
+     * readable file-names).
+     * 
+     * To quote section 2.3 of RFC 3986:
+     * 
+     * "Characters that are allowed in a URI but do not have a reserved purpose are called unreserved. These 
+     * include uppercase and lowercase letters, decimal digits, hyphen, period, underscore, and tilde."
+     * 
+     * Example:
+     * safeUriPart("hello, john!") will return string "hello~_john~". We can safely create a file with
+     * name, say "hello~_john~.dat"
+     * 
+     * @param argText
+     * @return 
+     */
+    public static String safeUriPart(String argText) {
+        // TODO: implement the method
+        String ret = "";
+        
+        for (char ch : argText.toCharArray()) {
+            if (ch >= 'A' && ch <= 'Z') {
+                ret += ch;
+            } else if (ch >= 'a' && ch <= 'z') {
+                ret += ch;
+            } else if (ch >= '0' && ch <= '9') {
+                ret += ch;
+            } else if (ch == '.' || ch == '~' || ch == '-' || ch == '_') {
+                ret += ch;
+            } else if (ch == ' ') {
+                ret += '_';
+            } else {
+                ret += '~';
+            }
+        } // foreach
+        
+        return ret;
+    }
+    
+    public static void main(String[] args) {
+        //String docId = Integer.toString(12314, 36); // say document_id = 12314
+        String docId = String.format("%08d", 12314);
+        String major = "0";
+        String minor = "12";
+        String docVer = docId + "." + major + "." + minor;
+        System.out.println(docVer + "_" + safeUriPart("hello, john!"));
+        System.out.println();
+    }
+    
 } // StringUtility class
 
 // $Id$
