@@ -63,7 +63,6 @@ public class StringUtility {
      * @return 
      */
     public static String safeUriPart(String argText) {
-        // TODO: implement the method
         String ret = "";
         
         for (char ch : argText.toCharArray()) {
@@ -83,15 +82,16 @@ public class StringUtility {
         } // foreach
         
         return ret;
-    }
+    } // safeUriPart() method
     
     public static void main(String[] args) {
         //String docId = Integer.toString(12314, 36); // say document_id = 12314
         String docId = String.format("%08d", 12314);
-        String major = "0";
-        String minor = "12";
+        String major = String.format("%02d", 0);      // major = 0
+        String minor = String.format("%03d", 12);     // minor = 12
         String docVer = docId + "." + major + "." + minor;
-        System.out.println(docVer + "_" + safeUriPart("hello, john!"));
+        System.out.println(docVer + "_" + safeUriPart("ORD/INV") + "_" 
+                + safeUriPart("hello, john! /\\") + ".xls");
         System.out.println();
     }
     
