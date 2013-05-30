@@ -111,6 +111,8 @@ public class FilteredComboBoxModel
      */
     private int config = 0;
     
+    private boolean defaultFilter = true;
+    
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -437,69 +439,71 @@ public class FilteredComboBoxModel
             // pattern contains no characters - might be erased, so we have to populate objects list.
             objects.addAll(fcbObjects);
         } else {
-            // Before we split, lets remove some special characters.
-            copy.replaceAll(" - ", " ");
-            // pattern contains at least one character
-            strings = copy.split(" ");
-            
-            boolean found;
-            Object obj = null;
-            int val = -1;
-            for (int i = 0; i < fcbObjects.size(); i++) {
-                obj = fcbObjects.get(i);
-                
-                if (check(copy, obj) == 2) {
-                    // we have an exact match!
-                    exactObject = obj;
-                    exactIndex = i;
-                    exactMatchFound = true;
-                } // if
-                
-                found = true;
-                for (String str : strings) {
-                    val = check(str, obj);
-                    found &= ((val == 1) || (val == 2));
-                } // foreach
-                
-                if (found) {
-                    //Logging just slows the function - the function needs to finish as soon as possible!
-                    //LOGGER.info("Exact match `" + obj.toString() + "` found at idx=" + exactIndex);
-                    objects.add(obj);
-                } // if
-            } // for
-        } // else
-        
-        // get the size after filtering
-        int size2 = getSize();
-        
-        //System.out.println(size1 + ", " + size2);
-        if (size1 < size2) {
-            fireIntervalAdded(this, size1, size2 - 1);
-            fireContentsChanged(this, 0, size1 - 1);
-        } else if (size1 > size2) {
-            fireIntervalRemoved(this, size2, size1 - 1);
-            fireContentsChanged(this, 0, size2 - 1);
-        } else {
-            fireContentsChanged(this, 0, size2 - 1);
-        } // else
+            if (defaultFilter) {
+                // Before we split, lets remove some special characters.
+                copy.replaceAll(" - ", " ");
+                // pattern contains at least one character
+                strings = copy.split(" ");
 
-        // Let's select appropriate item.
-        if (this.getSize() > 0) {
-            if (exactMatchFound) {
-                // if we had an exact match, select that item.
-                //System.out.println("### Exact match found!");
-                //System.out.println("(" + exactIndex + ")" + exactObject.toString());
-                setSelectedItem(exactObject);
+                boolean found;
+                Object obj = null;
+                int val = -1;
+                for (int i = 0; i < fcbObjects.size(); i++) {
+                    obj = fcbObjects.get(i);
+
+                    if (check(copy, obj) == 2) {
+                        // we have an exact match!
+                        exactObject = obj;
+                        exactIndex = i;
+                        exactMatchFound = true;
+                    } // if
+
+                    found = true;
+                    for (String str : strings) {
+                        val = check(str, obj);
+                        found &= ((val == 1) || (val == 2));
+                    } // foreach
+
+                    if (found) {
+                        //Logging just slows the function - the function needs to finish as soon as possible!
+                        //LOGGER.info("Exact match `" + obj.toString() + "` found at idx=" + exactIndex);
+                        objects.add(obj);
+                    } // if
+                } // for
+            } // if
+        } // else
+        if (defaultFilter) {
+            // get the size after filtering
+            int size2 = getSize();
+
+            //System.out.println(size1 + ", " + size2);
+            if (size1 < size2) {
+                fireIntervalAdded(this, size1, size2 - 1);
+                fireContentsChanged(this, 0, size1 - 1);
+            } else if (size1 > size2) {
+                fireIntervalRemoved(this, size2, size1 - 1);
+                fireContentsChanged(this, 0, size2 - 1);
             } else {
-                // if we did not have an exact match, select the first item in the newly created list.
-                // WARNING: it is a BUG to select 
-                // 
-                setSelectedIndex(0);
+                fireContentsChanged(this, 0, size2 - 1);
             } // else
-        } else {
-            setSelectedItem(null);
-        } // else
 
+            // Let's select appropriate item.
+            if (this.getSize() > 0) {
+                if (exactMatchFound) {
+                    // if we had an exact match, select that item.
+                    //System.out.println("### Exact match found!");
+                    //System.out.println("(" + exactIndex + ")" + exactObject.toString());
+                    setSelectedItem(exactObject);
+                } else {
+                    // if we did not have an exact match, select the first item in the newly created list.
+                    // WARNING: it is a BUG to select 
+                    // 
+                    setSelectedIndex(0);
+                } // else
+            } else {
+                setSelectedItem(null);
+            } // else
+        } // if
         lastPattern = copy;
         patternParts = strings; // store the patternParts so we do not have to split again
     } // setPattern() method implementation
@@ -844,7 +848,7 @@ public class FilteredComboBoxModel
      * @param argReadyToFinish
      */
     public void setReadyToFinish(boolean argReadyToFinish) {
-        readyToFinish = argReadyToFinish;
+        this.readyToFinish = argReadyToFinish;
     } // setReadyToFinish() method
     
     /**
@@ -944,6 +948,25 @@ public class FilteredComboBoxModel
     public AtmRegistry getTableModelRegistry() {
         return tableModelRegistry;
     }
+
+    /**
+     * This method is used to retrieve an indication that the model depends or not on the default 
+     * filtering provided.
+     * 
+     * @return
+     */
+    public boolean isDefaultFiltering() {
+        return defaultFilter;
+    } // isDefaultFiltering() method
+
+    /**
+     * This method is used to set whether or not the model depends on the default filtering provided.
+     * 
+     * @param filter
+     */
+    public void setDefaultFiltering(boolean filter) {
+        this.defaultFilter = filter;
+    } // setDefaultFiltering() method
 
     // ====================================================================================================
     // ==== Private Methods ===============================================================================
