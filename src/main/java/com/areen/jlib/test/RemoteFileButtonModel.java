@@ -39,8 +39,7 @@ public class RemoteFileButtonModel implements Serializable {
             uploaded = true;
             remotePath = jfile.getPath();
         }
-        
-    }
+    } // RemoteFileButtonModel constructor
     
     @Override
     public String toString() {
