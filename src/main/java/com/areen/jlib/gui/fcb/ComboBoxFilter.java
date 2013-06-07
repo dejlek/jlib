@@ -706,7 +706,7 @@ public class ComboBoxFilter extends PlainDocument {
         //       This is a quick hack to not confuse users.
         if (str.contains("[Ljava.lang.Object")) {
             int idx = comboBoxModel.getKeyIndex();
-            if (isTableCellEditor() || comboBoxModel.isDefaultFiltering()) {
+            if (isTableCellEditor() || !comboBoxModel.isDefaultFiltering()) {
                 comboBoxModel.setReadyToFinish(true);
             } // if
             pickedItem = comboBox.getSelectedItem();
@@ -749,7 +749,7 @@ public class ComboBoxFilter extends PlainDocument {
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);
             int idx = comboBoxModel.getKeyIndex();
-            if (isTableCellEditor() || comboBoxModel.isDefaultFiltering()) {
+            if (isTableCellEditor() || !comboBoxModel.isDefaultFiltering()) {
                 comboBoxModel.setReadyToFinish(true);
             } // if
             
@@ -780,7 +780,7 @@ public class ComboBoxFilter extends PlainDocument {
             comboBoxModel.setPickedKey(pickedKey);
             return;
         } else {
-            if (comboBoxModel.isDefaultFiltering()) {
+            if (!comboBoxModel.isDefaultFiltering()) {
                 comboBoxModel.setReadyToFinish(true);
             } // if
             // otherwise, insert the whole string
