@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
  * Data model for Accordion. TitledPane and its weights, set size and state are stored in 
@@ -46,13 +47,13 @@ public class AccordionModel {
     
 	private int fontSize = 15;
 	private int titleSize = 22;
-	private int separatorSize = 6;
+	private int separatorSize = 10;
 	
     // :::::: PUBLIC ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private ArrayList<AccordionPane> panes;
-	private ArrayList<JSeparator> separators;
+	private ArrayList<JLabel> separators;
 
     private boolean horizontal;
 	private int paneCount;    
@@ -63,7 +64,7 @@ public class AccordionModel {
     
     public AccordionModel(boolean argHorizontal) {
         panes = new ArrayList<AccordionPane>();
-        separators = new ArrayList<JSeparator>();
+        separators = new ArrayList<JLabel>();
         this.horizontal = argHorizontal;
         propertyChangeSupport = new PropertyChangeSupport(this);
     } // Template constructor (default)
@@ -210,7 +211,7 @@ public class AccordionModel {
 	 * Add separator
 	 * @param separator
 	 */
-	public void addSeparator(JSeparator separator) {
+	public void addSeparator(JLabel separator) {
 		separators.add(separator);
 	}
 	
@@ -412,6 +413,22 @@ public class AccordionModel {
 			pane.getTitledPane().setTitleBackground(colour);
 		}
 	}
+        
+        /**
+         * Set background colour to the separators
+         * @param colour 
+         */
+        public void setSeparatorBackground(Color colour) {
+            for (JLabel separator : separators) {
+                separator.setBackground(colour);
+            }
+        }
+ 
+    public void setSeparatorBorder(Border border) {
+        for (JLabel separator : separators) {
+            separator.setBorder(border);
+        }
+    }
 // ====================================================================================================
 // ==== Accessors =====================================================================================
 // ====================================================================================================
@@ -533,7 +550,7 @@ public class AccordionModel {
      * @param separator
      * @return
      */
-    public int getSeparatorIndex(JSeparator separator) {
+    public int getSeparatorIndex(JLabel separator) {
     	return separators.indexOf(separator);
     } // getSeparatorIndex
 	

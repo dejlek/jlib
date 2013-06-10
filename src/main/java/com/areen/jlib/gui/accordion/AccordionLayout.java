@@ -27,6 +27,7 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
+import javax.swing.JLabel;
 
 /**
  * Layout manager responsible for specifing positions and sizes of each pane in an Accordion
@@ -136,13 +137,13 @@ public class AccordionLayout implements LayoutManager {
 					height = container.getHeight(); // as high as the whole container
 
 					c.setBounds(currentX, 0, width, height);
-
+                                        ((JLabel) c).setAlignmentY(Component.CENTER_ALIGNMENT);
 					//update the next X position
 					currentX += width;
 				} else { //all components in a column
 					width = container.getWidth();
 					height = model.getSeparatorSize();
-
+                                        ((JLabel) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 					c.setBounds(0, currentY, width, height);
 
 					//update the next Y position

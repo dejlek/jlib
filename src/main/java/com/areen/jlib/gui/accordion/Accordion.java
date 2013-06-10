@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
+import javax.swing.border.Border;
 
 /**
  * Accordion. It is a container which orders TitledPanes (panels with title component at the top/left) in 
@@ -97,20 +98,21 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ==== Variables =====================================================================================
     // ====================================================================================================
 
-	// :::::: CONFIGURATION VARIABLES :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	
-	protected Color titleBackgroundColor; // background colour for titles, if set
-
-	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	private String uiClassID = "AccordionUI"; //UI Class
-	private AccordionModel model;
-	private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
-                                     // moving a separator
-	private AccordionPane secondPane; // right/bottom pane to resize
-	private MouseListener titleMouseListener; //mouse listener for title component in TitledPane
-	private SeparatorMouseListener separatorMouseListener;
+    // :::::: CONFIGURATION VARIABLES :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    protected Color titleBackgroundColor; // background colour for titles, if set
+    protected Color separatorBackgroundColor; // background colour for separators
+    protected Border separatorBorder; // separator's border
+    
+    // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    private String uiClassID = "AccordionUI"; //UI Class
+    private AccordionModel model;
+    private AccordionPane firstPane; // field to hold reference to left/top pane to resize when 
+    // moving a separator
+    private AccordionPane secondPane; // right/bottom pane to resize
+    private MouseListener titleMouseListener; //mouse listener for title component in TitledPane
+    private SeparatorMouseListener separatorMouseListener;
     private int clicksRequired = 1; /// Number of clicks required to expand/collapse.
-	
+
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -160,7 +162,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	
     		//skip adding separator 
     		if (i != panes.length - 1) {
-    			JSeparator separator = new JSeparator(orientation);
+    			JLabel separator = new JLabel();
+                        separator.setOpaque(true);
     			separator.addMouseListener(separatorMouseListener);
     			separator.addMouseMotionListener(separatorMouseListener);
     			model.addSeparator(separator);
@@ -222,30 +225,49 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
-    
-	/**
-	 * Set background colour of titled panes
-	 * @param colour
-	 */
-	public void setTitleBackground(Color colour) {
-		model.setTitleBackground(colour);
-		titleBackgroundColor = colour;
-	}
-		
+    /**
+     * Set background colour of titled panes
+     *
+     * @param colour
+     */
+    public void setTitleBackground(Color colour) {
+        model.setTitleBackground(colour);
+        titleBackgroundColor = colour;
+    }
+
+    /**
+     * Set separator background
+     *
+     * @param colour
+     */
+    public void setSeparatorBackground(Color colour) {
+        model.setSeparatorBackground(colour);
+        separatorBackgroundColor = colour;
+    }
+
+    /**
+     * Set separator's border
+     *
+     *
+     * @param border
+     */
+    public void setSeparatorBorder(Border border) {
+        model.setSeparatorBorder(border);
+        separatorBorder = border;
+    }
+
 	/**
 	 * Resize components 
 	 * @param dragSource
 	 * @param dx
 	 * @param dy
 	 */
-	public void resizeBySeparator(JSeparator dragSource, int dx, int dy) {
+	public void resizeBySeparator(JLabel dragSource, int dx, int dy) {
 		//get index of dragSource
 		int separatorIndex = model.getSeparatorIndex(dragSource);
 
-		// resize if it's allowed - 2 panes opened
 		if (canResize(separatorIndex)) {
 			Dimension firstDimension;
-			Dimension secondDimension;
 			
 			//check if the dimensions are set on the pane, otherwise we have to copy
 			//them from titledPane.bounds and change
@@ -256,49 +278,32 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 			} else {
 				firstDimension = firstPane.getDimension();
 			}
-			
-			//second pane
-			if (secondPane.getDimension() == null) {
-				secondDimension = secondPane.getTitledPane().getSize();
-			} else {
-				secondDimension = secondPane.getDimension();
-			} //if
 
 			int h1;
 			int w1;
-			int h2;
-			int w2;
 			
 			// compute new sizes
 			if (model.isHorizontal()) { //Panes in a row (horizontal case)
 				h1 = firstDimension.height;
 				w1 = firstDimension.width + dx;
-				
-				h2 = secondDimension.height;
-				w2 = secondDimension.width - dx;
 			} else { // vertical case
 				// in vertical state do not change X coordinate
 				h1 = firstDimension.height + dy;
 				w1 = firstDimension.width;
-				
-				h2 = secondDimension.height - dy;
-				w2 = secondDimension.width;
 			} //else
 			
 			//check minimum dimensions - check if the new dimension won't be smaller than minimum size
-			if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1) 
-					|| !checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w2, h2)) {
+			if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1)) {
 				return;
 			}
 			
 			// in horizontal state do not change Y coordinate
 			model.setPaneDimension(model.indexOf(firstPane), new Dimension(w1, h1));
-			
-			//we don't update second pane's dimension if it's not set. This fixes the bug which causes
-			//generating total dimension greater than container.
-			if (secondPane.getDimension() != null) {
-				model.setPaneDimension(model.indexOf(secondPane), new Dimension(w2, h2));
-			}
+
+                        // recalculate accordion preffered size
+                        setPreferredSize(new Dimension(model.calculateTotalMinimumWidth(), 
+                                model.calculateTotalMinimumHeight()));
+                        
 		} //if
 	}	
 	
@@ -363,29 +368,32 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 	 * Adds an expandable pane to the Accordion
 	 * @param titledPane
 	 */
-	public void add(TitledPane titledPane) {   	   	
-    	//if we have horizontal orientation then make separator vertical
-    	int orientation = !model.isHorizontal() ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
-    	
-    	//add separator only if it's not the first one in the accordion
-    	if (model.getPaneCount() > 0) {
-    		JSeparator separator = new JSeparator(orientation);
-    		separator.addMouseListener(separatorMouseListener);
-			separator.addMouseMotionListener(separatorMouseListener);
-    		model.addSeparator(separator);
-    		super.add(separator);
-    	}
-    	
-		Component component = titledPane.getTitle();
-		component.addMouseListener(titleMouseListener);
-		component.setBackground(titleBackgroundColor);
-				
-    	//add component
-   		model.addPane(titledPane);
-    	super.add(titledPane);
+	   public void add(TitledPane titledPane) {
+        //if we have horizontal orientation then make separator vertical
+  //      int orientation = !model.isHorizontal() ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
 
-    	//revalidate
-    	revalidate();
+        //add separator only if it's not the first one in the accordion
+        if (model.getPaneCount() > 0) {
+            JLabel separator = new JLabel();
+            separator.setOpaque(true);
+            separator.setBackground(separatorBackgroundColor);
+            separator.setBorder(separatorBorder);
+            separator.addMouseListener(separatorMouseListener);
+            separator.addMouseMotionListener(separatorMouseListener);
+            model.addSeparator(separator);
+            super.add(separator);
+        }
+        
+        Component component = titledPane.getTitle();
+        component.addMouseListener(titleMouseListener);
+        component.setBackground(titleBackgroundColor);
+
+        //add component
+        model.addPane(titledPane);
+        super.add(titledPane);
+
+        //revalidate
+        revalidate();
     } // add 
     
 	/**
@@ -610,10 +618,10 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     	firstPane = getPreviousExpandedPane(separatorIndex);
     	
     	// find the other pane to resize
-    	secondPane = getNextExpandedPane(separatorIndex);
+    	//secondPane = getNextExpandedPane(separatorIndex);
 
     	// if two expanded panes are found then we can resize
-    	if (firstPane != null && secondPane != null) {
+    	if (firstPane != null) {
     		return true;
         }
         
@@ -711,7 +719,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 		private boolean dragHappening;
 		private Point clickPoint;
 		private Point lastDragPoint;
-		private JSeparator dragSource;
+		private JLabel dragSource;
 		private Component component;
 		
 		/* (non-Javadoc)
@@ -747,7 +755,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 			component = e.getComponent();
 		
 			//if separator and can resize set change mouse cursor
-			if (component instanceof JSeparator) {
+			if (component instanceof JLabel) {
 				// set moving cursor
 				if (model.isHorizontal()) {
 					component.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
@@ -768,7 +776,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 				component = e.getComponent();
 
 				//if separator change cursor back to normal
-				if (component instanceof JSeparator) {
+				if (component instanceof JLabel) {
 					component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
 			}
@@ -784,8 +792,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 			// get component at point
 			component = e.getComponent().getComponentAt(point);
 			
-			// we are concerned about JSeparator
-			if (component instanceof JSeparator) {
+			// we are concerned about JLabel
+			if (component instanceof JLabel) {
 				// store initial point
 				clickPoint = point;
 			//	System.out.println("StartedDragging");
@@ -793,7 +801,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 				dragHappening = true;
 				 
 				// set source
-				dragSource = (JSeparator) component;
+				dragSource = (JLabel) component;
 			}
 		}
 
