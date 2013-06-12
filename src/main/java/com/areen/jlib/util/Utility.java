@@ -149,7 +149,7 @@ public class Utility {
             } // else if
         } // end catch
     } // set() method
-    
+
     /**
      * A utility method to compare two objects, both of type argClass and see if they have equal content 
      * or not.
@@ -160,7 +160,6 @@ public class Utility {
      * @return 0 if they are equal, some other value otherwise.
      */
     public static int compare(Object argFirst, Object argSecond, Class argClass) {
-        
         // NULL cases
         if (argFirst == null && argSecond == null) {
             return 0;
@@ -225,7 +224,6 @@ public class Utility {
         // fall back to using Strings...
         return argFirst.toString().compareTo(argSecond.toString());
     } // compare() method
-    
 
     /**
      * Use this method whenever you have to convert an array of Objects to a String.
@@ -251,7 +249,7 @@ public class Utility {
         } // for 
         return ret;
     } // oa2string() method
-    
+
     /**
      * Checks whether character argCharacter is printable or not.
      * The code is taken from the following StackOverflow thread:
@@ -330,7 +328,7 @@ public class Utility {
 
         return pair;
     } // pairOfString() method
-    
+
     /**
      * Java 7 has Files.propeContentType(path) . However we can't use it yet, so we have to do a workaround.
      * guessContentTypeFromStream() "understands" only few MIME types thought...
@@ -352,7 +350,7 @@ public class Utility {
         
         return ret;
     } // getMimeType() method
-    
+
 } // Utility class
 
 // $Id$
