@@ -16,12 +16,19 @@ package com.areen.jlib.util;
 import com.areen.jlib.model.SimpleObject;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.KeyEvent;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.URLConnection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Various utility functions.
@@ -323,6 +330,28 @@ public class Utility {
 
         return pair;
     } // pairOfString() method
+    
+    /**
+     * Java 7 has Files.propeContentType(path) . However we can't use it yet, so we have to do a workaround.
+     * guessContentTypeFromStream() "understands" only few MIME types thought...
+     * 
+     * @param argFileName
+     * @return 
+     */
+    public static String getMimeType(String argFileName) {
+        String ret = "application/octet-stream";
+        
+        try {
+            InputStream is = new BufferedInputStream(new FileInputStream(argFileName));
+            ret = URLConnection.guessContentTypeFromStream(is);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
+        } // catch
+        
+        return ret;
+    } // getMimeType() method
     
 } // Utility class
 
