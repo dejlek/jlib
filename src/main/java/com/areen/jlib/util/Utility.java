@@ -337,7 +337,7 @@ public class Utility {
      * @return 
      */
     public static String getMimeType(String argFileName) {
-        String ret = "application/octet-stream";
+        String ret = null;
         
         try {
             InputStream is = new BufferedInputStream(new FileInputStream(argFileName));
@@ -347,6 +347,10 @@ public class Utility {
         } catch (IOException ex) {
             Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
         } // catch
+        
+        if (ret == null) {
+            ret = "application/octet-stream";
+        }
         
         return ret;
     } // getMimeType() method
