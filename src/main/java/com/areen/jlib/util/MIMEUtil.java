@@ -47,3 +47,5 @@ public class MIMEUtil {
     } // MIMEType class
     
 } // MIMEUtil class
+
+// $Id$
