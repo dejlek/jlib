@@ -21,6 +21,7 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -31,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
@@ -42,6 +44,11 @@ import javax.swing.border.BevelBorder;
  *   2) It is capable of triggering upload of file either by drag&drop, or by clicking on the button and
  *      invoking the file select dialog so user can pick file to upload.
  *   3) It has a button to delete the remote file in the case wrong file has been uploaded.
+ * 
+ * TODO: This class was made long before the ADM and ReqDocPanel, therefore it was designed with different
+ *       things in mind. After we designed ADM model it was obvious that we have to either refactor
+ *       RemoteFileButton, or write a completely new, similar set of classes.
+ * 
  * @author Dejan
  */
 public class RemoteFileButton 
@@ -63,6 +70,12 @@ public class RemoteFileButton
     private static ImageIcon fileNotUploadedImageIcon;
     RemoteFile remoteFile;
     
+    /**
+     * We will temporarily disable the upload of files from the RemoteFileButton component (by clicking on
+     * the icon), because it is not yet ready for this feature.
+     */
+    private boolean uploadEnabled = false; 
+    
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -76,11 +89,11 @@ public class RemoteFileButton
         fileUploadedImageIcon = new ImageIcon(iconUrl);
     } // static constructor
     
-    public RemoteFileButton(String argText) {
+    public RemoteFileButton(RemoteFile argRemoteFile) {
         super();
-        
-        model = new RemoteFileButtonModel(new TestFile());
-        model.setCaption(argText);
+        remoteFile = argRemoteFile;
+        model = new RemoteFileButtonModel(remoteFile);
+        model.setCaption(remoteFile.getDescription());
         model.addPropertyChangeListener(this);
         
         setBorder(new BevelBorder(BevelBorder.RAISED));
@@ -95,23 +108,30 @@ public class RemoteFileButton
         iconLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         iconLabel.setIcon(fileNotUploadedImageIcon);
         add(iconLabel, BorderLayout.WEST);
-        iconLabel.addMouseListener(new MouseAdapter() {
+        
+        if (uploadEnabled) {
+            iconLabel.addMouseListener(new MouseAdapter() {
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                iconLabelMouseClick();
-                
-            }            
-        });
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    iconLabelMouseClick();
+                }
+            });
+        }
         
         // ::::: TITLE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-        textLabel = new JLabel(argText);
+        textLabel = new JLabel(model.getCaption());
         add(textLabel, BorderLayout.CENTER);
         
         // ::::: Delete button ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         deleteButton = new JButton("X");
         deleteButton.setMargin(new java.awt.Insets(2, 2, 2, 2)); // we do not want those big margins...
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
         add(deleteButton, BorderLayout.EAST);
         
         this.addMouseListener(new MouseAdapter() {
@@ -120,7 +140,7 @@ public class RemoteFileButton
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                 System.out.println(e.paramString());
-            }            
+            }
         });
     } // RemoteFileButton constructor (default)
 
@@ -195,6 +215,10 @@ public class RemoteFileButton
     // ==== Private/Protected/Package Methods =============================================================
     // ====================================================================================================
     
+    private void deleteButtonActionPerformed(ActionEvent evt) {
+        JOptionPane.showConfirmDialog(this, "Document deletion not yet finished!");
+    }
+            
     private void iconLabelMouseClick() {
         System.out.println("iconLabelMouseClick()");
         
@@ -219,7 +243,9 @@ public class RemoteFileButton
         final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.add(new RemoteFileButton("Test"), BorderLayout.NORTH);
+        TestFile tf = new TestFile();
+        tf.setDescription("Test");
+        frame.add(new RemoteFileButton(tf), BorderLayout.NORTH);
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override

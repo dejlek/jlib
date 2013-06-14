@@ -21,6 +21,8 @@ import java.io.Serializable;
 /**
  * The model for the RemoteFileButton JComponent implementation.
  * 
+ * NOTE: Keep one thing in mind all the time - this class has NO IDEA about ADM, and it should be like that!
+ * 
  * @author Dejan
  */
 public class RemoteFileButtonModel implements Serializable {
@@ -85,6 +87,7 @@ public class RemoteFileButtonModel implements Serializable {
 
     public void setUploaded(boolean argUploaded) {
         uploaded = argUploaded;
+        setModelChanged(true);
     }
 
     public String getLocalPath() {
