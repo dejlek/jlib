@@ -19,4 +19,5 @@ public interface RemoteFile {
     String getDescription();
     void setDescription(String argDesc);
     boolean upload(File argFile);
+    boolean delete();
 } // JFile interface

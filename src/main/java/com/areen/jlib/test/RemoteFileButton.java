@@ -9,7 +9,7 @@
  * Authors (in chronological order): 
  *   Dejan Lekic - http://dejan.lekic.org
  * Contributors (in chronological order): 
- *   -
+ *   Mateusz Dykiert
  */
 package com.areen.jlib.test;
 
@@ -216,7 +216,21 @@ public class RemoteFileButton
     // ====================================================================================================
     
     private void deleteButtonActionPerformed(ActionEvent evt) {
-        JOptionPane.showConfirmDialog(this, "Document deletion not yet finished!");
+        // show confirmation message
+        int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete "
+                + getToolTipText() + " (" + remoteFile.getDescription() + ") file?", 
+                "Confirm to delete the file",
+                JOptionPane.YES_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+        // if confirmed delete the file and remove the button from the parent component
+        if (answer == JOptionPane.OK_OPTION) {
+            if (remoteFile.delete()) {
+                // remove this component from the parent
+                getParent().remove(this);
+            }
+        }
+        
     }
             
     private void iconLabelMouseClick() {

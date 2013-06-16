@@ -116,4 +116,9 @@ public class TestFile implements RemoteFile {
         return ret;
     } // upload() file
     
+    @Override
+    public boolean delete() {
+        return true;
+    }
+
 } // TestFile class
