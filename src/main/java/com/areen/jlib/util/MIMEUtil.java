@@ -13,6 +13,7 @@
  */
 package com.areen.jlib.util;
 
+import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
@@ -2005,9 +2006,21 @@ public class MIMEUtil {
     }
     
     public static ImageIcon getIcon(MIMEType argMT, String argExtension) {
+        if (argMT == null && argMT.type == null) {
+            return null;
+        }
+        
         String tmp = argMT.type.replace("/", "_");
-        ImageIcon icon = new ImageIcon(MIMEUtil.class.
-                getResource("/icons/jlib/mime_24/" + tmp + ".png"));
+        URL url = MIMEUtil.class.
+                getResource("/icons/jlib/mime_24/" + tmp + ".png");
+        
+        // if the icon doesn't exist for a mime type
+        if (url == null) {
+           url = MIMEUtil.class.
+                getResource("/icons/jlib/mime_24/doc.png");
+        }
+        
+        ImageIcon icon = new ImageIcon(url);
 
         return icon;
               

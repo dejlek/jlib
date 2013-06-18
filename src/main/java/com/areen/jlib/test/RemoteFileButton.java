@@ -17,6 +17,7 @@ package com.areen.jlib.test;
 import com.areen.jlib.api.RemoteFile;
 import com.areen.jlib.gui.GuiTools;
 import com.areen.jlib.util.MIMEUtil;
+import com.areen.jlib.util.MIMEUtil.MIMEType;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FileDialog;
@@ -226,7 +227,9 @@ public class RemoteFileButton
     
     public void refreshIcon() {
         String mime = MIMEUtil.getType(remoteFile.getExtension());
-        iconLabel.setIcon(MIMEUtil.getIcon(MIMEUtil.getMIMEType(mime), remoteFile.getExtension()));
+        MIMEType mTy = MIMEUtil.getMIMEType(mime);
+        ImageIcon icon = MIMEUtil.getIcon(mTy, remoteFile.getExtension());
+        iconLabel.setIcon(icon);
 
         repaint();
         if (getParent() != null) {
@@ -274,8 +277,8 @@ public class RemoteFileButton
                 Window w = GuiTools.getWindow(this);
                 parent.remove(this);
                 // sometimes it doesn't refresh so force validation of the window
-                w.repaint();
-                w.validate();
+                parent.repaint();
+                parent.validate();
             }
         }
     }
