@@ -15,20 +15,21 @@ package com.areen.jlib.util;
 
 import com.areen.jlib.model.SimpleObject;
 import com.areen.jlib.tuple.Pair;
+import eu.medsea.mimeutil.MimeType;
+import eu.medsea.mimeutil.MimeUtil2;
+import eu.medsea.mimeutil.detector.OpendesktopMimeDetector;
 import java.awt.event.KeyEvent;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.URLConnection;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  * Various utility functions.
@@ -37,13 +38,15 @@ import java.util.logging.Logger;
  */
 public class Utility {
     
+    private static final MimeUtil2 DETECTOR = buildChecker(OpendesktopMimeDetector.class.getCanonicalName());
+    
     /**
      * A helper constructor to prevents calls from asubclass.
      */
     protected Utility() { 
         throw new UnsupportedOperationException(); 
     } // Utility constructor
-    
+
     /**
      * A convenience function which should be used when we need a line number where the exception has been
      * thrown.
@@ -337,14 +340,13 @@ public class Utility {
      * @return 
      */
     public static String getMimeType(String argFileName) {
+        File file = new File(argFileName);
         String ret = null;
         
         try {
-            InputStream is = new BufferedInputStream(new FileInputStream(argFileName));
-            ret = URLConnection.guessContentTypeFromStream(is);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+            Collection<MimeType> mimeCol = DETECTOR.getMimeTypes(file);
+            ret = mimeCol.iterator().next().toString();  // assume first entry is correct MIME Class
+        } catch (Exception ex) {
             Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
         } // catch
         
@@ -354,6 +356,12 @@ public class Utility {
         
         return ret;
     } // getMimeType() method
+
+    static MimeUtil2 buildChecker(String className) {
+        MimeUtil2 checker = new MimeUtil2();
+        checker.registerMimeDetector(className);
+        return checker;
+    }
 
 } // Utility class
 
