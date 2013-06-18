@@ -18,6 +18,7 @@ import com.areen.jlib.api.RemoteFile;
 import com.areen.jlib.gui.GuiTools;
 import com.areen.jlib.util.MIMEUtil;
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Window;
@@ -269,8 +270,12 @@ public class RemoteFileButton
         if (answer == JOptionPane.OK_OPTION) {
             if (remoteFile.delete()) {
                 // remove this component from the parent
-                getParent().remove(this);
-                getParent().validate();
+                Container parent = getParent();
+                Window w = GuiTools.getWindow(this);
+                parent.remove(this);
+                // sometimes it doesn't refresh so force validation of the window
+                w.repaint();
+                w.validate();
             }
         }
     }
