@@ -20,4 +20,7 @@ public interface RemoteFile {
     void setDescription(String argDesc);
     boolean upload(File argFile);
     boolean delete();
+    void open();
+    boolean newVersion(File argFile);
+    String getExtension();
 } // JFile interface

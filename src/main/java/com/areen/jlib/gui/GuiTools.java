@@ -18,6 +18,7 @@ import com.areen.jlib.gui.fcb.ComboBoxFilter;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -105,7 +106,8 @@ public class GuiTools {
                 found = true;
             } else if (container instanceof JDialog) {
                 JDialog dlg = (JDialog) container;
-                result = (JFrame) dlg.getOwner();
+                result = (JFrame) dlg.getOwner(); /* MD - this is not correct! 
+                 * JDialog inherits from window not JFRame! */
                 found = true;
             } else {
                 container = container.getParent();
@@ -113,6 +115,30 @@ public class GuiTools {
         } // while
         return result; // we should never reach this line
     } // getFrame() method
+    
+    public static Window getWindow(JComponent argComponent) {
+         boolean found = false;
+        Window result = null;
+        Container container = argComponent.getParent();
+        
+        if (container == null) {
+            return result;
+        }
+        
+        while (!found) {
+            if (container instanceof JFrame) {
+                result = (JFrame) container;
+                found = true;
+            } else if (container instanceof JDialog) {
+                JDialog dlg = (JDialog) container;
+                result = (Frame) dlg.getOwner();
+                found = true;
+            } else {
+                container = container.getParent();
+            } // else
+        } // while
+        return result; // we should never reach this line
+    }
     
     /**
      * Use this method to create a screenshot of the JFrame object argFrame.

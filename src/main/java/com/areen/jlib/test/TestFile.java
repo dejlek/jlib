@@ -121,4 +121,19 @@ public class TestFile implements RemoteFile {
         return true;
     }
 
+    @Override
+    public void open() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public boolean newVersion(File argFile) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public String getExtension() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
 } // TestFile class

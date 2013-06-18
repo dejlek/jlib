@@ -8,31 +8,36 @@
  * 
  * Authors (in chronological order): 
  *   Dejan Lekic - http://dejan.lekic.org
- * Contributors (in chronological order): 
  *   Mateusz Dykiert
+ * Contributors (in chronological order): 
+ *   
  */
 package com.areen.jlib.test;
 
 import com.areen.jlib.api.RemoteFile;
 import com.areen.jlib.gui.GuiTools;
+import com.areen.jlib.util.MIMEUtil;
 import java.awt.BorderLayout;
 import java.awt.FileDialog;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.net.URL;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
@@ -65,17 +70,11 @@ public class RemoteFileButton
     private BorderLayout layout;
     private JLabel iconLabel;
     private JLabel textLabel;
-    private JButton deleteButton;
+    private JPopupMenu popupMenu;
     private static ImageIcon fileUploadedImageIcon;
     private static ImageIcon fileNotUploadedImageIcon;
     RemoteFile remoteFile;
-    
-    /**
-     * We will temporarily disable the upload of files from the RemoteFileButton component (by clicking on
-     * the icon), because it is not yet ready for this feature.
-     */
-    private boolean uploadEnabled = false; 
-    
+
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
@@ -108,7 +107,7 @@ public class RemoteFileButton
         iconLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         iconLabel.setIcon(fileNotUploadedImageIcon);
         add(iconLabel, BorderLayout.WEST);
-        
+        /*
         if (uploadEnabled) {
             iconLabel.addMouseListener(new MouseAdapter() {
 
@@ -119,27 +118,52 @@ public class RemoteFileButton
                 }
             });
         }
-        
+        */
         // ::::: TITLE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         textLabel = new JLabel(model.getCaption());
         add(textLabel, BorderLayout.CENTER);
         
-        // ::::: Delete button ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-        deleteButton = new JButton("X");
-        deleteButton.setMargin(new java.awt.Insets(2, 2, 2, 2)); // we do not want those big margins...
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+        // ::::: Popup Menu :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        popupMenu = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem("New Version");
+        menuItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
+                handleNewVersion();
             }
         });
-        add(deleteButton, BorderLayout.EAST);
-        
+        popupMenu.add(menuItem);
+   
+        menuItem = new JMenuItem("Delete");
+        menuItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleDelete();
+            }
+        });
+        popupMenu.add(menuItem);
+                
         this.addMouseListener(new MouseAdapter() {
-
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show(textLabel, e.getX(), e.getY());
+                }
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show(textLabel, e.getX(), e.getY());
+                }
+            }
+            
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                System.out.println(e.paramString());
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    handleOpen();
+                }
             }
         });
     } // RemoteFileButton constructor (default)
@@ -152,11 +176,19 @@ public class RemoteFileButton
     
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("dfsdfasdfa");
-        iconLabel.setIcon(fileUploadedImageIcon);
+        System.out.println("PROPERTY CHANGE :D" + evt.getPropertyName() + evt.getSource());
         // Model has been changed, let's update the view
         if (model.isUploaded()) {
-            iconLabel.setIcon(fileUploadedImageIcon);
+            // handle property change for a document
+
+            refreshIcon();
+         
+           
+           
+                
+         
+           // }
+            
         }
     }
 
@@ -191,6 +223,16 @@ public class RemoteFileButton
     // ==== Public Methods ================================================================================
     // ====================================================================================================
     
+    public void refreshIcon() {
+        String mime = MIMEUtil.getType(remoteFile.getExtension());
+        iconLabel.setIcon(MIMEUtil.getIcon(MIMEUtil.getMIMEType(mime), remoteFile.getExtension()));
+
+        repaint();
+        if (getParent() != null) {
+            getParent().validate();
+        }
+    }
+    
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
@@ -215,7 +257,7 @@ public class RemoteFileButton
     // ==== Private/Protected/Package Methods =============================================================
     // ====================================================================================================
     
-    private void deleteButtonActionPerformed(ActionEvent evt) {
+    private void handleDelete() {
         // show confirmation message
         int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete "
                 + getToolTipText() + " (" + remoteFile.getDescription() + ") file?", 
@@ -228,25 +270,35 @@ public class RemoteFileButton
             if (remoteFile.delete()) {
                 // remove this component from the parent
                 getParent().remove(this);
+                getParent().validate();
             }
         }
-        
     }
             
-    private void iconLabelMouseClick() {
-        System.out.println("iconLabelMouseClick()");
-        
-        FileDialog fd = new FileDialog(GuiTools.getFrame(RemoteFileButton.this));
+    private void handleNewVersion() {        
+        FileDialog fd = null;
+        Window w = GuiTools.getWindow(RemoteFileButton.this);
+        if (w instanceof Frame) {
+            fd = new FileDialog((Frame) w);
+        } else {
+                fd = new FileDialog((JFrame) w);
+        }
         fd.setMode(FileDialog.LOAD);
         // fd.setMultipleMode(false); Java 1.7 feature...
         fd.setTitle("Select file");
         fd.setVisible(true);
-        model.setLocalPath(fd.getFile());
-        System.out.println(model);
+        String fileName = fd.getFile();
+        String dir = fd.getDirectory();
+        
+        // if user has clicked ok
+        if (fileName != null) {
+            model.setLocalPath(fileName);
+            remoteFile.newVersion(new File(dir + File.separator + fileName)); 
+        }
     }
     
-    private void textLabelMouseClick() {
-        System.out.println("textLabelMouseClick()");
+    private void handleOpen() {
+        remoteFile.open();
     }
     
     // ====================================================================================================

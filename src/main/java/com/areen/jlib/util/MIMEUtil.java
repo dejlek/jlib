@@ -9,9 +9,11 @@
  * Authors (in chronological order): 
  *   Dejan Lekic - http://dejan.lekic.org
  * Contributors (in chronological order): 
- *   -
+ *   Mateusz Dykiert
  */
 package com.areen.jlib.util;
+
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -2002,9 +2004,13 @@ public class MIMEUtil {
         return null;
     }
     
-    public static String getIcon(MIMEType argMT, String argExtension) {
+    public static ImageIcon getIcon(MIMEType argMT, String argExtension) {
         String tmp = argMT.type.replace("/", "_");
-        return tmp + "." + argExtension;
+        ImageIcon icon = new ImageIcon(MIMEUtil.class.
+                getResource("/icons/jlib/mime_24/" + tmp + ".png"));
+
+        return icon;
+              
     }
     
     public static String getType(MIMEType argMT) {
@@ -2013,6 +2019,25 @@ public class MIMEUtil {
     
     public static String[] getExtensions(MIMEType argMT) {
         return argMT.extensions;
+    }
+    
+    /**
+     * Get type by extension
+     * @param extension
+     * @return 
+     */
+    public static String getType(String extension) {
+        String ret = null;
+        
+        for (MIMEType type : mimeTypes) {
+            for (String ext : type.extensions) {
+                if (ext.equalsIgnoreCase(extension)) {
+                    return type.type;
+                }
+            }
+        }
+        
+        return ret;
     }
     
     public static class MIMEType {
