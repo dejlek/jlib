@@ -15,20 +15,17 @@ package com.areen.jlib.util;
 
 import com.areen.jlib.model.SimpleObject;
 import com.areen.jlib.tuple.Pair;
-import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil2;
 import eu.medsea.mimeutil.detector.OpendesktopMimeDetector;
+import eu.medsea.mimeutil.detector.WindowsRegistryMimeDetector;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -37,8 +34,6 @@ import java.util.logging.Logger;
  * @author dejan
  */
 public class Utility {
-    
-    private static final MimeUtil2 DETECTOR = buildChecker(OpendesktopMimeDetector.class.getCanonicalName());
     
     /**
      * A helper constructor to prevents calls from asubclass.
@@ -341,27 +336,25 @@ public class Utility {
      */
     public static String getMimeType(String argFileName) {
         File file = new File(argFileName);
-        String ret = null;
-        
-        try {
-            Collection<MimeType> mimeCol = DETECTOR.getMimeTypes(file);
-            ret = mimeCol.iterator().next().toString();  // assume first entry is correct MIME Class
-        } catch (Exception ex) {
-            Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
-        } // catch
-        
-        if (ret == null) {
-            ret = "application/octet-stream";
+        MimeUtil2 checker = new MimeUtil2();
+        String mimeclass = null;
+
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            checker.registerMimeDetector(WindowsRegistryMimeDetector.class.getCanonicalName());
+            mimeclass = checker.getMimeTypes(file).toString();
+            checker.unregisterMimeDetector(WindowsRegistryMimeDetector.class.getCanonicalName());
+        } else {
+            checker.registerMimeDetector(OpendesktopMimeDetector.class.getCanonicalName());
+            mimeclass = checker.getMimeTypes(file).toString();
+            checker.unregisterMimeDetector(OpendesktopMimeDetector.class.getCanonicalName());
+        }
+
+        if (mimeclass == null) {
+            mimeclass = "application/octet-stream";
         }
         
-        return ret;
+        return mimeclass;
     } // getMimeType() method
-
-    static MimeUtil2 buildChecker(String className) {
-        MimeUtil2 checker = new MimeUtil2();
-        checker.registerMimeDetector(className);
-        return checker;
-    }
 
 } // Utility class
 
