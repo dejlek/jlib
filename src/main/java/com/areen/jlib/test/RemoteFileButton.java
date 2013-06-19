@@ -176,19 +176,10 @@ public class RemoteFileButton
     
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("PROPERTY CHANGE :D" + evt.getPropertyName() + evt.getSource());
         // Model has been changed, let's update the view
         if (model.isUploaded()) {
             // handle property change for a document
-
-            refreshIcon();
-         
-           
-           
-                
-         
-           // }
-            
+            refreshIcon();            
         }
     }
 
