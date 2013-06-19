@@ -2006,8 +2006,10 @@ public class MIMEUtil {
     }
     
     public static ImageIcon getIcon(MIMEType argMT, String argExtension) {
-        if (argMT == null && argMT.type == null) {
-            return null;
+        // no mime type is secified
+        if (argMT == null) {
+            return new ImageIcon(MIMEUtil.class.
+                getResource("/icons/jlib/mime_24/doc.png"));
         }
         
         String tmp = argMT.type.replace("/", "_");
