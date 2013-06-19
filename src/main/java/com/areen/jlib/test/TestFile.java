@@ -136,4 +136,8 @@ public class TestFile implements RemoteFile {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
+    @Override
+    public String getMimeType() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 } // TestFile class

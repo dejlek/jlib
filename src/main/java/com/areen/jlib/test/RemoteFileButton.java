@@ -33,6 +33,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -41,7 +42,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
 
 /**
  * JComponent made for the sole purpose of maintaining various remote files.
@@ -93,12 +93,11 @@ public class RemoteFileButton
     public RemoteFileButton(RemoteFile argRemoteFile) {
         super();
         remoteFile = argRemoteFile;
+        setBorder(BorderFactory.createRaisedBevelBorder());
         model = new RemoteFileButtonModel(remoteFile);
         model.setCaption(remoteFile.getDescription());
         model.addPropertyChangeListener(this);
-        
-        setBorder(new BevelBorder(BevelBorder.RAISED));
-        
+                
         layout = new BorderLayout();
         layout.setHgap(3);
         layout.setVgap(3);
@@ -106,7 +105,6 @@ public class RemoteFileButton
         
         // ::::: ICON :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         iconLabel = new JLabel();
-        iconLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         iconLabel.setIcon(fileNotUploadedImageIcon);
         add(iconLabel, BorderLayout.WEST);
         /*
@@ -226,8 +224,7 @@ public class RemoteFileButton
     // ====================================================================================================
     
     public void refreshIcon() {
-        String mime = MIMEUtil.getType(remoteFile.getExtension());
-        MIMEType mTy = MIMEUtil.getMIMEType(mime);
+        MIMEType mTy = MIMEUtil.getMIMEType(remoteFile.getMimeType());
         ImageIcon icon = MIMEUtil.getIcon(mTy, remoteFile.getExtension());
         iconLabel.setIcon(icon);
 
