@@ -107,7 +107,7 @@ public class GuiTools {
             } else if (container instanceof JDialog) {
                 JDialog dlg = (JDialog) container;
                 result = (JFrame) dlg.getOwner(); /* MD - this is not correct! 
-                 * JDialog inherits from window not JFRame! */
+                 * JDialog inherits from Frame not JFRame! */
                 found = true;
             } else {
                 container = container.getParent();
@@ -116,6 +116,12 @@ public class GuiTools {
         return result; // we should never reach this line
     } // getFrame() method
     
+    /**
+     * TODO: The get frame method is not entirely correct. We need to change occurrences where we use it
+     * to getWindow...
+     * @param argComponent
+     * @return 
+     */
     public static Window getWindow(JComponent argComponent) {
          boolean found = false;
         Window result = null;

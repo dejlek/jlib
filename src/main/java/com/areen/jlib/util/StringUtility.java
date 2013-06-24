@@ -84,6 +84,27 @@ public class StringUtility {
         return ret;
     } // safeUriPart() method
     
+     /**
+     * Generate list of extensions to be used in file dialog as a filter.
+     * It generates string *.ext1;*.ext2;(...)
+     * @param extensions
+     * @return 
+     */
+    public static String generateExtensionList(String[] extensions) {
+        StringBuffer buffer = new StringBuffer();
+        
+        for (int i = 0; i < extensions.length; i++) {
+            if (i > 0) {
+                buffer.append(";");
+            }
+            buffer.append("*.");
+            buffer.append(extensions[i]);
+        }
+      
+        return new String(buffer);
+    }
+    
+    
     public static void main(String[] args) {
         //String docId = Integer.toString(12314, 36); // say document_id = 12314
         String docId = String.format("%08d", 12314);

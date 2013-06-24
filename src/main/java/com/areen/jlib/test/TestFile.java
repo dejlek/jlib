@@ -140,4 +140,14 @@ public class TestFile implements RemoteFile {
     public String getMimeType() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+
+    @Override
+    public String[] getAllowedExtensions() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+    
+    @Override
+    public void setAllowedExtensions(String[] extensions) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 } // TestFile class

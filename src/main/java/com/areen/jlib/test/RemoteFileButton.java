@@ -18,6 +18,7 @@ import com.areen.jlib.api.RemoteFile;
 import com.areen.jlib.gui.GuiTools;
 import com.areen.jlib.util.MIMEUtil;
 import com.areen.jlib.util.MIMEUtil.MIMEType;
+import com.areen.jlib.util.StringUtility;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FileDialog;
@@ -277,17 +278,19 @@ public class RemoteFileButton
         if (w instanceof Frame) {
             fd = new FileDialog((Frame) w);
         } else {
-                fd = new FileDialog((JFrame) w);
+            fd = new FileDialog((JFrame) w);
         }
+        
         fd.setMode(FileDialog.LOAD);
         // fd.setMultipleMode(false); Java 1.7 feature...
         fd.setTitle("Select file");
+        fd.setFile(StringUtility.generateExtensionList(remoteFile.getAllowedExtensions()));
         fd.setVisible(true);
         String fileName = fd.getFile();
         String dir = fd.getDirectory();
         
         // if user has clicked ok
-        if (fileName != null) {
+        if (fileName != null && !fileName.contains("*")) {
             model.setLocalPath(fileName);
             remoteFile.newVersion(new File(dir + File.separator + fileName)); 
         }
