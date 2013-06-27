@@ -20,10 +20,16 @@ import com.areen.jlib.util.MIMEUtil;
 import com.areen.jlib.util.MIMEUtil.MIMEType;
 import com.areen.jlib.util.StringUtility;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
@@ -33,7 +39,12 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -76,7 +87,7 @@ public class RemoteFileButton
     private JPopupMenu popupMenu;
     private static ImageIcon fileUploadedImageIcon;
     private static ImageIcon fileNotUploadedImageIcon;
-    RemoteFile remoteFile;
+    private RemoteFile remoteFile;
 
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -188,7 +199,8 @@ public class RemoteFileButton
     
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
-        System.out.println("D&D");
+        setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @Override
@@ -203,12 +215,37 @@ public class RemoteFileButton
 
     @Override
     public void dragExit(DropTargetEvent dte) {
-        System.out.println("D&D");
+        resetDropIndicator();
+        setCursor(Cursor.getDefaultCursor());
     }
 
     @Override
     public void drop(DropTargetDropEvent dtde) {
-        System.out.println("D&D");
+        Transferable t = dtde.getTransferable();
+        System.out.println(Arrays.toString(t.getTransferDataFlavors()));
+        DataFlavor fileListDataFlavor = DataFlavor.javaFileListFlavor;
+    
+        if (t.isDataFlavorSupported(fileListDataFlavor)) {
+            try {
+                dtde.acceptDrop(DnDConstants.ACTION_COPY);
+                System.out.println("drop accepted");
+
+                List fileList = (List) t.getTransferData(fileListDataFlavor);
+                File[] tempFiles = new File[fileList.size()];
+                fileList.toArray(tempFiles);
+                final File[] files = tempFiles;
+                remoteFile.newVersion(files[0]);
+                dtde.getDropTargetContext().dropComplete(true);
+                System.out.println("drop complete");
+            } catch (UnsupportedFlavorException ex) {
+                Logger.getLogger(RemoteFileButton.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(RemoteFileButton.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } // if
+    
+
+        resetDropIndicator();
     }
     
     // ====================================================================================================
@@ -230,6 +267,10 @@ public class RemoteFileButton
     // ==== Accessors =====================================================================================
     // ====================================================================================================
     
+    public RemoteFile getRemoteFile() {
+        return remoteFile;
+    }
+    
     public String getText() {
         return textLabel.getText();
     }
@@ -249,6 +290,10 @@ public class RemoteFileButton
     // ====================================================================================================
     // ==== Private/Protected/Package Methods =============================================================
     // ====================================================================================================
+    private void resetDropIndicator() {
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        setBorder(BorderFactory.createRaisedBevelBorder());
+    }
     
     private void handleDelete() {
         // show confirmation message
