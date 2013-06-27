@@ -154,6 +154,15 @@ public class RemoteFileButton
             }
         });
         popupMenu.add(menuItem);
+        
+        menuItem = new JMenuItem("Properties");
+        menuItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remoteFile.showProperties();
+            }
+        });
+        popupMenu.add(menuItem);
                 
         this.addMouseListener(new MouseAdapter() {
             @Override

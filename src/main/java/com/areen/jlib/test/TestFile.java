@@ -150,4 +150,9 @@ public class TestFile implements RemoteFile {
     public void setAllowedExtensions(String[] extensions) {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+
+    @Override
+    public void showProperties() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 } // TestFile class

@@ -26,4 +26,5 @@ public interface RemoteFile {
     String getMimeType();
     String[] getAllowedExtensions();
     void setAllowedExtensions(String[] extensions);
+    void showProperties();
 } // JFile interface
