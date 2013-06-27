@@ -227,6 +227,15 @@ public class RemoteFileButton
     
         if (t.isDataFlavorSupported(fileListDataFlavor)) {
             try {
+                int ret = JOptionPane.showConfirmDialog(GuiTools.getWindow(this), 
+                        "Are you sure to create a new version of " + remoteFile.getDescription() + "?", 
+                        "New version confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                
+                if (ret == JOptionPane.NO_OPTION) {
+                    resetDropIndicator();
+                    return;
+                }
+                
                 dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 System.out.println("drop accepted");
 
@@ -297,10 +306,11 @@ public class RemoteFileButton
     
     private void handleDelete() {
         // show confirmation message
-        int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete "
+        int answer = JOptionPane.showConfirmDialog(GuiTools.getWindow(this), 
+                "Are you sure you want to delete "
                 + getToolTipText() + " (" + remoteFile.getDescription() + ") file?", 
                 "Confirm to delete the file",
-                JOptionPane.YES_OPTION,
+                JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
 
         // if confirmed delete the file and remove the button from the parent component
