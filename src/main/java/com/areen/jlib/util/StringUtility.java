@@ -59,8 +59,9 @@ public class StringUtility {
      * safeUriPart("hello, john!") will return string "hello~_john~". We can safely create a file with
      * name, say "hello~_john~.dat"
      * 
-     * @param argText
-     * @return 
+     * @param argText Text to encode.
+     * 
+     * @return An encoded (safe URI) text.
      */
     public static String safeUriPart(String argText) {
         String ret = "";
