@@ -82,6 +82,10 @@ public class ComponentTitledBorder implements Border, MouseListener, MouseMotion
         insets.top = Math.max(insets.top, size.height);
         return insets;
     }
+    
+    public Component getComponent() {
+        return comp;
+    } // getComponent() method
  
     private void dispatchEvent(MouseEvent me) {
         if (rect != null && rect.contains(me.getX(), me.getY())) {
