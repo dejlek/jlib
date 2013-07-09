@@ -349,10 +349,11 @@ public class Utility {
             checker.unregisterMimeDetector(OpendesktopMimeDetector.class.getCanonicalName());
         }
 
-        if (mimeclass == null) {
-            mimeclass = "application/octet-stream";
+        if (mimeclass == null || mimeclass.equalsIgnoreCase("application/octet-stream")) {
+            // fall back to get by extension
+            mimeclass = MIMEUtil.getType(argFileName.substring(argFileName.lastIndexOf(".")));
         }
-        
+               
         return mimeclass;
     } // getMimeType() method
 
