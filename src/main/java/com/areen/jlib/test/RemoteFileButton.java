@@ -23,8 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.FileDialog;
-import java.awt.Frame;
 import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -48,12 +46,14 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * JComponent made for the sole purpose of maintaining various remote files.
@@ -343,27 +343,31 @@ public class RemoteFileButton
         }
     }
             
-    private void handleNewVersion() {        
-        FileDialog fd = null;
-        Window w = GuiTools.getWindow(RemoteFileButton.this);
-        if (w instanceof Frame) {
-            fd = new FileDialog((Frame) w);
+    private void handleNewVersion() {      
+        String fileToUpload;
+        JFileChooser fc = new JFileChooser();
+        String[] fExtns = remoteFile.getAllowedExtensions();
+        fc.setFileFilter(
+                new FileNameExtensionFilter("Doc Files, ("
+                                            + StringUtility.generateExtensionList(fExtns)
+                                            + ")"
+                                            , fExtns)
+                );
+        fc.setMultiSelectionEnabled(false);
+        int returnVal = fc.showDialog(this, "Select");
+
+        // if user makes a selection record that and update the selectedFile box
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            String fileString = fc.getSelectedFile().getPath();
+            fileToUpload = fileString;
         } else {
-            fd = new FileDialog((JFrame) w);
+            fileToUpload = null;
         }
-        
-        fd.setMode(FileDialog.LOAD);
-        // fd.setMultipleMode(false); Java 1.7 feature...
-        fd.setTitle("Select file");
-        fd.setFile(StringUtility.generateExtensionList(remoteFile.getAllowedExtensions()));
-        fd.setVisible(true);
-        String fileName = fd.getFile();
-        String dir = fd.getDirectory();
-        
+
         // if user has clicked ok
-        if (fileName != null && !fileName.contains("*")) {
-            model.setLocalPath(fileName);
-            remoteFile.newVersion(new File(dir + File.separator + fileName)); 
+        if (fileToUpload != null && !fileToUpload.contains("*")) {
+            model.setLocalPath(fileToUpload);
+            remoteFile.newVersion(new File(fileToUpload)); 
         }
     }
     
