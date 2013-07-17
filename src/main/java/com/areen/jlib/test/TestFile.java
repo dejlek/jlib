@@ -155,4 +155,9 @@ public class TestFile implements RemoteFile {
     public void showProperties() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+
+    @Override
+    public String getToolTip() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 } // TestFile class

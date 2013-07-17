@@ -200,7 +200,8 @@ public class RemoteFileButton
         // Model has been changed, let's update the view
         if (model.isUploaded()) {
             // handle property change for a document
-            refreshIcon();            
+            refreshIcon();
+            refreshToolTip();
         }
     }
 
@@ -269,6 +270,12 @@ public class RemoteFileButton
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
+    
+    public void refreshToolTip() {
+        System.out.println("Refresh tool top : " + getToolTipText() + " -> " + remoteFile.getToolTip());
+        setToolTipText(remoteFile.getToolTip());
+        repaint();
+    }
     
     public void refreshIcon() {
         MIMEType mTy = MIMEUtil.getMIMEType(remoteFile.getMimeType());
