@@ -351,7 +351,7 @@ public class Utility {
 
         if (mimeclass == null || mimeclass.equalsIgnoreCase("application/octet-stream")) {
             // fall back to get by extension
-            mimeclass = MIMEUtil.getType(argFileName.substring(argFileName.lastIndexOf(".")));
+            mimeclass = MIMEUtil.getType(argFileName.substring(argFileName.lastIndexOf(".") + 1));
         }
                
         return mimeclass;
