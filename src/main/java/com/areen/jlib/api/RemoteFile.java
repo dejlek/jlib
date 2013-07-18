@@ -36,6 +36,6 @@ public interface RemoteFile {
     void setAllowedExtensions(String[] extensions);
     void showProperties();
     String getToolTip();
-} // RemoteFile class
+} // RemoteFile interface
 
 // $Id$
