@@ -1,7 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Project: jlib
+ * Version: $Id$
+ * License: SPL
+ * 
+ * Authors (in chronological order):
+ *   Dejan Lekic - http://dejan.lekic.org
+ *   Mateusz Dykiert
+ * Contributors (in chronological order):
+ *   -
  */
+
 package com.areen.jlib.api;
 
 import java.io.File;
@@ -28,4 +36,6 @@ public interface RemoteFile {
     void setAllowedExtensions(String[] extensions);
     void showProperties();
     String getToolTip();
-} // JFile interface
+} // RemoteFile class
+
+// $Id$
