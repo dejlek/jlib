@@ -11,7 +11,7 @@
  *   Mehjabeen Nujurally
  *   Vipul Kumar
  * Contributors (in chronological order):
- *   -
+ *   Andrew Ritchi
  */
 
 package com.areen.jlib.gui;
@@ -108,6 +108,19 @@ public class MenuButton extends JButton
         this.add(mainButton, BorderLayout.CENTER);
         this.add(dropDownButton, BorderLayout.EAST);
         this.mainButton.addPropertyChangeListener("enabled", this);
+        
+        /**
+         * This is the listener that triggers the popup-menu show-up when user simply clicks on the 
+         * mainButton.
+         */
+        mainButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MenuButton.this.showPopUp();
+            }
+            
+        });
     } // MenuButton() method
 
     @Override
@@ -184,15 +197,7 @@ public class MenuButton extends JButton
      */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        if (this.dropDownMenu == null) {
-            return;
-        } // if
-
-        Point p = this.getLocationOnScreen();
-        dropDownMenu.setLocation((int) p.getX(),
-                (int) p.getY() + this.getHeight());
-        dropDownMenu.show(mainButton, 0, mainButton.getHeight());
-
+        showPopUp();
     } // actionPerformed() method
 
     @Override
@@ -227,6 +232,19 @@ public class MenuButton extends JButton
         this.mainButton.addActionListener(al);
         //this.addActionListener(al);
     } // addActionListener() method
+    
+    /**
+     * Shows the pop-up menu, if available.
+     */
+    private void showPopUp() {
+        if (dropDownMenu == null) {
+            return;
+        } // if
+
+        Point p = getLocationOnScreen();
+        //dropDownMenu.setLocation((int) p.getX(), (int) p.getY() + getHeight());
+        dropDownMenu.show(mainButton, 0, mainButton.getHeight() - 1);
+    } // showPopUp() method
 
     /**
      * 
