@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
@@ -223,6 +224,137 @@ public class Utility {
         return argFirst.toString().compareTo(argSecond.toString());
     } // compare() method
 
+    
+    /**
+     * Checks if two strings are equal - handles nulls
+     * @param one
+     * @param two
+     * @return 
+     */
+    public static boolean areStringsEqual(String one, String two) {
+        boolean nullDiff = one == null ^ two == null;
+        boolean valueDiff = one != null && two != null && !one.equals(two);
+
+        return !nullDiff && !valueDiff;
+    } // areStringsEqual() method
+    
+    /**
+     * Checks if two doubles are equal - handles nulls
+     * @param one
+     * @param two
+     * @return 
+     */
+    public static boolean areDoublesEqual(Double one, Double two) {
+        boolean nullDiff = one == null ^ two == null;
+        boolean valueDiff = one != null && two != null && !one.equals(two);
+
+        return !nullDiff && !valueDiff;
+    } // areDoublesEqual() method
+    
+    /**
+     * Checks if two floats are equal - handles nulls
+     * @param one
+     * @param two
+     * @return 
+     */
+    public static boolean areFloatsEqual(Float one, Float two) {
+        boolean nullDiff = one == null ^ two == null;
+        boolean valueDiff = one != null && two != null && !one.equals(two);
+        return !nullDiff && !valueDiff;
+    } // areFloatsEqual() method
+    
+    /**
+     * Checks if two integers are equal - handles nulls
+     * @param one
+     * @param two
+     * @return 
+     */
+    public static boolean areIntegersEqual(Integer one, Integer two) {
+        boolean nullDiff = one == null ^ two == null;
+        boolean valueDiff = one != null && two != null && !one.equals(two);
+
+        return !nullDiff && !valueDiff;
+    } // areIntegersEqual() method
+    
+    /**
+     * Returns true if two dates are equal - handles nulls
+     * @param one
+     * @param two
+     * @return 
+     */
+    public static boolean areDatesEqual(Date one, Date two) {
+        // if one differs then they are not equal
+        if (one == null ^ two == null) {
+            return false;
+        } // if
+
+        // if not null compare,
+        if (one != null && two != null) {
+            Calendar oneCal = Calendar.getInstance();
+            oneCal.setTime(one);
+
+            Calendar twoCal = Calendar.getInstance();
+            twoCal.setTime(two);
+
+            return oneCal.get(Calendar.YEAR) == twoCal.get(Calendar.YEAR)
+                    && oneCal.get(Calendar.DAY_OF_YEAR) == twoCal.get(Calendar.DAY_OF_YEAR);
+        } else { // both null so they are equal
+            return true;
+        } // else
+    } // areDatesEqual() method
+    
+    /**
+     * Returns true if two SimpleObject are equal - handles nulls
+     * @param argSOOne
+     * @param argSOTwo
+     * @return  
+     */
+    public static boolean areVOsEqual(SimpleObject argSOOne, SimpleObject argSOTwo) {
+        boolean isEqual = false;
+        int soOneNO = argSOOne.getNumberOfFields();
+        if (argSOOne.getClass().equals(argSOTwo.getClass())) {
+            if (soOneNO ==  argSOTwo.getNumberOfFields()) {
+                for (int i = 0; i < soOneNO; i++) {
+                    boolean currentVariableEqual = true;
+                    Object currentVariableOne = argSOOne.get(i);
+                    Object currentVariableTwo = argSOTwo.get(i);
+                    if (currentVariableOne != null && currentVariableTwo != null) {
+                        if (currentVariableOne.getClass().equals(currentVariableTwo.getClass())) {
+                            if (currentVariableOne instanceof String) {
+                                currentVariableEqual = areStringsEqual((String) currentVariableOne, 
+                                        (String) currentVariableTwo);
+                            } else if (currentVariableOne instanceof Integer) {
+                                currentVariableEqual = areIntegersEqual((Integer) currentVariableOne, 
+                                        (Integer) currentVariableTwo);
+                            } else if (currentVariableOne instanceof Float) {
+                                currentVariableEqual = areFloatsEqual((Float) currentVariableOne, 
+                                        (Float) currentVariableTwo);
+                            } else if (currentVariableOne instanceof Double) {
+                                currentVariableEqual = areDoublesEqual((Double) currentVariableOne, 
+                                        (Double) currentVariableTwo);
+                            } else if (currentVariableOne instanceof Date) {
+                                currentVariableEqual = areDatesEqual((Date) currentVariableOne, 
+                                        (Date) currentVariableTwo); 
+                            } else {
+                                currentVariableEqual = (currentVariableOne == currentVariableTwo);
+                            } // else
+                            if (!currentVariableEqual) {
+                                isEqual = false;
+                                break;
+                            } else if (i == (soOneNO - 1) && currentVariableEqual) {
+                                isEqual = true;
+                            } // else if
+                        } // if
+                    } else if (currentVariableOne == null ^ currentVariableTwo == null) {
+                        isEqual = false;
+                        break;
+                    } // else if
+                } // for
+            } // if
+        } // if
+        return isEqual;
+    } // areVOsEqual() method
+    
     /**
      * Use this method whenever you have to convert an array of Objects to a String.
      */
