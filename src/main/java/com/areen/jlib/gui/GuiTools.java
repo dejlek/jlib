@@ -106,8 +106,11 @@ public class GuiTools {
                 found = true;
             } else if (container instanceof JDialog) {
                 JDialog dlg = (JDialog) container;
-                result = (JFrame) dlg.getOwner(); /* MD - this is not correct! 
-                 * JDialog inherits from Frame not JFRame! */
+                Window ownerWindow = dlg.getOwner();
+                if (ownerWindow instanceof JFrame) {
+                    result = (JFrame) dlg.getOwner(); /* MD - this is not correct! 
+                     * JDialog inherits from Frame not JFRame! */
+                } // if
                 found = true;
             } else {
                 container = container.getParent();
