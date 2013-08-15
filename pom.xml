@@ -20,7 +20,7 @@ The idea is to open-source this library.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compilerSource>1.6</compilerSource>
-		<sprintNumber>30</sprintNumber>
+		<sprintNumber>32</sprintNumber>
 		<jlibPropsFile>jlibversion.properties</jlibPropsFile>
 		<dependencyReport /> <!-- disabled by default (empty) -->
 	</properties>
