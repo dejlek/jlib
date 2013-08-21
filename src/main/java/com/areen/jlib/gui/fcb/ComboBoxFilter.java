@@ -731,8 +731,7 @@ public class ComboBoxFilter extends PlainDocument {
             if (itemPicked) {
                 Object tmp = comboBoxModel.getKeyOfTheSelectedItem();
                 if (itemPicked && isObjectArr) {
-                    pickedKey = tmp.toString();
-                    
+                    pickedKey = (tmp != null ? tmp.toString() : tmp);
                 } // if
             } // if
             comboBox.putClientProperty("item-picked", Boolean.TRUE);
