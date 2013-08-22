@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import com.areen.jlib.gui.accordion.*;
+import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
@@ -59,11 +60,15 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		
 		a = new Accordion(horizontal);
 		a.add(t1);
+                
+                a.getModel().setFixedSize(0, new Dimension(200, 300));
 		a.add(t2);
 		a.add(t3);
 		a.add(t4);
 		a.add(t5);
-	//	a.setTitleBackground(Color.PINK);
+        //set gap between
+        a.getModel().setSeparatorSize(10);
+        a.setSeparatorBackground(Color.black);
 	
 		ap = new AccordionPrefs(a, new HashMap<String, String>(), "/test_dialog");
 		
@@ -73,6 +78,9 @@ public class AccordionTestPanel extends JPanel implements ActionListener {
 		JScrollPane pane = new JScrollPane(verticalAccordion);
 		setLayout(new BorderLayout());
 		add(pane, BorderLayout.CENTER);
+	
+        verticalAccordion.getModel().setSeparatorSize(10);
+        verticalAccordion.setSeparatorBackground(Color.black);
 	
 	//	System.out.println(a.getMinimumSize());
 	}

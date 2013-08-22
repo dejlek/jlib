@@ -1,24 +1,19 @@
 /**
  * $Id$
  *
- * Copyright (c) 2009-2013 Areen Design Services Ltd
- * 23 Eyot Gardens; London; W6 9TR
- * http://www.areen.com
- * All rights reserved.
- * 
- * This software is the confidential and proprietary information of Areen Design Services Ltd ("Confidential 
- * Information").  You shall not disclose such Confidential Information and shall use it only in accordance 
- * with the terms of the license agreement you entered into with Areen Design Services Ltd.
- * 
+ * Copyright (c) 2009-2013 Areen Design Services Ltd 23 Eyot Gardens; London; W6 9TR
+ * http://www.areen.com All rights reserved.
+ *
+ * This software is the confidential and proprietary information of Areen Design Services Ltd
+ * ("Confidential Information"). You shall not disclose such Confidential Information and shall use
+ * it only in accordance with the terms of the license agreement you entered into with Areen Design
+ * Services Ltd.
+ *
  * This file is best viewed with 110 columns.
-12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
- * 
- * Author(s) in chronological order:
- *   Mateusz Dykiert , http://dykiert.org
- * Contributor(s):
- *   -
+ * 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
+ *
+ * Author(s) in chronological order: Mateusz Dykiert , http://dykiert.org Contributor(s): -
  */
-
 package com.areen.jlib.gui.accordion;
 
 import java.awt.Component;
@@ -31,183 +26,180 @@ import javax.swing.JLabel;
 
 /**
  * Layout manager responsible for specifing positions and sizes of each pane in an Accordion
- * 
+ *
  * @author Matthew
  */
 public class AccordionLayout implements LayoutManager {
 
-	// ====================================================================================================
-	// ==== Variables =====================================================================================
-	// ====================================================================================================
+    // ====================================================================================================
+    // ==== Variables =====================================================================================
+    // ====================================================================================================
+    // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    private AccordionModel model;
 
-	// :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	private AccordionModel model;
+    // ====================================================================================================
+    // ==== Constructors ==================================================================================
+    // ====================================================================================================
+    public AccordionLayout(AccordionModel argModel) {
+        this.model = argModel;
+    } // AccordionLayoutManager constructor (default)
 
-	// ====================================================================================================
-	// ==== Constructors ==================================================================================
-	// ====================================================================================================
+    // ====================================================================================================
+    // ==== Interface/Superclass Methods ==================================================================
+    // ====================================================================================================
+    @Override
+    public void addLayoutComponent(String string, Component container) {
 
-	public AccordionLayout(AccordionModel argModel) {
-		this.model = argModel;
-	} // AccordionLayoutManager constructor (default)
+        System.out.println("added new :D");
+        //	TODO Auto-generated method stub
+    }
 
-	// ====================================================================================================
-	// ==== Interface/Superclass Methods ==================================================================
-	// ====================================================================================================
+    @Override
+    public void layoutContainer(Container container) {
+        int currentX = 0;
+        int currentY = 0;
+        int width = 0;
+        int height = 0;
+        int paneNumber = 0; // number of the pane = index in the model! 
+        // Separators do not count to it.
 
-	@Override
-	public void addLayoutComponent(String string, Component container) {
-		
-		System.out.println("added new :D");
-	//	TODO Auto-generated method stub
-	}
+        Dimension dimensions;
+        AccordionPane pane;
 
-	@Override
-	public void layoutContainer(Container container) {
-		int currentX = 0;
-		int currentY = 0;
-		int width = 0;
-		int height = 0;
-		int paneNumber = 0; // number of the pane = index in the model! 
-		// Separators do not count to it.
+        boolean horizontal = model.isHorizontal();
 
-		Dimension dimensions; 
-		AccordionPane pane;
+        // get components
+        Component[] components = container.getComponents();
 
-		boolean horizontal = model.isHorizontal();
-		
-		// get components
-		Component[] components = container.getComponents();
-		
-		// compute empty space - total space to be divided among panels which work 
-		// by weights - no width/height specified 
-		int emptySpace = getAvailableSpace(container);
+        // compute empty space - total space to be divided among panels which work 
+        // by weights - no width/height specified 
+        int emptySpace = getAvailableSpace(container);
 
-	//	int expandedCount = model.getExpanded().size();
-		
-		//lay out each component
-		for (Component c : components) {
+        //	int expandedCount = model.getExpanded().size();
 
-			//if we are dealing with title pane
-			if (c instanceof TitledPane) {
-				pane = model.getPaneAt(paneNumber);
-				dimensions = model.getPaneAt(paneNumber).getDimension();
+        //lay out each component
+        for (Component c : components) {
 
-				//if in a row keep height the same and increment X
-				if (horizontal) {
-					// titled pane expanded and there are more than one pane expanded
-					// set the width otherwise it's set size will be ignored!
-					if (pane.isExpanded()) {
-						if (dimensions != null) {
-							width = dimensions.width;
-						} else {
-							width = (int) (model.getWeightShare(paneNumber) * emptySpace);
-						}
-					} else { // collapsed
-						width = model.getTitleSize();
-					} //else
+            //if we are dealing with title pane
+            if (c instanceof TitledPane) {
+                pane = model.getPaneAt(paneNumber);
+                dimensions = model.getPaneAt(paneNumber).getDimension();
 
-					c.setBounds(currentX, 0, width, container.getHeight());
+                //if in a row keep height the same and increment X
+                if (horizontal) {
+                    // titled pane expanded and there are more than one pane expanded
+                    // set the width otherwise it's set size will be ignored!
+                    if (pane.isExpanded()) {
+                        if (dimensions != null) {
+                            width = dimensions.width;
+                        } else {
+                            width = (int) (model.getWeightShare(paneNumber) * emptySpace);
+                        }
+                    } else { // collapsed
+                        width = model.getTitleSize();
+                    } //else
 
-					//update the next X position
-					currentX += width;
-				} else { // column - height differs, X stays the same (Y increases)
-					if (pane.isExpanded()) { //expanded titled pane  and there is more than one expanded
-						if (dimensions != null) {
-							height = dimensions.height;
-						} else {
-							height = (int) (model.getWeightShare(paneNumber) * emptySpace);
-						}
-					} else { // collapsed
-						height = model.getTitleSize();
-					} //else
+                    c.setBounds(currentX, 0, width, container.getHeight());
 
-					c.setBounds(0, currentY, container.getWidth(), height);
+                    //update the next X position
+                    currentX += width;
+                } else { // column - height differs, X stays the same (Y increases)
+                    if (pane.isExpanded()) { //expanded titled pane  and there is more than one expanded
+                        if (dimensions != null) {
+                            height = dimensions.height;
+                        } else {
+                            height = (int) (model.getWeightShare(paneNumber) * emptySpace);
+                        }
+                    } else { // collapsed
+                        height = model.getTitleSize();
+                    } //else
 
-					//update the next Y position
-					currentY += height;
-				} //else
+                    c.setBounds(0, currentY, container.getWidth(), height);
 
-				// increment pane number
-				paneNumber++;
-			} else { //dealing with separators
-				//horizontal row
-				if (horizontal) {
-					width = model.getSeparatorSize();
-					height = container.getHeight(); // as high as the whole container
+                    //update the next Y position
+                    currentY += height;
+                } //else
 
-					c.setBounds(currentX, 0, width, height);
-                                        ((JLabel) c).setAlignmentY(Component.CENTER_ALIGNMENT);
-					//update the next X position
-					currentX += width;
-				} else { //all components in a column
-					width = container.getWidth();
-					height = model.getSeparatorSize();
-                                        ((JLabel) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-					c.setBounds(0, currentY, width, height);
+                // increment pane number
+                paneNumber++;
+            } else if (c instanceof JLabel) { //dealing with separators
+                //horizontal row
+                if (horizontal) {
+                    width = model.getSeparatorSize();
+                    height = container.getHeight(); // as high as the whole container
 
-					//update the next Y position
-					currentY += height;
-				} // else
-			} // else
-		}
-	}
+                    c.setBounds(currentX, 0, width, height);
+                    ((JLabel) c).setAlignmentY(Component.CENTER_ALIGNMENT);
+                    //update the next X position
+                    currentX += width;
+                } else { //all components in a column
+                    width = container.getWidth();
+                    height = model.getSeparatorSize();
+                    ((JLabel) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+                    c.setBounds(0, currentY, width, height);
 
-	@Override
-	public Dimension minimumLayoutSize(Container c) {
-		return model.calculateMinimumSize();
-	}
+                    //update the next Y position
+                    currentY += height;
+                } // else
+            }
+        }
+    }
 
-	@Override
-	public Dimension preferredLayoutSize(Container container) {
-		int width = 0;
-		int height = 0;
+    @Override
+    public Dimension minimumLayoutSize(Container c) {
+        return model.calculateMinimumSize();
+    }
 
-		Component[] cs = container.getComponents();
-	
-		//calculate sizes
-		for (Component c : cs) {
-			if (model.isHorizontal()) {
-				width += c.getPreferredSize().getWidth();
-			} else {
-				height += c.getPreferredSize().getHeight();
-			}
-		} // for
+    @Override
+    public Dimension preferredLayoutSize(Container container) {
+        int width = 0;
+        int height = 0;
 
-		//calculate remaining dimension
-		if (model.isHorizontal()) {
-			height = model.calculateHighestTitledPane();
-		} else {
-			width = model.calculateWidestTitledPane();
-		}
+        Component[] cs = container.getComponents();
 
-		return new Dimension(width, height);
-	}
+        //calculate sizes
+        for (Component c : cs) {
+            if (model.isHorizontal()) {
+                width += c.getPreferredSize().getWidth();
+            } else {
+                height += c.getPreferredSize().getHeight();
+            }
+        } // for
 
-	@Override
-	public void removeLayoutComponent(Component c) {
-		// TODO Auto-generated method stub
-	}
+        //calculate remaining dimension
+        if (model.isHorizontal()) {
+            height = model.calculateHighestTitledPane();
+        } else {
+            width = model.calculateWidestTitledPane();
+        }
 
-	// ====================================================================================================
-	// ==== Private/Protected/Package Methods =============================================================
-	// ====================================================================================================
+        return new Dimension(width, height);
+    }
 
-	/**
-	 * Calculates available space in the container. It takes total height or width depending on 
-	 * the orientation of the layout. If column it will return height remaining, width otherwise.
-	 * It only looks for the space to be taken by expanded panes and collapsed specified size. 
-	 * @return
-	 */
-	private int getAvailableSpace(Container c) {
-		//calculate
-		if (model.isHorizontal()) {
-			return c.getWidth() - model.getOccupiedHorizontalSpace();
-		} else {
-			return c.getHeight() - model.getOccupiedVerticalSpace();
-		} //else
+    @Override
+    public void removeLayoutComponent(Component c) {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    // ====================================================================================================
+    // ==== Private/Protected/Package Methods =============================================================
+    // ====================================================================================================
+    /**
+     * Calculates available space in the container. It takes total height or width depending on the
+     * orientation of the layout. If column it will return height remaining, width otherwise. It
+     * only looks for the space to be taken by expanded panes and collapsed specified size.
+     *
+     * @return
+     */
+    private int getAvailableSpace(Container c) {
+        //calculate
+        if (model.isHorizontal()) {
+            return c.getWidth() - model.getOccupiedHorizontalSpace();
+        } else {
+            return c.getHeight() - model.getOccupiedVerticalSpace();
+        } //else
+
+    }
 } // AccordionLayoutManager class
 
 // $Id$
