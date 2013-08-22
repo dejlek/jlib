@@ -213,7 +213,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // :::: Interface/Superclass 1 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("property change " + evt.toString());
         revalidate();
     }
 
@@ -465,6 +464,15 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         }
     } // setSizes()
 
+    /**
+     * Set pane weight
+     * @param index
+     * @param weight 
+     */
+    public void setPaneWeight(int index, double weight) {
+        model.setPaneWeight(index, weight);
+    }
+    
     /**
      * Get pane dimensions
      *
