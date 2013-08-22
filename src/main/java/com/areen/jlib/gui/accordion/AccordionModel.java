@@ -20,6 +20,7 @@
 package com.areen.jlib.gui.accordion;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -71,10 +72,7 @@ public class AccordionModel {
      * @param titledPane
      */
     public void addPane(TitledPane titledPane) {
-        AccordionPane accordionPane = new AccordionPane(titledPane, false); // collapsed by default
-        // by default we don't set the dimensions - if they are set then layout manager will 
-        // ignore the weights
-        accordionPane.setWeight(0.2); // default weight
+        AccordionPane accordionPane = new AccordionPane(titledPane, false, 0.2); // collapsed by default
 
         //set up rotatable pane
         RotatableTitle rt = ((RotatableTitle) titledPane.getTitle());
@@ -93,7 +91,7 @@ public class AccordionModel {
         for (int i = 0; i < panes.size(); i++) {
             pane = panes.get(i);
             if (pane.isResizable()) {
-                setPaneDimension(i, null);
+                pane.resetToDefaultWeight();
             }
         }
     }
@@ -172,15 +170,11 @@ public class AccordionModel {
         int space = 0;
 
         // calculate the space taken by 
-        for (AccordionPane pane : panes) {
-            if (pane.isExpanded()) {
-                if (pane.getDimension() != null) {
-                    // if no dimension is specified, 
-                    //they will be calculated using this method later
-                    space += pane.getDimension().getWidth();
-                }
-            } else {
+        for (AccordionPane pane : panes) {     
+            if (!pane.isExpanded()) {
                 space += titleSize;
+            } else if (!pane.isResizable()) {
+                space += pane.getDimension().getWidth();
             }
         } // for
 
@@ -201,13 +195,10 @@ public class AccordionModel {
 
         // calculate the space taken by 
         for (AccordionPane pane : panes) {
-            if (pane.isExpanded()) {
-                if (pane.getDimension() != null) { // if no dimension is specified,
-                    // they will be calculated using this method later
-                    space += pane.getDimension().getHeight();
-                }
-            } else {
+               if (!pane.isExpanded()) {
                 space += titleSize;
+            } else if (!pane.isResizable()) {
+                space += pane.getDimension().getHeight();
             }
         } // for
 
@@ -217,6 +208,22 @@ public class AccordionModel {
         return space;
     } // getOccupiedVerticalSpace()
 
+     /**
+     * Calculates available space in the container. It takes total height or width depending on the
+     * orientation of the layout. If column it will return height remaining, width otherwise. It
+     * only looks for the space to be taken by expanded panes and collapsed specified size.
+     *
+     * @return
+     */
+    public int getAvailableSpace(Container c) {
+        //calculate
+        if (isHorizontal()) {
+            return c.getWidth() - getOccupiedHorizontalSpace();
+        } else {
+            return c.getHeight() - getOccupiedVerticalSpace();
+        } //else
+    }
+    
     /**
      * Add separator
      *
@@ -321,7 +328,7 @@ public class AccordionModel {
 
         // iterate and find the greatest
         for (AccordionPane pane : panes) {
-            width = pane.getTitledPane().getMinimumSize().width;
+            width = pane.getTitledPane().getWidth();
 
             //if it's the greatest so far.. store it
             if (width > greatest) {
@@ -343,7 +350,7 @@ public class AccordionModel {
 
         // iterate and find the greatest
         for (AccordionPane pane : panes) {
-            height = pane.getTitledPane().getMinimumSize().height;
+            height = pane.getTitledPane().getHeight();
 
             //if it's the greatest so far.. store it
             if (height > greatest) {
@@ -352,55 +359,6 @@ public class AccordionModel {
         }
 
         return greatest;
-    }
-
-    /**
-     * Calculate the total minimum height from all panes and separators
-     *
-     * @return
-     */
-    public int calculateTotalMinimumHeight() {
-        int height = 0;
-
-        // iterate and find the greatest
-        for (AccordionPane pane : panes) {
-            //if collapsed use title size
-            if (pane.isExpanded()) {
-                height += pane.getTitledPane().getMinimumSize().height;
-            } else {
-                height += titleSize;
-            }
-        }
-
-        // add space taken up by separators
-        height += separatorSize * panes.size() - 1;
-
-        return height;
-    }
-
-    /**
-     * Calculate total minimum width from all expanded panes, separators
-     *
-     * @return
-     */
-    public int calculateTotalMinimumWidth() {
-        int width = 0;
-
-        // iterate and find the greatest
-        for (AccordionPane pane : panes) {
-            //if collapsed use title size
-            if (pane.isExpanded()) {
-                width += pane.getTitledPane().getMinimumSize().width;
-            } else {
-                width += titleSize;
-            }
-
-        }
-
-        // add space taken up by separators
-        width += separatorSize * panes.size() - 1;
-
-        return width;
     }
 
     /**
@@ -416,9 +374,7 @@ public class AccordionModel {
         //horizontal accordion
         if (horizontal) {
             height = calculateGreatestMinimumHeight();
-            width = calculateTotalMinimumWidth();
         } else { //vertical
-            height = calculateTotalMinimumHeight();
             width = calculateGreatestMinimumWidth();
         } //else
 
@@ -653,10 +609,7 @@ public class AccordionModel {
             return;
         }
 
-        boolean oldExampleProperty = pane.isExpanded();
         pane.setExpanded(expanded);
-
-        propertyChangeSupport.firePropertyChange(PROP_EXPANDED, oldExampleProperty, expanded);
     }
     // ::::: Dimension property ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public static final String PROP_DIMENSION = "sizeProperty";
@@ -692,9 +645,6 @@ public class AccordionModel {
 
         Dimension oldProperty = pane.getDimension();
         pane.setDimension(dimension);
-
-        //fire property change
-        propertyChangeSupport.firePropertyChange(PROP_DIMENSION, oldProperty, dimension);
     }
     // ::::: WEIGHT property ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public static final String PROP_WEIGHT = "weightProperty";
@@ -714,7 +664,7 @@ public class AccordionModel {
      *
      * @return
      */
-    public double[] getWeights() {
+    public double[] getPaneWeights() {
         double[] weights = new double[paneCount];
 
         for (int i = 0; i < weights.length; i++) {
@@ -730,14 +680,9 @@ public class AccordionModel {
      * @param index
      * @param expanded
      */
-    public void setWeight(int index, double weight) {
+    public void setPaneWeight(int index, double weight) {
         AccordionPane pane = panes.get(index);
-
-        double oldExampleProperty = pane.getWeight();
         pane.setWeight(weight);
-
-        //fire property change
-        propertyChangeSupport.firePropertyChange(PROP_WEIGHT, oldExampleProperty, weight);
     }
     // ::::: Locked property ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     public static final String PROP_LOCKED = "lockedProperty";
@@ -763,9 +708,6 @@ public class AccordionModel {
 
         boolean oldProperty = pane.isLocked();
         pane.setLock(oldProperty);
-
-        //fire property change
-        propertyChangeSupport.firePropertyChange(PROP_DIMENSION, oldProperty, argLock);
     }
 
     // ====================================================================================================
@@ -783,12 +725,15 @@ public class AccordionModel {
         private boolean expanded;
         private Dimension dimension;    // in expanded state!
         private double weight;
+        private double defaultWeight;   // default weight which is only set once
         private boolean resizable = true;      // resizable by default 
         private boolean lock; 		    // locks expanded state - setExpanded() will not work if lock=true
 
-        AccordionPane(TitledPane argTitledPane, boolean argExpanded) {
+        AccordionPane(TitledPane argTitledPane, boolean argExpanded, double argDefaultWeight) {
             this.titledPane = argTitledPane;
             this.expanded = argExpanded;
+            this.defaultWeight = argDefaultWeight;
+            this.weight = argDefaultWeight;
         } // AccordionPane
 
         /**
@@ -840,6 +785,13 @@ public class AccordionModel {
         }
 
         /**
+         * Set default weight to be the current weight
+         */
+        public void resetToDefaultWeight() {
+            setWeight(defaultWeight);
+        }
+        
+        /**
          * @return the dimension
          */
         public Dimension getDimension() {
@@ -871,7 +823,27 @@ public class AccordionModel {
          * @param weight the weight to set
          */
         public void setWeight(double argWeight) {
+            double oldExampleProperty = weight;
+
             this.weight = argWeight;
+
+            propertyChangeSupport.firePropertyChange(PROP_WEIGHT, oldExampleProperty, weight);
+        }
+
+        /**
+         * Set default weight
+         * @return 
+         */
+        public double getDefaultWeight() {
+            return defaultWeight;
+        }
+
+        /**
+         * Get default weight
+         * @param defaultWeight 
+         */
+        public void setDefaultWeight(double argDefaultWeight) {
+            this.defaultWeight = argDefaultWeight;
         }
 
         /**

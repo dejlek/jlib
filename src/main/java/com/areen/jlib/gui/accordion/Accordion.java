@@ -12,8 +12,10 @@
  * This file is best viewed with 110 columns.
  * 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
  *
- * Author(s) in chronological order: Mateusz Dykiert , http://dykiert.org Contributor(s): Dejan
- * Lekic , http://dejan.lekic.org
+ * Author(s) in chronological order: 
+ *   Mateusz Dykiert , http://dykiert.org 
+ * Contributor(s): Dejan
+ *   Lekic , http://dejan.lekic.org
  */
 package com.areen.jlib.gui.accordion;
 
@@ -41,9 +43,10 @@ import javax.swing.border.Border;
  * Accordion. It is a container which orders TitledPanes (panels with title component at the
  * top/left) in a row or a column. TitledPane can be in one in two states: collapsed or expanded.
  * All TitledPane are collapsed at startup as default. Each TitledPane is separated by JSeparator
- * which can be moved to resize adjacent expanded panes. Weights should be specified at startup,
+ * which can be moved to resize expanded panes. Weights should be specified at startup,
  * each panel will take a proportional share of the screen when expanded. Once a panel is resized
- * then its weight is not taken into layout calculation. The TitledPanes inside Accordion can have
+ * then its weight is taken into layout calculation. DefaultWeight must be set, otherwise we will
+ * have problems when resetting to default values. The TitledPanes inside Accordion can have
  * fixed dimension (width or height depending on orientation); use setFixedSize(index,
  * fixed(boolean=true), requiredDimension). If we use that function with fixed=false then the
  * accordion will be resized using weight value but resizing will not be allowed. setResizable(int,
@@ -55,7 +58,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
     /* 
      * Accordion ignores insets, maximum and preferred sizes. Only minimum sizes are supported in 
-     * one dimension
+     * one dimension. 
      *   
      *   Horizontal accordion looks like this:
      ___________________________________________________________________
@@ -122,6 +125,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         // register to listen for property changes
         model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
         model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);
+        model.addPropertyChangeListener(AccordionModel.PROP_WEIGHT, this);
     } // Accordion constructor
 
     /**
@@ -139,14 +143,12 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         // register to listen for property changes
         model.addPropertyChangeListener(AccordionModel.PROP_EXPANDED, this);
         model.addPropertyChangeListener(AccordionModel.PROP_DIMENSION, this);
+        model.addPropertyChangeListener(AccordionModel.PROP_WEIGHT, this);
 
         updateUI();
 
         titleMouseListener = new TitleMouseListener();
         separatorMouseListener = new SeparatorMouseListener();
-
-        //if we have horizontal orientation then make separator vertical
-        int orientation = !horizontal ? JSeparator.HORIZONTAL : JSeparator.VERTICAL;
 
         //add components
         for (int i = 0; i < panes.length; i++) {
@@ -211,6 +213,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // :::: Interface/Superclass 1 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("property change " + evt.toString());
         revalidate();
     }
 
@@ -275,15 +278,18 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
             int h1;
             int w1;
+            int newSize;
 
             // compute new sizes
             if (model.isHorizontal()) { //Panes in a row (horizontal case)
                 h1 = firstDimension.height;
                 w1 = firstDimension.width + dx;
+                newSize = w1;
             } else { // vertical case
                 // in vertical state do not change X coordinate
                 h1 = firstDimension.height + dy;
                 w1 = firstDimension.width;
+                newSize = h1;
             } //else
 
             //check minimum dimensions - check if the new dimension won't be smaller than minimum size
@@ -292,12 +298,8 @@ public class Accordion extends JComponent implements PropertyChangeListener {
             }
 
             // in horizontal state do not change Y coordinate
-            model.setPaneDimension(model.indexOf(firstPane), new Dimension(w1, h1));
-
-            // recalculate accordion preffered size
-            setPreferredSize(new Dimension(model.calculateTotalMinimumWidth(),
-                    model.calculateTotalMinimumHeight()));
-
+            model.setPaneWeight(model.indexOf(firstPane), 
+                    (model.getTotalWeights() * newSize) / model.getAvailableSpace(this));
         } //if
     }
 
@@ -478,7 +480,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
      * @return
      */
     public double[] getWeights() {
-        return model.getWeights();
+        return model.getPaneWeights();
     } // getWeights()
 
     public LinkedList<Integer> getExpandedPanes() {

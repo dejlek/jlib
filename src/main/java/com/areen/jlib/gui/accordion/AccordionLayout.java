@@ -73,9 +73,7 @@ public class AccordionLayout implements LayoutManager {
 
         // compute empty space - total space to be divided among panels which work 
         // by weights - no width/height specified 
-        int emptySpace = getAvailableSpace(container);
-
-        //	int expandedCount = model.getExpanded().size();
+        int emptySpace = model.getAvailableSpace(container);
 
         //lay out each component
         for (Component c : components) {
@@ -90,7 +88,7 @@ public class AccordionLayout implements LayoutManager {
                     // titled pane expanded and there are more than one pane expanded
                     // set the width otherwise it's set size will be ignored!
                     if (pane.isExpanded()) {
-                        if (dimensions != null) {
+                        if (!pane.isResizable() && dimensions != null) {
                             width = dimensions.width;
                         } else {
                             width = (int) (model.getWeightShare(paneNumber) * emptySpace);
@@ -104,8 +102,9 @@ public class AccordionLayout implements LayoutManager {
                     //update the next X position
                     currentX += width;
                 } else { // column - height differs, X stays the same (Y increases)
-                    if (pane.isExpanded()) { //expanded titled pane  and there is more than one expanded
-                        if (dimensions != null) {
+                    if (pane.isExpanded()) { 
+                        //expanded titled pane  and there is more than one expanded
+                        if (!pane.isResizable() && dimensions != null) {
                             height = dimensions.height;
                         } else {
                             height = (int) (model.getWeightShare(paneNumber) * emptySpace);
@@ -127,7 +126,6 @@ public class AccordionLayout implements LayoutManager {
                 if (horizontal) {
                     width = model.getSeparatorSize();
                     height = container.getHeight(); // as high as the whole container
-
                     c.setBounds(currentX, 0, width, height);
                     ((JLabel) c).setAlignmentY(Component.CENTER_ALIGNMENT);
                     //update the next X position
@@ -181,25 +179,6 @@ public class AccordionLayout implements LayoutManager {
         // TODO Auto-generated method stub
     }
 
-    // ====================================================================================================
-    // ==== Private/Protected/Package Methods =============================================================
-    // ====================================================================================================
-    /**
-     * Calculates available space in the container. It takes total height or width depending on the
-     * orientation of the layout. If column it will return height remaining, width otherwise. It
-     * only looks for the space to be taken by expanded panes and collapsed specified size.
-     *
-     * @return
-     */
-    private int getAvailableSpace(Container c) {
-        //calculate
-        if (model.isHorizontal()) {
-            return c.getWidth() - model.getOccupiedHorizontalSpace();
-        } else {
-            return c.getHeight() - model.getOccupiedVerticalSpace();
-        } //else
-
-    }
 } // AccordionLayoutManager class
 
 // $Id$
