@@ -14,6 +14,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
+ * Base class for all Model classes.
+ * 
+ * NOTE: The AbstractModel class is not in the com.aree.jlib.pattern.mvc package. Instead it is in the
+ *       com.areen.jlib.model. Reason for this is that I hope it can be re-used in MVC, MVP and MVVM patterns.
+ * 
  * Code taken from:
  * http://www.oracle.com/technetwork/articles/javase/index-142890.html
  */
