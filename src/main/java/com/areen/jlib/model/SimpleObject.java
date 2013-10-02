@@ -32,7 +32,7 @@ public interface SimpleObject<T extends ValueObject> extends Cloneable {
     T                 newValue();
     
     // SimpleObject - basically, the following two are part of the Prototype design pattern
-    //                (however, they do not have to clone the object though)
+    //                (however, they do not necessarily have to clone the object)
     SimpleObject<T>   create();
     SimpleObject<T>[] create(int argNumberOfElements);
     
