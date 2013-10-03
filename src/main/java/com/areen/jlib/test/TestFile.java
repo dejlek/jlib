@@ -160,4 +160,14 @@ public class TestFile implements RemoteFile {
     public String getToolTip() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+
+    @Override
+    public String getAuxText() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public boolean canDelete() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 } // TestFile class

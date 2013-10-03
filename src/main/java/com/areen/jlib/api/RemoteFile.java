@@ -24,6 +24,7 @@ public interface RemoteFile {
     void setPath(String argPath);
     boolean exists();
     boolean canWrite();
+    boolean canDelete();
     String getDescription();
     void setDescription(String argDesc);
     boolean upload(File argFile);
@@ -36,6 +37,7 @@ public interface RemoteFile {
     void setAllowedExtensions(String[] extensions);
     void showProperties();
     String getToolTip();
+    String getAuxText();
 } // RemoteFile interface
 
 // $Id$

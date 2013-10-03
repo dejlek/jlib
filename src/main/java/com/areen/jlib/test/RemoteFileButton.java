@@ -153,6 +153,9 @@ public class RemoteFileButton
                 handleDelete();
             }
         });
+        // disable if can't delete
+        menuItem.setEnabled(argRemoteFile.canDelete());
+        
         popupMenu.add(menuItem);
         
         menuItem = new JMenuItem("Properties");
@@ -325,7 +328,7 @@ public class RemoteFileButton
         int answer = JOptionPane.showConfirmDialog(GuiTools.getWindow(this), 
                 "Are you sure you want to delete "
                 + getToolTipText() + " (" + remoteFile.getDescription() + ") file?", 
-                "Confirm to delete the file",
+                remoteFile.getAuxText() + " - Confirm to delete the file",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
 
