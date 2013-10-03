@@ -278,27 +278,33 @@ public class Accordion extends JComponent implements PropertyChangeListener {
             int h1;
             int w1;
             int newSize;
-
+            int delta;
+            
             // compute new sizes
             if (model.isHorizontal()) { //Panes in a row (horizontal case)
                 h1 = firstDimension.height;
                 w1 = firstDimension.width + dx;
                 newSize = w1;
+                delta = dx;
             } else { // vertical case
                 // in vertical state do not change X coordinate
                 h1 = firstDimension.height + dy;
                 w1 = firstDimension.width;
                 newSize = h1;
+                delta = dy;
             } //else
 
             //check minimum dimensions - check if the new dimension won't be smaller than minimum size
             if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1)) {
                 return;
             }
+            
+            // calculate how much weight we need to shift from one pane to the other
+            double weightShift = delta * model.getTotalWeights() / model.getSpaceTaken();
 
             // in horizontal state do not change Y coordinate
-            model.setPaneWeight(model.indexOf(firstPane), 
-                    (model.getTotalWeights() * newSize) / model.getAvailableSpace(this));
+            model.setPaneWeight(model.indexOf(firstPane), firstPane.getWeight() + weightShift);
+            model.setPaneWeight(model.indexOf(secondPane), secondPane.getWeight() - weightShift);
         } //if
     }
 
@@ -629,12 +635,13 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         //	System.out.println(separatorIndex);
         // find a pane to the top/left of the separator
         firstPane = getPreviousExpandedPane(separatorIndex);
-
+        secondPane = getNextExpandedPane(separatorIndex);
+        
         // find the other pane to resize
         //secondPane = getNextExpandedPane(separatorIndex);
 
         // if two expanded panes are found then we can resize
-        if (firstPane != null) {
+        if (firstPane != null && secondPane != null) {
             return true;
         }
 

@@ -149,6 +149,26 @@ public class AccordionModel {
 
         return weight;
     } // getTotalWeights()
+    
+    /**
+     * Calculate how much space is taken by expanded panes
+     * @return 
+     */
+    public int getSpaceTaken() {
+        int space = 0;
+        
+         for (AccordionPane pane : panes) {
+            if (pane.isExpanded() && pane.getDimension() == null) {
+                if (horizontal) {
+                   space += pane.getTitledPane().getWidth();
+                } else {
+                   space += pane.getTitledPane().getHeight();
+                }
+            }
+        }
+        
+        return space;
+    }
 
     /**
      * Get the weight share of the pane at index
