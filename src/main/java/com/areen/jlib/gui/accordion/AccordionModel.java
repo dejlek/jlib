@@ -348,16 +348,18 @@ public class AccordionModel {
 
         // iterate and find the greatest
         for (AccordionPane pane : panes) {
-            width = pane.getTitledPane().getWidth();
+            //width = pane.getTitledPane().getWidth(); // Dejan: Current width is constantly changing!!!
+            // Instead, let's use preferred widths, as they do not change.
+            width = pane.getTitledPane().getPreferredSize().width;
 
             //if it's the greatest so far.. store it
             if (width > greatest) {
                 greatest = width;
-            }
-        }
+            } // if
+        } // foreach
 
         return greatest;
-    }
+    } // calculateGreatestMinimumWidth;
 
     /**
      * Calculate greatest minimum height from all panes

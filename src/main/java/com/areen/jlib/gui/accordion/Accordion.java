@@ -114,6 +114,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
+    
     public Accordion(boolean horizontal) {
         model = new AccordionModel(horizontal);
         configurePopupMenu();
@@ -173,6 +174,9 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Interface/Superclass Methods ==================================================================
     // ====================================================================================================
+    
+    // :::: JComponent methods ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
     @Override
     public String getUIClassID() {
         return uiClassID;
@@ -186,15 +190,14 @@ public class Accordion extends JComponent implements PropertyChangeListener {
             setUI(new AccordionUI());
         }
     }
-
-    public void setUI(AccordionUI ui) {
-        super.setUI(ui);
+    
+    @Override
+    public void setPreferredSize(Dimension dim) {
+        super.setPreferredSize(dim);
     }
 
-    public AccordionUI getUI() {
-        return (AccordionUI) ui;
-    }
-
+    // :::: Component methods :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
     @Override
     public void setBounds(Rectangle r) {
         super.setBounds(r);
@@ -205,21 +208,17 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         super.setBounds(x, y, width, height);
     }
 
-    @Override
-    public void setPreferredSize(Dimension dim) {
-        super.setPreferredSize(dim);
-    }
-
-    // :::: Interface/Superclass 1 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // :::: PropertyChangeListener ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         revalidate();
     }
 
-    // :::: Interface/Superclass 2 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // ====================================================================================================
     // ==== Public Methods ================================================================================
     // ====================================================================================================
+    
     /**
      * Set background colour of titled panes
      *
@@ -540,9 +539,27 @@ public class Accordion extends JComponent implements PropertyChangeListener {
         ((RotatableTitle) model.getPaneAt(index).getTitledPane().getTitle()).getText();
     }
 
+    /**
+     * Use this method to specify separator's thickness (in pixels).
+     * 
+     * @param argSeparatorSize Integer value representing the size of the separator (its thickness).
+     */
+    public void setSeparatorSize(int argSeparatorSize) {
+        model.setSeparatorSize(argSeparatorSize);
+    } // setSeparatorSize() method
+    
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
+    
+    public void setUI(AccordionUI ui) {
+        super.setUI(ui);
+    }
+
+    public AccordionUI getUI() {
+        return (AccordionUI) ui;
+    }
+    
     public int getClicksRequired() {
         return clicksRequired;
     }
@@ -623,6 +640,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Private/Protected/Package Methods =============================================================
     // ====================================================================================================
+    
     /**
      * Function to determine if resizing action can take place. Currently, the algorithm checks if
      * there are two expanded neighbouring panes (Separators are disregarded for neighbour
@@ -734,6 +752,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
     // ====================================================================================================
     // ==== Classes =======================================================================================
     // ====================================================================================================
+    
     /**
      * Simple implementation of the MouseListener interface needed for listening to the clicks on
      * the Accordion titles.
@@ -912,6 +931,7 @@ public class Accordion extends JComponent implements PropertyChangeListener {
             //	System.out.println("DragDone");
         } // dragDone()
     } // SeparatorMouseListener class
+    
 } // Accordion class
 
 // $Id$

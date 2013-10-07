@@ -12,7 +12,10 @@
  * This file is best viewed with 110 columns.
  * 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
  *
- * Author(s) in chronological order: Mateusz Dykiert , http://dykiert.org Contributor(s): -
+ * Author(s) in chronological order: 
+ *   Mateusz Dykiert , http://dykiert.org 
+ * Contributor(s): 
+ *   Dejan Lekic , http://dejan.lekic.org
  */
 package com.areen.jlib.gui.accordion;
 
@@ -25,7 +28,7 @@ import com.areen.jlib.gui.accordion.AccordionModel.AccordionPane;
 import javax.swing.JLabel;
 
 /**
- * Layout manager responsible for specifing positions and sizes of each pane in an Accordion
+ * Layout manager responsible for specifing positions and sizes of each pane in an Accordion.
  *
  * @author Matthew
  */
@@ -34,12 +37,15 @@ public class AccordionLayout implements LayoutManager {
     // ====================================================================================================
     // ==== Variables =====================================================================================
     // ====================================================================================================
+    
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
     private AccordionModel model;
 
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
+    
     public AccordionLayout(AccordionModel argModel) {
         this.model = argModel;
     } // AccordionLayoutManager constructor (default)
@@ -47,6 +53,9 @@ public class AccordionLayout implements LayoutManager {
     // ====================================================================================================
     // ==== Interface/Superclass Methods ==================================================================
     // ====================================================================================================
+    
+    // :::: LayoutManager methods :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
     @Override
     public void addLayoutComponent(String string, Component container) {
 
@@ -139,17 +148,24 @@ public class AccordionLayout implements LayoutManager {
                     //update the next Y position
                     currentY += height;
                 } // else
-            }
-        }
-    }
+            } // else
+        } // foreach
+    } // layoutContainer() method
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
-    public Dimension minimumLayoutSize(Container c) {
+    public Dimension minimumLayoutSize(Container parent) {
+        // Dimension d = model.calculateMinimumSize();
+        // System.out.println("M " + d);
+        // return d;
         return model.calculateMinimumSize();
-    }
+    } // minimumLayoutSize() method.
 
     @Override
     public Dimension preferredLayoutSize(Container container) {
+        System.out.println("X");
         int width = 0;
         int height = 0;
 
@@ -170,7 +186,7 @@ public class AccordionLayout implements LayoutManager {
         } else {
             width = model.calculateWidestTitledPane();
         }
-
+        
         return new Dimension(width, height);
     }
 
