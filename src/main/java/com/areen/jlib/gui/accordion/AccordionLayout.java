@@ -165,7 +165,6 @@ public class AccordionLayout implements LayoutManager {
 
     @Override
     public Dimension preferredLayoutSize(Container container) {
-        System.out.println("X");
         int width = 0;
         int height = 0;
 
