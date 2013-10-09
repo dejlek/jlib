@@ -22,6 +22,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 
 /**
  * Basic list cell renderer of a ValueObject that inherits from JLabel.
@@ -37,6 +39,7 @@ public class VoListCellRenderer<S extends SimpleObject>
 
     String htmlTemplate;
     ImageIcon yesIcon;
+    Border border;
     
     /**
      * Constructs a default renderer object for an item
@@ -49,6 +52,7 @@ public class VoListCellRenderer<S extends SimpleObject>
         htmlTemplate = "$0";
         yesIcon = new ImageIcon(GuiTools.getResource(VoListCellRenderer.class, 
                 "/com/areen/jlib/res/icons/yes.png"));
+        border = new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY);
     } // VoListCellRenderer constructor (default)
     
     /**
@@ -93,6 +97,7 @@ public class VoListCellRenderer<S extends SimpleObject>
         
         setIcon(yesIcon);
         setText(getHtml(value));
+        setBorder(border);
         
         return this;
     } // getListCellRendererComponent() method
