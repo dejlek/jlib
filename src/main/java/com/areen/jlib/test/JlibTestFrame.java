@@ -36,6 +36,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         contentPanel.add(new JXButtonPanel(), "jxbutton_panel");
         contentPanel.add(new VerticalLayoutPanel(), "vertical_layout_panel");
         contentPanel.add(new AccordionTestPanel(), "accordion_test_panel");
+        contentPanel.add(new VoListTest(), "vo_list_test_panel");
     }
 
     /**
@@ -59,6 +60,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         verticalLayoutButton = new javax.swing.JButton();
         accordionButton = new javax.swing.JButton();
         accordionDialogButton = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -145,6 +147,15 @@ public class JlibTestFrame extends javax.swing.JFrame {
         });
         navigatorPanel.add(accordionDialogButton);
 
+        jButton3.setText("VO list");
+        jButton3.setMaximumSize(new java.awt.Dimension(320, 25));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        navigatorPanel.add(jButton3);
+
         mainSplitPane.setLeftComponent(navigatorPanel);
 
         contentPanel.setLayout(new java.awt.CardLayout());
@@ -188,6 +199,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
        AccordionTestDialog atd = new AccordionTestDialog(this, false);
        atd.setVisible(true);
     }//GEN-LAST:event_accordionDialogButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "vo_list_test_panel");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,6 +253,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
     private javax.swing.JLabel headerLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.ButtonGroup navigatorButtonGroup;

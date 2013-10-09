@@ -333,6 +333,10 @@ public class Main {
                 GuiTools.setParentComponent(mainFrame);
                 mainFrame.setLocationRelativeTo(null);
                 mainFrame.setVisible(true);
+                
+                JlibTestFrame frame = new JlibTestFrame();
+                mainFrame.setLocationRelativeTo(null);
+                frame.setVisible(true);
             }
         }); // invokeLater()
     } // main() method
