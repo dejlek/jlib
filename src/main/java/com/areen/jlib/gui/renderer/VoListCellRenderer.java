@@ -35,7 +35,7 @@ import javax.swing.border.MatteBorder;
  */
 public class VoListCellRenderer<S extends SimpleObject> 
         extends JLabel 
-        implements ListCellRenderer<S> {
+        implements ListCellRenderer {
 
     String htmlTemplate;
     ImageIcon yesIcon;
@@ -67,7 +67,16 @@ public class VoListCellRenderer<S extends SimpleObject>
         htmlTemplate = argHtmlTemplate;
     } // VoListCellRenderer constructor
     
-    @Override
+    /**
+     * Type-safe getListCellRendererComponent implementation...
+     * 
+     * @param list
+     * @param value
+     * @param index
+     * @param isSelected
+     * @param cellHasFocus
+     * @return 
+     */
     public Component getListCellRendererComponent(JList<? extends S> list, 
             S value, int index, boolean isSelected, boolean cellHasFocus) {
         VoList voList = (VoList) list;
@@ -122,6 +131,12 @@ public class VoListCellRenderer<S extends SimpleObject>
         
         return ret;
     } // getHtml() method
+
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
+            boolean cellHasFocus) {
+        return getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    }
     
 } // VoListCellRenderer class
 

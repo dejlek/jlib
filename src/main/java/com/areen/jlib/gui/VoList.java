@@ -23,7 +23,7 @@ import javax.swing.JList;
  * @param <S> SimpleObject implementation we deal with.
  */
 public class VoList<S extends SimpleObject> 
-        extends JList<S>
+        extends JList
         implements KeyListener, MouseListener {
     
     VoListModel<S> model;

@@ -24,7 +24,7 @@ import javax.swing.AbstractListModel;
  * @param <E> an element type which extends the ValueObject type.
  */
 public class VoListModel<E extends SimpleObject> 
-        extends AbstractListModel<E> {
+        extends AbstractListModel {
     ArrayList<E> data;
     BitSet pickedItems;
     Class<E> elementClass;
