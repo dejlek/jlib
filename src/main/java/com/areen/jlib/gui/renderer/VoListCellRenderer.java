@@ -70,6 +70,10 @@ public class VoListCellRenderer<S extends SimpleObject>
     /**
      * Type-safe getListCellRendererComponent implementation...
      * 
+     * Note: it should be something like: getListCellRendererComponent(JList<? extends S> list, S value, 
+     *       int index, boolean isSelected, boolean cellHasFocus) , but JList from 1.6 does not take type
+     *       parameters...
+     * 
      * @param list
      * @param value
      * @param index
@@ -77,7 +81,7 @@ public class VoListCellRenderer<S extends SimpleObject>
      * @param cellHasFocus
      * @return 
      */
-    public Component getListCellRendererComponent(JList<? extends S> list, 
+    public Component getListCellRendererComponent(JList list, 
             S value, int index, boolean isSelected, boolean cellHasFocus) {
         VoList voList = (VoList) list;
         setComponentOrientation(list.getComponentOrientation());
