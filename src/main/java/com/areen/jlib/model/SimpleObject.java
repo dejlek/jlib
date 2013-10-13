@@ -13,8 +13,11 @@ import com.areen.jlib.pattern.ValueObject;
  * It is also a FACTORY of the ValueObject.
  *
  * @author dejan
+ * @param <T> A ValueObject implementation this SimpleObject interface deals with.
  */
 public interface SimpleObject<T extends ValueObject> extends Cloneable {
+    
+    
     Object   get(int argIndex);
     Class<?> getFieldClass(int argIndex);
     byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
@@ -37,6 +40,7 @@ public interface SimpleObject<T extends ValueObject> extends Cloneable {
     SimpleObject<T>[] create(int argNumberOfElements);
     
     SimpleObject<T>   clone() throws CloneNotSupportedException;
+    
 } // SimpleObject interface
 
 // $Id$

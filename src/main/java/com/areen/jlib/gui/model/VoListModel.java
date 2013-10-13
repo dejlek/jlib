@@ -12,6 +12,8 @@
 package com.areen.jlib.gui.model;
 
 import com.areen.jlib.model.SimpleObject;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.BitSet;
 import javax.swing.AbstractListModel;
@@ -30,6 +32,7 @@ public class VoListModel<E extends SimpleObject>
     public VoListModel() {
         data = new ArrayList<E>();
         pickedItems = new BitSet();
+        propertyChangeSupport = new PropertyChangeSupport(this);
     }
     
     // ====================================================================================================
@@ -81,19 +84,84 @@ public class VoListModel<E extends SimpleObject>
     
     public void setPickedItem(int argIndex) {
         pickedItems.set(argIndex);
+        updateNumberOfPickedItems();
     }
     
     public void setPickedItem(int argIndex, boolean argValue) {
         pickedItems.set(argIndex, argValue);
+        updateNumberOfPickedItems();
     }
     
     public void togglePickedItem(int argIndex) {
         pickedItems.flip(argIndex);
+        updateNumberOfPickedItems();
     }
     
+    // ====================================================================================================
+    // ==== Bean variables and methods ====================================================================
+    // ====================================================================================================
+
+    // These are the common building-blocks we need for handy property change support
+    
+    private final PropertyChangeSupport propertyChangeSupport;
+    
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+    
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+    
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
+    }
+    
+    public PropertyChangeListener[] getPropertyChangeListeners() {
+        return propertyChangeSupport.getPropertyChangeListeners();
+    }
+    
+    public PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
+        return propertyChangeSupport.getPropertyChangeListeners(propertyName);
+    }
+    
+    // ::::: <name> property ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    private int numberOfPickedItems = 0;
+    public static final String PROP_NUMBEROFPICKEDITEMS = "numberOfPickedItems";
+    
+    /**
+     * Get the value of exampleProperty
+     *
+     * @return the value of exampleProperty
+     */
     public int getNumberOfPickedItems() {
         return pickedItems.cardinality();
     }
+
+    /**
+     * This PRIVATE method is used by the VoListModel to fire property change event whenever cardinality of
+     * the pickedItems BitSet is changed.
+     * 
+     * NOTE: this method is safe to call with any argument.
+     *
+     * @param argRowMarked new value of exampleProperty
+     */
+    private void updateNumberOfPickedItems() {
+        int oldNumber = numberOfPickedItems;
+        int argNumber = pickedItems.cardinality();
+        
+        if ((oldNumber == argNumber) || argNumber >= pickedItems.size()) {
+            return;
+        }
+        
+        numberOfPickedItems = argNumber;
+        propertyChangeSupport.firePropertyChange(PROP_NUMBEROFPICKEDITEMS, oldNumber, argNumber);
+    } // setNumberOfPickedItems() method
     
 } // VoListModel class
 

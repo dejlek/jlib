@@ -110,6 +110,8 @@ public class StringUtility {
      * 
      * If the argValues contains more than 10 elements, it ignores all elements with index greater than 9.
      * 
+     * If one of argValues is null, it will be replaced with an empty set character ("\u2205").
+     * 
      * @param argTemplate
      * @param argValues
      * @return 
@@ -119,7 +121,7 @@ public class StringUtility {
         
         int max = Math.min(10, argValues.length);
         for (int i = 0; i < max; i++) {
-            ret = ret.replaceAll("\\$" + i, argValues[i].toString());
+            ret = ret.replaceAll("\\$" + i, argValues[i] == null ? "\u2205" : argValues[i].toString());
         } // for
         
         return ret;
@@ -138,6 +140,8 @@ public class StringUtility {
                 new Object[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}));
         System.out.println(replaceVars("$0 $1 $2 $3 $4 $5 $6 $7 $8 $9", 
                 new Integer(3)));
+        System.out.println(replaceVars("$0 $1 $2 $3 $4 $5 $6 $7 $8 $9", 
+                new Object[]{9, 8, 7, 6, 5, null, 3, 2, 1, 0}));
         System.out.println();
     }
     

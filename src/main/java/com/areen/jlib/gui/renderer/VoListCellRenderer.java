@@ -40,6 +40,7 @@ public class VoListCellRenderer<S extends SimpleObject>
     String htmlTemplate;
     ImageIcon yesIcon;
     Border border;
+    private Color pickedBackground;
     
     /**
      * Constructs a default renderer object for an item
@@ -53,6 +54,7 @@ public class VoListCellRenderer<S extends SimpleObject>
         yesIcon = new ImageIcon(GuiTools.getResource(VoListCellRenderer.class, 
                 "/com/areen/jlib/res/icons/yes.png"));
         border = new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY);
+        pickedBackground = new Color(200, 200, 255);;
     } // VoListCellRenderer constructor (default)
     
     /**
@@ -83,7 +85,7 @@ public class VoListCellRenderer<S extends SimpleObject>
             setForeground(sfg);
         } else {
             if (listModel.isPicked(index)) {
-                setBackground(Color.GREEN);
+                setBackground(pickedBackground);
                 setForeground(fg);
             } else {
                 setBackground(bg);
