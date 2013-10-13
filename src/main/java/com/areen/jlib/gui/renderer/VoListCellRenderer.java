@@ -139,7 +139,9 @@ public class VoListCellRenderer<S extends SimpleObject>
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
             boolean cellHasFocus) {
-        return getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        // For now, we have to call the method above which is aware of the type S... All this because 
+        // in Java 1.6 JList does not take type parameter...
+        return getListCellRendererComponent(list, (S) value, index, isSelected, cellHasFocus);
     }
     
 } // VoListCellRenderer class

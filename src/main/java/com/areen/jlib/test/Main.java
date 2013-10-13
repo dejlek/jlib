@@ -334,9 +334,9 @@ public class Main {
                 mainFrame.setLocationRelativeTo(null);
                 mainFrame.setVisible(true);
                 
-                JlibTestFrame frame = new JlibTestFrame();
-                mainFrame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+                JlibTestFrame jltframe = new JlibTestFrame();
+                jltframe.setLocationRelativeTo(null);
+                jltframe.setVisible(true);
             }
         }); // invokeLater()
     } // main() method
