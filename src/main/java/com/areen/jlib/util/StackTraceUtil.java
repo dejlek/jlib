@@ -9,7 +9,7 @@
  * Authors (in chronological order): 
  *   -
  * Contributors (in chronological order): 
- *   -
+ *   Dejan Lekic , http://dejan.lekic.org
  */
 package com.areen.jlib.util;
 
@@ -32,17 +32,17 @@ public final class StackTraceUtil {
     /**
      * Defines a custom format for the stack trace as String.
      */
-    public static String getCustomStackTrace(Throwable aThrowable) {
+    public static String getCustomStackTrace(final String argHeader, Throwable aThrowable) {
         //add the class name and any message passed to constructor
-        StringBuilder result = new StringBuilder("BOO-BOO: ");
+        StringBuilder result = new StringBuilder(argHeader);
         result.append(aThrowable.toString());
-        String NEW_LINE = System.getProperty("line.separator");
-        result.append(NEW_LINE);
+        String newLine = System.getProperty("line.separator");
+        result.append(newLine);
 
         //add each element of the stack trace
         for (StackTraceElement element : aThrowable.getStackTrace()) {
             result.append(element);
-            result.append(NEW_LINE);
+            result.append(newLine);
         }
         return result.toString();
     }
@@ -53,7 +53,7 @@ public final class StackTraceUtil {
     public static void main(String... aArguments) {
         Throwable throwable = new IllegalArgumentException("Blah");
         System.out.println(getStackTrace(throwable));
-        System.out.println(getCustomStackTrace(throwable));
+        System.out.println(getCustomStackTrace("MEEP MEEP: ", throwable));
     }
 } // StackTraceUtil class
 
