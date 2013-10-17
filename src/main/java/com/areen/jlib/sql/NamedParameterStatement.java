@@ -31,24 +31,27 @@ import java.util.Map;
  * This class wraps around a {@link PreparedStatement} and allows the programmer to set parameters by name
  * instead of by index. This eliminates any confusion as to which parameter index represents what. This also
  * means that rearranging the SQL statement or adding a parameter doesn't involve renumbering your indices.
- * Code such as this:
  * 
+ * Code such as this:
+ * <pre>
  * Connection con=getConnection(); 
  * String query="select * from my_table where name=? or address=?";
  * PreparedStatement p=con.prepareStatement(query); 
  * p.setString(1, "bob"); 
  * p.setString(2, "123 terrace ct");
  * ResultSet rs=p.executeQuery();
+ * </pre>
  * 
  * can be replaced with:
- * 
+ * <pre>
  * Connection con=getConnection(); 
  * String query="select * from my_table where name=:name or address=:address";
  * NamedParameterStatement p=new NamedParameterStatement(con, query); 
  * p.setString("name", "bob");
  * p.setString("address", "123 terrace ct"); 
  * ResultSet rs=p.executeQuery();
- *
+ * </pre>
+ * 
  * NOTE: this Java source code is takem from: 
  *       http://www.javaworld.com/javaworld/jw-04-2007/jw-04-jdbc.html?page=2
  * 
