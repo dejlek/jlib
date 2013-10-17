@@ -11,7 +11,6 @@
  * Contributors (in chronological order): 
  *   Dejan Lekic - http://dejan.lekic.org
  */
-
 package com.areen.jlib.sql;
 
 import java.sql.Connection;
