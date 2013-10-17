@@ -71,6 +71,8 @@ public class NamedParameterStatement {
      * Maps parameter names to arrays of ints which are the parameter indices.
      */
     private final Map indexMap;
+    
+    private String sqlCode;
 
     /**
      * Creates a NamedParameterStatement. Wraps a call to 
@@ -83,8 +85,8 @@ public class NamedParameterStatement {
     public NamedParameterStatement(Connection connection, String query) throws
             SQLException {
         indexMap = new HashMap();
-        String parsedQuery = parse(query, indexMap);
-        statement = connection.prepareStatement(parsedQuery);
+        sqlCode = parse(query, indexMap);
+        statement = connection.prepareStatement(sqlCode);
     }
 
     /**
@@ -325,6 +327,10 @@ public class NamedParameterStatement {
      */
     public int[] executeBatch() throws SQLException {
         return statement.executeBatch();
+    }
+
+    public String getSqlCode() {
+        return sqlCode;
     }
 
 } // NamedParameterStatement class
