@@ -15,6 +15,7 @@ import com.areen.jlib.model.SimpleObject;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import javax.swing.AbstractListModel;
 
@@ -95,6 +96,17 @@ public class VoListModel<E extends SimpleObject>
     public void togglePickedItem(int argIndex) {
         pickedItems.flip(argIndex);
         updateNumberOfPickedItems();
+    }
+    
+    public void setData(E[] argItems) {
+        int iend = data.size() - 1;
+        data.clear();
+        pickedItems.clear();
+        fireIntervalRemoved(this, 0, iend);
+        data.addAll(Arrays.asList(argItems));
+        iend = data.size();
+        fireIntervalAdded(this, 0, iend);
+        pickedItems.clear(0, iend - 1); // reset pickedItems (and possibly resize it)
     }
     
     // ====================================================================================================

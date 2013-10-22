@@ -41,6 +41,7 @@ public class VoListCellRenderer<S extends SimpleObject>
     ImageIcon yesIcon;
     Border border;
     private Color pickedBackground;
+    private static final Color DISABLED_BG = new Color(250, 250, 250);
     
     /**
      * Constructs a default renderer object for an item
@@ -91,6 +92,12 @@ public class VoListCellRenderer<S extends SimpleObject>
         Color bg = voList.getBackground();
         Color fg = voList.getForeground();
 
+        if (!list.isEnabled()) {
+            sfg = Color.LIGHT_GRAY;
+            fg = Color.LIGHT_GRAY;
+            bg = DISABLED_BG;
+        }
+        
         VoListModel listModel = (VoListModel) voList.getModel();
         
         if (isSelected) {
