@@ -119,8 +119,9 @@ public class StringUtility {
     public static String replaceVars(String argTemplate, Object... argValues) { 
         String ret = argTemplate;
         
-        int max = Math.min(10, argValues.length);
-        for (int i = 0; i < max; i++) {
+        
+        // we do it in reverse order so we do not get $18 replaced as $1 + 8 ...
+        for (int i = argValues.length - 1; i >= 0; i--) {
             ret = ret.replaceAll("\\$" + i, argValues[i] == null ? "\u2205" : argValues[i].toString());
         } // for
         
@@ -142,6 +143,8 @@ public class StringUtility {
                 new Integer(3)));
         System.out.println(replaceVars("$0 $1 $2 $3 $4 $5 $6 $7 $8 $9", 
                 new Object[]{9, 8, 7, 6, 5, null, 3, 2, 1, 0}));
+        System.out.println(replaceVars("$0 .. $17", 
+                new Object[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 8, 7, 6, 5, 4, 3, 2, 1, 0}));
         System.out.println();
     }
     

@@ -35,11 +35,13 @@ public class VoList<S extends SimpleObject>
         
         model = argModel;
         
+        // make some default template
         listCellRenderer = new VoListCellRenderer<S>("<b>$0</b><br/>$1, $2, $3, $4, $5, $6, $7, $8, $9");
         setCellRenderer(listCellRenderer);
         
         addKeyListener(this);
         addMouseListener(this);
+        
     } // VoList constructor
     
     // ====================================================================================================

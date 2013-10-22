@@ -92,21 +92,21 @@ public class VoListModel<E extends SimpleObject>
         pickedItems.set(argIndex, argValue);
         updateNumberOfPickedItems();
     }
-    
+
     public void togglePickedItem(int argIndex) {
         pickedItems.flip(argIndex);
         updateNumberOfPickedItems();
     }
     
     public void setData(E[] argItems) {
-        int iend = data.size() - 1;
+        int iend = data.isEmpty() ? 0 : data.size() - 1;
         data.clear();
         pickedItems.clear();
         fireIntervalRemoved(this, 0, iend);
         data.addAll(Arrays.asList(argItems));
-        iend = data.size();
+        iend = data.isEmpty() ? 0 : data.size() - 1;
+        pickedItems.clear(0, iend); // reset pickedItems (and possibly resize it)
         fireIntervalAdded(this, 0, iend);
-        pickedItems.clear(0, iend - 1); // reset pickedItems (and possibly resize it)
     }
     
     // ====================================================================================================

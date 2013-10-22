@@ -124,6 +124,7 @@ public class VoListCellRenderer<S extends SimpleObject>
         return this;
     } // getListCellRendererComponent() method
     
+    
     /**
      * Generates HTML code.
      * 
@@ -150,7 +151,15 @@ public class VoListCellRenderer<S extends SimpleObject>
         // in Java 1.6 JList does not take type parameter...
         return getListCellRendererComponent(list, (S) value, index, isSelected, cellHasFocus);
     }
-    
+
+    public String getHtmlTemplate() {
+        return htmlTemplate;
+    }
+
+    public void setHtmlTemplate(String argHtmlTemplate) {
+        htmlTemplate = argHtmlTemplate;
+    }
+
 } // VoListCellRenderer class
 
 // $Id$
