@@ -59,7 +59,7 @@ public interface CrudOperations<T extends ValueObject> {
     // CREATE -------------------------------------------
     T       create();
     T       create(T argVo);
-    T[]     create(T[] argVos); // Used for duplicating rows
+    T[]     create(T[] argVos); // Used for creating and/or duplicating bunch of rows
 
     // READ ---------------------------------------------
     T[]     readAll();
@@ -79,6 +79,7 @@ public interface CrudOperations<T extends ValueObject> {
     // DELETE -------------------------------------------
     boolean delete(T argVo);
     boolean delete(T[] argVos); /// Used to delete a group of rows
+    
 } // CrudOperations<T> interface
 
 // $Id$

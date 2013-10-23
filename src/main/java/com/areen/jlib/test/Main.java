@@ -5,10 +5,14 @@
 package com.areen.jlib.test;
 
 import com.areen.jlib.gui.GuiTools;
+import com.areen.jlib.pattern.ValueObject;
 import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.JlibInfo;
 import com.areen.jlib.util.ExceptionLogger;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 /**
@@ -305,6 +309,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // Instansiate JlibInfo Class to load version resources
         JlibInfo versionInfo = new JlibInfo();
+        User user = new User();
+        user.set(1, "LED01");
+        VoUtility.set(user.getValue(), "dept", "ITC");
+        VoUtility.set(user.getValue(), "userName", "dejan");
+        System.out.println(user);
+        
 
         try {
             //Tell the UIManager to use the platform look and feel
@@ -340,6 +350,29 @@ public class Main {
             }
         }); // invokeLater()
     } // main() method
+    
+    /**
+     * Utility class with static methods to manipulate VOs.
+     */
+    public static class VoUtility {
+
+        public static void set(ValueObject argVO, String name, Object value) {
+            Class<?> cls = argVO.getClass();
+            try {
+                Field field = cls.getDeclaredField(name);
+                field.set(argVO, value);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchFieldException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } // set() method
+        
+    } // VoUtility class
     
 } // Main class
 
