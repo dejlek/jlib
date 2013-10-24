@@ -6,9 +6,9 @@
 
 package com.areen.jlib.gui;
 
-import com.areen.jlib.gui.model.VoListModel;
 import com.areen.jlib.model.SimpleObject;
 import java.awt.datatransfer.Transferable;
+import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
@@ -26,8 +26,10 @@ public class VoListTransferHandler<T extends SimpleObject> extends TransferHandl
     @Override
     public Transferable createTransferable(JComponent argComponent) {
         VoList<T> list =  (VoList<T>) argComponent;
-        VoListModel<T> model = (VoListModel<T>) list.getModel();
-        return new TransferableSO<T>((T[]) model.getPickedItems());
-    }
-    
-}
+        ArrayList<T> objects = list.getMarkedItems();
+        System.out.print("num: " + objects.size() + " ");
+        System.out.println(objects.get(0).getClass().getCanonicalName());
+        return new TransferableSO<T>(objects);
+    } // createTransferable() method
+        
+} // VoListTransferHandler class

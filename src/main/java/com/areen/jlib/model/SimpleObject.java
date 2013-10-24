@@ -1,6 +1,7 @@
 package com.areen.jlib.model;
 
 import com.areen.jlib.pattern.ValueObject;
+import java.io.Serializable;
 
 /**
  * Every class which has an underlying VO (transfer object) should implement this
@@ -15,9 +16,7 @@ import com.areen.jlib.pattern.ValueObject;
  * @author dejan
  * @param <T> A ValueObject implementation this SimpleObject interface deals with.
  */
-public interface SimpleObject<T extends ValueObject> extends Cloneable {
-    
-    
+public interface SimpleObject<T extends ValueObject> extends Cloneable, Serializable {
     Object   get(int argIndex);
     Class<?> getFieldClass(int argIndex);
     byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!

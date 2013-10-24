@@ -109,14 +109,14 @@ public class VoListModel<E extends SimpleObject>
         fireIntervalAdded(this, 0, iend);
     }
     
-    public E[] getPickedItems() {
+    public ArrayList<E> getPickedItems() {
         ArrayList<E> ret = new ArrayList<E>(getNumberOfPickedItems());
         
         for (int i = pickedItems.nextSetBit(0); i >= 0; i = pickedItems.nextSetBit(i + 1)) {
             ret.add(data.get(i));
         }
         
-        return (E[]) ret.toArray();
+        return ret;
     } // getPickedItems() method
     
     // ====================================================================================================

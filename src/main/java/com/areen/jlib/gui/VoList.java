@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.JList;
 
 /**
@@ -120,10 +121,25 @@ public class VoList<S extends SimpleObject>
     }
     
     // ::::: JList :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
     @Override
     public VoListCellRenderer<S> getCellRenderer() {
         return listCellRenderer;
     }
+    
+    /**
+     * Gives a list of items that are picked, INCLUDING the currently selected item.
+     * 
+     * @return 
+     */
+    public ArrayList<S> getMarkedItems() {
+       ArrayList<S> ret = model.getPickedItems();
+       S selectedItem = (S) getSelectedValue();
+       if (!ret.contains(selectedItem)) {
+           ret.add(selectedItem);
+       }
+       return ret;
+    } // getMarked() method
     
 } // VoList class
 
