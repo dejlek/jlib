@@ -31,7 +31,7 @@ public class TransferableSO<T extends SimpleObject> implements Transferable {
     @Override
     public DataFlavor[] getTransferDataFlavors() {
         DataFlavor[] ret = new DataFlavor[1];
-        ret[0] = new DataFlavor(SimpleObject[].class, SimpleObject[].class.getCanonicalName());
+        ret[0] = SIMPLE_OBJECT_ARRAY_DATA_FLAVOR;
         
         return ret;
     }

@@ -20,7 +20,7 @@ public class VoListTransferHandler<T extends SimpleObject> extends TransferHandl
 
     @Override
     public int getSourceActions(JComponent c) {
-        return TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.COPY;
     }
 
     @Override
