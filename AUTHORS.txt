@@ -1,0 +1,12 @@
+Authors of the JLIB project.
+ 
+  Copyright (C) 2009-2013, JLIB project authors.
+ 
+  Copying and distribution of this file, with or without modification,
+  are permitted in any medium without royalty provided the copyright
+  notice, this notice, and the list of individuals below are preserved.
+  
+ 
+Authors in chronological (ascending) order:
+  Dejan Lekic , http://dejan.lekic.org
+  Mateusz Dykiert
