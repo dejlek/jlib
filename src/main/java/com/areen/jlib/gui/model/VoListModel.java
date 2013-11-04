@@ -92,6 +92,21 @@ public class VoListModel<E extends SimpleObject>
         pickedItems.set(argIndex, argValue);
         updateNumberOfPickedItems();
     }
+    
+    /**
+     * Use this method to flag that all items are picked (true) or not (false).
+     * 
+     * @param arg 
+     */
+    public void setAllPicked(boolean arg) {
+        if (arg) {
+            pickedItems.set(0, data.size() - 1, true);
+        } else {
+            pickedItems.clear();
+        }
+        updateNumberOfPickedItems();
+        fireContentsChanged(this, 0, data.size() - 1);
+    } // setAllPicked() method
 
     public void togglePickedItem(int argIndex) {
         pickedItems.flip(argIndex);
