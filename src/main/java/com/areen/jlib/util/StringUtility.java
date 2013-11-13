@@ -128,6 +128,35 @@ public class StringUtility {
         return ret;
     } // replaceVars() method
     
+    /**
+     * Dummy Rot13 encryption.
+     * 
+     * Example:
+     * <pre>
+     * System.out.println(rot13("helloTHERE123!")); // output: uryybGURER123!
+     * System.out.println(rot13("uryybGURER123!")); // output: helloTHERE123!
+     * </pre>
+     * 
+     * @param argInput
+     * @return 
+     */
+    public static String rot13(String argInput) {
+        String ret = "";
+        for (int i = 0; i < argInput.length(); i++) {
+            char ch = argInput.charAt(i);
+            int dif = 0;
+            if ((ch >= 'A' && ch <= 'M') || (ch >= 'a' && ch <= 'm')) {
+                dif = 13;
+            }
+            if ((ch >= 'N' && ch <= 'Z') || (ch >= 'n' && ch <= 'z')) {
+                dif = -13;
+            }
+            ch += dif;
+            ret += ch;
+        } // for
+        return ret;
+    } // rot13() method
+    
     
     public static void main(String[] args) {
         //String docId = Integer.toString(12314, 36); // say document_id = 12314
@@ -146,6 +175,10 @@ public class StringUtility {
         System.out.println(replaceVars("$0 .. $17", 
                 new Object[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 8, 7, 6, 5, 4, 3, 2, 1, 0}));
         System.out.println();
+        System.out.println(rot13("helloTHERE123!")); // output: uryybGURER123!
+        System.out.println(rot13("uryybGURER123!")); // output: helloTHERE123!
+        System.out.println(rot13("3vJs3Q6N!!"));
+        System.out.println(rot13("StaffNetPrj"));
     }
     
 } // StringUtility class
