@@ -19,7 +19,7 @@ import java.io.Serializable;
 public interface SimpleObject<T extends ValueObject> extends Cloneable, Serializable {
     Object   get(int argIndex);
     Class<?> getFieldClass(int argIndex);
-    byte     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
+    int     getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
     String[] getTitles();
     T        getValue();
     

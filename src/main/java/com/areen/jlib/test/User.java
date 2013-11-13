@@ -33,7 +33,7 @@ import java.io.Serializable;
  */
 public final class User implements SimpleObject<User.VO> {
 
-    static final byte NUMBER_OF_FIELDS = 4;
+    static final int NUMBER_OF_FIELDS = 4;
     String[] titles = new String[]{"User ID", "Department", "Username", "Password"};
 
     @Override
@@ -133,7 +133,7 @@ public final class User implements SimpleObject<User.VO> {
     }
 
     @Override
-    public byte getNumberOfFields() {
+    public int getNumberOfFields() {
         return NUMBER_OF_FIELDS;
     }
 
