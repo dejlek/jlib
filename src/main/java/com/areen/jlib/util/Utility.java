@@ -493,6 +493,13 @@ public class Utility {
      * Takes a file with path as a String, and returns a pair. First element of the pair is the directory
      * which ENDS with "/", and the second element is the file name.
      * 
+     * Example:
+     * <pre>
+     * pair = parsePath("/path/to/my/portrait.jpg");
+     * System.out.println(pair.getFirst());  // output: /path/to/my/
+     * System.out.println(pair.getSecond()); // output: portrait.jpg
+     * </pre>
+     * 
      * @param argFileNameWithPath
      * @return An instance of Path<String, String> class.
      */
@@ -509,7 +516,7 @@ public class Utility {
                 pair.setSecond("");
             } else {
                 int idx = file.lastIndexOf("/");
-                String remoteDir = file.substring(0, idx);
+                String remoteDir = file.substring(0, idx + 1);
                 String remoteFile = file.substring(idx + 1, file.length());
                 pair.setFirst(remoteDir);
                 pair.setSecond(remoteFile);
