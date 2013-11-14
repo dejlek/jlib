@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Utility {
     
     /**
-     * A helper constructor to prevents calls from asubclass.
+     * A helper constructor to prevents calls from a subclass.
      */
     protected Utility() { 
         throw new UnsupportedOperationException(); 
@@ -488,6 +488,42 @@ public class Utility {
                
         return mimeclass;
     } // getMimeType() method
+    
+    /**
+     * Takes a file with path as a String, and returns a pair. First element of the pair is the directory
+     * which ENDS with "/", and the second element is the file name.
+     * 
+     * @param argFileNameWithPath
+     * @return An instance of Path<String, String> class.
+     */
+    public static Pair<String, String> parsePath(String argFileNameWithPath) {
+        Pair<String, String> pair = new Pair<String, String>("/", "unknown.file");
+        String file = argFileNameWithPath.trim();
+        
+        if (file.contains("/")) {
+            if (file.endsWith("/")) {
+                /* Instead of file, we have a directory... Set the file to an empty string and return the
+                 * Pair object.
+                 */
+                pair.setFirst(file);
+                pair.setSecond("");
+            } else {
+                int idx = file.lastIndexOf("/");
+                String remoteDir = file.substring(0, idx);
+                String remoteFile = file.substring(idx + 1, file.length());
+                pair.setFirst(remoteDir);
+                pair.setSecond(remoteFile);
+            } // else
+        } else {
+            /* if the argument does not contain the "/", we will set the directory to an empty string, and
+             * the rest will be the file-name.
+             */
+            pair.setFirst("");
+            pair.setSecond(file);
+        } // else
+        
+        return pair;
+    } // parsePath() method
 
 } // Utility class
 
