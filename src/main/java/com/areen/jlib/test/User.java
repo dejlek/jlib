@@ -32,6 +32,12 @@ import java.io.Serializable;
  * @author dejan
  */
 public final class User implements SimpleObject<User.VO> {
+    public static enum Field implements ValueObject.Field {
+        USER_ID,
+        DEPARTMENT,
+        USER_NAME,
+        PASSWORD
+    }
 
     static final int NUMBER_OF_FIELDS = 4;
     String[] titles = new String[]{"User ID", "Department", "Username", "Password"};
@@ -65,6 +71,7 @@ public final class User implements SimpleObject<User.VO> {
     } // User.VO class
 
     User.VO value;
+    
     /*************************************************************************
      * Constructors
      *************************************************************************/
@@ -199,12 +206,45 @@ public final class User implements SimpleObject<User.VO> {
         return ret;
     }
     
+    //@Override
+    public Object get(final User.Field argField) {
+        Object ret = null;
+        switch (argField) {
+            case USER_ID: ret = value.userId; break;
+            case DEPARTMENT: ret = value.dept; break;
+            case USER_NAME: ret = value.userName; break;
+            case PASSWORD: ret = value.password; break;
+            default: break; // No action
+        } // switch
+        return ret;
+    } // get() method
+    
+    //@Override
+    public Object set(final User.Field argField, final Object argValue) {
+        Object result = null;
+        switch (argField) {
+            case USER_ID: value.userId = (String) argValue; break;
+            case DEPARTMENT: value.dept = (String) argValue; break;
+            case USER_NAME: value.userName = (String) argValue; break;
+            case PASSWORD: value.password = (String) argValue; break;
+            default: break; // No action
+        } // switch
+        result = argValue;
+        
+        return result;
+    }
+    
     // ====================================================================================================
     // ==== Main function =================================================================================
     // ====================================================================================================
     
 	public static void main(String[] args) {
 		User user = new User();
+        user.set(Field.USER_ID, "LED01");
+        user.set(Field.DEPARTMENT, "ITC");
+        user.set(Field.USER_NAME, "dejan");
+        user.set(Field.PASSWORD, "5up3r53cr3t");
+        System.out.println(user);
         if (user instanceof Cloneable) {
             System.out.println("Cloneable!");
         }

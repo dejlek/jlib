@@ -10,5 +10,5 @@ package com.areen.jlib.pattern;
  * @author dejan
  */
 public interface ValueObject {
-    public interface Fields { }
+    public interface Field { }
 } // ValueObject interface
