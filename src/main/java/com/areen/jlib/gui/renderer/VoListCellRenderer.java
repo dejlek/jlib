@@ -37,8 +37,10 @@ public class VoListCellRenderer<S extends SimpleObject>
         extends JLabel 
         implements ListCellRenderer {
 
+    private boolean iconEnabled = false;
+    
     String htmlTemplate;
-    ImageIcon yesIcon;
+    ImageIcon itemIcon;
     Border border;
     private Color pickedBackground;
     private static final Color DISABLED_BG = new Color(250, 250, 250);
@@ -52,10 +54,10 @@ public class VoListCellRenderer<S extends SimpleObject>
         setName("List.cellRenderer");
         setOpaque(true);
         htmlTemplate = "$0";
-        yesIcon = new ImageIcon(GuiTools.getResource(VoListCellRenderer.class, 
+        itemIcon = new ImageIcon(GuiTools.getResource(VoListCellRenderer.class, 
                 "/com/areen/jlib/res/icons/yes.png"));
         border = new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY);
-        pickedBackground = new Color(200, 200, 255);;
+        pickedBackground = new Color(200, 200, 255);
     } // VoListCellRenderer constructor (default)
     
     /**
@@ -113,11 +115,14 @@ public class VoListCellRenderer<S extends SimpleObject>
             }
         }
 
-        if (yesIcon == null) {
-            System.out.println("WHATTTTT");
+        if (isIconEnabled()) {
+            if (itemIcon == null) {
+                System.out.println("WHATTTTT");
+            }
+
+            setIcon(itemIcon);
         }
         
-        setIcon(yesIcon);
         setText(getHtml(value));
         setBorder(border);
         
@@ -158,6 +163,14 @@ public class VoListCellRenderer<S extends SimpleObject>
 
     public void setHtmlTemplate(String argHtmlTemplate) {
         htmlTemplate = argHtmlTemplate;
+    }
+
+    public boolean isIconEnabled() {
+        return iconEnabled;
+    }
+
+    public void setIconEnabled(boolean argIconEnabled) {
+        iconEnabled = argIconEnabled;
     }
 
 } // VoListCellRenderer class
