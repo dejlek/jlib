@@ -45,6 +45,9 @@ public class VoListCellRenderer<S extends SimpleObject>
     private Color pickedBackground;
     private static final Color DISABLED_BG = new Color(250, 250, 250);
     
+    private static final Color EVEN_BG = Color.WHITE;
+    private static final Color ODD_BG = new Color(250, 250, 250);
+    
     /**
      * Constructs a default renderer object for an item
      * in a list.
@@ -89,9 +92,18 @@ public class VoListCellRenderer<S extends SimpleObject>
         VoList voList = (VoList) list;
         setComponentOrientation(list.getComponentOrientation());
         
+        // Make it more visually pleasing
+        if (index % 2 == 0) {
+            setBackground(EVEN_BG);
+        } else {
+            setBackground(ODD_BG);
+        }
+        
         Color sbg = voList.getSelectionBackground();
         Color sfg = voList.getSelectionForeground();
-        Color bg = voList.getBackground();
+        //Color bg = voList.getBackground();
+        //Color fg = voList.getForeground();
+        Color bg = getBackground();
         Color fg = voList.getForeground();
 
         if (!list.isEnabled()) {
