@@ -8,7 +8,6 @@
  * Contributors (in chronological order):
  *   -
  */
-
 package com.areen.jlib.gui.renderer;
 
 import com.areen.jlib.gui.GuiTools;
@@ -46,7 +45,7 @@ public class VoListCellRenderer<S extends SimpleObject>
     private static final Color DISABLED_BG = new Color(250, 250, 250);
     
     private static final Color EVEN_BG = Color.WHITE;
-    private static final Color ODD_BG = new Color(250, 250, 250);
+    private static final Color ODD_BG = new Color(248, 248, 255);
     
     /**
      * Constructs a default renderer object for an item
