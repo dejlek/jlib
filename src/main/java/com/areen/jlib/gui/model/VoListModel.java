@@ -99,6 +99,10 @@ public class VoListModel<E extends SimpleObject>
      * @param arg 
      */
     public void setAllPicked(boolean arg) {
+        if (pickedItems.isEmpty()) {
+            return;
+        }
+        
         if (arg) {
             pickedItems.set(0, data.size() - 1, true);
         } else {
