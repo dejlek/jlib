@@ -38,6 +38,7 @@
  */
 package com.areen.jlib.gui;
 
+import com.areen.jlib.gui.model.VoListModel;
 import com.areen.jlib.model.SimpleObject;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
@@ -69,6 +70,12 @@ public class VoListTransferHandler<T extends SimpleObject> extends TransferHandl
     @Override
     public void exportDone(JComponent c, Transferable t, int action) {
         super.exportDone(c, t, action);
+        
+        // if we want to deselect items after drop:
+        VoList<T> list =  (VoList<T>) c;
+        VoListModel model = (VoListModel) list.getModel();
+        model.setAllPicked(false);
+        
         LOGGER.info("DND: VoListTransferHandlerc.exportDone(): " + c.getBounds());
     }
     
