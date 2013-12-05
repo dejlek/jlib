@@ -38,11 +38,13 @@
  */
 package com.areen.jlib.sql;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 /**
- *
+ * Various helper methods that operate on SQL objects.
+ * 
  * @author Dejan
  */
 public class SQLUtil {
@@ -60,6 +62,18 @@ public class SQLUtil {
     } // closeRS() method
     
     /**
+     * Closes the given prepared statement.
+     * 
+     * @param argPreparedStatement
+     * @throws Exception 
+     */
+    public static void closePS(PreparedStatement argPreparedStatement) throws Exception {
+        if (argPreparedStatement != null) {
+            argPreparedStatement.close();
+        }
+    } // close() method
+    
+    /**
      * Closes all given PreparedStatement objects.
      * 
      * @param argPreparedStatements
@@ -67,11 +81,27 @@ public class SQLUtil {
      */
     public static void closePS(PreparedStatement... argPreparedStatements) throws Exception {
         for (PreparedStatement ps : argPreparedStatements) {
-            if (ps != null) {
-                ps.close();
-            }
+            closePS(ps);
         } // foreach
     } // closePS() method
+    
+    /**
+     * Closes the given SQL Connection.
+     * 
+     * @param argConnection
+     * @throws Exception 
+     */
+    public static void close(Connection argConnection) throws Exception {
+        if (argConnection != null) {
+            argConnection.close();
+        }
+    } // close() method
+    
+    public static void close(Connection... argConnections) throws Exception {
+        for (Connection con : argConnections) {
+            close(con);
+        } // foreach
+    } // close() method
     
 } // SQLUtil class
 
