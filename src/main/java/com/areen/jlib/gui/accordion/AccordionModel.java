@@ -52,6 +52,7 @@ public class AccordionModel {
     private ArrayList<JLabel> separators;
     private boolean horizontal;
     private int paneCount;
+    private Dimension minimumDimension;
 
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -348,9 +349,7 @@ public class AccordionModel {
 
         // iterate and find the greatest
         for (AccordionPane pane : panes) {
-            //width = pane.getTitledPane().getWidth(); // Dejan: Current width is constantly changing!!!
-            // Instead, let's use preferred widths, as they do not change.
-            width = pane.getTitledPane().getPreferredSize().width;
+            width = pane.getTitledPane().getMinimumSize().width;
 
             //if it's the greatest so far.. store it
             if (width > greatest) {
@@ -372,7 +371,7 @@ public class AccordionModel {
 
         // iterate and find the greatest
         for (AccordionPane pane : panes) {
-            height = pane.getTitledPane().getHeight();
+            height = pane.getTitledPane().getMinimumSize().height;
 
             //if it's the greatest so far.. store it
             if (height > greatest) {
@@ -396,11 +395,26 @@ public class AccordionModel {
         //horizontal accordion
         if (horizontal) {
             height = calculateGreatestMinimumHeight();
+            if (minimumDimension == null) {
+                minimumDimension = new Dimension(0, height);
+            }
+           
+            if (height > minimumDimension.height) {
+                minimumDimension.height = height;
+            }
+            //if (height < actual height return otherwise set height)
         } else { //vertical
             width = calculateGreatestMinimumWidth();
+            if (minimumDimension == null) {
+                minimumDimension = new Dimension(width, 0);
+            }
+            
+            if (width > minimumDimension.width) {
+                minimumDimension.width = width;
+            }
         } //else
 
-        return new Dimension(width, height);
+        return minimumDimension;
     } // calculateMinimumSize()
 
     /**

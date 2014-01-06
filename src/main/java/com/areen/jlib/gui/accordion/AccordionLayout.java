@@ -168,22 +168,13 @@ public class AccordionLayout implements LayoutManager {
         int width = 0;
         int height = 0;
 
-        Component[] cs = container.getComponents();
-
-        //calculate sizes
-        for (Component c : cs) {
-            if (model.isHorizontal()) {
-                width += c.getPreferredSize().getWidth();
-            } else {
-                height += c.getPreferredSize().getHeight();
-            }
-        } // for
-
         //calculate remaining dimension
         if (model.isHorizontal()) {
-            height = model.calculateHighestTitledPane();
-        } else {
+            height = container.getHeight();
             width = model.calculateWidestTitledPane();
+        } else {
+            height = model.calculateHighestTitledPane();
+            width = container.getWidth();
         }
         
         return new Dimension(width, height);
