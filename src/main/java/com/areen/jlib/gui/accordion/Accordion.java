@@ -263,38 +263,49 @@ public class Accordion extends JComponent implements PropertyChangeListener {
 
         if (canResize(separatorIndex)) {
             Dimension firstDimension;
-
+            Dimension secondDimension;
             //check if the dimensions are set on the pane, otherwise we have to copy
             //them from titledPane.bounds and change
 
-            //first pane
+            // first pane
             if (firstPane.getDimension() == null) {
                 firstDimension = firstPane.getTitledPane().getSize();
             } else {
                 firstDimension = firstPane.getDimension();
             }
-
+            
+            // second pane
+            if (secondPane.getDimension() == null) {
+                secondDimension = secondPane.getTitledPane().getSize();
+            } else {
+                secondDimension = secondPane.getDimension();
+            }
+            
             int h1;
             int w1;
-            int newSize;
+            int h2;
+            int w2;
             int delta;
             
             // compute new sizes
             if (model.isHorizontal()) { //Panes in a row (horizontal case)
                 h1 = firstDimension.height;
                 w1 = firstDimension.width + dx;
-                newSize = w1;
+                h2 = secondDimension.height;
+                w2 = secondDimension.width - dx;
                 delta = dx;
             } else { // vertical case
                 // in vertical state do not change X coordinate
                 h1 = firstDimension.height + dy;
                 w1 = firstDimension.width;
-                newSize = h1;
+                h2 = secondDimension.height - dy;
+                w2 = secondDimension.width;
                 delta = dy;
             } //else
 
             //check minimum dimensions - check if the new dimension won't be smaller than minimum size
-            if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1)) {
+            if (!checkMinimumDimension(firstPane.getTitledPane().getMinimumSize(), w1, h1)
+                    || !checkMinimumDimension(secondPane.getTitledPane().getMinimumSize(), w2, h2)) {
                 return;
             }
             
