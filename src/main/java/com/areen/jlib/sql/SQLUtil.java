@@ -40,7 +40,9 @@ package com.areen.jlib.sql;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 /**
  * Various helper methods that operate on SQL objects.
@@ -67,6 +69,30 @@ public class SQLUtil {
      * @param argPreparedStatement
      * @throws Exception 
      */
+    public static void closeCS(CallableStatement argCallableStatement) throws Exception {
+        if (argCallableStatement != null) {
+            argCallableStatement.close();
+        }
+    } // close() method
+    
+    /**
+     * Closes all given PreparedStatement objects.
+     * 
+     * @param argPreparedStatements
+     * @throws Exception 
+     */
+    public static void closeCS(CallableStatement... argCallableStatement) throws Exception {
+        for (CallableStatement cs : argCallableStatement) {
+            closeCS(cs);
+        } // foreach
+    } // closePS() method
+    
+    /**
+     * Closes the given prepared statement.
+     * 
+     * @param argPreparedStatement
+     * @throws Exception 
+     */
     public static void closePS(PreparedStatement argPreparedStatement) throws Exception {
         if (argPreparedStatement != null) {
             argPreparedStatement.close();
@@ -82,6 +108,30 @@ public class SQLUtil {
     public static void closePS(PreparedStatement... argPreparedStatements) throws Exception {
         for (PreparedStatement ps : argPreparedStatements) {
             closePS(ps);
+        } // foreach
+    } // closePS() method
+    
+    /**
+     * Closes the given prepared statement.
+     * 
+     * @param argPreparedStatement
+     * @throws Exception 
+     */
+    public static void closeST(Statement argStatement) throws Exception {
+        if (argStatement != null) {
+            argStatement.close();
+        }
+    } // close() method
+    
+    /**
+     * Closes all given Statement objects.
+     * 
+     * @param argStatements
+     * @throws Exception 
+     */
+    public static void closeST(Statement... argStatements) throws Exception {
+        for (Statement s : argStatements) {
+            closeST(s);
         } // foreach
     } // closePS() method
     
