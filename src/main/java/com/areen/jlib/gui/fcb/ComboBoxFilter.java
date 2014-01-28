@@ -657,15 +657,25 @@ public class ComboBoxFilter extends PlainDocument {
                         pair = Utility.pairOfStrings(pvalue, comboBoxModel.getColumns(), delimiter);
                     } // elseif
 
-                    // Now we should have Pair object, we can set the text
-                    if (getConfig() == 2) {
-                        setText(pair.getSecond().toString());
-                    } else if (getConfig() == 3) {
-                        setText(pair.getFirst().toString() + getDelimiter() + pair.getSecond().toString());
-                    } // else if
-                    
+                    // If pattern is not a null, but picked key is a null. this can only mean one
+                    // thing - we have a code in the table which is not in the filtered combo box model's
+                    // map. Therefore we just leave it as it is.
+                    if (pickedKey != null) {                    
+                        // Now we should have Pair object, we can set the text
+                        if (getConfig() == 2) {
+                            setText(pair.getSecond().toString());
+                        } else if (getConfig() == 3) {
+                            String f = pair.getFirst().toString();
+                            String s = pair.getSecond().toString();
+                            if (s == null) {
+                                setText(f);
+                            } else {
+                                setText(f + getDelimiter() + s);
+                            } // else
+                        } // else if
+                    } // if
                     LOGGER.info("-----");
-                }
+                } // if
             } // else
         } catch (BadLocationException ex) {
             Logger.getLogger(ComboBoxFilter.class.getName()).error(ex);
