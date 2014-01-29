@@ -52,6 +52,7 @@ public interface ValueObject {
     /**
      * A Field interface to be implemented by a SimpleObject nested enum type.
      * DO NOT implement it inside a ValueObject implementation because it will just make things complicated.
+     * Instead, as noted above, implement it in the SimpleObject implementation.
      */
     public interface Field { }
     
