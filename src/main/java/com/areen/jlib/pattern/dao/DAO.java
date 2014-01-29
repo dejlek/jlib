@@ -44,6 +44,9 @@ import java.io.Serializable;
 /**
  * An implementation of a simple, generic DAO pattern.
  * 
+ * TODO: do a research to exploit possibility to have PK inside the ValueObject itself or at least something
+ * similar to what we did with the Fields interface.
+ * 
  * @author Dejan
  */
 public interface DAO<PK extends Serializable, T extends ValueObject> {
