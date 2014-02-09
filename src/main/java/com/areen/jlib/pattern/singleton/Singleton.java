@@ -37,6 +37,8 @@ public class InheritedSingletonTest extends Singleton {
  * and application-specific functionality added as additional methods.
  *
  * Code from the "Hardcode Java", p62.
+ * 
+ * NOTE: I do not like this Singleton. It should not have init() at all.
  */
 public class Singleton {
     public static Singleton instance = null;
