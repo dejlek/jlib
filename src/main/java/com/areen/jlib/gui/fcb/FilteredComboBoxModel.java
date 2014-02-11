@@ -657,9 +657,10 @@ public class FilteredComboBoxModel
                 foundItem = item;
             }
         } // foreach
-        
+        // Bug fix for the picked Item and Picked key were different.
         if (foundItem != null) {
-            setSelectedItem(foundItem);
+            setSelectedItem(foundItem);         
+            setPickedKey(argKey);
             setPickedItem(foundItem);
         } // if
     } // setSelectedItemByKey() method
