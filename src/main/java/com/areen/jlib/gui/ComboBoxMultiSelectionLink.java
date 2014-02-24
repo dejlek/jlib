@@ -16,9 +16,11 @@ package com.areen.jlib.gui;
 
 import com.areen.jlib.gui.form.ifp.CodePair;
 import com.areen.jlib.tuple.Pair;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -43,11 +45,12 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
     private JComboBox comboBox;
     private JButton carryOverButton;
     private boolean isCarryOverControlled = false;
-    private Object selectedItem;
     private String text;
     private String multiSelectText;
     private String delimiter;
+    private Object selectedItem;
     private ArrayList<Object> selectedItems;
+    private boolean isControlledByBoth = false;
 
     /**
      * The constructor when we have a JLable to link to.
@@ -184,7 +187,7 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
         // When user presses enter, the index of the selected item is -1...
         // However, when picks an item with the mouse, index is always greater or equal to 0.
         System.out.println("comboBox.getSelectedIndex(): " + comboBox.getSelectedIndex());
-        if (comboBox.getSelectedIndex() == -1 && !isCarryOverControlled) {
+        if (comboBox.getSelectedIndex() == -1 && (!isControlledByBoth && !isCarryOverControlled)) {
             return;
         } // if
         selectedItem = comboBox.getSelectedItem();
@@ -215,6 +218,10 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
         
     } // update() method
     
+    /**
+     * Responsible for updating the tool tip of the value component to provide a breakdown of all the 
+     * selections made.
+     */
     private void updateToolTip() {
         String completeSelectionsToolTip = "<html>";
         if (selectedItems != null) {
@@ -252,25 +259,171 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
         } // if
     } // updateToolTip() method
 
+    /**
+     * Retrieval of the delimiter used for separating the selections made by the components of this link.
+     * 
+     * @return the string separator used between selections made
+     */
     public String getDelimiter() {
         return delimiter;
     } // getDelimiter() method
 
+    /**
+     * Sets the delimiter to be used for separating the selections made by the components of this link.
+     * @param argDelimiter
+     */
     public void setDelimiter(String argDelimiter) {
         this.delimiter = argDelimiter;
     } // setDelimiter() method
 
+    /**
+     * Retrieval of all the selections made by the components of this link.
+     * 
+     * @return container of all the selections.
+     */
     public ArrayList<Object> getSelectedItems() {
         return selectedItems;
     } // getSelectedItems() method
     
+    /**
+     * Retrieval of all the String (code) selections made by the components of this link.
+     * 
+     * @return container of all the String (code) selections.
+     */
     public String[] getMultiSelection() {
         String[] multiSelection = null;
         if (multiSelectText != null) {
             multiSelection = multiSelectText.split(delimiter);
         } // if
         return multiSelection;
-    }
+    } // getMultiSelection() method
+    
+    /**
+     * Sets whether or not the components of this link to be the sources that trigger recordings of the 
+     * selections made.
+     * 
+     * @param argControl boolean indicator of whether or not the components of this link are to be 
+     * the selection sources.
+     */
+    public void setControlledByBoth(boolean argControl) {
+        // case where we want both a carry over button and the combobox associated with this link to trigger 
+        // recordings of the selections made
+        if (argControl) { 
+            boolean bothControllers = false;
+            boolean comboControl = false;
+            if (!isCarryOverControlled && carryOverButton == null) {
+                createCarryOverButton();
+                bothControllers = isCarryOverControlled;
+            } // if
+            if (comboBox != null) {
+                ActionListener[] currentComboALs = comboBox.getActionListeners();
+                ArrayList comboALs = new ArrayList(Arrays.asList(currentComboALs));
+                if (!comboALs.contains(this)) {
+                    comboBox.addActionListener(this);
+                    comboControl = true;
+                } else {
+                    comboControl = true;
+                } // else
+                bothControllers = bothControllers && comboControl;
+            } // if
+            if (bothControllers) {
+                isControlledByBoth = true;
+            } // if
+        } else { // case where we want either carry over button or the combobox associated with this link to 
+                 // trigger recordings of the selections made
+            boolean singleController = false;
+            boolean comboControl = false;
+            if (carryOverButton != null) { // case there is a carry over button associated with this link then
+                                           // the button should be the only source for selection recording
+                ActionListener[] currentCarryOverALs = carryOverButton.getActionListeners();
+                ArrayList carryOverALs = new ArrayList(Arrays.asList(currentCarryOverALs));
+                if (!carryOverALs.contains(this)) {
+                    carryOverButton.addActionListener(this);
+                    if (!isCarryOverControlled) {
+                        isCarryOverControlled = true;
+                    } // if
+                } // if
+                if (comboBox != null) {
+                    ActionListener[] currentComboALs = comboBox.getActionListeners();
+                    ArrayList comboALs = new ArrayList(Arrays.asList(currentComboALs));
+                    if (!comboALs.contains(this)) {
+                        comboControl = false;
+                    } else {
+                        comboBox.removeActionListener(this);
+                        comboControl = false;
+                    } // else
+                } // if
+            } else { // case there is only the combo box associated with this link that should be the only 
+                     // source for selection recording
+                if (isCarryOverControlled) {
+                    isCarryOverControlled = false;
+                } // if
+                if (comboBox != null) {
+                    ActionListener[] currentComboALs = comboBox.getActionListeners();
+                    ArrayList comboALs = new ArrayList(Arrays.asList(currentComboALs));
+                    if (!comboALs.contains(this)) {
+                        comboBox.addActionListener(this);
+                        comboControl = true;
+                    } else {
+                        comboControl = true;
+                    } // else
+                } // if
+            } // else
+            singleController = isCarryOverControlled ^ comboControl;
+            if (singleController) {
+                isControlledByBoth = false;
+            } // if
+        } // else
+    } // setControlledByBoth() method
+    
+    /**
+     * Clears the currently stored selections made using the participating components of this link.
+     */
+    public void clearSelection() {
+        if (text != null) {
+            text = null;
+        } // if
+        if (multiSelectText != null) {
+            multiSelectText = null;
+        } // if
+        if (selectedItem != null) {
+            selectedItem = null;
+        } // if
+        if (selectedItems != null) {
+            selectedItems = null;
+        } // if
+        String clearText = "";
+        if (comboBox != null) {
+            Component editingComp = comboBox.getEditor().getEditorComponent();
+            if (editingComp != null) {
+                if (editingComp instanceof JTextField) {
+                    JTextField tfEditingComp = (JTextField) editingComp;
+                    tfEditingComp.setText(clearText);
+                } // if
+            } // if
+        } // if
+        if (valueComponent != null) {
+            switch(type) {
+                case LABEL:
+                    JLabel label = (JLabel) valueComponent;
+                    label.setText(clearText);
+                    label.setToolTipText(clearText);
+                    break;
+                case TEXT_FIELD:
+                    JTextField field = (JTextField) valueComponent;
+                    field.setText(clearText);
+                    field.setToolTipText(clearText);
+                    break;
+                case TEXT_AREA:
+                    JTextArea area = (JTextArea) valueComponent;
+                    area.setText(clearText);
+                    area.setToolTipText(clearText);
+                    break;
+                default:
+                    // nothing
+            } // switch
+        } // if
+    } // clearSelection() method
     
     /**
      * Creates a carry over button to act as middle processing for user selections from the combo. 
@@ -307,20 +460,23 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         //System.out.println("---------------------------------------" + ae.getActionCommand());
-        update();
-        
-        Boolean tmp = (Boolean) comboBox.getClientProperty("item-picked");
+        Object tmp = comboBox.getClientProperty("item-picked");
         //System.out.println("VAL:" + tmp.booleanValue());
         boolean itemPicked = false;
         if (tmp == null) {
             itemPicked = false;
         } else {
-            itemPicked = tmp.booleanValue();
+            itemPicked = new Boolean(tmp.toString());
         } // else
-        
-        boolean applyText = isCarryOverControlled || ae.getActionCommand().equals("comboBoxEdited") 
-                || (ae.getActionCommand().equals("comboBoxChanged") && itemPicked);
+        System.out.println("ae.getActionCommand(): " + ae.getActionCommand());
+        System.out.println("itemPicked: " + itemPicked);
+        System.out.println("isCarryOverControlled: " + isCarryOverControlled);
+        boolean applyText = (!isControlledByBoth && isCarryOverControlled) || (isControlledByBoth 
+                && ae.getActionCommand().equals(carryOverButton.getText())) || (ae.getActionCommand()
+                .equals("comboBoxEdited")  && itemPicked) || ((ae.getActionCommand().equals("comboBoxChanged")
+                && itemPicked));
         if (applyText) {
+            update();
             switch(type) {
                 case LABEL:
                     JLabel label = (JLabel) valueComponent;
@@ -340,8 +496,8 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
                 default:
                     // nothing
             } // switch
+            updateToolTip();
         } // if
-        updateToolTip();
     } // actionPerformed() method
     
 } // ComboBoxMultiSelectionLink class
