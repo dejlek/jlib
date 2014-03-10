@@ -56,6 +56,9 @@ import javax.swing.SwingConstants;
  * This class is made to be used whenever there is a long-running process that has to block user's
  * interaction with the GUI while some worker is doing its job.
  * 
+ * NOTE: The client code will be responsible for specifying where the dialog will appear, by setting location
+ * relative to some Component.
+ * 
  * @author Dejan
  */
 public class ProgressUpdateDialog extends JDialog {
@@ -84,7 +87,7 @@ public class ProgressUpdateDialog extends JDialog {
 		setUndecorated(true);
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 450, 200);
+		setBounds(100, 100, 240, 100);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

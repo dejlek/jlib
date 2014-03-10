@@ -36,27 +36,48 @@
  * Contributor(s):
  *   -
  */
-
-package com.areen.jlib.pattern;
-
-import java.io.Serializable;
+package com.areen.jlib.exceptions;
 
 /**
- * An empty interface which is going to be used to specify that a certain object
- * is going to be used as a (Data) Transfer Object. I have decided to rename it
- * to "Value Object" because acronym "VO" is less confusing than "TO" (for Transfer
- * Object).
- *
- * @author dejan
+ * All Jlib runtime exceptions should extend this class.
+ * 
+ * @author Dejan
  */
-public interface ValueObject extends Serializable {
+public class JlibRTException extends RuntimeException {
     
     /**
-     * A Field interface to be implemented by a SimpleObject nested enum type.
-     * DO NOT implement it inside a ValueObject implementation because it will just make things complicated.
+     * Creates a new JlibRTException.
      */
-    public interface Field { }
-    
-} // ValueObject interface
+    public JlibRTException() {
+        super();
+    }
 
-// $Id$
+    /**
+     * Constructs a new JlibRTException.
+     *
+     * @param message the reason for the exception
+     */
+    public JlibRTException(String message) {
+        super(message);
+    }
+
+    /**
+     * Constructs a new JlibRTException.
+     *
+     * @param cause the underlying Throwable that caused this exception to be thrown.
+     */
+    public JlibRTException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Constructs a new JlibRTException.
+     *
+     * @param message the reason for the exception
+     * @param cause   the underlying Throwable that caused this exception to be thrown.
+     */
+    public JlibRTException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+} // JlibRTException
