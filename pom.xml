@@ -160,8 +160,8 @@ The idea is to open-source this library.</description>
 	</organization>
 
 	<scm>
-		<connection>scm:svn:svn://srl009.adg.internal/jlib/trunk</connection>
-		<developerConnection>scm:svn:svn://srl009.adg.internal/jlib/trunk</developerConnection>
+		<connection>scm:svn:svn://srl009.adg.internal/jlib/branches/1.0.33</connection>
+		<developerConnection>scm:svn:svn://srl009.adg.internal/jlib/branches/1.0.33</developerConnection>
 		<url>http://srl009.adg.internal/websvn</url>
 	</scm>
 
