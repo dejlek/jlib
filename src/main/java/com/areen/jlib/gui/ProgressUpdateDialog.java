@@ -87,7 +87,7 @@ public class ProgressUpdateDialog extends JDialog {
 		setUndecorated(true);
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 240, 100);
+		setBounds(100, 100, 340, 100);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
