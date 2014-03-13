@@ -55,7 +55,7 @@ public interface Session {
      *
      * @return The time the system created the session.
      */
-    Date getStartTimestamp();
+    Date getStartTime();
 
     /**
      * Returns the last time the application received a request or method invocation from the user associated
