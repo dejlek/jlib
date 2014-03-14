@@ -343,21 +343,6 @@ The idea is to open-source this library.</description>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>upgrade-svn-format</id>
-						<phase>process-sources</phase>
-						<configuration>
-							<target name="svnupgrade">
-								<exec dir="${basedir}" executable="svn" outputproperty="svnUpgrade">
-									<arg line="upgrade" />
-								</exec>
-								<echo message="svnUpgrade=${svnUpgrade}${line.separator}"/>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>create-version-properties</id>
 						<phase>process-resources</phase>
 						<configuration>
