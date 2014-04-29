@@ -37,7 +37,7 @@ public class JlibInfo {
     private static String prjVersion = "";
     private static String sprintNumber = "";
     private static String svnRevision = "";
-    private static String verMajor = "";
+    private static String verMajor = "2";
     private static String verMinor = "";
     private static String jlibVersion = "";
 
@@ -52,9 +52,8 @@ public class JlibInfo {
                 prjVersion = versionInfo.getProperty("prjVersion");
                 sprintNumber = versionInfo.getProperty("sprintNumber");
                 svnRevision = versionInfo.getProperty("svnRevision");
-                verMajor = prjVersion.split("\\.")[0];
-                verMinor = prjVersion.split("\\.")[1];
-                jlibVersion = verMajor + "." + verMinor + "." + sprintNumber + "." + svnRevision;
+                verMinor = prjVersion.split("\\.")[2];
+                jlibVersion = verMajor + "." + sprintNumber + "." + verMinor + "." + svnRevision;
             } catch (IOException e) {
                 System.err.println("Error loading Jlib Properties file.");
             }
