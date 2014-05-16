@@ -14,9 +14,11 @@ import com.areen.jlib.beans.AtmRegistry;
 import com.areen.jlib.gui.ComboBoxLink;
 import com.areen.jlib.gui.ComboBoxPairRenderer;
 import com.areen.jlib.gui.DefaultCellEditorX;
+import com.areen.jlib.gui.DummyIcon;
 import com.areen.jlib.gui.WideComboBox;
 import com.areen.jlib.gui.fcb.*;
 import com.areen.jlib.tuple.Pair;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
@@ -117,6 +119,8 @@ public class FcbTestFrame extends javax.swing.JFrame {
                 "/ds/demo");
         tableComboBox.setRenderer(new FilteredComboBoxCellRenderer(tableCbModel));
         new ComboBoxFilter(tableComboBox, tableCbModel);
+        jLabel1.setIcon(new DummyIcon("A", Color.YELLOW, Color.DARK_GRAY, 18));
+        jLabel2.setIcon(new DummyIcon("B", Color.LIGHT_GRAY, Color.decode("000024"), 18));
     }
 
     /**
