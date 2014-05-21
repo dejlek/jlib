@@ -225,10 +225,10 @@ The idea is to open-source this library.</description>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
+					<!-- <version>3.1</version> -->
 					<configuration>
-						<source>${compilerSource}</source>
-						<target>${compilerSource}</target>
+						<source>1.6</source>
+						<target>1.6</target>
 					</configuration>
 				</plugin>
 				<plugin>
