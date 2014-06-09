@@ -222,6 +222,23 @@ public final class User implements SimpleObject<User.VO> {
         return ret;
     }
     
+    @Override
+    public Object get(ValueObject.Field argField) {
+        if (argField == null) {
+            System.out.println("NULL!");
+        }
+        User.Field field = (User.Field) argField;
+        Object ret = null;
+        switch (field) {
+            case USER_ID: ret = value.userId; break;
+            case DEPARTMENT: ret = value.dept; break;
+            case USER_NAME: ret = value.userName; break;
+            case PASSWORD: ret = value.password; break;
+            default: break; // No action
+        } // switch
+        return ret;
+    } // get() method
+    
     //@Override
     public Object get(final User.Field argField) {
         Object ret = null;
@@ -233,7 +250,26 @@ public final class User implements SimpleObject<User.VO> {
             default: break; // No action
         } // switch
         return ret;
-    } // get() method
+    } // get() method 
+    
+    @Override
+    public Object set(ValueObject.Field argField, Object argValue) {
+        if (argField == null || argValue == null) {
+            System.out.println("NULL!");
+        }
+        User.Field field = (User.Field) argField;
+        Object result = null;
+        switch (field) {
+            case USER_ID: value.userId = (String) argValue; break;
+            case DEPARTMENT: value.dept = (String) argValue; break;
+            case USER_NAME: value.userName = (String) argValue; break;
+            case PASSWORD: value.password = (String) argValue; break;
+            default: break; // No action
+        } // switch
+        result = argValue;
+        
+        return result;
+    } // set() method
     
     //@Override
     public Object set(final User.Field argField, final Object argValue) {

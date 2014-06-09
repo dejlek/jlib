@@ -56,14 +56,14 @@ import java.io.Serializable;
  */
 public interface SimpleObject<T extends ValueObject> extends Cloneable, Serializable {
     Object            get(int argIndex);
-    // Object         get(ValueObject.Field argField); reserved for the future
+    Object            get(final ValueObject.Field argField); //reserved for the future
     Class<?>          getFieldClass(int argIndex);
     int               getNumberOfFields(); /// This should be static, but stupid Java does not allow it!
     String[]          getTitles();
     T                 getValue();
     
     Object            set(int argIndex, Object argValue);
-    // Object         set(ValueObject.Field argField, Object argValue); reserved for the future
+    Object            set(ValueObject.Field argField, Object argValue); //reserved for the future
     void              setTitles(String[] argTitles);
     void              setValue(T argVo);
     
