@@ -55,6 +55,10 @@ import java.io.Serializable;
  * @param <T> A ValueObject implementation this SimpleObject interface deals with.
  */
 public interface SimpleObject<T extends ValueObject> extends Cloneable, Serializable {
+    
+    /// This nested interface is here so we do not have to include ValueObject in type lists.
+    interface TO extends ValueObject { };
+    
     Object            get(int argIndex);
     Object            get(final ValueObject.Field argField); //reserved for the future
     Class<?>          getFieldClass(int argIndex);
