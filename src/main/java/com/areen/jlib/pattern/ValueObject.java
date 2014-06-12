@@ -46,6 +46,13 @@ import java.io.Serializable;
  * is going to be used as a (Data) Transfer Object. I have decided to rename it
  * to "Value Object" because acronym "VO" is less confusing than "TO" (for Transfer
  * Object).
+ * 
+ * It can also be used for the "private class data" pattern.
+ * More about it at: http://en.wikipedia.org/wiki/Private_class_data_pattern
+ * 
+ * TODO: We should rename it to DataObject. I think it makes more sense than calling it TransferObject or
+ * ValueObject, because we use it for more than what TransferObjects are meant to be used for, although we
+ * mainly use it as TransferObject, indeed. But, as I said above, we also use it to hide the data sometimes.
  *
  * @author dejan
  */

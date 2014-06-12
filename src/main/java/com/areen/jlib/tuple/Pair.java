@@ -63,13 +63,13 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT>, Serializable
         this.first = argFirst;
         this.second = argSecond;
     }
-
+    
     @Override
     public int hashCode() {
-        int hashFirst = (first != null) ? first.hashCode() : 0;
-        int hashSecond = (second != null) ? second.hashCode() : 0;
-
-        return (hashFirst + hashSecond) * hashSecond + hashFirst;
+        int result = 17; // or any other prime number
+        result = 31 * result + first.hashCode();
+        result = 31 * result + second.hashCode();
+        return result;
     }
 
     @Override
