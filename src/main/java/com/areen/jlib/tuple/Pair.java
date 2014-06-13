@@ -67,8 +67,8 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT>, Serializable
     @Override
     public int hashCode() {
         int result = 17; // or any other prime number
-        result = 31 * result + first.hashCode();
-        result = 31 * result + second.hashCode();
+        result = 31 * result + (first == null ? 0 : first.hashCode());
+        result = 31 * result + (second == null ? 0 : second.hashCode());
         return result;
     }
 
