@@ -50,6 +50,9 @@ import java.io.Serializable;
  * 
  * What this basically means is - a SimpleObject implementation is a WRAPPER of the underlying ValueObject.
  * It is also a FACTORY of the ValueObject.
+ * 
+ * (PS. we may change the name ValueObject to something else. Definitely not TransferObject. Perhaps
+ * DataObject or just Struct...)
  *
  * @author dejan
  * @param <T> A ValueObject implementation this SimpleObject interface deals with.
