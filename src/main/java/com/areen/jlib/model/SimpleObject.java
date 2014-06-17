@@ -51,6 +51,8 @@ import java.io.Serializable;
  * What this basically means is - a SimpleObject implementation is a WRAPPER of the underlying ValueObject.
  * It is also a FACTORY of the ValueObject.
  * 
+ * SimpleObject is also a factory. It creates ValueObjects of type T, and also UniqueKeys as well.
+ * 
  * (PS. we may change the name ValueObject to something else. Definitely not TransferObject. Perhaps
  * DataObject or just Struct...)
  *
@@ -86,6 +88,13 @@ public interface SimpleObject<T extends ValueObject> extends Cloneable, Serializ
     SimpleObject<T>[] create(int argNumberOfElements);
     
     SimpleObject<T>   clone() throws CloneNotSupportedException;
+    
+    // ::::: key generator methods :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /* TODO: finish this at home
+    UniqueKey         createKey();
+    UniqueKey         createKey(SimpleObject<T> argSimpleObject);
+    UniqueKey         createKey(T argValueObject);
+    */
     
 } // SimpleObject interface
 
