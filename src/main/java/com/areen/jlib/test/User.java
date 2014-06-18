@@ -40,6 +40,7 @@
 package com.areen.jlib.test;
 
 import com.areen.jlib.model.SimpleObject;
+import com.areen.jlib.model.key.UniqueKey;
 import com.areen.jlib.pattern.ValueObject;
 import java.io.Serializable;
 
@@ -285,6 +286,17 @@ public final class User implements SimpleObject<User.VO> {
         
         return result;
     }
+
+    @Override
+    public UniqueKey createKey(User.VO argValueObject) {
+        return new UniqueKey<String>(argValueObject.userId);
+    }
+    
+    @Override
+    public UniqueKey createKey() {
+        return createKey(value);
+    }
+    
     
     // ====================================================================================================
     // ==== Main function =================================================================================

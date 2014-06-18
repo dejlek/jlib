@@ -38,6 +38,7 @@
  */
 package com.areen.jlib.model;
 
+import com.areen.jlib.model.key.UniqueKey;
 import com.areen.jlib.pattern.ValueObject;
 import java.io.Serializable;
 
@@ -90,11 +91,31 @@ public interface SimpleObject<T extends ValueObject> extends Cloneable, Serializ
     SimpleObject<T>   clone() throws CloneNotSupportedException;
     
     // ::::: key generator methods :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /* TODO: finish this at home
-    UniqueKey         createKey();
-    UniqueKey         createKey(SimpleObject<T> argSimpleObject);
+    
+    /**
+     * Use this method to get the (default) unique key of the given ValueObject (TransferObject).
+     * 
+     * @param argValueObject A Value/Transfer object from which we want to generate a UniqueKey.
+     * @return UniqueKey object which can be used to uniquely identify the SimpleObject.
+     */
     UniqueKey         createKey(T argValueObject);
-    */
+    
+    /** createKey(SO) is not needed. If we have SO, we use its createKey() method instead.
+    UniqueKey         createKey(SimpleObject<T> argSimpleObject);
+     
+     * @param argValueObject **/
+    
+    /**
+     * Use this method to get the (default) unique key of the SimpleObject.
+     * This method is provided for convenience. Behind the scene implementation will most likely call
+     * return createKey(getValue());
+     * 
+     * Once we use Java 8 we may make this method to be the default method, with trivial implementation:
+     * <pre>default UniqueKey createKey() { return createKey(getValue()); };</pre>
+     * 
+     * @return UniqueKey object which can be used to uniquely identify the SimpleObject.
+     */
+    UniqueKey         createKey();
     
 } // SimpleObject interface
 
