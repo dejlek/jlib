@@ -60,8 +60,8 @@ public class Pair<KeyT, ValueT> implements Map.Entry<KeyT, ValueT>, Serializable
 
     public Pair(final KeyT argFirst, final ValueT argSecond) {
         super();
-        this.first = argFirst;
-        this.second = argSecond;
+        first = argFirst;
+        second = argSecond;
     }
     
     @Override
