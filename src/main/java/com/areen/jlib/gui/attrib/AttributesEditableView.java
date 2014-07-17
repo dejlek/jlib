@@ -9,6 +9,7 @@ package com.areen.jlib.gui.attrib;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -68,6 +69,22 @@ public class AttributesEditableView
     // ====================================================================================================
     
     // :::: <Superclass> method overrides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    // :::: JComponent method overrides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    /**
+     * I had to do this because it is a common problem with JComponent subclasses.
+     * More about it: http://docs.oracle.com/javase/tutorial/uiswing/painting/problems.html
+     * 
+     * @param g 
+     */
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(getForeground());
+    }
     
     // :::: PropertyChangeListener mthod implementations ::::::::::::::::::::::::::::::::::::::::::::::::::
     
