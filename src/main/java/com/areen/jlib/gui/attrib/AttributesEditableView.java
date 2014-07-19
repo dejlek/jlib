@@ -147,6 +147,20 @@ public class AttributesEditableView
     // ====================================================================================================
 
     /**
+     * Use this method to forcefully highlight specific attribute.
+     * @param argIndex 
+     */
+    public final void highlight(int argIndex) {
+        for (int i = 0; i < model.getNumberOfAttributes(); i++) {
+            if (i == argIndex) {
+                labels[i].setBackground(model.getSelectedBackgroundColor());
+            } else {
+                labels[i].setBackground(model.getBackgroundColor());
+            }
+        } // for
+    } // highlight() method
+    
+    /**
      * Extremely important method. Here we set the model, and generate JLabel objects for the attributes.
      * We also set the values, and initialise the listeners.
      * @param argModel 
