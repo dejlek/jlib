@@ -9,6 +9,7 @@ package com.areen.jlib.gui.attrib;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -193,13 +194,15 @@ public class AttributesEditableView
                 lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
             }
             lbl.setBorder(new LineBorder(Color.GRAY, 1));
+            Font font = lbl.getFont();
+            Font newFont = font.deriveFont(11f);
+            lbl.setFont(newFont);
+            
             int nh = lbl.getPreferredSize().height;
             int nw = nh; // make the width to be equal to the height
             lbl.setPreferredSize(new Dimension(nw, nh));
             lbl.addMouseListener(this);
 
-            h = Math.max(h, lbl.getPreferredSize().height);
-            w = w + lbl.getPreferredSize().width;
             add(lbl);
         } // for
         
