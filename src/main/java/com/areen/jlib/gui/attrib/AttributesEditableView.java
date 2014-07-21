@@ -45,6 +45,7 @@ public class AttributesEditableView
     protected JLabel[] labels;
     protected boolean editorComponent;
     protected boolean inTable;
+    protected JLabel titleLabel;
     
     // ====================================================================================================
     // ==== Constructors ==================================================================================
@@ -57,6 +58,8 @@ public class AttributesEditableView
         setLayout(fl);
         editorComponent = false;
         inTable = false;
+        titleLabel = new JLabel("Hello");
+        titleLabel.setForeground(Color.LIGHT_GRAY);
     }
 
     public AttributesEditableView(AttributesModel argModel) {
@@ -198,11 +201,22 @@ public class AttributesEditableView
             w = w + lbl.getPreferredSize().width;
             add(lbl);
         } // for
-        Dimension ps = new Dimension(w, h);
-        //setPreferredSize(ps);
+        
+        int midx = argModel.getSelectedAttributeIndex();
+        if (editorComponent) {
+            String[] titles = argModel.getTitles();
+            if ((titles != null) & (midx >= 0)) {
+                titleLabel.setText(titles[midx]);
+            } else {
+                titleLabel.setText("");
+            }
+            add(titleLabel);
+        }
         
         model = argModel;
         model.addPropertyChangeListener(this);
+        
+        
     } // setModel() method
     
     // ====================================================================================================
@@ -217,8 +231,8 @@ public class AttributesEditableView
         return inTable;
     }
 
-    public void setInTable(boolean inTable) {
-        this.inTable = inTable;
+    public void setInTable(boolean argInTable) {
+        inTable = argInTable;
     }
     
     // ====================================================================================================
@@ -230,14 +244,25 @@ public class AttributesEditableView
      */
     protected void updateView() {
         String attrs = model.getAttributes();
+        int midx = model.getSelectedAttributeIndex();
+        
         for (int i = 0; i < model.getNumberOfAttributes(); i++) {
             labels[i].setText("" + model.getValue(i));
-            if (model.getSelectedAttributeIndex() == i) {
+            if (midx == i) {
                 labels[i].setBackground(model.getSelectedBackgroundColor());
             } else {
                 labels[i].setBackground(model.getBackgroundColor());
             }
-        }
-    }
+        } // for
+        
+        if (editorComponent) {
+            String[] titles = model.getTitles();
+            if ((titles != null) & (midx >= 0)) {
+                titleLabel.setText(titles[midx]);
+            } else {
+                titleLabel.setText("");
+            }
+        } // if
+    } // updateView() method
     
 } // AttributesEditableView class

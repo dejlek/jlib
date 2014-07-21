@@ -41,6 +41,7 @@ public class AttributesModel {
     private String[] allowedValues;
     private byte[] currentIndexes;
     private char[] defaultValues;
+    private String[] titles;
     
     /**
      * Used to tell us what attribute is selected. If the value is -1 it means no attribute is selected.
@@ -76,6 +77,12 @@ public class AttributesModel {
             defaultValues[i] = allowedValues[i].charAt(0); // we set the first characters to be default
             attributes += defaultValues[i];
         } // for
+        
+        // Titles
+        titles = new String[getNumberOfAttributes()];
+        for (int i = 0; i < getNumberOfAttributes(); i++) {
+            titles[i] = "";
+        }
     }
     
     public AttributesModel(String[] argAllowedValues, String argInitialValues) {
@@ -86,6 +93,7 @@ public class AttributesModel {
     // ====================================================================================================
     // ==== Interface/Superclass Methods ==================================================================
     // ====================================================================================================
+    
     // :::: <Superclass> method overrides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @Override
@@ -204,6 +212,14 @@ public class AttributesModel {
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
+    
+    public String[] getTitles() {
+        return titles;
+    }
+
+    public void setTitles(String[] argTitles) {
+        titles = argTitles;
+    }
     
     public char[] getDefaultValues() {
         return defaultValues;

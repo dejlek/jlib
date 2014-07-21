@@ -34,6 +34,7 @@ public class AttribFrame extends javax.swing.JPanel {
         
         // Initialisation
         attributesModel = new AttributesModel(alvals, "?AT");
+        attributesModel.setTitles(new String[]{ "One", "Two", "Three" });
         
         attributesEditableView1 = new AttributesEditableView(attributesModel);
         attributesEditableView1.setBackground(Color.WHITE);

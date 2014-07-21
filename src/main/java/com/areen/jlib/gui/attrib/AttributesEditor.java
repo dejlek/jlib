@@ -8,12 +8,21 @@ package com.areen.jlib.gui.attrib;
 
 import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -39,12 +48,17 @@ public class AttributesEditor
     
     // :::::: PRIVATE/PROTECTED :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     
+    ArrayList<ActionListener> actionListeners;
+    Action keyboardAction;
+    
     // ====================================================================================================
     // ==== Constructors ==================================================================================
     // ====================================================================================================
 
     public AttributesEditor() {
         super();
+        actionListeners = new ArrayList<ActionListener>();
+        
         editorComponent = true;
         setFocusable(true);
         setBackground(Color.white);
@@ -57,7 +71,10 @@ public class AttributesEditor
         Insets insets = (Insets) UIManager.getLookAndFeelDefaults().get("TextField.margin");
         getInsets().set(insets.top, insets.left, insets.bottom, insets.right);
         
+        // We need to use key listener for "normal" keys (like "Y" or "N")...
         addKeyListener(this);
+        
+        initKeyboardBindings();
         
         // listeners...
         addFocusListener(this);
@@ -123,33 +140,11 @@ public class AttributesEditor
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        
-        switch (key) {
-            case KeyEvent.VK_UP:
-                System.out.println("up");
-                model.next(model.getSelectedAttributeIndex());
-                break;
-            case KeyEvent.VK_DOWN:
-                System.out.println("down");
-                model.next(model.getSelectedAttributeIndex());
-                break;
-            case KeyEvent.VK_LEFT:
-                System.out.println("left");
-                model.previousAttribute();
-                updateView();
-                break;                
-            case KeyEvent.VK_RIGHT:
-                System.out.println("right");
-                model.nextAttribute();
-                updateView();
-                break;
-            default:
-                int idx = model.getSelectedAttributeIndex();
-                char chr = Character.toUpperCase(e.getKeyChar());
-                if (model.isValid(idx, chr)) {
-                    model.setValue(idx, chr);
-                }
-        } // switch
+        int idx = model.getSelectedAttributeIndex();
+        char chr = Character.toUpperCase(e.getKeyChar());
+        if (model.isValid(idx, chr)) {
+            model.setValue(idx, chr);
+        }
     } // keyPressed() method
 
     @Override
@@ -161,6 +156,14 @@ public class AttributesEditor
     // ==== Public Methods ================================================================================
     // ====================================================================================================
     
+    public synchronized void addActionListener(ActionListener argActionListener) {
+        actionListeners.add(argActionListener);
+    }
+    
+    public synchronized void removeActionListener(ActionListener argActionListener) {
+        actionListeners.remove(argActionListener);
+    }
+    
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
@@ -168,5 +171,106 @@ public class AttributesEditor
     // ====================================================================================================
     // ==== Private/Protected/Package Methods =============================================================
     // ====================================================================================================
+
+    private void handleLeft() {
+        model.previousAttribute();
+        updateView();
+    }
+    
+    private void handleRight() {
+        model.nextAttribute();
+        updateView();
+    }
+    
+    private void handleUp() {
+        model.previous(model.getSelectedAttributeIndex());
+    }
+    
+    private void handleDown() {
+        model.next(model.getSelectedAttributeIndex());
+    }
+    
+    private void handleSpace() {
+        handleDown();
+    }
+    
+    private void handleEnter() {
+        System.out.println("AttributesEditor commits change(s).");
+        ActionEvent av = new ActionEvent(this, 0, "commit_changes");
+        for (ActionListener al : actionListeners) {
+            al.actionPerformed(av);
+        }
+    }
+    
+    private void initKeyboardBindings() {
+        InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap am = getActionMap();
+        
+        Action tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleLeft();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "attributes-left");
+        am.put("attributes-left", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleRight();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "attributes-right");
+        am.put("attributes-right", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleUp();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "attributes-up");
+        am.put("attributes-up", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleDown();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "attributes-down");
+        am.put("attributes-down", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleSpace();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "attributes-space");
+        am.put("attributes-space", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleEnter();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "attributes-enter");
+        am.put("attributes-enter", tmpAction);
+    }
     
 } // AttributesEditor class
