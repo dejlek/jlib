@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -156,8 +157,10 @@ public class AttributesEditableView
     public final void highlight(int argIndex) {
         for (int i = 0; i < model.getNumberOfAttributes(); i++) {
             if (i == argIndex) {
+                labels[i].setOpaque(true);
                 labels[i].setBackground(model.getSelectedBackgroundColor());
             } else {
+                labels[i].setOpaque(false);
                 labels[i].setBackground(model.getBackgroundColor());
             }
         } // for
@@ -181,17 +184,15 @@ public class AttributesEditableView
         int h = 0;
         for (int i = 0; i < argModel.getNumberOfAttributes(); i++) {
             String txt = "" + argModel.getValue(i);
-            System.out.println(txt);
             
             JLabel lbl = new JLabel(txt);
             labels[i] = lbl;
             lbl.setName("attributelbl-" + i); // very important, because we will use the name to get the idx
             lbl.setHorizontalAlignment(SwingConstants.CENTER);
-            lbl.setOpaque(true);
-            lbl.setBackground(argModel.getBackgroundColor());
             if (isInTable()) {
                 lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
             }
+            lbl.setBorder(new LineBorder(Color.GRAY, 1));
             int nh = lbl.getPreferredSize().height;
             int nw = nh; // make the width to be equal to the height
             lbl.setPreferredSize(new Dimension(nw, nh));
@@ -214,9 +215,8 @@ public class AttributesEditableView
         }
         
         model = argModel;
+        updateView();
         model.addPropertyChangeListener(this);
-        
-        
     } // setModel() method
     
     // ====================================================================================================
@@ -249,8 +249,10 @@ public class AttributesEditableView
         for (int i = 0; i < model.getNumberOfAttributes(); i++) {
             labels[i].setText("" + model.getValue(i));
             if (midx == i) {
+                labels[i].setOpaque(true);
                 labels[i].setBackground(model.getSelectedBackgroundColor());
             } else {
+                labels[i].setOpaque(false);
                 labels[i].setBackground(model.getBackgroundColor());
             }
         } // for
