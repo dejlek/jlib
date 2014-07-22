@@ -207,6 +207,16 @@ public class AttributesEditor
         }
     }
     
+    private void handleHome() {
+        model.setSelectedAttributeIndex(0);
+        updateView();
+    }
+    
+    private void handleEnd() {
+        model.setSelectedAttributeIndex(model.getNumberOfAttributes() - 1);
+        updateView();
+    }
+    
     private void initKeyboardBindings() {
         InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap am = getActionMap();
@@ -282,6 +292,28 @@ public class AttributesEditor
         };
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "attributes-enter");
         am.put("attributes-enter", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleHome();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), "attributes-home");
+        am.put("attributes-home", tmpAction);
+        
+        tmpAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleEnd();
+            }
+            
+        };
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0), "attributes-end");
+        am.put("attributes-end", tmpAction);
     }
     
 } // AttributesEditor class
