@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 /**
- *
+ * 
  * @author dejan
  */
 public class AttributesEditor 
@@ -55,8 +55,9 @@ public class AttributesEditor
     // ==== Constructors ==================================================================================
     // ====================================================================================================
 
-    public AttributesEditor() {
+    public AttributesEditor(boolean argInTable) {
         super();
+        setInTable(argInTable);
         actionListeners = new ArrayList<ActionListener>();
         
         editorComponent = true;
@@ -80,14 +81,18 @@ public class AttributesEditor
         addFocusListener(this);
     }
 
-    public AttributesEditor(AttributesModel argModel) {
-        this();
+    public AttributesEditor(AttributesModel argModel, boolean argInTable) {
+        this(argInTable);
         setOpaque(true);
         setFocusable(true);
         setBackground(Color.white);
         repaint();
         
         setModel(argModel);
+    }
+    
+    public AttributesEditor(AttributesModel argModel) {
+        this(argModel, false);
     }
 
     // ====================================================================================================
