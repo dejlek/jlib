@@ -57,6 +57,8 @@ public class AttributesModel {
     // ==== Constructors ==================================================================================
     // ====================================================================================================
     
+    
+    
     /**
      * The simplest constructor which takes argAllowedValues. Note that we do not check for duplicates.
      * Developers must make sure there are no duplicate values.
@@ -83,6 +85,16 @@ public class AttributesModel {
         for (int i = 0; i < getNumberOfAttributes(); i++) {
             titles[i] = "";
         }
+    }
+    
+    public AttributesModel(String[] argAllowedValues, char[] argDefaultValues) {
+        this(argAllowedValues);
+        defaultValues = argDefaultValues;
+        String attrs = "";
+        for (char ch : defaultValues) {
+            attrs += ch;
+        }
+        setAttributes(attrs);
     }
     
     public AttributesModel(String[] argAllowedValues, String argInitialValues) {
