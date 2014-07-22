@@ -124,15 +124,16 @@ public class AttributesModel {
      * @param argValue 
      */
     public void setValue(int argIndex, char argValue) {
-        if (isValid(argIndex, argValue)) {
-            if (getValue(argIndex) != argValue) {
+        char value = Character.toUpperCase(argValue);
+        if (isValid(argIndex, value)) {
+            if (getValue(argIndex) != value) {
                 // the new value is valid, and different from what is currently the value of the attribute
                 StringBuilder sb = new StringBuilder(attributes);
-                sb.replace(argIndex, argIndex + 1, "" + argValue);
+                sb.replace(argIndex, argIndex + 1, "" + value);
                 setAttributes(sb.toString());
-            }
-        }
-    }
+            } // if
+        } // if
+    } // setValue() method
     
     /**
      * Changes the value of an attribute with index argIndex to the next value.
