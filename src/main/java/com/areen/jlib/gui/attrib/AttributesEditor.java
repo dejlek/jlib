@@ -228,27 +228,33 @@ public class AttributesEditor
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "attributes-right");
         am.put("attributes-right", tmpAction);
         
-        tmpAction = new AbstractAction() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleUp();
-            }
+        if (!isInTable()) {
+            /* If the editor is used as a cell editor, we do not want to togle values with the
+             * up and down arrow-keys.
+             */
             
-        };
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "attributes-up");
-        am.put("attributes-up", tmpAction);
-        
-        tmpAction = new AbstractAction() {
+            tmpAction = new AbstractAction() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleDown();
-            }
-            
-        };
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "attributes-down");
-        am.put("attributes-down", tmpAction);
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    handleUp();
+                }
+
+            };
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "attributes-up");
+            am.put("attributes-up", tmpAction);
+
+            tmpAction = new AbstractAction() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    handleDown();
+                }
+
+            };
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "attributes-down");
+            am.put("attributes-down", tmpAction);
+        }
         
         tmpAction = new AbstractAction() {
 
