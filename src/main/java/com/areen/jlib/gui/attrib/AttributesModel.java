@@ -42,6 +42,7 @@ public class AttributesModel {
     private byte[] currentIndexes;
     private char[] defaultValues;
     private String[] titles;
+    private String[] descriptions; /// Here we will store item descriptions.
     
     /**
      * Used to tell us what attribute is selected. If the value is -1 it means no attribute is selected.
@@ -75,9 +76,11 @@ public class AttributesModel {
         currentIndexes = new byte[argAllowedValues.length];
         
         defaultValues = new char[argAllowedValues.length];
+        descriptions = new String[argAllowedValues.length];
         for (int i = 0; i < getNumberOfAttributes(); i++) {
             defaultValues[i] = allowedValues[i].charAt(0); // we set the first characters to be default
             attributes += defaultValues[i];
+            descriptions[i] = "";
         } // for
         
         // Titles
@@ -222,15 +225,38 @@ public class AttributesModel {
         } // for
     }
     
+    public String getDescription(int argIndex) {
+        return descriptions[argIndex];
+    }
+    
+    public void setDescription(int argIndex, String argDescription) {
+        descriptions[argIndex] = argDescription;
+    }
+    
     // ====================================================================================================
     // ==== Accessors =====================================================================================
     // ====================================================================================================
+    
+    public String[] getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String[] argDescriptions) {
+        descriptions = argDescriptions;
+    }
+    
     
     public String[] getTitles() {
         return titles;
     }
 
     public void setTitles(String[] argTitles) {
+        for (int i = 0; i < getNumberOfAttributes(); i++) {
+            if (descriptions[i].length() == 0) {
+                descriptions[i] = argTitles[i];
+            }
+        } // if
+        
         titles = argTitles;
     }
     
@@ -351,7 +377,6 @@ public class AttributesModel {
      */
     public final void setAttributes(String argAttributes) {
         String oldAttributes = attributes;
-        System.out.println(argAttributes);
         String newAttributes = "";
         for (int i = 0; i < getNumberOfAttributes(); i++) {
             char newc = defaultValues[i];
@@ -377,6 +402,35 @@ public class AttributesModel {
             propertyChangeSupport.firePropertyChange(PROP_ATTRIBUTES, oldAttributes, attributes);
         }
     } // setAttributes() method
+    
+    // ::::: `descriptionsChanged` property ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    private boolean descriptionsChanged = false;
+
+    public static final String PROP_DESCRIPTIONSCHANGED = "descriptionsChanged";
+
+    /**
+     * Get the value of descriptionsChanged
+     *
+     * @return the value of descriptionsChanged
+     */
+    public boolean descriptionsChanged() {
+        return descriptionsChanged;
+    }
+
+    /**
+     * Set the value of descriptionsChanged
+     *
+     * @param argDescriptionsChanged new value of descriptionsChanged
+     */
+    public void setDescriptionsChanged(boolean argDescriptionsChanged) {
+        boolean oldDescriptionsChanged = descriptionsChanged;
+        if (argDescriptionsChanged != oldDescriptionsChanged) {
+            descriptionsChanged = argDescriptionsChanged;
+            propertyChangeSupport.firePropertyChange(PROP_DESCRIPTIONSCHANGED, 
+                oldDescriptionsChanged, argDescriptionsChanged);
+        } // if
+    } // setDescriptionsChanged() method
     
     // ====================================================================================================
     // ==== Classes, Interfaces, Enums ====================================================================

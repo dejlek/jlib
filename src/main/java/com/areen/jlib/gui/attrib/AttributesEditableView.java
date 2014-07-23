@@ -95,9 +95,17 @@ public class AttributesEditableView
     
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String str = (String) evt.getNewValue();
-        System.out.println("CALL: AttributesEditableView.propertyChange() : " + str);
-        updateView();
+        System.out.println("CALL: AttributesEditableView.propertyChange() : " + evt.getPropertyName());
+        if (evt.getPropertyName().equals("attributes")) {
+            String str = (String) evt.getNewValue();
+            
+            updateView();
+        } else if (evt.getPropertyName().equals("descriptionsChanged")) {
+            String[] descriptions = model.getDescriptions();
+            for (int i = 0; i < model.getNumberOfAttributes(); i++) {
+                labels[i].setToolTipText(descriptions[i]);
+            }
+        } // else if
     }
     
     // :::: <Interface> method implementations ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -193,6 +201,7 @@ public class AttributesEditableView
             if (isInTable()) {
                 lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
             }
+            lbl.setToolTipText(argModel.getDescription(i));
             lbl.setBorder(new LineBorder(Color.GRAY, 1));
             Font font = lbl.getFont();
             Font newFont = font.deriveFont(11f);

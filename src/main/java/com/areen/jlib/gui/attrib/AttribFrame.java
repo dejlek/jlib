@@ -32,8 +32,15 @@ public class AttribFrame extends javax.swing.JPanel {
         // Allowed values
         String[] alvals = new String[] { "YN?", "ABCD", "TF" };
         
+        String[] descriptions = new String[] {
+            "Shop Drawings/Carpet layouts", 
+            "Item requires physical inspection", 
+            "To be submitted for approval" 
+        };
+        
         // Initialisation
         attributesModel = new AttributesModel(alvals, "?AT");
+        attributesModel.setDescriptions(descriptions);
         attributesModel.setTitles(new String[]{ "One", "Two", "Three" });
         
         
