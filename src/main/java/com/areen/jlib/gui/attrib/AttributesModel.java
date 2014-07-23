@@ -351,15 +351,16 @@ public class AttributesModel {
      */
     public final void setAttributes(String argAttributes) {
         String oldAttributes = attributes;
-        
+        System.out.println(argAttributes);
         String newAttributes = "";
         for (int i = 0; i < getNumberOfAttributes(); i++) {
-            char newc = ' ';
-            
-            if (attributes.length() > i) {
-                newc = attributes.charAt(i);
-            } else {
-                newc = defaultValues[i];
+            char newc = defaultValues[i];
+            char ch;
+            if (argAttributes.length() > i) {
+                ch = argAttributes.charAt(i);
+                if (isValid(i, ch)) {
+                    newc = ch;
+                }
             }
 
             if (i < argAttributes.length()) {
