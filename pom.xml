@@ -8,7 +8,7 @@
 
 	<groupId>com.areen</groupId>
 	<artifactId>jlib</artifactId>
-	<version>2.35.1-SNAPSHOT</version>
+	<version>2.36-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>jlib</name>
@@ -19,8 +19,8 @@ The idea is to open-source this library.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<compilerSource>1.6</compilerSource>
-		<sprintNumber>35</sprintNumber>
+		<compilerSource>1.7</compilerSource>
+		<sprintNumber>36</sprintNumber>
 		<jlibPropsFile>jlibversion.properties</jlibPropsFile>
 		<dependencyReport /> <!-- disabled by default (empty) -->
 	</properties>
@@ -227,8 +227,8 @@ The idea is to open-source this library.</description>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<!-- <version>3.1</version> -->
 					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
+						<source>${compilerSource}</source>
+						<target>${compilerSource}</target>
 					</configuration>
 				</plugin>
 				<plugin>
