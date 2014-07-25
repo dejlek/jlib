@@ -8,7 +8,7 @@
 
 	<groupId>com.areen</groupId>
 	<artifactId>jlib</artifactId>
-	<version>2.35.1-SNAPSHOT</version>
+	<version>2.35.1</version>
 	<packaging>jar</packaging>
 
 	<name>jlib</name>
@@ -160,8 +160,8 @@ The idea is to open-source this library.</description>
 	</organization>
 
 	<scm>
-		<connection>scm:svn:svn://srl009.adg.internal/jlib/trunk</connection>
-		<developerConnection>scm:svn:svn://srl009.adg.internal/jlib/trunk</developerConnection>
+		<connection>scm:svn:svn://srl009.adg.internal/jlib/branches/2.35.1</connection>
+		<developerConnection>scm:svn:svn://srl009.adg.internal/jlib/branches/2.35.1</developerConnection>
 		<url>http://srl009.adg.internal/websvn</url>
 	</scm>
 
