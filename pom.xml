@@ -19,7 +19,7 @@ The idea is to open-source this library.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<compilerSource>1.6</compilerSource>
+		<compilerSource>1.7</compilerSource>
 		<sprintNumber>35</sprintNumber>
 		<jlibPropsFile>jlibversion.properties</jlibPropsFile>
 		<dependencyReport /> <!-- disabled by default (empty) -->
