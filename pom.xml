@@ -227,8 +227,8 @@ The idea is to open-source this library.</description>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<!-- <version>3.1</version> -->
 					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
+						<source>${compilerSource}</source>
+						<target>${compilerSource}</target>
 					</configuration>
 				</plugin>
 				<plugin>
