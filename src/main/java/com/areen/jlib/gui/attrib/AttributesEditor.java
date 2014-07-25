@@ -105,9 +105,11 @@ public class AttributesEditor
     
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String str = (String) evt.getNewValue();
-        System.out.println("CALL: AttributesEditor.propertyChange() : " + str);
-        updateView();
+        if (evt.getPropertyName().equals("attributes")) {
+            String str = (String) evt.getNewValue();
+            System.out.println("CALL: AttributesEditor.propertyChange() : " + str);
+            updateView();
+        }
     }
     
     // :::: FocusListener method implementations ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -126,7 +128,9 @@ public class AttributesEditor
     @Override
     public void focusLost(FocusEvent e) {
         System.out.println("CALL: AttributesEditor.focusLost()");
-        model.setSelectedAttributeIndex(-1);
+        if (!isInTable()) {
+            model.setSelectedAttributeIndex(-1);
+        }
         updateView();
     }
     

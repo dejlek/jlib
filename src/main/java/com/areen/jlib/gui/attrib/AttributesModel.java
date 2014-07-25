@@ -44,12 +44,8 @@ public class AttributesModel {
     private String[] titles;
     private String[] descriptions; /// Here we will store item descriptions.
     
-    /**
-     * Used to tell us what attribute is selected. If the value is -1 it means no attribute is selected.
-     * This is the case most of the time with the AttributesEditableView as it is not used for editing, 
-     * except with mouse.
-     */
-    private int selectedAttributeIndex;
+
+    private int selectedAttributeIndex2;
     
     private Color selectedBackgroundColor;
     private Color backgroundColor;
@@ -277,20 +273,27 @@ public class AttributesModel {
         selectedBackgroundColor = argCurrentBackgroundColor;
     }
 
-    public int getSelectedAttributeIndex() {
-        return selectedAttributeIndex;
-    }
-
-    public void setSelectedAttributeIndex(int argSelectedAttributeIndex) {
-        selectedAttributeIndex = argSelectedAttributeIndex;
-    }
-
     public Color getBackgroundColor() {
         return backgroundColor;
     }
 
     public void setBackgroundColor(Color argBackgroundColor) {
         backgroundColor = argBackgroundColor;
+    }
+    
+    public String getTitle(int argIndex) {
+        return titles[argIndex];
+    }
+    
+    /**
+     * WARNING: No bounds check!
+     * @param argIndex
+     * @param argTitle 
+     */
+    public void setTitle(int argIndex, String argTitle) {
+        if (argIndex < titles.length) {
+            titles[argIndex] = argTitle;
+        }
     }
     
     // ====================================================================================================
@@ -431,6 +434,41 @@ public class AttributesModel {
                 oldDescriptionsChanged, argDescriptionsChanged);
         } // if
     } // setDescriptionsChanged() method
+    
+    // ::::: `selectedAttributeIndex` property :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    /**
+     * Used to tell us what attribute is selected. If the value is -1 it means no attribute is selected.
+     * This is the case most of the time with the AttributesEditableView as it is not used for editing, 
+     * except with mouse.
+     */
+    private int selectedAttributeIndex = -1;
+
+    public static final String PROP_SELECTEDATTRIBUTEINDEX = "selectedAttributeIndex";
+
+    /**
+     * Get the value of selectedAttributeIndex
+     *
+     * @return the value of selectedAttributeIndex
+     */
+    public int getSelectedAttributeIndex() {
+        return selectedAttributeIndex;
+    }
+
+    /**
+     * Set the value of selectedAttributeIndex
+     *
+     * @param argIndex new value of selectedAttributeIndex
+     */
+    public void setSelectedAttributeIndex(int argIndex) {
+        int oldSelectedAttributeIndex = selectedAttributeIndex;
+        if (selectedAttributeIndex != argIndex) {
+            selectedAttributeIndex = argIndex;
+            propertyChangeSupport.firePropertyChange(PROP_SELECTEDATTRIBUTEINDEX, 
+                    oldSelectedAttributeIndex, selectedAttributeIndex);
+        } // if
+    }
+
     
     // ====================================================================================================
     // ==== Classes, Interfaces, Enums ====================================================================
