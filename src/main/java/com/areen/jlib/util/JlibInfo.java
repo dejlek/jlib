@@ -52,7 +52,13 @@ public class JlibInfo {
                 prjVersion = versionInfo.getProperty("prjVersion");
                 sprintNumber = versionInfo.getProperty("sprintNumber");
                 svnRevision = versionInfo.getProperty("svnRevision");
-                verMinor = prjVersion.split("\\.")[2];
+                
+                String[] pieces = prjVersion.split("\\.");
+                if (pieces.length > 2) {
+                    verMinor = prjVersion.split("\\.")[2];
+                } else {
+                    verMinor = "0";
+                }
                 jlibVersion = verMajor + "." + sprintNumber + "." + verMinor + "." + svnRevision;
             } catch (IOException e) {
                 System.err.println("Error loading Jlib Properties file.");
