@@ -179,6 +179,8 @@ public class StringUtility {
         System.out.println(rot13("uryybGURER123!")); // output: helloTHERE123!
         System.out.println(rot13("3vJs3Q6N!!"));
         System.out.println(rot13("StaffNetPrj"));
+        System.out.println(rot13("FgnssArgCew"));
+        System.out.println(rot13("3iWf3D6A!!"));
     }
     
 } // StringUtility class
