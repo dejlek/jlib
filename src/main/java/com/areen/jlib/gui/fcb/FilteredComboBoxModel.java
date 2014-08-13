@@ -23,12 +23,12 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import org.apache.log4j.Logger;
 
 /**
  * The only reason for this class is that we have to maintain two lists. One list is the list of ALL
