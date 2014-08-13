@@ -18,6 +18,7 @@ import com.areen.jlib.tuple.Pair;
 import com.areen.jlib.util.Sise;
 import com.areen.jlib.util.Utility;
 import java.awt.event.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -25,7 +26,6 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
-import org.apache.log4j.Logger;
 
 /**
  * Lots of ideas from http://www.orbital-computer.de/JComboBox/ To take a look:
@@ -83,7 +83,7 @@ public class ComboBoxFilter extends PlainDocument {
     private int popupMenuWidth;
     private int popupMenuHeight;
 
-    static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
+    private static final Logger LOGGER = Logger.getLogger(ComboBoxFilter.class.getCanonicalName());
     
     private String delimiter = " - ";
     
@@ -360,7 +360,7 @@ public class ComboBoxFilter extends PlainDocument {
                     try {
                         enteredText = getText(0, getLength());
                     } catch (BadLocationException ex) {
-                        Logger.getLogger(ComboBoxFilter.class.getName()).error(ex.toString());
+                        LOGGER.severe(ex.toString());
                     }
                     if (pa || ma) {
                         // TODO
@@ -640,8 +640,8 @@ public class ComboBoxFilter extends PlainDocument {
                         LOGGER.info(pickedItem.toString());
                         LOGGER.info(pickedItem.getClass().getCanonicalName());
                     }
-                    LOGGER.info(selectedIndex);
-                    LOGGER.info(comboBox.getSelectedIndex());
+                    LOGGER.info("" + selectedIndex);
+                    LOGGER.info("" + comboBox.getSelectedIndex());
                     LOGGER.info("-----");
 
                     // Do not worry, this reference will change below.
@@ -678,7 +678,7 @@ public class ComboBoxFilter extends PlainDocument {
                 } // if
             } // else
         } catch (BadLocationException ex) {
-            Logger.getLogger(ComboBoxFilter.class.getName()).error(ex);
+            LOGGER.severe(ex.toString());
         } // catch
         if (isTableCellEditor()) {
             comboBoxModel.setReadyToFinish(false);

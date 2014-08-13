@@ -16,9 +16,9 @@ package com.areen.jlib.util;
 
 import com.areen.jlib.gui.err.ExceptionDialog;
 import com.areen.jlib.gui.err.ExceptionUtility;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.apache.log4j.Logger;
 
 /**
  * This simple implementation of the Thread.UncaughtExceptionHandler will popup a dialog whenever an
@@ -33,12 +33,12 @@ Thread.setDefaultUncaughtExceptionHandler(new ExceptionLogger("com.areen.jlib"))
  * @author dejan
  */
 public class ExceptionLogger implements Thread.UncaughtExceptionHandler {
-    private Logger logger;
+    private final Logger logger;
     private ExceptionInfoSender exceptionInfoSender;
 
     public ExceptionLogger(String argPackage) {
         if (argPackage == null) {
-            throw new NullPointerException("Package argument to the ExceptionLogger is a NULL.");
+            logger = Logger.getLogger(ExceptionLogger.class.getCanonicalName());
         } else {
             logger = Logger.getLogger(argPackage);
         }
@@ -81,9 +81,7 @@ public class ExceptionLogger implements Thread.UncaughtExceptionHandler {
                 ed.setExceptionInfoSender(exceptionInfoSender);
                 ed.setVisible(true);
 
-                if (logger.isDebugEnabled()) {
-                    logger.debug(header + ExceptionUtility.getStackTrace(ex.getStackTrace()));
-                } // if
+                logger.severe(header + ExceptionUtility.getStackTrace(ex.getStackTrace()));
             } // if
         } // if
     } // uncaughtException() method

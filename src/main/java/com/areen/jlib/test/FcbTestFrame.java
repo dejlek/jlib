@@ -20,8 +20,8 @@ import com.areen.jlib.gui.fcb.*;
 import com.areen.jlib.tuple.Pair;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import org.apache.log4j.Logger;
 
 /**
  * 

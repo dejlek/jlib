@@ -26,12 +26,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -213,7 +213,7 @@ public class GuiTools {
             temp.deleteOnExit();
             
         } catch (IOException ioe) {
-            LOGGER.debug(ioe.toString());
+            LOGGER.info(ioe.toString());
         } // catch
         return temp;
     } // makeScreenshot() method

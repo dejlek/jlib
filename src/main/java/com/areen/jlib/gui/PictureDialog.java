@@ -16,11 +16,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * A simple JDialog subclass that loads an image from the Internet and places it inside a JScrollPane object.
@@ -86,7 +86,7 @@ public class PictureDialog extends javax.swing.JDialog {
         try {
             imageUrl = new URL(argImageURL);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(PictureDialog.class.getName()).log(Level.ERROR, null, ex);
+            Logger.getLogger(PictureDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
         ImageLoaderSW ilsw = new ImageLoaderSW(imageLabel, imageUrl);
         ilsw.execute();
