@@ -157,6 +157,29 @@ public class StringUtility {
         return ret;
     } // rot13() method
     
+    /**
+     * Convert to camel-case string.
+     * 
+     * @param argString
+     * @return 
+     */
+    public static String toCamelCase(String argString) {
+        String[] parts = argString.split(" ");
+        String camelCaseString = "";
+        for (String part : parts) {
+            String first = part.substring(0, 0).toUpperCase();
+            String rest = "";
+            if (part.length() > 1) {
+                rest = part.substring(1, part.length() - 1);
+            }
+            String space = " ";
+            if (camelCaseString.isEmpty()) {
+                space = "";
+            }
+            camelCaseString += space + first + rest;
+        } // foreach
+        return camelCaseString;
+    } // toCamelCase() method
     
     public static void main(String[] args) {
         //String docId = Integer.toString(12314, 36); // say document_id = 12314
