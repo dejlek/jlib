@@ -18,7 +18,6 @@ import com.areen.jlib.gui.fcb.ComboBoxFilter;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -122,32 +121,37 @@ public class GuiTools {
     /**
      * TODO: The get frame method is not entirely correct. We need to change occurrences where we use it
      * to getWindow...
+     * 
+     * This method may be redundant as we already have SwingUtilities.getAncestorWindow(component).
      * @param argComponent
      * @return 
+     * @see SwingUtilities.getAncestorWindow(component)
      */
     public static Window getWindow(JComponent argComponent) {
-         boolean found = false;
+        boolean found = false;
         Window result = null;
         Container container = argComponent.getParent();
-        
+
         if (container == null) {
             return result;
         }
-        
+
         while (!found) {
-            if (container instanceof JFrame) {
-                result = (JFrame) container;
-                found = true;
-            } else if (container instanceof JDialog) {
-                JDialog dlg = (JDialog) container;
-                result = (Frame) dlg.getOwner();
+            System.out.println(container.getClass().getCanonicalName());
+            if (container instanceof Window) {
+                result = (Window) container;
                 found = true;
             } else {
                 container = container.getParent();
+                if (container == null) {
+                    result = null;
+                    found = true;
+                }
             } // else
         } // while
+
         return result; // we should never reach this line
-    }
+    } // getWindow() method
     
     /**
      * Use this method to create a screenshot of the JFrame object argFrame.
