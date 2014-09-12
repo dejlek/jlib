@@ -106,7 +106,6 @@ public class InputFormPanel extends javax.swing.JPanel {
         titleLabel.setFont(titleFont);
         titleLabel.setText(formModel.title);
         for (int i = 0; i < formModel.model.getNumberOfFields(); i++) {
-            System.out.println("TYPE: " + formModel.model.getFieldClass(i));
             if (formModel.model.getFieldClass(i).toString().indexOf("String") >= 0
                     || formModel.model.getFieldClass(i).toString().indexOf("Integer") >= 0
                     || formModel.model.getFieldClass(i).toString().indexOf("Float") >= 0
@@ -492,8 +491,6 @@ public class InputFormPanel extends javax.swing.JPanel {
      */
     public void reportChange(final PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        //DEBUG:
-        System.out.println("CHANGE: " + propertyName + " " + evt.getNewValue());
         if ("VALUE_CHANGE".equals(propertyName)) {
             String[] value = evt.getNewValue().toString().split(":");
             String[] modelTitles = formModel.model.getTitles();
@@ -526,7 +523,6 @@ public class InputFormPanel extends javax.swing.JPanel {
         try {
             layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
-            System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
             return;
         } // catch
 

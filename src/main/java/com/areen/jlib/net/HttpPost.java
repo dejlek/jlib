@@ -133,7 +133,6 @@ public class HttpPost {
             int index = 0;
             int size = bufferSize;
             do {
-                System.out.println("wrote " + index + "b");
                 if ((index + size) > fileData.length) {
                     size = fileData.length - index;
                 }
@@ -162,11 +161,9 @@ public class HttpPost {
             } while (len > 0);
             output = sb.toString();
 
-            System.out.println("DONE");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            System.out.println("Close connection");
             try {
                 outputStream.close();
             } catch (Exception e) {

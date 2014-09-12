@@ -137,7 +137,6 @@ public class GuiTools {
         }
 
         while (!found) {
-            System.out.println(container.getClass().getCanonicalName());
             if (container instanceof Window) {
                 result = (Window) container;
                 found = true;

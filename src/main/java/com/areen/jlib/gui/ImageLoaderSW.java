@@ -41,8 +41,7 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
         try {
             image = ImageIO.read(webAddress);
         } catch (IOException e) {
-        	//e.printStackTrace();
-                System.err.println("ImageLoaderSW:IOException caught, cause: " + e.getCause());
+            // TODO: implement proper handler
         }
         return image;
     } // diInBackground() method
@@ -65,11 +64,9 @@ public class ImageLoaderSW extends SwingWorker<Image, Void> {
                 pictureAvailable = true;
             }
         } catch (InterruptedException ex) {
-            System.out.println(ex);
-            //Logger.getLogger(ImageLoaderSW.class.getName()).log(Level.SEVERE, null, ex);
+            // TODO: implement proper handler
         } catch (ExecutionException ex) {
-            System.out.println(ex);
-            //Logger.getLogger(ImageLoaderSW.class.getName()).log(Level.SEVERE, null, ex);
+            // TODO: implement proper handler
         } // catch
     } // done() method
 

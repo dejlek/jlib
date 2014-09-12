@@ -63,80 +63,80 @@ import javax.swing.SwingConstants;
  */
 public class ProgressUpdateDialog extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
-	private JLabel bodyTextLabel;
-	private JLabel titleLabel;
+    private final JPanel contentPanel = new JPanel();
+    private JLabel bodyTextLabel;
+    private JLabel titleLabel;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ProgressUpdateDialog dialog = new ProgressUpdateDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        try {
+            ProgressUpdateDialog dialog = new ProgressUpdateDialog();
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * Create the dialog.
-	 */
-	public ProgressUpdateDialog() {
-		setUndecorated(true);
-		setResizable(false);
-		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 340, 100);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new BorderLayout(0, 0));
-		{
-			JPanel panel = new JPanel();
-			contentPanel.add(panel, BorderLayout.SOUTH);
-			panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			{
-				JButton button = new JButton("Close");
-				button.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						setVisible(false);
-					}
-				});
-				button.setActionCommand("OK");
-				panel.add(button);
-			}
-		}
-		{
-			JPanel topPanel = new JPanel();
-			contentPanel.add(topPanel, BorderLayout.NORTH);
-			{
-				titleLabel = new JLabel("Title");
-				titleLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-				topPanel.add(titleLabel);
-			}
-		}
-		{
-			bodyTextLabel = new JLabel("New label");
-			bodyTextLabel.setHorizontalAlignment(SwingConstants.LEFT);
-			bodyTextLabel.setVerticalAlignment(SwingConstants.TOP);
-			contentPanel.add(bodyTextLabel, BorderLayout.CENTER);
-		}
-	}
-	
-	public void setBodyText(String argText) {
-		bodyTextLabel.setText(argText);
-	}
-    
+    /**
+     * Create the dialog.
+     */
+    public ProgressUpdateDialog() {
+        setUndecorated(true);
+        setResizable(false);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        setBounds(100, 100, 340, 100);
+        getContentPane().setLayout(new BorderLayout());
+        contentPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
+        contentPanel.setLayout(new BorderLayout(0, 0));
+        {
+            JPanel panel = new JPanel();
+            contentPanel.add(panel, BorderLayout.SOUTH);
+            panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+            {
+                JButton button = new JButton("Close");
+                button.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        setVisible(false);
+                    }
+                });
+                button.setActionCommand("OK");
+                panel.add(button);
+            }
+        }
+        {
+            JPanel topPanel = new JPanel();
+            contentPanel.add(topPanel, BorderLayout.NORTH);
+            {
+                titleLabel = new JLabel("Title");
+                titleLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+                topPanel.add(titleLabel);
+            }
+        }
+        {
+            bodyTextLabel = new JLabel("New label");
+            bodyTextLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            bodyTextLabel.setVerticalAlignment(SwingConstants.TOP);
+            contentPanel.add(bodyTextLabel, BorderLayout.CENTER);
+        }
+    }
+
+    public void setBodyText(String argText) {
+        bodyTextLabel.setText(argText);
+    }
+
     public String getBodyText() {
         return bodyTextLabel.getText();
     }
-	
+
     @Override
-	public void setTitle(String argText) {
-		super.setTitle(argText);
-		titleLabel.setText(argText);
-	}
+    public void setTitle(String argText) {
+        super.setTitle(argText);
+        titleLabel.setText(argText);
+    }
 
 } // ProgressUpdateDialog class
 

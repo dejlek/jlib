@@ -31,7 +31,7 @@ public class SmallArrayInt extends SmallArray {
      * @throws ArrayIndexOutOfBoundsException
      */
     public void set(final int argIdx, final int argValue)
-            throws SmallArrayException, ArrayIndexOutOfBoundsException {
+            throws SmallArrayException {
         int maxVal = (int) Math.pow(2.0, numberOfBits);
         if (length < argIdx) {
             throw new ArrayIndexOutOfBoundsException(argIdx);
@@ -40,12 +40,8 @@ public class SmallArrayInt extends SmallArray {
             throw new SmallArrayException("Value is greater than the maximum allowed for an element. Got "
                     + argValue + ", but can handle values up to " + maxVal);
         } // if
+        
         data = (int) Math.pow(2.0, 32) - 1;
-        for (int j = 0; j < 4; j++) {
-            for (int i = 7; i >= 0; i--) {
-                System.out.print(i);
-            } // for
-        } // for
 
         System.out.println();
         System.out.println(wlz(6));
@@ -53,7 +49,6 @@ public class SmallArrayInt extends SmallArray {
         data = 0x71fff5f0;
         System.out.println(wlz(data));
         System.out.println(wlz(data >> (argIdx * numberOfBits)));
-        System.out.println(wlz(data | ((int) Math.pow(2.0, argIdx * numberOfBits)) - 1));
     } // set() method
 
     /**
@@ -65,7 +60,7 @@ public class SmallArrayInt extends SmallArray {
             SmallArrayInt sai = new SmallArrayInt(3);
             sai.set(3, 5);
         } catch (SmallArrayException sae) {
-            System.out.println(sae.getMessage());
+            // TODO: implement proper handler
         } // catch
     } // main() method
 

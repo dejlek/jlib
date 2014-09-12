@@ -76,7 +76,6 @@ public class Weber {
                 history.removeElement(curl);
 
                 curl = (String) history.lastElement();
-                System.out.println("Back to " + curl);
                 setPage(jep, curl);
                 label.setText("<html><b>URL:</b> " + curl);
                 if (history.size() == 1) {
@@ -117,7 +116,6 @@ public class Weber {
                     currentUrl = evt.getURL().toString();
                     history.add(currentUrl);
                     backButton.setEnabled(true);
-                    System.out.println("Going to " + currentUrl);
                     setPage(jep, currentUrl);
                     Object ojb = jep.getDocument().getProperty("title");
                     if (ojb != null) {

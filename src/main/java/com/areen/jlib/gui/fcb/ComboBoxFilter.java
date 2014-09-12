@@ -211,7 +211,6 @@ public class ComboBoxFilter extends PlainDocument {
                             System.out.println(selectedIndex);
                             System.out.println(comboBox.getSelectedIndex());
                             selectedIndex = currentIndex;
-                            System.out.println(selectedIndex);
                         }
                         
                         /*
@@ -238,7 +237,6 @@ public class ComboBoxFilter extends PlainDocument {
                             System.out.println(selectedIndex);
                             System.out.println(comboBox.getSelectedIndex());
                             selectedIndex = currentIndex;
-                            System.out.println(selectedIndex);
                         }
                         
                         /*
@@ -423,8 +421,6 @@ public class ComboBoxFilter extends PlainDocument {
                              */
                             pickedItem = comboBox.getSelectedItem();
                             pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
-                        } else {
-                            System.out.println(obj.toString());
                         }
                     } // else
                 } // if
@@ -753,7 +749,6 @@ public class ComboBoxFilter extends PlainDocument {
         //DEBUG: System.out.println("STR: " + str);
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
-            System.out.println("blah!");
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);

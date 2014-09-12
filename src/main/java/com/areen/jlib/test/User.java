@@ -225,9 +225,6 @@ public final class User implements SimpleObject<User.VO> {
     
     @Override
     public Object get(ValueObject.Field argField) {
-        if (argField == null) {
-            System.out.println("NULL!");
-        }
         User.Field field = (User.Field) argField;
         Object ret = null;
         switch (field) {
@@ -255,9 +252,6 @@ public final class User implements SimpleObject<User.VO> {
     
     @Override
     public Object set(ValueObject.Field argField, Object argValue) {
-        if (argField == null || argValue == null) {
-            System.out.println("NULL!");
-        }
         User.Field field = (User.Field) argField;
         Object result = null;
         switch (field) {
@@ -308,11 +302,6 @@ public final class User implements SimpleObject<User.VO> {
         user.set(Field.DEPARTMENT, "ITC");
         user.set(Field.USER_NAME, "dejan");
         user.set(Field.PASSWORD, "5up3r53cr3t");
-        System.out.println(user);
-        if (user instanceof Cloneable) {
-            System.out.println("Cloneable!");
-        }
-        
 	} // main() function
     
 } // User class

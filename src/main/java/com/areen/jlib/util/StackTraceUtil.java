@@ -78,7 +78,6 @@ public final class StackTraceUtil {
     public static void main(String... aArguments) {
         Throwable throwable = new IllegalArgumentException("Blah");
         System.out.println(getStackTrace(throwable));
-        System.out.println(getCustomStackTrace("MEEP MEEP: ", throwable));
     }
 } // StackTraceUtil class
 

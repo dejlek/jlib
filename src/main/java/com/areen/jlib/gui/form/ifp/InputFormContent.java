@@ -127,7 +127,6 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
         String curLabel = "";
         for (int i = 0; i < argModelFields.length; i++) {
             curLabel = getModel().getTitles()[argModelFields[i]];
-            System.out.println("TYPE: " + getModel().getFieldClass(argModelFields[i]));
             if (getModel().getFieldClass(argModelFields[i]).toString().indexOf("String") >= 0
                     || getModel().getFieldClass(argModelFields[i]).toString().indexOf("Integer") >= 0
                     || getModel().getFieldClass(argModelFields[i]).toString().indexOf("Float") >= 0
@@ -185,7 +184,6 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
                 } // if
             } // for
             if (notLabeledField.containsKey(fieldIndex)) {
-                System.out.println("Adding empty label");
                 groupFormContentPanel.add(new JLabel(""));
             } else if (labelForField.containsKey(fieldIndex)) {
                 fieldLabel.setText(labelForField.get(fieldIndex));
@@ -193,13 +191,9 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
             } else {
                 groupFormContentPanel.add(fieldLabel);
             } // else
-
-            System.out.println("Field: " + pairs.getKey().toString() + " Form component: " 
-                    + pairs.getValue());
             
             if (pairs.getValue() == null) {
                 final JTextField fieldComponent = new JTextField();
-                System.out.println(getModel().get(argModelFields[counter]).toString());
                 fieldComponent.setText(getModel().get(argModelFields[counter]).toString());
                 fieldComponent.addKeyListener(new KeyListener() {
 
@@ -259,7 +253,6 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
         } // else if
         groupFormContentPanel.validate();
         groupFormContentPanel.repaint();
-        System.out.println("SIZE: " + labels.size());
         globalLabels.putAll(labels);
         return groupFormContentPanel;
     } // createSubGroupDetailsPanel() method
@@ -298,7 +291,6 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
         try {
             layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
-            System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
             return;
         } // catch
 
@@ -359,8 +351,6 @@ public class InputFormContent<T extends SimpleObject> extends JPanel {
      */
     public void reportChange(final PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        //DEBUG:
-        System.out.println("CHANGE: " + propertyName + " " + evt.getNewValue());
         if ("VALUE_CHANGE".equals(propertyName)) {
             String[] value = evt.getNewValue().toString().split(":");
             String[] modelTitles = model.getTitles();

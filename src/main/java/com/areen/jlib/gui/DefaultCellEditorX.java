@@ -115,8 +115,6 @@ public class DefaultCellEditorX extends DefaultCellEditor {
             focusPropertyListener = new PropertyChangeListener() {
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
-                    //LOG.info("property: " + evt.getPropertyName());
-                    System.out.println("property: " + evt.getPropertyName());
                     if (focusManager().getPermanentFocusOwner() 
                             != getComponent().getEditor().getEditorComponent()) { 
                         return;

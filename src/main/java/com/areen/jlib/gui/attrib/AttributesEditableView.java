@@ -95,7 +95,6 @@ public class AttributesEditableView
     
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("CALL: AttributesEditableView.propertyChange() : " + evt.getPropertyName());
         if (evt.getPropertyName().equals("attributes")) {
             String str = (String) evt.getNewValue();
             

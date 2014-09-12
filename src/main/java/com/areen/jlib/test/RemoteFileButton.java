@@ -39,7 +39,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -235,7 +234,6 @@ public class RemoteFileButton
     @Override
     public void drop(DropTargetDropEvent dtde) {
         Transferable t = dtde.getTransferable();
-        System.out.println(Arrays.toString(t.getTransferDataFlavors()));
         DataFlavor fileListDataFlavor = DataFlavor.javaFileListFlavor;
     
         if (t.isDataFlavorSupported(fileListDataFlavor)) {
@@ -258,7 +256,6 @@ public class RemoteFileButton
                 final File[] files = tempFiles;
                 remoteFile.newVersion(files[0]);
                 dtde.getDropTargetContext().dropComplete(true);
-                System.out.println("drop complete");
             } catch (UnsupportedFlavorException ex) {
                 Logger.getLogger(RemoteFileButton.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -275,7 +272,6 @@ public class RemoteFileButton
     // ====================================================================================================
     
     public void refreshToolTip() {
-        System.out.println("Refresh tool top : " + getToolTipText() + " -> " + remoteFile.getToolTip());
         setToolTipText(remoteFile.getToolTip());
         repaint();
     }

@@ -58,9 +58,6 @@ public class AccordionLayout implements LayoutManager {
     
     @Override
     public void addLayoutComponent(String string, Component container) {
-
-        System.out.println("added new :D");
-        //	TODO Auto-generated method stub
     }
 
     @Override

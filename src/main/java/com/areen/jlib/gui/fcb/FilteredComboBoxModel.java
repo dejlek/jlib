@@ -272,7 +272,6 @@ public class FilteredComboBoxModel
      */
     @Override
     public void addElement(Object anObject) {
-        System.out.println("addElement(" + anObject.getClass().getCanonicalName() + ")");
         fcbObjects.add(anObject);
         /* 
          * TODO: when an element is added to the combo box, we should check if it matches the filter or not!

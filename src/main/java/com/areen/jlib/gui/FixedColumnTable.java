@@ -113,7 +113,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
          table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
          table.getColumnModel().getColumn(0).setPreferredWidth(50);
          table.getColumnModel().getColumn(1).setPreferredWidth(100);
-         JScrollPane scrollPane= new JScrollPane(table);
+         JScrollPane scrollPane = new JScrollPane(table);
          FixedColumnTable fct = new FixedColumnTable(2, scrollPane);
          jframe.add(scrollPane);
          jframe.show();

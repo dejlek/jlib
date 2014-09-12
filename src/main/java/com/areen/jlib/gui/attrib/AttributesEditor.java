@@ -107,7 +107,6 @@ public class AttributesEditor
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("attributes")) {
             String str = (String) evt.getNewValue();
-            System.out.println("CALL: AttributesEditor.propertyChange() : " + str);
             updateView();
         }
     }
@@ -116,7 +115,6 @@ public class AttributesEditor
     
     @Override
     public void focusGained(FocusEvent e) {
-        System.out.println("CALL: AttributesEditor.focusGained()");
         int sel = model.getSelectedAttributeIndex();
         if (sel < 0) {
             model.setSelectedAttributeIndex(0);
@@ -127,7 +125,6 @@ public class AttributesEditor
 
     @Override
     public void focusLost(FocusEvent e) {
-        System.out.println("CALL: AttributesEditor.focusLost()");
         if (!isInTable()) {
             model.setSelectedAttributeIndex(-1);
         }
@@ -204,7 +201,6 @@ public class AttributesEditor
     }
     
     private void handleEnter() {
-        System.out.println("AttributesEditor commits change(s).");
         ActionEvent av = new ActionEvent(this, 0, "commit_changes");
         for (ActionListener al : actionListeners) {
             al.actionPerformed(av);

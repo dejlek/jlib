@@ -674,7 +674,6 @@ public class Accordion extends JComponent implements PropertyChangeListener {
             return true;
         }
 
-        System.out.println("Can't resize!");
 
         return false;
     } // can resize

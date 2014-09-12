@@ -6,7 +6,6 @@
 
 package com.areen.jlib.model.key;
 
-import com.areen.jlib.model.key.UniqueKey;
 import com.areen.jlib.model.SimpleObject;
 import com.areen.jlib.pattern.ValueObject;
 

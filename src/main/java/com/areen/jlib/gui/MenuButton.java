@@ -287,7 +287,6 @@ public class MenuButton extends JButton
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println(e.getActionCommand());
             } // actionPerformed() method
         });
 

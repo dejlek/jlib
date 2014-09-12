@@ -13,8 +13,6 @@
  */
 package com.areen.jlib.util;
 
-import java.util.Arrays;
-
 /**
  * SImple SErializer.
  * 
@@ -94,8 +92,6 @@ public class Sise {
         String rec = Sise.record(objs);
         System.out.println(rec);
         
-        // units()
-        System.out.println(Arrays.toString(Sise.units(rec)));
     } // main() method
 } // Sise class
 

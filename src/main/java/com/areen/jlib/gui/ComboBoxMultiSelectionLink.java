@@ -191,10 +191,7 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
             return;
         } // if
         selectedItem = comboBox.getSelectedItem();
-        System.out.println("update(): selected:" + selectedItem);
         if (selectedItem != null) {
-            //
-            System.out.println("update(): selected String:" + selectedItem.toString());
 
             if (selectedItem instanceof Pair) {
                 text = ((Pair) selectedItem).getFirst().toString();
@@ -227,7 +224,6 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
         if (selectedItems != null) {
             for (Object selectedItemObj : selectedItems) {
                 if (selectedItemObj != null) {
-                    System.out.println("update(): selectedItemObj String:" + selectedItemObj.toString());
                     if (selectedItemObj instanceof Pair) {
                         completeSelectionsToolTip += ((Pair) selectedItemObj).getFirst().toString() + " - " 
                                 + ((Pair) selectedItemObj).getSecond().toString() + "<br>";
@@ -469,7 +465,6 @@ public class ComboBoxMultiSelectionLink implements ActionListener {
             itemPicked = new Boolean(tmp.toString());
         } // else
         System.out.println("ae.getActionCommand(): " + ae.getActionCommand());
-        System.out.println("itemPicked: " + itemPicked);
         System.out.println("isCarryOverControlled: " + isCarryOverControlled);
         boolean applyText = (!isControlledByBoth && isCarryOverControlled) || (isControlledByBoth 
                 && ae.getActionCommand().equals(carryOverButton.getText())) || (ae.getActionCommand()
