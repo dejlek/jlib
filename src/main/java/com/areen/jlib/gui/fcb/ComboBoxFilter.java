@@ -208,9 +208,10 @@ public class ComboBoxFilter extends PlainDocument {
                         navigationKeyPressed = true;
                         
                         if (isTableCellEditor) {
-                            System.out.println(selectedIndex);
-                            System.out.println(comboBox.getSelectedIndex());
+                            //DEBUG: System.out.println(selectedIndex);
+                            //DEBUG: System.out.println(comboBox.getSelectedIndex());
                             selectedIndex = currentIndex;
+                            //DEBUG: System.out.println(selectedIndex);
                         }
                         
                         /*
@@ -234,9 +235,10 @@ public class ComboBoxFilter extends PlainDocument {
                         navigationKeyPressed = true;
                         
                         if (isTableCellEditor) {
-                            System.out.println(selectedIndex);
-                            System.out.println(comboBox.getSelectedIndex());
+                            //DEBUG: System.out.println(selectedIndex);
+                            //DEBUG: System.out.println(comboBox.getSelectedIndex());
                             selectedIndex = currentIndex;
+                            //DEBUG: System.out.println(selectedIndex);
                         }
                         
                         /*
@@ -421,6 +423,8 @@ public class ComboBoxFilter extends PlainDocument {
                              */
                             pickedItem = comboBox.getSelectedItem();
                             pickedKey = comboBoxModel.getKeyOfTheSelectedItem().toString();
+                        } else {
+                            //DEBUG: System.out.println(obj.toString());
                         }
                     } // else
                 } // if
@@ -454,6 +458,7 @@ public class ComboBoxFilter extends PlainDocument {
                 boolean ma = comboBoxModel.isMultiSelectionAllowed();
 
                 if (pickedKey != null && !(pa || ma)) {
+                    //DEBUG: System.out.println("pickedKey.toString(): " + pickedKey.toString());
                     // When combo-box loses focus, we need to set the text to the selected
                     setText(pickedKey.toString());
                 } else {
@@ -619,6 +624,7 @@ public class ComboBoxFilter extends PlainDocument {
             } else {
                 // Cell's value was not a null, so we can execute filter so the combo-box updates the 
                 // selected item to be what was previously selected.
+                //DEBUG: System.out.println("1. prepare filterTheModel()");
                 filterTheModel();
                 pickedItem = comboBox.getSelectedItem();
                 pickedKey = comboBoxModel.getKeyOfTheSelectedItem();
@@ -628,6 +634,7 @@ public class ComboBoxFilter extends PlainDocument {
             // the character user typed inside a JTable
             if (isTriggeredByKeyPress()) {
                 setText(key);
+                //DEBUG: System.out.println("2. prepare filterTheModel()");
                 filterTheModel();
             } else {
                 if (!pat.isEmpty()) {
@@ -656,19 +663,21 @@ public class ComboBoxFilter extends PlainDocument {
                     // If pattern is not a null, but picked key is a null. this can only mean one
                     // thing - we have a code in the table which is not in the filtered combo box model's
                     // map. Therefore we just leave it as it is.
-                    if (pickedKey != null) {                    
+                    if (pickedKey != null) { 
+                        String s = pair.getSecond().toString();
                         // Now we should have Pair object, we can set the text
                         if (getConfig() == 2) {
-                            setText(pair.getSecond().toString());
+                            setText(s);
                         } else if (getConfig() == 3) {
                             String f = pair.getFirst().toString();
-                            String s = pair.getSecond().toString();
                             if (s == null) {
                                 setText(f);
                             } else {
                                 setText(f + getDelimiter() + s);
                             } // else
                         } // else if
+                        //DEBUG: System.out.println("f:::: " + f);
+                        //DEBUG: System.out.println("s:::: " + s);
                     } // if
                     LOGGER.info("-----");
                 } // if
@@ -710,11 +719,25 @@ public class ComboBoxFilter extends PlainDocument {
         // TODO: FIXME, when user presses PgDn and PgUp Object[] is picked and insertString is
         //       actually inserting String like "[Ljava.lang.Object;@1410770" 
         //       This is a quick hack to not confuse users.
+        //DEBUG: System.out.println("insertString str: [" + str + "]");
         if (str.contains("[Ljava.lang.Object")) {
+            
+           /*ArrayList fcbObj = comboBoxModel.getFcbObjects();
+            System.out.println("getSelectedItem: " + comboBoxModel.getSelectedItem());
+            System.out.println("getSelectedItem keyVal: " + comboBoxModel.getKeyValuePairOfAnItem(
+                comboBoxModel.getSelectedItem()));
+            System.out.println("getKeyValuePairOfTheSelectedItem: " + comboBoxModel.getKeyValuePairOfAnItem(
+                pickedItem));
             int idx = comboBoxModel.getKeyIndex();
             if (isTableCellEditor() || !comboBoxModel.isDefaultFiltering()) {
                 comboBoxModel.setReadyToFinish(true);
             } // if
+            int selectedIdx = comboBox.getSelectedIndex();
+            System.out.println("selectedIdx: " + selectedIdx);
+            System.out.println("selectedIdx KeyValuePair: " + comboBoxModel.getKeyValuePairForElementAt(
+                selectedIdx));
+            System.out.println("selectedIndex KeyValuePair: " + comboBoxModel.getKeyValuePairForElementAt(
+                selectedIndex));
             pickedItem = comboBox.getSelectedItem();
             boolean isObjectArr = (pickedItem instanceof Object[]);
             if (pickedItem != null) {
@@ -730,15 +753,64 @@ public class ComboBoxFilter extends PlainDocument {
                     } // if
                 } // if
             } // if
+            //DEBUG: System.out.println("insertString str: " + str);
             super.insertString(offs, str, a);
             
             filterTheModel();
-
+            //DEBUG: System.out.println("itemPicked: " + itemPicked);
             if (itemPicked) {
                 Object tmp = comboBoxModel.getKeyOfTheSelectedItem();
+                //DEBUG: System.out.println("tmp: " + tmp);
+                //DEBUG: System.out.println("isObjectArr: " + isObjectArr);
                 if (itemPicked && isObjectArr) {
                     pickedKey = (tmp != null ? tmp.toString() : tmp);
                 } // if
+            } // if
+            comboBox.putClientProperty("item-picked", Boolean.TRUE);
+            comboBoxModel.setPickedItem(pickedItem);
+            comboBoxModel.setPickedKey(pickedKey);
+            return;*/
+            
+            //DEBUG: System.out.println("blah!");
+            //DEBUG: System.out.println("cbm getKeyValuePairForItem: " + comboBoxModel.getKeyValuePairForItem(
+            //            str));
+            //DEBUG: System.out.println("cbm getSelectedItem: " + comboBoxModel.getSelectedItem());
+            //DEBUG: System.out.println("cbm getSelectedItem keyVal: " + comboBoxModel
+            //            .getKeyValuePairOfAnItem(comboBoxModel.getSelectedItem()));
+            //DEBUG: System.out.println("cb getSelectedItem: " + comboBox.getSelectedItem());
+            //DEBUG: System.out.println("cb getSelectedItem keyVal: " + comboBoxModel.getKeyValuePairOfAnItem(
+            //            comboBox.getSelectedItem()));
+
+            int selectedIdx = comboBox.getSelectedIndex();
+            //DEBUG: System.out.println("selectedIdx: " + selectedIdx);
+            //DEBUG: System.out.println("pickedKey getKeyValuePairOfTheSelectedItem: " + comboBoxModel
+            //            .getKeyValuePairOfAnItem(pickedItem));
+            //DEBUG: System.out.println("selectedIdx KeyValuePair: " + comboBoxModel
+            //            .getKeyValuePairForElementAt(selectedIdx));
+            //DEBUG: System.out.println("selectedIndex KeyValuePair: " + comboBoxModel
+            //            .getKeyValuePairForElementAt(selectedIndex));
+            
+            int idx = comboBoxModel.getKeyIndex();
+            if (isTableCellEditor() || !comboBoxModel.isDefaultFiltering()) {
+                comboBoxModel.setReadyToFinish(true);
+            } // if
+            Pair keyValuePair = comboBoxModel.getKeyValuePairForItem(str);
+            // This is an ArrayOutOfBounds exception "fix". When user presses SPACE + ENTER sometimes we get
+            // an error, because strs is an empty array!
+            if (keyValuePair != null && keyValuePair.getKey() != null) {
+                super.insertString(offs, keyValuePair.getKey().toString(), a);
+            } else {
+                super.insertString(offs, "", a);
+            } // else
+            filterTheModel();
+            if (itemPicked) {
+                pickedItem = comboBox.getSelectedItem();
+                Object tmp = comboBoxModel.getKeyOfTheSelectedItem();
+                if (tmp instanceof String) {
+                    pickedKey = tmp.toString();
+                } else {
+                    pickedKey = tmp;
+                } // else
             } // if
             comboBox.putClientProperty("item-picked", Boolean.TRUE);
             comboBoxModel.setPickedItem(pickedItem);
@@ -749,6 +821,7 @@ public class ComboBoxFilter extends PlainDocument {
         //DEBUG: System.out.println("STR: " + str);
         // insert the string into the document
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
+            //DEBUG: System.out.println("blah!");
             // we got a string in the Sise format, that must be because user picked an item with a mouse
             // in that case, we will take the key component (SISE unit) and put that instead.
             String[] strs = Sise.units(str);
@@ -768,6 +841,7 @@ public class ComboBoxFilter extends PlainDocument {
             // We have to filter after the user selects an item with the mouse.
             // WARNING: here we rely on the FilteredComboBoxModel's setPattern() method to select the
             //          exact match - ie the item that user picked with the mouse.
+            //DEBUG: System.out.println("Sise.UNIT_SEPARATOR_STRING filterTheModel()");
             filterTheModel();
 
             if (itemPicked) {
@@ -801,12 +875,13 @@ public class ComboBoxFilter extends PlainDocument {
         if (finish) {
             return;
         } // if
-        
+        //DEBUG: System.out.println("insertString filterTheModel()");
         filterTheModel();
     } // insertString() method
 
     @Override
     public void remove(int offs, int len) throws BadLocationException {
+        //DEBUG: System.out.println("selecting: " + selecting);
         // return immediately when selecting an item
         if (selecting) {
             // remove() is called whenever setSelectedItem() or setSelectedIndex() are called. They may be
@@ -832,13 +907,14 @@ public class ComboBoxFilter extends PlainDocument {
 
         // remove the string from the document
         super.remove(offs, len);
-
+        //DEBUG: System.out.println("finish: " + finish);
         if (finish) {
             // user pressed ENTER so in the case remove is called we do not filter the model.
             return;
         } // if
 
         // finally, do the filter
+        //DEBUG: System.out.println("remove filterTheModel()");
         filterTheModel();
     } // remove() method
     
@@ -847,11 +923,16 @@ public class ComboBoxFilter extends PlainDocument {
      * @param argItem 
      */
     public void pickItem(Object argItem) {
+        //DEBUG: System.out.println("pickItem: " + argItem);
         Object obj = comboBoxModel.getKeyOfAnItem(argItem);
         if ((argItem == null) && (obj == null)) {
             return;
         } // if 
-        pickedItem = argItem;
+        if (argItem instanceof Object[]) {
+            pickedItem = comboBoxModel.getKeyValuePairOfAnItem(argItem);
+        } else {
+            pickedItem = argItem;
+        } // else
         pickedKey = obj.toString();
     } // pickItem() method
 
@@ -927,6 +1008,7 @@ public class ComboBoxFilter extends PlainDocument {
     } // clearTextSelection() method
 
     private void setText(String text) {
+        //DEBUG: System.out.println("setText() called######## " + text);
         try {
             // remove all text and insert the completed string
             super.remove(0, getLength());
@@ -952,6 +1034,7 @@ public class ComboBoxFilter extends PlainDocument {
      * of filtered items.
      */
     private void filterTheModel() throws BadLocationException {
+        //DEBUG: System.out.println("filterTheModel() called========");
         // we have to "guard" the call to comboBoxModel.setPattern() with selecting set to true, then false
         selecting = true;
         boolean oldValue = comboBoxModel.isReadyToFinish();
@@ -959,6 +1042,7 @@ public class ComboBoxFilter extends PlainDocument {
         previousItemCount = comboBox.getItemCount(); /// store the number of items before filtering
 
         String pattern = getText(0, getLength());
+        //DEBUG: System.out.println("pattern: " + pattern);
         comboBoxModel.setPattern(pattern);
 
         clearTextSelection();
@@ -967,6 +1051,7 @@ public class ComboBoxFilter extends PlainDocument {
         comboBoxModel.setReadyToFinish(oldValue); // restore the value
         selecting = false;
         selectedIndex = comboBox.getSelectedIndex();
+        //DEBUG: System.out.println("selectedIndex: " + selectedIndex);
     } // filterTheModel() method
 
     /**
@@ -1027,6 +1112,7 @@ public class ComboBoxFilter extends PlainDocument {
         Object obj = comboBoxModel.getKeyOfTheSelectedItem();
         String txt = null;
         if (obj != null) {
+            //DEBUG: System.out.println("updateFcbEditor() called==== : [" + obj.toString() + "]");
             txt = obj.toString();
         } // if 
         if (txt != null) {

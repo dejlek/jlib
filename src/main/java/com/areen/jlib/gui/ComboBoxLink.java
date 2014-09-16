@@ -14,9 +14,11 @@
 
 package com.areen.jlib.gui;
 
+import com.areen.jlib.gui.fcb.FilteredComboBoxModel;
 import com.areen.jlib.tuple.Pair;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -88,6 +90,15 @@ public class ComboBoxLink implements ActionListener {
 
         if (selectedItem instanceof Pair) {
             text = ((Pair) selectedItem).getSecond().toString();
+        } else if (selectedItem instanceof Object[]) {
+            ComboBoxModel cbModel = comboBox.getModel();
+            if (cbModel != null) {
+                if (cbModel instanceof FilteredComboBoxModel) {
+                    FilteredComboBoxModel fcbModel = (FilteredComboBoxModel) cbModel;
+                    Pair selectedPair = fcbModel.getKeyValuePairOfTheSelectedItem();
+                    text = selectedPair.getSecond().toString();
+                } // if
+            } // if
         } else {
             text = selectedItem.toString();
         } // else

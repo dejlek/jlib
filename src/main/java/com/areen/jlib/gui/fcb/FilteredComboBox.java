@@ -75,6 +75,8 @@ public class FilteredComboBox extends WideComboBox {
     @Override
     public void setSelectedItem(Object argObject) {
         if (comboBoxModel.isReadyToPick()) {
+            //DEBUG: System.out.println("setSelectedItem: " + argObject);
+            //DEBUG: System.out.println("instance of : " + (argObject instanceof Object[]));
             comboBoxFilter.pickItem(argObject);
             
             // DO NOT FORGET to return to the FALSE state here, otherwise combo-box will keep picking items!

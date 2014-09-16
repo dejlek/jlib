@@ -23,6 +23,7 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.MutableComboBoxModel;
@@ -68,8 +69,9 @@ public class FilteredComboBoxModel
      */
     ArrayList objects; // TODO: Once we switch to JDK7 we will use the element type E: ArrayList<E> objects;
     private final ArrayList fcbObjects; // TODO: same here
+    private final HashMap<String, Object> fcbObjectsMap; // TODO: same here
     Object selectedObject;
-    private String lastPattern = "";
+    private String lastPattern = ""; 
     private int keyFieldIndex = 0; /// The index of the (unique) key part of each item.
     private boolean tableModelInUse = false;
     private AbstractTableModel tableModel;
@@ -123,6 +125,7 @@ public class FilteredComboBoxModel
     public FilteredComboBoxModel() {
         objects = new ArrayList();
         fcbObjects = new ArrayList();
+        fcbObjectsMap = new HashMap<String, Object>();
     } // FilteredComboBoxModel constructor (default)
 
     /**
@@ -135,11 +138,13 @@ public class FilteredComboBoxModel
         //objects = new ArrayList<E>(); JDK 7
         objects = new ArrayList();
         objects.ensureCapacity(items.length);
-
+        fcbObjectsMap = new HashMap<String, Object>();
+        
         int i, c;
         for (i = 0, c = items.length; i < c; i++) {
             //objects.addElement(items[i]);
             objects.add(items[i]);
+            fcbObjectsMap.put(items[i].toString(), items[i]);
         } // for
 
         if (getSize() > 0) {
@@ -173,6 +178,7 @@ public class FilteredComboBoxModel
         objects = new ArrayList();
         columns = argColumns;
         fcbObjects = new ArrayList();
+        fcbObjectsMap = new HashMap<String, Object>();
         handleNewTableModel(tableModel);
     } // FilteredComboBoxModel constructor
 
@@ -191,10 +197,14 @@ public class FilteredComboBoxModel
         dataSetID = argModelID;
         setTableModelRegistry(argAtmRegistry);
         tableModel = argAtmRegistry.get(argModelID);
+        //DEBUG: System.out.println("tableModel: " + tableModel);
         objects = new ArrayList();
         columns = argColumns;
         fcbObjects = new ArrayList();
+        fcbObjectsMap = new HashMap<String, Object>();
         handleNewTableModel(tableModel);
+        //DEBUG: System.out.println("objects: " + objects.size());
+        //DEBUG: System.out.println("fcbObjects: " + fcbObjects.size());
     } // FilteredComboBoxModel constructor
     
     /**
@@ -212,8 +222,10 @@ public class FilteredComboBoxModel
         
         fcbObjects = new ArrayList();
         fcbObjects.ensureCapacity(v.size());
+        fcbObjectsMap = new HashMap<String, Object>();
         for (Object obj : v) {
             fcbObjects.add(obj);
+            fcbObjectsMap.put(obj.toString(), obj);
         } // foreach
     } //  // FilteredComboBoxModel constructor
 
@@ -229,15 +241,23 @@ public class FilteredComboBoxModel
      */
     @Override
     public void setSelectedItem(Object anObject) {
-        if ((selectedObject != null && !selectedObject.equals(anObject)) 
-                || selectedObject == null 
-                && anObject != null) {
+        //DEBUG: System.out.println("setSelectedItem() called ");
+        //DEBUG: System.out.println("1. selectedObject: " + selectedObject);
+        //DEBUG: System.out.println("anObject: " + anObject);
+        boolean notNullAndDiffSelection = (selectedObject != null && !selectedObject.equals(anObject));
+        //DEBUG: System.out.println("notNullAndDiffSelection: " + notNullAndDiffSelection);
+        boolean nullCurrentSelection = (selectedObject == null);
+        //DEBUG: System.out.println("nullCurrentSelection: " + nullCurrentSelection);
+        boolean nullNewSelection = (anObject == null);
+        //DEBUG: System.out.println("nullNewSelection: " + nullNewSelection);
+        if (notNullAndDiffSelection || nullCurrentSelection && !nullNewSelection) {
             selectedObject = anObject;
             fireContentsChanged(this, -1, -1);
         } // if
-        if (anObject == null) {
+        if (nullNewSelection) {
             selectedObject = null;
         } // if
+        //DEBUG: System.out.println("2. selectedObject: " + selectedObject);
     } // setSelectedItem() method
 
     // implements javax.swing.ComboBoxModel
@@ -272,7 +292,9 @@ public class FilteredComboBoxModel
      */
     @Override
     public void addElement(Object anObject) {
+        //DEBUG: System.out.println("addElement(" + anObject.getClass().getCanonicalName() + ")");
         fcbObjects.add(anObject);
+        fcbObjectsMap.put(anObject.toString(), anObject);
         /* 
          * TODO: when an element is added to the combo box, we should check if it matches the filter or not!
          *       If it does, then we add it to the `objects` array, and only then we fireIntervalAdded().
@@ -331,26 +353,26 @@ public class FilteredComboBoxModel
         int last;
         switch (e.getType()) {
             case TableModelEvent.INSERT:
-                System.out.println("FCBM: TableModel insert");
+                //DEBUG: System.out.println("FCBM: TableModel insert");
                 first = e.getFirstRow();
                 last = e.getLastRow();
-                System.out.println("      F: " + first + "   L: " + last);
+                //DEBUG: System.out.println("      F: " + first + "   L: " + last);
                 addElement(getRow(first));
                 fireIntervalAdded(this, first, last);
                 break;
             case TableModelEvent.DELETE:
-                System.out.println("FCBM: TableModel delete");
+                //DEBUG: System.out.println("FCBM: TableModel delete");
                 first = e.getFirstRow();
                 last = e.getLastRow();
-                System.out.println("      F: " + first + "   L: " + last);
+                //DEBUG: System.out.println("      F: " + first + "   L: " + last);
                 removeElements(first, last);
                 fireIntervalRemoved(this, first, last);
                 break;
             case TableModelEvent.UPDATE:
-                System.out.println("FCBM: TableModel update");
+                //DEBUG: System.out.println("FCBM: TableModel update");
                 first = e.getFirstRow();
                 last = e.getLastRow();
-                System.out.println("      F: " + first + "   L: " + last);
+                //DEBUG: System.out.println("      F: " + first + "   L: " + last);
                 Object obj = getRow(first);
                 updateElement(first, obj);
                 fireContentsChanged(this, first, last);
@@ -411,12 +433,15 @@ public class FilteredComboBoxModel
      * @param argPattern String object containing a pattern to match against.
      */
     public void setPattern(String argPattern) {
-        //System.out.println("setPattern(" + argPattern + ")");
+        //DEBUG: System.out.println("setPattern(" + argPattern + ")");
         exactObject = null;
         exactIndex = -1;
         
         String copy = argPattern.trim();
-        
+        //DEBUG: System.out.println("lastPattern(" + lastPattern + ")");
+        //DEBUG: System.out.println("copy(" + copy + ")");
+        //DEBUG: System.out.println("selected item(" + getSelectedItem() + ")");
+        //DEBUG: System.out.println("selected pair(" + getKeyValuePairOfTheSelectedItem() + ")");
         if (lastPattern.equals(copy)
                 && (argPattern.length() != copy.length())) {
             // we have the same pattern, probably with an additional space, no need for filtering.
@@ -424,16 +449,17 @@ public class FilteredComboBoxModel
             // and presses F2 to edit again, we lose the selected index, so we have to re-filter again.
             return;
         } // if
-        //System.out.println("DEBUG: setPattern(" + argPattern + ");");
+        //DEBUG: System.out.println("DEBUG: setPattern(" + argPattern + ");");
         
         // record the size before we start modifying the filtered list of objects
         int size1 = getSize();
-        
+        //DEBUG: System.out.println("size1: " + size1);
         if (!objects.isEmpty()) {
             objects.clear();
         } // if
         String[] strings = null;
         boolean exactMatchFound = false;
+        //DEBUG: System.out.println("argPattern.isEmpty() (" + argPattern.isEmpty() + ")");
         if (argPattern.isEmpty()) {
             // pattern contains no characters - might be erased, so we have to populate objects list.
             objects.addAll(fcbObjects);
@@ -474,8 +500,8 @@ public class FilteredComboBoxModel
         if (defaultFilter) {
             // get the size after filtering
             int size2 = getSize();
-
-            //System.out.println(size1 + ", " + size2);
+            //DEBUG: System.out.println("size2: " + size2);
+            //DEBUG: System.out.println(size1 + ", " + size2);
             if (size1 < size2) {
                 fireIntervalAdded(this, size1, size2 - 1);
                 fireContentsChanged(this, 0, size1 - 1);
@@ -485,13 +511,15 @@ public class FilteredComboBoxModel
             } else {
                 fireContentsChanged(this, 0, size2 - 1);
             } // else
-
+            int newSize = this.getSize();
+            //DEBUG: System.out.println("newSize: " + newSize);
+            //DEBUG: System.out.println("exactMatchFound: " + exactMatchFound);
             // Let's select appropriate item.
-            if (this.getSize() > 0) {
+            if (newSize > 0) {
                 if (exactMatchFound) {
                     // if we had an exact match, select that item.
-                    //System.out.println("### Exact match found!");
-                    //System.out.println("(" + exactIndex + ")" + exactObject.toString());
+                    //DEBUG: System.out.println("### Exact match found!");
+                    //DEBUG: System.out.println("(" + exactIndex + ")" + exactObject.toString());
                     setSelectedItem(exactObject);
                 } else {
                     // if we did not have an exact match, select the first item in the newly created list.
@@ -560,7 +588,11 @@ public class FilteredComboBoxModel
      * @param argIndex
      */
     public void setSelectedIndex(int argIndex) {
-        if (argIndex > -1 && argIndex < getSize()) {
+        //DEBUG: System.out.println("setSelectedIndex() called=========");
+        //DEBUG: System.out.println("argIndex: " + argIndex);
+        int newSize = getSize();
+        //DEBUG: System.out.println("getSize: " + newSize);
+        if (argIndex > -1 && argIndex < newSize) {
             setSelectedItem(objects.get(argIndex));
         } else {
             setSelectedItem(null);
@@ -575,7 +607,9 @@ public class FilteredComboBoxModel
      * @return 
      */
     public Object getKeyOfAnItem(Object argItem) {
+        //DEBUG: System.out.println("getKeyOfAnItem############# argItem: " + argItem);
         if (argItem == null) {
+            //DEBUG: System.out.println("return null!!!!!!");
             return null;
         } // if
         if (argItem instanceof Pair) {
@@ -584,30 +618,80 @@ public class FilteredComboBoxModel
         if (argItem instanceof Object[]) {
             // we assume whenever we deal with Object[] array, it came from a table model.
             int idx = columns[0];
-            return ((Object[]) argItem)[idx];
+            Object itemKey = ((Object[]) argItem)[idx];
+            if (itemKey instanceof String) {
+                //DEBUG: System.out.println("itemKey: " + itemKey);
+                String itemKeyString = (String) itemKey;
+                //DEBUG: System.out.println("itemKeyString: " + itemKeyString);
+                return itemKeyString;
+            } // if
+            return itemKey;
         } // if
         
         // in any other case we will convert object to String and check if it is a Sise record or not.
         String str = argItem.toString();
+        //DEBUG: System.out.println("str.contains(Sise.UNIT_SEPARATOR_STRING): " 
+        //        + str.contains(Sise.UNIT_SEPARATOR_STRING));
         if (str.contains(Sise.UNIT_SEPARATOR_STRING)) {
             // we deal with a Sise record
             String[] units = Sise.units(str);
             return units[0];
         } else {
+            //DEBUG: System.out.println("getKeyOfAnItem str: " + str);
             // If it is any other String, just simply return it.
             return str;
         } // else        
     } // getKeyOfAnItem() method
     
     /**
+     * Use this method to objtain a reference to an object containing the key part of the Item. In the case
+     * our combo-box contains a list of Pairs, we will get the first element. In the case it is a list of
+     * Object[] arrays, then we use the columns array to get the index of the key.
+     * @param argItem 
+     * @return 
+     */
+    public Pair getKeyValuePairOfAnItem(Object argItem) {
+        Pair returnKeyValuePair = null;
+        if (argItem == null) {
+            returnKeyValuePair = null;
+        } // if
+        if (argItem instanceof Pair) {
+            returnKeyValuePair = (Pair) argItem;
+        } // if
+        if (argItem instanceof Object[]) {
+            if (columns.length >= 2) {
+                // we assume whenever we deal with Object[] array, it came from a table model.
+                int keyIdx = columns[0];
+                int valIdx = columns[1];
+                Object itemKey = ((Object[]) argItem)[keyIdx];
+                Object itemVal = ((Object[]) argItem)[valIdx];
+                if (itemKey != null && itemVal != null) {
+                    returnKeyValuePair = new Pair(itemKey, itemVal);
+                } // if
+            } // if
+        } // if
+        return returnKeyValuePair;
+    } // getKeyValueOfAnItem() method
+    
+    /**
      * Use this method to obtain a key of the selected item.
      * @return 
      */
     public Object getKeyOfTheSelectedItem() {
-        //System.out.println("getKeyOfTheSelectedItem()");
+        //DEBUG: System.out.println("getKeyOfTheSelectedItem()");
         Object selected = getSelectedItem();
         return getKeyOfAnItem(selected);
     } // getKeyOfTheSelectedItem() method
+    
+    /**
+     * Use this method to obtain a key of the selected item.
+     * @return 
+     */
+    public Pair getKeyValuePairOfTheSelectedItem() {
+        //DEBUG: System.out.println("getKeyOfTheSelectedItem()");
+        Object selected = getSelectedItem();
+        return getKeyValuePairOfAnItem(selected);
+    } // getKeyValuePairOfTheSelectedItem() method
     
     /**
      * Use this method to get an array of combo-box items selected with wildcard character '*'.
@@ -632,6 +716,7 @@ public class FilteredComboBoxModel
      * @param argKey 
      */
     public void pickItemByKey(Object argKey) {
+        //DEBUG: System.out.println("pickItemByKey: " + argKey);
         Object foundItem = null;
         
         if (argKey == null) {
@@ -648,6 +733,7 @@ public class FilteredComboBoxModel
             } else if (item instanceof Object[]) {
                 Object[] arr = (Object[]) item;
                 itemKey = arr[0];
+                //DEBUG: System.out.println("itemKey: " + itemKey);
             } else {
                 itemKey = item;
             }
@@ -665,7 +751,7 @@ public class FilteredComboBoxModel
     } // setSelectedItemByKey() method
     
     public void printDebugInfo() {
-        System.out.println("++++ types ++++++++++++++++++++++++++++++++++++++++++++++++");
+        //DEBUG: System.out.println("++++ types ++++++++++++++++++++++++++++++++++++++++++++++++");
         Object[] objs = (Object[]) fcbObjects.get(0);
         for (Object obj : objs) {
             if (obj == null) {
@@ -674,17 +760,35 @@ public class FilteredComboBoxModel
                 System.out.println(obj.getClass().getCanonicalName());
             }
         }
-        System.out.println("++++ fcbObjects ++++++++++++++++++++++++++++++++++++++++++++++++");
+        //DEBUG: System.out.println("++++ fcbObjects ++++++++++++++++++++++++++++++++++++++++++++++++");
         for (Object row : fcbObjects) {
             Object[] tmp = (Object[]) row;
             System.out.println(Arrays.toString(tmp));
         }
-        System.out.println("++++ objects ++++++++++++++++++++++++++++++++++++++++++++++++");
+        //DEBUG: System.out.println("++++ objects ++++++++++++++++++++++++++++++++++++++++++++++++");
         for (Object row : objects) {
             Object[] tmp = (Object[]) row;
             System.out.println(Arrays.toString(tmp));
         }
     }
+    
+    public Pair getKeyValuePairForItem(String argItem) {
+        Pair retKeyValuePair = null;
+        if (fcbObjectsMap != null) {
+            Object[] row = (Object[]) fcbObjectsMap.get(argItem);
+            if (row != null) {
+                if (columns[0] < row.length && columns[1] < row.length) {
+                    Object tmpKey = row[columns[0]];
+                    Object tmpValue = row[columns[1]];
+                    retKeyValuePair = new Pair((String) tmpKey.toString(),
+                            (String) tmpValue.toString());
+                    return retKeyValuePair;
+                } // if
+            } // if
+        } // if
+        
+        return retKeyValuePair;
+    } // getKeyValuePairForItem() method
     
     /**
      * This method is used to return the ComboBox value at the requested 
@@ -1009,6 +1113,10 @@ public class FilteredComboBoxModel
             Object obj = findItem((Object[]) removedObject, objects);
             if (obj != null) {
                 objects.remove(obj);
+                String objString = obj.toString();
+                if (fcbObjectsMap.get(objString) != null) {
+                    fcbObjectsMap.remove(objString);
+                } // if
             } // if
         } // for
     } // removeElements() method
@@ -1019,9 +1127,20 @@ public class FilteredComboBoxModel
             int idx = objects.indexOf(updatedObject);
             if (idx > -1) {
                 objects.set(idx, argObject);
-            }
+            } // if
+            String objString = updatedObject.toString();
+            if (fcbObjectsMap.get(objString) != null) {
+                fcbObjectsMap.remove(objString);
+                fcbObjectsMap.put(argObject.toString(), argObject);
+            } // if
             fcbObjects.set(argIndex, argObject);
         } else {
+            Object updatedObject = fcbObjects.get(argIndex);
+            String objString = updatedObject.toString();
+            if (fcbObjectsMap.get(objString) != null) {
+                fcbObjectsMap.remove(objString);
+                fcbObjectsMap.put(argObject.toString(), argObject);
+            } // if
             fcbObjects.set(argIndex, argObject);
         }
     } // updateElement
@@ -1052,6 +1171,7 @@ public class FilteredComboBoxModel
             return check(argWhat, (Pair) argObject);
         } // if
         if (argObject instanceof Object[]) {
+            //DEBUG: System.out.println("check instanceof Object[]");
             return check(argWhat, (Object[]) argObject);
         } // if
         
@@ -1070,20 +1190,23 @@ public class FilteredComboBoxModel
         //System.out.println("PAIR: " + argWhat + " ? " + argPair.toString());
         String left = argPair.getFirst() != null ? argPair.getFirst().toString() : null;
         String right = argPair.getSecond() != null ? argPair.getSecond().toString() : "";
-        
+        //DEBUG: System.out.println("argWhat: [" + argWhat + "] left: [" + left + "] right: [" + right + "]");
         if (left == null && right == null) {
+            //DEBUG: System.out.println("return 0");
             return 0;
         } // if
         
         if ((left != null && left.toLowerCase().equals(argWhat.toLowerCase()))
                 || (right != null && right.toLowerCase().equals(argWhat.toLowerCase()))) {
             // we have an exact match
+            //DEBUG: System.out.println("return 2 EXACT");
             return 2;
         } // if
         
         if ((left != null && left.toLowerCase().contains(argWhat.toLowerCase()))
                 || (right != null && right.toLowerCase().contains(argWhat.toLowerCase()))) {
             // we found a partial match
+            //DEBUG: System.out.println("return 1 PARTIAL");
             return 1;
         } // if
         return 0;
@@ -1099,18 +1222,60 @@ public class FilteredComboBoxModel
      */
     private int check(String argWhat, Object[] argObjects) {
         //System.out.println("OBJECT[]: " + argWhat + " ? " + Sise.record(argObjects));
-        String str = null;
-        for (Object obj : argObjects) {
-            str = (obj == null) ? "" : obj.toString();
+        if (!argWhat.contains("[Ljava.lang.Object")) {
+            if (columns.length >= 2) {
+                // we assume whenever we deal with Object[] array, it came from a table model.
+                int keyIdx = columns[0];
+                int valIdx = columns[1];
+                Object itemKey = argObjects [keyIdx];
+                Object itemVal = argObjects [valIdx];
+                String left = itemKey != null ? itemKey.toString() : null;
+                String right = itemVal != null ? itemVal.toString() : "";
+                //DEBUG: System.out.println("argWhat: [" + argWhat + "] left: [" + left + "] 
+                //            right: [" + right + "]");
+                if (left == null && right == null) {
+                    //DEBUG: System.out.println("return 0");
+                    return 0;
+                } // if
+
+                if ((left != null && left.toLowerCase().equals(argWhat.toLowerCase()))
+                        || (right != null && right.toLowerCase().equals(argWhat.toLowerCase()))) {
+                    // we have an exact match
+                    //DEBUG: System.out.println("return 2 EXACT");
+                    return 2;
+                } // if
+
+                if ((left != null && left.toLowerCase().contains(argWhat.toLowerCase()))
+                        || (right != null && right.toLowerCase().contains(argWhat.toLowerCase()))) {
+                    // we found a partial match
+                    //DEBUG: System.out.println("return 1 PARTIAL");
+                    return 1;
+                } // if
+                
+            } // if
+            /*for (Object obj : argObjects) {
+                str = (obj == null) ? "" : obj.toString();
+                //
+                System.out.println("argWhat: " + argWhat + " str [" + str + "]");
+                if (str.equalsIgnoreCase(argWhat)) {
+                    // we found an exact match
+                    return 2;
+                } // if
+                //
+                if (str.toLowerCase().contains(argWhat.toLowerCase())) {
+                    // we found a partial match
+                    return 1;
+                } // if
+            } // foreach*/
+        } else {
+            String str = (argObjects == null) ? "" : argObjects.toString();
+            //DEBUG: System.out.println("str: [" + str + "]");
+            //DEBUG: System.out.println("argWhat: [" + argWhat + "]");
             if (str.equalsIgnoreCase(argWhat)) {
                 // we found an exact match
                 return 2;
             } // if
-            if (str.toLowerCase().contains(argWhat.toLowerCase())) {
-                // we found a partial match
-                return 1;
-            } // if
-        } // foreach
+        } // else
         return 0;
     } // check() method
     
@@ -1122,7 +1287,7 @@ public class FilteredComboBoxModel
      *             to argWhat (case insensitive equality).
      */
     private int check(String argWhat, String argString) {
-        //System.out.println("String: " + argWhat + " ? " + Sise.record(argObjects));
+        //DEBUG: System.out.println("String: " + argWhat + " ? " + Sise.record(argObjects));
         if (argString.equalsIgnoreCase(argWhat)) {
             // we have an exact match
             return 2;
@@ -1149,7 +1314,6 @@ public class FilteredComboBoxModel
         int initialRowCount = rowCount;
         initialRowCount = (initialRowCount <= 0) ? 4 : initialRowCount;
         objects.ensureCapacity(initialRowCount);
-        
         fcbObjects.ensureCapacity(initialRowCount);
 
         for (int i = 0; i < rowCount; i++) {
@@ -1159,6 +1323,7 @@ public class FilteredComboBoxModel
                 row[j] = tableModel.getValueAt(i, j);
             } // for
             fcbObjects.add(row);
+            fcbObjectsMap.put(row.toString(), row);
             objects.add(row);
         } // for
 

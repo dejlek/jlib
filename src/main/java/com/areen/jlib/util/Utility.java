@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -482,6 +483,48 @@ public class Utility {
 
         return pair;
     } // pairOfString() method
+    
+    /**
+     * This method is useful when you want to convert a list of array of Objects into a container of 
+     * Pair (array). argColumns array contains indexes of those elements we want concatenated in the 
+     * pair's second element.
+     * 
+     * @param argArray
+     * @param argColumns
+     * @param argDelim String delimiter.
+     * @return 
+     */
+    public static Pair<String, String>[] pairsOfStringsForAllObjArrays(ArrayList<Object[]> argArrayList, 
+            int[] argColumns, String argDelim) {
+        Pair<String, String>[] pairs = null;
+        if (argArrayList != null) {
+            pairs = new Pair[argArrayList.size()];
+            int cnt = 0;
+            for (Object[] currentArray : argArrayList) {
+                if (currentArray != null) {
+                    if (argColumns != null) {
+                        if (argColumns.length >= 2) {
+                            if (currentArray.length > argColumns[0] && currentArray.length > argColumns[1]) {
+                                pairs[cnt] = new Pair(currentArray[argColumns[0]].toString(), 
+                                        currentArray[argColumns[1]].toString());
+                                if (argColumns.length > 2) {
+                                    StringBuilder sb = new StringBuilder(currentArray[argColumns[1]]
+                                            .toString());
+                                    for (int i = 2; i < argColumns.length; i++) {
+                                        sb.append(argDelim);
+                                        sb.append(currentArray[argColumns[i]]);
+                                    } // foreach
+                                    pairs[cnt].setSecond(sb.toString());
+                                } // if
+                            } // if
+                        } // if
+                    } // if
+                } // if
+                cnt++;
+            } // for
+        } // if
+        return pairs;
+    } // pairsOfStringsForAllObjArrays() method
 
     /**
      * Java 7 has Files.propeContentType(path) . However we can't use it yet, so we have to do a workaround.

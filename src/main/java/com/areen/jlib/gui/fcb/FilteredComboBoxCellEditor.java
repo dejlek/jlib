@@ -123,8 +123,9 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
      */
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        System.out.println(e.getActionCommand());
-        System.out.println(comboBoxModel.isReadyToFinish());
+        //DEBUG: System.out.println(e.getActionCommand());
+        //DEBUG: System.out.println(comboBoxModel.isReadyToFinish());
+        //DEBUG: System.out.println(comboBoxModel.isCancelled());
         // Selecting an item results in an actioncommand "comboBoxChanged".
         // We should ignore these ones, but unfortunately we must allow user to finish the editing by picking
         // an item with the mouse...
@@ -170,8 +171,7 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             boolean isSelected, 
             int row, 
             int column) {
-        if ((row == keyRow)
-                && column == keyColumn) {
+        if ((row == keyRow) && column == keyColumn) {
             keyRow = -1;
             keyColumn = -1;
             cbFilter.setTriggeredByKeyPress(true);
@@ -310,6 +310,8 @@ public class FilteredComboBoxCellEditor extends AbstractCellEditor
             focusPropertyListener = new PropertyChangeListener() {
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
+                    //LOG.info("property: " + evt.getPropertyName());
+                    //DEBUG: System.out.println("property: " + evt.getPropertyName());
                     if (focusManager().getPermanentFocusOwner() 
                             != comboBox.getEditor().getEditorComponent()) { 
                         return;
