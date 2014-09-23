@@ -71,7 +71,7 @@ public class NamedParameterStatement {
      */
     private final Map indexMap;
     
-    private String sqlCode;
+    private final String sqlCode;
 
     /**
      * Creates a NamedParameterStatement. Wraps a call to 
