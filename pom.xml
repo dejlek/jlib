@@ -8,7 +8,7 @@
 
 	<groupId>com.areen</groupId>
 	<artifactId>jlib</artifactId>
-	<version>2.35.2-SNAPSHOT</version>
+	<version>2.36.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>jlib</name>
@@ -20,7 +20,7 @@ The idea is to open-source this library.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compilerSource>1.7</compilerSource>
-		<sprintNumber>35</sprintNumber>
+		<sprintNumber>36</sprintNumber>
 		<jlibPropsFile>jlibversion.properties</jlibPropsFile>
 		<dependencyReport /> <!-- disabled by default (empty) -->
 	</properties>
