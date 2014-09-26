@@ -37,6 +37,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         contentPanel.add(new VerticalLayoutPanel(), "vertical_layout_panel");
         contentPanel.add(new AccordionTestPanel(), "accordion_test_panel");
         contentPanel.add(new VoListTest(), "vo_list_test_panel");
+        contentPanel.add(new SpellCheckerPanel(), "spellchecker_panel");
     }
 
     /**
@@ -61,6 +62,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
         accordionButton = new javax.swing.JButton();
         accordionDialogButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        spellCheckerButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -156,6 +158,15 @@ public class JlibTestFrame extends javax.swing.JFrame {
         });
         navigatorPanel.add(jButton3);
 
+        spellCheckerButton.setText("SpellChecker");
+        spellCheckerButton.setMaximumSize(new java.awt.Dimension(320, 25));
+        spellCheckerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spellCheckerButtonActionPerformed(evt);
+            }
+        });
+        navigatorPanel.add(spellCheckerButton);
+
         mainSplitPane.setLeftComponent(navigatorPanel);
 
         contentPanel.setLayout(new java.awt.CardLayout());
@@ -204,6 +215,11 @@ public class JlibTestFrame extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, "vo_list_test_panel");
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void spellCheckerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spellCheckerButtonActionPerformed
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "spellchecker_panel");
+    }//GEN-LAST:event_spellCheckerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,6 +274,7 @@ public class JlibTestFrame extends javax.swing.JFrame {
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.ButtonGroup navigatorButtonGroup;
     private javax.swing.JPanel navigatorPanel;
+    private javax.swing.JButton spellCheckerButton;
     private javax.swing.JPanel topPanel;
     private javax.swing.JButton verticalLayoutButton;
     // End of variables declaration//GEN-END:variables
