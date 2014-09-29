@@ -61,5 +61,5 @@ public interface SpellCheckableTableModel {
      * @param columnModelIdx
      * @return 
      */
-    boolean getSpellCheckInfo(int rowModelIdx, int columnModelIdx);
+    SpellCheckInfo getSpellCheckInfo(int rowModelIdx, int columnModelIdx);
 }
