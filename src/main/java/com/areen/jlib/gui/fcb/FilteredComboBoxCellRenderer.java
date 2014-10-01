@@ -276,14 +276,24 @@ public class FilteredComboBoxCellRenderer
     
     private String getText(Object[] argArray) {
         Object[] row = argArray;
-        
+
         if (cbModel != null) {
             if (cbModel.isTableModelInUse()) {
                 int[] cols = cbModel.getColumns();
                 String[] strs = new String[cols.length];
-                strs[0] = row[cols[0]].toString();
+                Object codeKey = (cols.length >= 1 ? row[cols[0]] : null);
+                String rowCodeKey = "";
+                if (codeKey != null) {
+                    rowCodeKey = codeKey.toString();
+                } // if
+                strs[0] = rowCodeKey;
                 for (int i = 1; i < cols.length; i++) {
-                    strs[i] = row[cols[i]].toString();
+                    Object codeValue = row[cols[i]];
+                    String rowCodeValue = "";
+                    if (codeValue != null) {
+                        rowCodeValue = codeValue.toString();
+                    } // if
+                    strs[i] = rowCodeValue;
                 }
                 return getText(strs);
             } // if
@@ -297,7 +307,7 @@ public class FilteredComboBoxCellRenderer
         } // foreach
         return getText(strs);
     } // getText() method
-    
+
     /**
      * This is a straight copy from the DefaultListCellRenderer.
      * @return 
