@@ -658,6 +658,9 @@ public class FilteredComboBoxModel
         if (argItem instanceof Pair) {
             returnKeyValuePair = (Pair) argItem;
         } // if
+        if (argItem instanceof CodePair) {
+            returnKeyValuePair = (Pair) argItem;
+        } 
         if (argItem instanceof Object[]) {
             if (columns.length >= 2) {
                 // we assume whenever we deal with Object[] array, it came from a table model.
@@ -805,25 +808,25 @@ public class FilteredComboBoxModel
     public Pair getKeyValuePairForElementAt(int index) {
 
         Pair retKeyValuePair = null;
-
+        //DEBUG: System.out.println("index: " + index);
+        //DEBUG: System.out.println("objects.size(): " + objects.size());
         if (index >= 0 && index < objects.size()) {
-            
             Object element = objects.get(index);
-            
+            //DEBUG: System.out.println("element: " + element);
             if (element != null) {
-                
+                //DEBUG: System.out.println("tableModelRegistry: " + tableModelRegistry);
                 if (element instanceof CodePair) {
-
                     retKeyValuePair = (Pair) element;
-
                 } else if (element instanceof Pair) {
-
                     retKeyValuePair = (Pair) element;
-
                 } else if (tableModelRegistry != null) {
-                    
+                    //DEBUG: System.out.println("columns.length: " + columns.length);
                     if (tableModel != null && columns.length >= 2) {
-                        
+                        //DEBUG: System.out.println("index: " + index);
+                   //DEBUG: System.out.println(" tableModel.getRowCount(): " +  tableModel.getRowCount());
+                   //DEBUG: System.out.println("tableModel.getColumnCount(): " + tableModel.getColumnCount());
+                        //DEBUG: System.out.println("columns[0]: " + columns[0]);
+                        //DEBUG: System.out.println("columns[1] : " + columns[1]);
                         if (index < tableModel.getRowCount()
                                 && columns[0] < tableModel.getColumnCount()
                                 && columns[1] < tableModel.getColumnCount()) {
