@@ -39,7 +39,7 @@ public class TextComponentPopUp extends JPopupMenu {
      */
     public TextComponentPopUp() {
         super();
-        JMenuItem item = new JMenuItem("BOLLOCKS!");
+        JMenuItem item = new JMenuItem("HELLO! !");
         this.add(item);
     }
     

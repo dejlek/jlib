@@ -48,7 +48,7 @@ public class SquigglePainter extends DefaultHighlighter.DefaultHighlightPainter 
 		//  Draw the squiggles
         int squiggle = 2;
         int twoSquiggles = squiggle * 2;
-        int y = r.y + r.height - squiggle;
+        int y = r.y + r.height - twoSquiggles;
 
         for (int x = r.x; x <= r.x + r.width - twoSquiggles; x += twoSquiggles) {
             g.drawArc(x, y, squiggle, squiggle, 0, 180);

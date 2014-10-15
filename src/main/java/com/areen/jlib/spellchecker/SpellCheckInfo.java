@@ -25,7 +25,7 @@ public class SpellCheckInfo {
      */
     int[] wordPositions;
     
-    SpellCheckInfo() { }
+    public SpellCheckInfo() { }
     
     /**
      * Set positions of misspelled words. Array must be in the format
@@ -52,7 +52,19 @@ public class SpellCheckInfo {
         if (wordPositions == null) {
             return false;
         } else {
-            return wordPositions.length == 0;
+            return wordPositions.length > 0;
         }
+    }
+    
+    @Override
+    public String toString() {
+        String str = "";
+        if (wordPositions != null) {
+            for (int i = 0; i < wordPositions.length - 1; i += 2) {
+                str += " (" + wordPositions[i] + " -> " + wordPositions[i + 1] + " )";
+            }
+        }
+        
+        return str;
     }
 }
