@@ -19,9 +19,14 @@ import java.util.logging.Logger;
  * @author Matthew
  */
 public class SpellCheckDictionaries {
+
+    /**
+     * Look-up key to be used in the maps to retrieve this object
+     */
     public static final String KEY = "SpellCheckDictionaries";
     private final ArrayList<SpellDictionaryHashMap> spellCheckDictionaries;
-    
+    private SpellDictionaryHashMap userDictionary;
+
     public SpellCheckDictionaries() {
         spellCheckDictionaries = new ArrayList<>();
     }
@@ -30,16 +35,37 @@ public class SpellCheckDictionaries {
      * Add dictionary - it gets an array of words and creates SpellDictionaryHashMap
      * @param wordArray
      */
-    public void addDicrionary(final String[] wordArray) {
+    public void addDictionary(final String[] wordArray, boolean argUserDictionary) {
         try {
             SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap();
             for (String word : wordArray) {
                 dictionary.addWord(word);
             }
-            spellCheckDictionaries.add(dictionary);
+            if (argUserDictionary) {
+                userDictionary = dictionary;
+            } else {
+                spellCheckDictionaries.add(dictionary);
+            }
         } catch (IOException ex) {
             Logger.getLogger(SpellCheckDictionaries.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Create SpellDicitonaryHashMap from the array of words
+     * @param wordArray 
+     */
+    public SpellDictionaryHashMap createDictionary(final String[] wordArray) {
+        try {
+            SpellDictionaryHashMap dictionary = new SpellDictionaryHashMap();
+            for (String word : wordArray) {
+                dictionary.addWord(word);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(SpellCheckDictionaries.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
     
     /**
@@ -61,5 +87,22 @@ public class SpellCheckDictionaries {
      */
     public ArrayList<SpellDictionaryHashMap> getDictionaries() {
         return spellCheckDictionaries;
+    }
+    
+    /**
+     * Sets user dictionary
+     * @param argUserDictionary 
+     */
+    public void setUserDictionary(SpellDictionaryHashMap argUserDictionary) {
+        userDictionary = argUserDictionary;
+    }
+    
+    
+    /**
+     * Get user dictionary
+     * @return 
+     */
+    public SpellDictionaryHashMap getUserDictionary() {
+        return userDictionary;
     }
 }
